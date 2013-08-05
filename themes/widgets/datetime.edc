@@ -1887,7 +1887,7 @@ group { name: "elm/layout/datetime_popup/date_layout";
             rel1.to: "field2";
             rel2 {
                relative: 0.0 1.0;
-               to: "field2";
+               to_x: "field2";
             }
             align: 1.0 0.5;
          }
