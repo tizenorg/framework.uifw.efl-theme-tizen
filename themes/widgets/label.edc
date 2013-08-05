@@ -1379,7 +1379,6 @@ base: "font=Tizen:style=Medium font_size="LABEL_FONT_SIZE_INC" color="LABEL_TEXT
                   inherit: "default" 0.0;
                   color: DATETIME_LABEL_TEXT_BLOCK_STYLE_SELECTED_COLOR_INC;
                   text {
-                     font: "Tizen:style=Bold";
                      size: DATETIME_TEXT_FONT_SIZE_INC;
                      text_class: "tizen";
                      min: 1 0;
