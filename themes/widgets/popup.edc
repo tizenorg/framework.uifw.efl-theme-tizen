@@ -429,6 +429,13 @@ group { name: "elm/popup/base/default";
          tag:  "tab" "\t";
       }
    }
+   styles {
+      style { name: "popup_title_style2";
+         base: "font=Tizen:style=Bold align=right font_size="POPUP_BASE_DEFAULT_TEXT_FONT_SIZE_INC" color="POPUP_DEFAULT_TITLE2_TEXT_COLOR_INC" style="POPUP_DEFAULT_TITLE_TEXT_SHADOW_STYLE" shadow_color="POPUP_DEFAULT_TITLE2_TEXT_SHADOW_COLOR" wrap=mixed ellipsis=1.0 text_class=tizen";
+         tag:  "br" "\n";
+         tag:  "tab" "\t";
+      }
+   }
    parts {
       part {
          name:"shadow_left_top_padding";
@@ -642,6 +649,30 @@ group { name: "elm/popup/base/default";
             fixed: 1 1;
             text {
               style: "popup_title_style";
+              size: POPUP_BASE_DEFAULT_TEXT_FONT_SIZE_INC;
+              size_range: POPUP_BASE_DEFAULT_TEXT_MIN_FONT_SIZE_INC POPUP_BASE_DEFAULT_TEXT_FONT_SIZE_INC;
+              fit: 1 0;
+              min: 0 1;
+              align: 0.0 0.5;
+            }
+            rel1 {
+               relative: 1.0 0.0;
+               to: "padding_after_icon";
+            }
+            rel2 {
+               relative: 0.0 1.0;
+               to: "title_right_bottom_padding";
+            }
+            align: 0.0 0.5;
+         }
+      }
+      part { name: "elm.text.title2";
+         type: TEXTBLOCK;
+         scale:1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            text {
+              style: "popup_title_style2";
               size: POPUP_BASE_DEFAULT_TEXT_FONT_SIZE_INC;
               size_range: POPUP_BASE_DEFAULT_TEXT_MIN_FONT_SIZE_INC POPUP_BASE_DEFAULT_TEXT_FONT_SIZE_INC;
               fit: 1 0;
