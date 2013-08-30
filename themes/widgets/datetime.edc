@@ -1058,6 +1058,36 @@ group { name: "elm/datetime/base/default";
             visible: 1;
          }
       }
+      part { name: "access.date.picker";
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "date.picker.bg";
+            rel2.to: "date.picker.bg";
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "access.time.picker";
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "time.picker.bg";
+            rel2.to: "time.picker.bg";
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "access";
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            color: 0 0 0 0;
+         }
+      }
    }
    programs {
       program {
@@ -1625,6 +1655,16 @@ group { name: "elm/spinner/base/default";
             visible: 1;
          }
       }
+      part { name: "access";
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            color: 0 0 0 0;
+         }
+      }
    }
    programs {
       program { name: "text_show";
@@ -1917,6 +1957,16 @@ group { name: "elm/layout/datetime_popup/date_layout";
             visible: 1;
          }
       }
+      part { name: "access";
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            color: 0 0 0 0;
+         }
+      }
    }
 }
 
@@ -2011,6 +2061,16 @@ group { name: "elm/layout/datetime_popup/time_layout_24hr";
             visible: 0;
             rel1.to: "right.padding";
             rel2.to: "right.padding";
+         }
+      }
+      part { name: "access";
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            color: 0 0 0 0;
          }
       }
    }
