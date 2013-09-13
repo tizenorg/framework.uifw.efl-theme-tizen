@@ -139,8 +139,17 @@ group { name: "elm/notify/center/popup";
    }
 }
 
-group { name: "elm/notify/center/transparent";
-   inherit: "elm/notify/center/popup";
+group { name: "elm/notify/center/popup";
+   alias: "elm/notify/bottom/popup";
+   alias: "elm/notify/top/popup";
+   alias: "elm/notify/top/content_no_vhpad";
+   alias: "elm/notify/bottom/content_no_vhpad";
+   alias: "elm/notify/center/verticalbuttonstyle";
+   alias: "elm/notify/center/volumebarstyle";
+   alias: "elm/notify/center/volumebarstyle_text";
+   alias: "elm/notify/center/content_no_vhpad";
+   alias: "elm/notify/center/dimrect";
+   alias: "elm/notify/center/transparent";
    alias: "elm/notify/center/verticalbuttonstyle_transparent";
    alias: "elm/notify/center/menustyle_transparent";
    alias: "elm/notify/center/min_menustyle_transparent";
@@ -180,34 +189,10 @@ group { name: "elm/notify/block_events/popup";
    alias: "elm/notify/block_events/content_expand";
    alias: "elm/notify/block_events/content_no_vhpad";
    parts {
-      part {name: "popup_indicator";
-         type: RECT;
-         scale: 1;
-         repeat_events: 1;
-         description {  state: "default" 0.0;
-            fixed: 0 1;
-            align: 0.5 0.0;
-            min: 0 LAYOUT_INDICATOR_HEIGHT_INC;
-            rel2.relative: 1.0 0.0;
-            color: POPUP_DIM_BG_DEFAULT_COLOR_INC;
-         }
-         description { state: "show" 0.0;
-            inherit: "default" 0.0;
-            color: POPUP_DIM_BG_COLOR_INC;
-         }
-         description { state: "clicked" 0.0;
-            inherit: "default" 0.0;
-            color: POPUP_DIM_BG_CLICKED_COLOR_INC;
-         }
-      }
       part { name: "block_events_color";
          type: RECT;
          scale: 1;
          description { state: "default" 0.0;
-            rel1 {
-               relative: 0.0 1.0;
-               to: "popup_indicator";
-            }
             color: POPUP_DIM_BG_DEFAULT_COLOR_INC;
          }
          description { state: "show" 0.0;
@@ -226,14 +211,12 @@ group { name: "elm/notify/block_events/popup";
          source: "elm";
          action: STATE_SET "default" 0.0;
          target: "block_events_color";
-         target: "popup_indicator";
        }
       program { name: "show1";
          signal: "show";
          action: STATE_SET "show" 0.0;
          transition: SIN_FAC 0.33 0.5;
          target: "block_events_color";
-         target: "popup_indicator";
       }
       program { name: "block_clicked";
          signal: "mouse,clicked,1";
@@ -241,17 +224,10 @@ group { name: "elm/notify/block_events/popup";
          action: SIGNAL_EMIT "elm,action,click" "elm";
          after: "deeper_block_color";
       }
-      program { name: "indicator_clicked";
-         signal: "mouse,clicked,1";
-         source: "popup_indicator";
-         action: SIGNAL_EMIT "elm,action,click" "elm";
-         after: "deeper_block_color";
-      }
       program {
          name: "deeper_block_color";
          action: STATE_SET "clicked" 0.0;
          target: "block_events_color";
-         target: "popup_indicator";
          transition: LINEAR 0.2;
          after: "default_block_color";
       }
@@ -259,34 +235,7 @@ group { name: "elm/notify/block_events/popup";
          name: "default_block_color";
          action: STATE_SET "show" 0.0;
          target: "block_events_color";
-         target: "popup_indicator";
          transition: LINEAR 0.2;
-      }
-   }
-}
-
-group { name: "elm/notify/block_events/indicator_norepeatevent";
-   inherit: "elm/notify/block_events/popup";
-   parts {
-      part { name: "popup_indicator";
-         type: RECT;
-         scale: 1;
-         repeat_events: 0;
-         description {  state: "default" 0.0;
-            fixed: 0 1;
-            align: 0.5 0.0;
-            min: 0 LAYOUT_INDICATOR_HEIGHT_INC;
-            rel2.relative: 1.0 0.0;
-            color: POPUP_DIM_BG_DEFAULT_COLOR_INC;
-         }
-         description { state: "show" 0.0;
-            inherit: "default" 0.0;
-            color: POPUP_DIM_BG_COLOR_INC;
-         }
-         description { state: "clicked" 0.0;
-            inherit: "default" 0.0;
-            color: POPUP_DIM_BG_CLICKED_COLOR_INC;
-         }
       }
    }
 }
@@ -303,43 +252,9 @@ group { name: "elm/notify/block_events/transparent";
    alias: "elm/notify/block_events/content_expand_transparent";
    alias: "elm/notify/block_events/content_no_vhpad_transparent";
    parts {
-      part {name: "popup_indicator";
-         type: RECT;
-         scale: 1;
-         repeat_events: 1;
-         description {  state: "default" 0.0;
-            fixed: 0 1;
-            align: 0.5 0.0;
-            min: 0 LAYOUT_INDICATOR_HEIGHT_INC;
-            rel2.relative: 1.0 0.0;
-            color: POPUP_DIM_BG_TRANS_COLOR_INC;
-         }
-      }
       part { name: "block_events";
          type: RECT;
          description { state: "default" 0.0;
-            rel1 {
-               relative: 0.0 1.0;
-               to: "popup_indicator";
-            }
-            color: POPUP_DIM_BG_TRANS_COLOR_INC;
-         }
-      }
-   }
-}
-
-group { name: "elm/notify/block_events/indicator_norepeatevent_transparent";
-   inherit: "elm/notify/block_events/transparent";
-   parts {
-      part {name: "popup_indicator";
-         type: RECT;
-         scale: 1;
-         repeat_events: 0;
-         description {  state: "default" 0.0;
-            fixed: 0 1;
-            align: 0.5 0.0;
-            min: 0 LAYOUT_INDICATOR_HEIGHT_INC;
-            rel2.relative: 1.0 0.0;
             color: POPUP_DIM_BG_TRANS_COLOR_INC;
          }
       }
@@ -349,29 +264,9 @@ group { name: "elm/notify/block_events/indicator_norepeatevent_transparent";
 group { name: "elm/notify/block_events/dimrect";
    inherit: "elm/notify/block_events/transparent";
    parts {
-      part {name: "popup_indicator";
-         type: RECT;
-         scale: 1;
-         repeat_events: 1;
-         description {  state: "default" 0.0;
-            fixed: 0 1;
-            align: 0.5 0.0;
-            min: 0 LAYOUT_INDICATOR_HEIGHT_INC;
-            rel2.relative: 1.0 0.0;
-            color: POPUP_DIM_BG_COLOR_INC;
-         }
-         description { state: "clicked" 0.0;
-            inherit: "default" 0.0;
-            color: POPUP_DIM_BG_CLICKED_COLOR_INC;
-         }
-      }
       part { name: "block_events";
          type: RECT;
          description { state: "default" 0.0;
-            rel1 {
-               relative: 0.0 1.0;
-               to: "popup_indicator";
-            }
             color: POPUP_DIM_BG_COLOR_INC;
          }
          description { state: "clicked" 0.0;
@@ -412,11 +307,6 @@ group { name: "elm/label/base/popup/default";
 
 group { name: "elm/popup/base/default";
    alias: "elm/popup/base/transparent";
-   alias: "elm/popup/base/customstyle";
-   alias: "elm/popup/base/customstyle_transparent";
-   alias: "elm/popup/base/liststyle";
-   alias: "elm/popup/base/menustyle";
-   alias: "elm/popup/base/indicator_norepeatevent";
    images {
       image: "00_popup_bg.png" COMP;
       image: "00_popup_button_bg.png" COMP;
@@ -1062,7 +952,6 @@ group { name: "elm/popup/content/default";
    alias: "elm/popup/content/transparent";
    alias: "elm/popup/content/customstyle";
    alias: "elm/popup/content/customstyle_transparent";
-   alias: "elm/popup/content/indicator_norepeatevent";
    parts{
       part { name: "pad_t";
          type: SPACER;
