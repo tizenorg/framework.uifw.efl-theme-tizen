@@ -2911,31 +2911,6 @@
 
    group { name: "elm/slider/horizontal/expanded_indicator_button";
       inherit: "elm/slider/horizontal/default";
-      script {
-         public invert_on = 0;
-         public set_invert_on() {
-            set_state(PART:"level", "inverted", 0.0);
-            set_state(PART:"level2", "inverted", 0.0);
-            set_int(invert_on, 1);
-         }
-         public set_invert_off() {
-            set_state(PART:"level", "default", 0.0);
-            set_state(PART:"level2", "default", 0.0);
-            set_int(invert_on, 0);
-         }
-         public thumb_down() {
-            if(get_int(invert_on) == 0)
-               set_state(PART:"level", "pressed", 0.0);
-            else if(get_int(invert_on) == 1)
-               set_state(PART:"level2", "pressed", 0.0);
-            }
-         public thumb_up() {
-            if(get_int(invert_on) == 0)
-               set_state(PART:"level", "default", 0.0);
-            else if(get_int(invert_on) == 1)
-               set_state(PART:"level2", "inverted", 0.0);
-            }
-         }
       parts {
          part { name: "elm.dragable.slider";
             type: GROUP;

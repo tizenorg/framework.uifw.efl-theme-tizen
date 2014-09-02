@@ -2200,11 +2200,6 @@
       inherit: "elm/naviframe/item/basic/default";
       alias:"elm/naviframe/item/1line/instant/default";
       alias:"elm/naviframe/item/instant/default";
-      script {
-         public oh_show = 0;     //optionheader show/hide
-         public oh_close = 0;    //optionheader close/open
-         public cbar_bg = 0;     //Controlbar BG Show call count
-      }
       programs {
          program { name: "cur_pushed";
             signal: "elm,state,cur,pushed";
@@ -2232,11 +2227,6 @@
       inherit: "elm/naviframe/item/basic2/default";
       alias:"elm/naviframe/item/2line/instant/default";
       alias:"elm/naviframe/item/instant2/default";
-      script {
-         public oh_show = 0;     //optionheader show/hide
-         public oh_close = 0;    //optionheader close/open
-         public cbar_bg = 0;     //Controlbar BG Show call count
-      }
       programs {
          program { name: "cur_pushed";
             signal: "elm,state,cur,pushed";
@@ -2262,9 +2252,6 @@
    }
    group { name: "elm/naviframe/item/segment/instant/default";
       inherit:  "elm/naviframe/item/segment/default";
-      script {
-         public cbar_bg = 0;     //Controlbar BG Show call count
-      }
       programs {
          program { name: "cur_pushed";
             signal: "elm,state,cur,pushed";
@@ -2303,9 +2290,6 @@
 
    group { name: "elm/naviframe/item/tabbar/instant/default";
       inherit:  "elm/naviframe/item/tabbar/default";
-      script {
-         public cbar_bg = 0;     //Controlbar BG Show call count
-      }
       programs {
          program { name: "cur_pushed";
             signal: "elm,state,cur,pushed";

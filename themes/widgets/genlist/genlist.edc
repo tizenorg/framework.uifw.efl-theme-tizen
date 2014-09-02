@@ -34,30 +34,6 @@
       alias: "elm/scroller/base/dialogue";
       inherit: "elm/scroller/base/default";
 
-         script {
-         public sbvis_v, sbvis_h, sbalways_v, sbalways_h, sbvis_timer;
-         public timer0(val) {
-            new v;
-            v = get_int(sbvis_v);
-            if (v) {
-               v = get_int(sbalways_v);
-               if (!v) {
-                  emit("do-hide-vbar", "");
-                  set_int(sbvis_v, 0);
-               }
-            }
-            v = get_int(sbvis_h);
-            if (v) {
-               v = get_int(sbalways_h);
-               if (!v) {
-                  emit("do-hide-hbar", "");
-                  set_int(sbvis_h, 0);
-               }
-            }
-            set_int(sbvis_timer, 0);
-            return 0;
-         }
-      }
       parts {
          part { name: "bg";
             description { state: "default" 0.0;

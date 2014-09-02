@@ -965,9 +965,6 @@
 //////////////////////////////////////////////////////////////////////////////////////
    group { name: "elm/button/base/datetime_ampm/default";
       inherit: "elm/button/base/style1/auto_expand";
-      script {
-         public button_state = BUTTON_STATE_ENABLED;
-      }
       parts {
          part { name: "bg";
             type: RECT;

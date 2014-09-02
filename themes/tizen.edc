@@ -79,7 +79,6 @@ collections {
 #include "widgets/popup.edc"
 #include "widgets/progressbar.edc"
 #include "widgets/radio.edc"
-#include "widgets/scroller.edc"
 #include "widgets/segmentedcontrol.edc"
 #include "widgets/selectioninfo.edc"
 #include "widgets/slider.edc"
