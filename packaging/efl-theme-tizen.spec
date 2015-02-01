@@ -1,56 +1,50 @@
 Name:          efl-theme-tizen
 Summary:       Tizen theme files
-Version:       1.0.233b48
+Version:       1.1.52
 Release:       1
 Group:         TO_BE/FILLED_IN
-License:       BSD
+License:       BSD 2-Clause
 Source0:       %{name}-%{version}.tar.gz
-BuildRequires: perl, edje, edje-bin, embryo, embryo-bin
+BuildRequires: edje-bin
 %define _unpackaged_files_terminate_build 0
 
 %description
-Tizen theme for EFL
-
-%if %{_repository} == "mobile"
-%package -n efl-theme-tizen-devel
-Summary: Development package
-
-%description -n efl-theme-tizen-devel
-Development package
-%endif
+Tizen heme for EFL
 
 %prep
-%setup -q 
+%setup -q
 
 %build
 export CFLAGS+=" --fPIC"
 export LDFLAGS+=" -Wl,--hash-style=both -Wl,--as-needed -Wl,--rpath=/usr/lib"
 
+%if "%{?tizen_profile_name}" == "wearable"
+    export TARGET=2.3-wearable
+    export SIZE=HVGA
+%elseif "%{?tizen_profile_name}" == "mobile"
+    export TARGET=2.3-mobile
+    export SIZE=WVGA
+%endif
 
-cd %{_repository} && make %{?jobs:-j%jobs}
+make
 
 %install
-rm -rf %{buildroot}
-cd %{_repository} && make install DESTDIR=%{buildroot}
-mkdir -p %{buildroot}/usr/share/license
-cp %{_builddir}/%{buildsubdir}/COPYING %{buildroot}/usr/share/license/%{name}
-%if %{_repository} == "mobile"
-cp %{buildroot}/usr/share/elementary/themes/tizen-HD-dark.edj %{buildroot}/usr/share/elementary/themes/tizen-hd.edj
+
+%if "%{?tizen_profile_name}" == "wearable"
+    export TARGET=2.3-wearable
+    export SIZE=HVGA
+%elseif "%{?tizen_profile_name}" == "mobile"
+    export TARGET=2.3-mobile
+    export SIZE=WVGA
 %endif
+
+make install prefix=%{_prefix} DESTDIR=%{buildroot}
+
+mkdir -p %{buildroot}%{_datadir}/license
+cp %{_builddir}/%{buildsubdir}/COPYING %{buildroot}/%{_datadir}/license/%{name}
 
 %files
 %defattr(-,root,root,-)
-%if %{_repository} == "wearable"
-%{_datadir}/elementary/themes/tizen*.edj
-%endif
+%{_datadir}/elementary/themes/*.edj
+%{_datadir}/license/%{name}
 %manifest %{name}.manifest
-/usr/share/license/%{name}
-%if %{_repository} == "mobile"
-%{_datadir}/elementary/themes/tizen-HD-dark.edj
-%{_datadir}/elementary/themes/tizen-HD-light.edj
-%{_datadir}/elementary/themes/tizen-hd.edj
-
-%files -n efl-theme-tizen-devel
-%defattr(-,root,root,-)
-/opt/var/efl-theme-tizen-edc/*
-%endif

@@ -1,0 +1,71 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved 
+ *
+ * PROPRIETARY/CONFIDENTIAL
+ *
+ * This software is the confidential and proprietary information of SAMSUNG
+ * ELECTRONICS ("Confidential Information"). You agree and acknowledge that this
+ * software is owned by Samsung and you shall not disclose such Confidential
+ * Information and shall use it only in accordance with the terms of the license
+ * agreement you entered into with SAMSUNG ELECTRONICS. SAMSUNG make no
+ * representations or warranties about the suitability of the software, either
+ * express or implied, including but not limited to the implied warranties of
+ * merchantability, fitness for a particular purpose, or non-infringement.
+ * SAMSUNG shall not be liable for any damages suffered by licensee arising out
+ * of or releated to this software.
+ *
+ */
+
+/**
+
+  *Usage:     
+   *sounds {
+	      sound: BUTTON_PRESSED_SOUND START_POINT  ENDPOINT
+                ..
+             }
+   *The " sounds" block contains a list of one or more " sound" items.
+    
+   *Present implementation supports only .wav format
+*/
+
+#define BUTTON_PRESSED_SOUND "button-pressed.wav"
+#define BUTTON_TOGGLE_OFF_SOUND "button-toggle-off.wav"
+#define BUTTON_TOGGLE_ON_SOUND "button-toggle-on.wav"
+#define DIALOG_CANCEL_SOUND "dialog-cancel.wav"
+#define DIALOG_ERROR_SOUND "dialog-error.wav"
+#define DIALOG_INFORMATION_SOUND "dialog-information.wav"
+#define DIALOG_OK_SOUND "dialog-ok.wav"
+#define DIALOG_QUESTION_SOUND "dialog-question.wav"
+#define DIALOG_WARNING_SOUND "dialog-warning.wav"
+#define DRAG_ACCEPT_SOUND "drag-accept.wav"
+#define DRAG_FAIL_SOUND "drag-fail.wav"
+#define DRAG_START_SOUND "drag-start.wav"
+#define LINK_PRESSED_SOUND "link-pressed.wav"
+#define MENU_CLICK_SOUND "menu-click.wav"
+#define MENU_POPUP_SOUND "menu-popup.wav"
+#define TOOLTIP_POPUP_SOUND "tooltip-popup.wav"
+#define WINDOW_NEW_SOUND "window-new.wav"
+#define WATERDROP_SOUND "Waterdrop.wav"
+
+sounds {
+          sound: BUTTON_PRESSED_SOUND 0 100 ;
+          sound: BUTTON_TOGGLE_OFF_SOUND 0 100 ;
+          sound: BUTTON_TOGGLE_ON_SOUND 0 100 ;
+          sound: DIALOG_CANCEL_SOUND 0 100 ;
+          sound: DIALOG_ERROR_SOUND 0 100 ;
+          sound: DIALOG_INFORMATION_SOUND 0 100 ; 	   	   
+          sound: DIALOG_OK_SOUND 0 100 ;
+          sound: DIALOG_QUESTION_SOUND 0 100 ;
+          sound: DIALOG_WARNING_SOUND 0 100 ;
+          sound: DRAG_ACCEPT_SOUND 0 100 ;
+          sound: DRAG_FAIL_SOUND 0 100 ;
+          sound: DRAG_START_SOUND 0 100 ;
+          sound: LINK_PRESSED_SOUND 0 100 ;
+          sound: MENU_CLICK_SOUND 0 100 ;
+          sound: MENU_POPUP_SOUND 0 100 ;
+          sound: TOOLTIP_POPUP_SOUND 0 100 ;
+          sound: WINDOW_NEW_SOUND 0 100 ;
+          sound: WATERDROP_SOUND 0 100 ;
+       }
+
+

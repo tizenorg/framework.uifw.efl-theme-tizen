@@ -1,0 +1,283 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#define BUBBLE_WIDTH        380
+
+#define BUBBLE_DATE_PAD     15
+#define BUBBLE_DATE_HEIGHT  30
+
+#define BUBBLE_TOP_PAD      10
+#define BUBBLE_RIGHT_PAD    15
+#define BUBBLE_ICON_PAD     6
+
+images {
+	image: "00_messagebubble_bg_receive_bg.#.png" COMP;
+	image: "00_messagebubble_bg_sent_bg.#.png" COMP;
+}
+
+   group { name: "elm/layout/bubble/readmessage/default";
+      parts {
+         part { name: "base";
+            type: RECT;
+            repeat_events: 1;
+            description { state: "default" 0.0;
+               color: 0 0 0 0;
+            }
+         }
+         part { name: "elm.select_icon.pad";
+            type: SPACER;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel2.relative: 0.0 0.0;
+               align: 0.0 0.0;
+               min: BUBBLE_LAYOUT_SELECT_PAD 0;
+               fixed: 1 1;
+            }
+         }
+         part { name: "elm.swallow.select_icon";
+            clip_to: "disclip";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1 {
+                  to_x: "elm.select_icon.pad";
+                  to_y: "elm.icon";
+                  relative: 1.0 0.0;
+               }
+               rel2 {
+                  to_x: "elm.select_icon.pad";
+                  to_y: "elm.icon";
+                  relative: 1.0 1.0;
+               }
+               align: 0.0 0.5;
+               fixed: 1 1;
+               visible: 0;
+            }
+            description { state: "selectview" 0.0;
+               inherit: "default" 0.0;
+               visible: 1;
+            }
+         }
+         part { name: "elm.icon";
+            clip_to: "disclip";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel2 {
+                  to: "elm.bottom.pad";
+                  relative: 1.0 0.0;
+               }
+               align: 0.0 0.0;
+               fixed: 1 0;
+            }
+            description { state: "selectview" 0.0;
+               inherit: "default" 0.0;
+               rel1 {
+                  to_x: "elm.swallow.select_icon";
+                  relative: 1.0 0.0;
+               }
+            }
+         }
+         part { name: "elm.bottom.pad";
+            type: SPACER;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1.relative: 0.0 1.0;
+               align: 0.5 1.0;
+               min: 0 BUBBLE_LAYOUT_BOTTOM_PAD;
+               fixed: 0 1;
+            }
+         }
+         part { name: "disclip";
+             type: RECT;
+             description { state: "default" 0.0;
+             }
+             description { state: "disabled" 0.0;
+                inherit: "default" 0.0;
+                color_class: "W0551";
+             }
+         }
+      }
+      programs {
+         program { name: "go_disabled";
+            signal: "elm,state,disabled";
+            source: "elm";
+            action: STATE_SET "disabled" 0.0;
+            target: "disclip";
+         }
+         program { name: "go_enabled";
+            signal: "elm,state,enabled";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "disclip";
+         }
+         program { name: "go_defaultview";
+            signal: "elm,state,select,disable";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            //transition: DECELERATE 0.7;
+            target: "elm.swallow.select_icon";
+            target: "elm.icon";
+         }
+         program { name: "go_selectview";
+            signal: "elm,state,select,enable";
+            source: "elm";
+            action: STATE_SET "selectview" 0.0;
+            transition: DECELERATE 0.7;
+            target: "elm.swallow.select_icon";
+            target: "elm.icon";
+         }
+      }
+   }
+
+   group { name: "elm/layout/bubble/sentmessage/default";
+      parts {
+         part { name: "base";
+            type: RECT;
+            repeat_events: 1;
+            description { state: "default" 0.0;
+               color: 0 0 0 0;
+            }
+         }
+         part { name: "elm.select_icon.pad";
+            type: SPACER;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel2.relative: 0.0 0.0;
+               align: 0.0 0.0;
+               min: BUBBLE_LAYOUT_SELECT_PAD 0;
+               fixed: 1 1;
+            }
+         }
+         part { name: "elm.swallow.select_icon";
+            clip_to: "disclip";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1 {
+                  to_x: "elm.select_icon.pad";
+                  to_y: "elm.icon";
+                  relative: 1.0 0.0;
+               }
+               rel2 {
+                  to_x: "elm.select_icon.pad";
+                  to_y: "elm.icon";
+                  relative: 1.0 1.0;
+               }
+               align: 0.0 0.5;
+               fixed: 1 1;
+               visible: 0;
+            }
+            description { state: "selectview" 0.0;
+               inherit: "default" 0.0;
+               visible: 1;
+            }
+         }
+         part { name: "elm.icon";
+            clip_to: "disclip";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel2 {
+                  to: "elm.bottom.pad";
+                  relative: 1.0 0.0;
+               }
+               align: 0.0 0.0;
+               fixed: 1 0;
+            }
+            description { state: "selectview" 0.0;
+               inherit: "default" 0.0;
+               rel1 {
+                  to_x: "elm.swallow.select_icon";
+                  relative: 1.0 0.0;
+               }
+            }
+         }
+         part { name: "elm.bottom.pad";
+            type: SPACER;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1.relative: 0.0 1.0;
+               align: 0.5 1.0;
+               min: 0 BUBBLE_LAYOUT_BOTTOM_PAD;
+               fixed: 0 1;
+            }
+         }
+         part { name: "disclip";
+             type: RECT;
+             description { state: "default" 0.0;
+             }
+             description { state: "disabled" 0.0;
+                inherit: "default" 0.0;
+                color_class: "W0541";
+             }
+         }
+      }
+      programs {
+         program { name: "go_disabled";
+            signal: "elm,state,disabled";
+            source: "elm";
+            action: STATE_SET "disabled" 0.0;
+            target: "disclip";
+         }
+         program { name: "go_enabled";
+            signal: "elm,state,enabled";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "disclip";
+         }
+         program { name: "go_defaultview";
+            signal: "elm,state,select,disable";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            //transition: DECELERATE 0.7;
+            target: "elm.swallow.select_icon";
+            target: "elm.icon";
+         }
+         program { name: "go_selectview";
+            signal: "elm,state,select,enable";
+            source: "elm";
+            action: STATE_SET "selectview" 0.0;
+            transition: DECELERATE 0.7;
+            target: "elm.swallow.select_icon";
+            target: "elm.icon";
+         }
+      }
+   }
+
+   group { name: "elm/layout/bubble/seperator/default";
+      parts {
+         part { name: "base";
+            type: RECT;
+            repeat_events: 1;
+            description { state: "default" 0.0;
+               min: 0 GENLIST_PADDING_24_INC;
+               color: 0 0 0 0;
+            }
+         }
+      }
+   }
+

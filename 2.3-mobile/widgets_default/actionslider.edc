@@ -1,0 +1,468 @@
+// elm_actionslider default(button) style
+group { name: "elm/actionslider/base/default";
+   images {
+      image: "whitetheme/action_slider_bg.png" COMP;
+      image: "whitetheme/action_slider_btn.png" COMP;
+   }
+   parts {
+      part { name: "base";
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ACTIONSLIDER_MIN_WIDTH_INC ACTIONSLIDER_MIN_HEIGHT_INC;
+            image {
+               normal: "whitetheme/action_slider_bg.png";
+               border: ACTIONSLIDER_BG_BORDER;
+               border_scale: 1;
+            }
+         }
+      }
+      part { name: "icon.dragable.area";
+          type: SPACER;
+          scale: 1;
+          description { state: "default" 0.0;
+             rel1.to: "base";
+             rel2.to: "base";
+          }
+      }
+      part { name: "elm.padding.text.left";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ACTIONSLIDER_PADDING_TEXT_LEFT 0;
+            fixed: 1 0;
+            align: 0 0.5;
+            rel2.relative: 0 1;
+         }
+      }
+      part { name: "elm.text.left";
+         type: TEXT;
+         mouse_events: 0;
+         effect: SHADOW TOP;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            color: ACTIONSLIDER_TEXT_COLOR;
+            color2: ACTIONSLIDER_TEXT_SHADOW_COLOR;
+            align: 0 0.5;
+            rel1 {
+               to: "elm.padding.text.left";
+               relative: 1 0;
+            }
+            rel2.to: "elm.padding.text.left";
+            text {
+               font: "SLP:style=Bold";
+               size: ACTIONSLIDER_TEXT_SIZE;
+               align: 0.1 0.5;
+               min: 1 1;
+            }
+         }
+      }
+      part { name: "elm.text.center";
+         type: TEXT;
+         mouse_events: 0;
+         effect: SHADOW TOP;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            color: ACTIONSLIDER_TEXT_COLOR;
+            color2: ACTIONSLIDER_TEXT_SHADOW_COLOR;
+            text {
+               font: "SLP:style=Bold";
+               size: ACTIONSLIDER_TEXT_SIZE;
+               align: 0.5 0.5;
+               min: 1 1;
+            }
+         }
+      }
+      part { name: "elm.padding.text.right";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ACTIONSLIDER_PADDING_TEXT_RIGHT 0;
+            fixed: 1 0;
+            align: 1 0.5;
+            rel1.relative: 1 0;
+            rel2.relative: 1 1;
+         }
+      }
+      part { name: "elm.text.right";
+         type: TEXT;
+         mouse_events: 0;
+         effect: SHADOW TOP;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            color: ACTIONSLIDER_TEXT_COLOR;
+            color2: ACTIONSLIDER_TEXT_SHADOW_COLOR;
+            rel1.to: "elm.padding.text.right";
+            rel2 {
+               to: "elm.padding.text.right";
+               relative: 0 1;
+            }
+            align: 1 0.5;
+            text {
+               font: "SLP:style=Bold";
+               size: ACTIONSLIDER_TEXT_SIZE;
+               min: 1 1;
+               text_class: "slp_bold";
+            }
+         }
+      }
+      part { name: "elm.drag_button_base";
+         type: SWALLOW;
+         mouse_events: 1;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: ACTIONSLIDER_BUTTON_MIN_WIDTH_INC ACTIONSLIDER_BUTTON_MIN_HEIGHT_INC;
+            align: 0.5 0.5;
+            rel1 {
+               relative: 0.5 0.0;
+               to: "icon.dragable.area";
+            }
+            rel2 {
+               relative: 0.5 1.0;
+               to: "icon.dragable.area";
+            }
+         }
+         dragable {
+            confine: "icon.dragable.area";
+            x: 1 1 0;
+            y: 0 0 0;
+         }
+      }
+      part { name: "elm.drag_button";
+         type: RECT;
+         mouse_events: 1;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ACTIONSLIDER_BUTTON_MIN_WIDTH_INC ACTIONSLIDER_BUTTON_MIN_HEIGHT_INC;
+            color: ACTIONSLIDER_TRANSPARENT;
+            rel1 {
+               to_x: "elm.drag_button_base";
+               to_y: "icon.dragable.area";
+            }
+            rel2 {
+               to_x: "elm.drag_button_base";
+               to_y: "icon.dragable.area";
+            }
+         }
+         dragable {
+            events: "elm.drag_button_base";
+         }
+      }
+      part { name: "button2";
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "elm.drag_button";
+            rel2.to: "elm.drag_button";
+            min: ACTIONSLIDER_MIN_WIDTH_INC ACTIONSLIDER_MIN_HEIGHT_INC ;
+            aspect: 1.0 1.0;
+            aspect_preference: VERTICAL;
+            fixed: 1 1;
+            image {
+               normal: "whitetheme/action_slider_btn.png";
+               border: ACTIONSLIDER_BUTTON_BORDER;
+               border_scale: 1;
+            }
+         }
+      }
+      part { name: "elm.text.indicator";
+         type: TEXT;
+         scale: 1;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            rel1.to: "elm.drag_button";
+            rel2.to: "elm.drag_button";
+            color: ACTIONSLIDER_TEXT_INDICATOR_COLOR;
+            text {
+               font: "SLP:style=Bold";
+               size: ACTIONSLIDER_TEXT_SIZE;
+               align: 0.5 0.5;
+               min: 0 1;
+            }
+         }
+      } 
+   }
+   programs {
+      program { name: "elm.drag_button,mouse,up";
+         signal: "mouse,up,1";
+         source: "elm.drag_button";
+         action: SIGNAL_EMIT "elm.drag_button,mouse,up" "";
+      }
+      program { name: "elm.drag_button,mouse,down";
+         signal: "mouse,down,1";
+         source: "elm.drag_button";
+         action: SIGNAL_EMIT "elm.drag_button,mouse,down" "";
+      }
+      program { name: "elm.drag_button,mouse,move";
+         signal: "mouse,move";
+         source: "elm.drag_button_base";
+         action: SIGNAL_EMIT "elm.drag_button,mouse,move" "";
+      }
+   }
+}
+
+group { name: "elm/actionslider/base/bar";
+   images {
+      image: "whitetheme/action_slider_bg.png" COMP;
+      image: "whitetheme/action_slider_btn.png" COMP;
+      image: "whitetheme/action_slider_guage_on.png" COMP;
+   }
+   parts {
+      part { name: "base";
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ACTIONSLIDER_MIN_WIDTH_INC ACTIONSLIDER_MIN_HEIGHT_INC;
+            image {
+               normal: "whitetheme/action_slider_bg.png";
+               border: ACTIONSLIDER_BG_BORDER;
+               border_scale: 1;
+            }
+         }
+      }
+      part { name: "icon.dragable.area";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "base";
+            rel2.to: "base";
+         }
+      }
+      part { name: "elm.padding.bar.top-left";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ACTIONSLIDER_PADDING_BAR_LEFT_TOP;
+            fixed: 1 1;
+            align: 0 0;
+            rel1.to: "base";
+            rel2 {
+               to: "base";
+               relative: 0 0;
+            }
+         } 
+      }
+      part { name: "elm.padding.bar.bottom";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 ACTIONSLIDER_PADDING_BAR_BOTTOM;
+            fixed: 0 1;
+            align: 0.5 1;
+            rel1 {
+               to: "base";
+               relative: 0 1;
+            }
+            rel2.to: "base";
+         } 
+      }
+      part { name: "bar";
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 ACTIONSLIDER_BAR_MIN_HEIGHT_INC;
+            align: 0 0.5;
+            rel1 {
+               to: "elm.padding.bar.top-left";
+               relative: 1 1;
+            }
+            rel2 {
+               to_y: "elm.padding.bar.bottom";
+               to_x: "elm.drag_button";
+               relative: 0.5 0;
+            }
+            image {
+               normal: "whitetheme/action_slider_guage_on.png";
+               border: ACTIONSLIDER_BAR_BORDER;
+               border_scale: 1;
+            }
+            color: ACTIONSLIDER_COLOR_VISIBLE;
+         }
+      }
+      part { name: "elm.padding.text.left";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ACTIONSLIDER_PADDING_TEXT_LEFT 0;
+            fixed: 1 0;
+            align: 0 0.5;
+            rel2.relative: 0 1;
+         }
+      }
+      part { name: "elm.text.left";
+         type: TEXT;
+         mouse_events: 0;
+         effect: SHADOW TOP;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            color: ACTIONSLIDER_TEXT_COLOR;
+            color2: ACTIONSLIDER_TEXT_SHADOW_COLOR;
+            align: 0 0.5;
+            rel1 {
+               to: "elm.padding.text.left";
+               relative: 1 0;
+            }
+            rel2.to: "elm.padding.text.left";
+            text {
+               font: "SLP:style=Bold";
+               size: ACTIONSLIDER_TEXT_SIZE;
+               align: 0.1 0.5;
+               min: 1 1;
+            }
+         }
+      }
+      part { name: "elm.text.center";
+         type: TEXT;
+         mouse_events: 0;
+         effect: SHADOW TOP;
+         scale: 1;
+         description { state: "default" 0.0;
+            color: ACTIONSLIDER_TEXT_COLOR;
+            color2: ACTIONSLIDER_TEXT_SHADOW_COLOR;
+            fixed: 1 1;
+            text {
+               font: "SLP:style=Bold";
+               size: ACTIONSLIDER_TEXT_SIZE;
+               align: 0.5 0.5;
+               min: 1 1;
+            }
+         }
+      }
+      part { name: "elm.padding.text.right";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ACTIONSLIDER_PADDING_TEXT_RIGHT 0;
+            fixed: 1 0;
+            align: 1 0.5;
+            rel1.relative: 1 0;
+            rel2.relative: 1 1;
+         }
+      }
+      part { name: "elm.text.right";
+         type: TEXT;
+         mouse_events: 0;
+         effect: SHADOW TOP;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            color: ACTIONSLIDER_TEXT_COLOR;
+            color2: ACTIONSLIDER_TEXT_SHADOW_COLOR;
+            rel1.to: "elm.padding.text.right";
+            rel2 {
+               to: "elm.padding.text.right";
+               relative: 0 1;
+            }
+            align: 1 0.5;
+            text {
+               font: "SLP:style=Bold";
+               size: ACTIONSLIDER_TEXT_SIZE;
+               min: 1 1;
+               text_class: "slp_bold";
+            }
+         }
+      }
+      part { name: "elm.drag_button_base";
+         type: SWALLOW;
+         mouse_events: 1;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: ACTIONSLIDER_BUTTON_MIN_WIDTH_INC ACTIONSLIDER_BUTTON_MIN_HEIGHT_INC;
+            align: 0.5 0.5;
+            rel1{
+               relative: 0.5 0.0;
+               to: "icon.dragable.area";
+            }
+            rel2 {
+               relative: 0.5 1.0;
+               to: "icon.dragable.area";
+            }
+         }
+         dragable {
+            confine: "icon.dragable.area";
+            x: 1 1 0;
+            y: 0 0 0;
+         }
+      }
+      part { name: "elm.drag_button";
+         type: RECT;
+         mouse_events: 1;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ACTIONSLIDER_BUTTON_MIN_WIDTH_INC ACTIONSLIDER_BUTTON_MIN_HEIGHT_INC;
+            color: ACTIONSLIDER_TRANSPARENT;
+            rel1 {
+               to_x: "elm.drag_button_base";
+               to_y: "icon.dragable.area";
+            }
+            rel2 {
+               to_x: "elm.drag_button_base";
+               to_y: "icon.dragable.area";
+            }
+         }
+         dragable {
+            events: "elm.drag_button_base";
+         }
+      }
+      part { name: "button2";
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "elm.drag_button";
+            rel2.to: "elm.drag_button";
+            min: ACTIONSLIDER_BUTTON_MIN_WIDTH_INC ACTIONSLIDER_BUTTON_MIN_HEIGHT_INC;
+            fixed: 1 1;
+            aspect: 1.0 1.0;
+            aspect_preference: VERTICAL;
+            image {
+               normal: "whitetheme/action_slider_btn.png";
+               border: ACTIONSLIDER_BUTTON_BORDER;
+               border_scale: 1;
+            }
+            color: ACTIONSLIDER_COLOR_VISIBLE;
+         }
+      }
+      part { name: "elm.text.indicator";
+         type: TEXT;
+         scale: 1;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            rel1.to: "elm.drag_button";
+            rel2.to: "elm.drag_button";
+            color: ACTIONSLIDER_TEXT_INDICATOR_COLOR;
+            text {
+               font: "SLP:style=Bold";
+               size: ACTIONSLIDER_TEXT_SIZE;
+               align: 0.5 0.5;
+               min: 0 1;
+               text_class: "slp_bold";
+            }
+         }
+      }
+   }
+   programs {
+      program { name: "elm.drag_button,mouse,up";
+         signal: "mouse,up,1";
+         source: "elm.drag_button";
+         action: SIGNAL_EMIT "elm.drag_button,mouse,up" "";
+      }
+      program { name: "elm.drag_button,mouse,down";
+         signal: "mouse,down,1";
+         source: "elm.drag_button";
+         action: SIGNAL_EMIT "elm.drag_button,mouse,down" "";
+      }
+      program { name: "elm.drag_button,mouse,move";
+         signal: "mouse,move";
+         source: "elm.drag_button_base";
+         action: SIGNAL_EMIT "elm.drag_button,mouse,move" "";
+      }
+   }
+}
+
+

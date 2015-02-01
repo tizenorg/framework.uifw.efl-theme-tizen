@@ -1,0 +1,496 @@
+group { name: "elm/frame/base/default";
+   images {
+      image: "whitetheme/frame_bg.png" COMP;
+   }
+   parts {
+      part { name: "base";
+         scale: 1;
+         mouse_events:  0;
+         description { state: "default" 0.0;
+            image {
+               normal: "whitetheme/frame_bg.png";
+               border: FRAME_BG_BORDER_INC;
+               border_scale: 1;
+            }
+         }
+      }
+      part { name: "elm.text.top.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: FRAME_DEFAULT_PADDING_WIDTH_INC FRAME_DEFAULT_PADDING_HEIGHT_INC;
+            fixed: 1 1;
+            align: 0.0 0.0;
+            rel1{
+               to: "base";
+               relative: 0.0 0.0;
+            }
+            rel2{
+               to: "base";
+               relative: 0.0 0.0;
+            }
+         }
+      }
+      part { name: "elm.text";
+         type: TEXT;
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0.0 0.0;
+            fixed: 0 1;
+            rel1 {
+               to: "elm.text.top.padding";
+               relative: 1.0 1.0;
+            }
+            rel2 {
+               relative: 1.0 0.0;
+            }
+            color: FRAME_DEFAULT_TEXT_COLOR_INC;
+            text {
+               font: "SLP:style=Medium";
+               size: FRAME_DEFAULT_TEXT_SIZE_INC;
+               min: 0 1;
+               align: 0.0 0.0;
+            }
+         }
+      }
+      part { name: "clip";
+         type: RECT;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            rel1 {
+               to_y: "elm.text";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.swallow.top.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: FRAME_DEFAULT_PADDING_WIDTH_INC FRAME_DEFAULT_SWALLOW_PADDING_HEIGHT_INC;
+            fixed: 1 1;
+            align: 0.0 0.0;
+            rel1{
+               to: "elm.text";
+               relative: 0.0 1.0;
+            }
+            rel2{
+               to: "elm.text";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.swallow.bottom.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: FRAME_DEFAULT_PADDING_WIDTH_INC FRAME_DEFAULT_PADDING_WIDTH_INC;
+            fixed: 1 1;
+            align: 1.0 1.0;
+            rel1{
+               relative: 1.0 1.0;
+            }
+            rel2{
+               relative: 1.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         clip_to: "clip";
+         description { state: "default" 0.0;
+            align: 0.0 1.0;
+            rel1 {
+               to: "elm.swallow.top.padding";
+               relative: 1.0 1.0;
+            }
+            rel2 {
+               to: "elm.swallow.bottom.padding";
+               relative: 0.0 0.0;
+            }
+         }
+         description { state: "collapsed" 0.0;
+            inherit: "default" 0.0;
+            minmul: 1.0 0.0;
+         }
+      }
+      part { name: "event";
+         type: RECT;
+         mouse_events: 1;
+         ignore_flags: ON_HOLD;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+            rel1.to_y: "elm.text";
+            rel2.to_y: "elm.text";
+         }
+      }
+   }
+   programs {
+      program { name: "collapse";
+         action:  STATE_SET "collapsed" 0.0;
+         target: "elm.swallow.content";
+         transition: BOUNCE 0.5 1.0 3;
+         after: "signal";
+      }
+      program { name: "expand";
+         action:  STATE_SET "default" 0.0;
+         target: "elm.swallow.content";
+         transition: BOUNCE 0.5 1.0 3;
+         after: "signal";
+      }
+      program { name: "click";
+         signal:  "mouse,up,1";
+         source:  "event";
+         action:  SIGNAL_EMIT "elm,action,click" "elm";
+      }
+      program { name: "toggle";
+         signal:  "elm,action,toggle";
+         source: "elm";
+         script {
+            new st[31];
+            new Float:vl;
+            get_state(PART:"elm.swallow.content", st, 30, vl);
+            if (!strcmp(st, "default"))
+              run_program(PROGRAM:"collapse");
+            else
+              run_program(PROGRAM:"expand");
+         }
+      }
+      program { name: "switch";
+         signal:  "elm,action,switch";
+         source: "elm";
+         script {
+            new st[31];
+            new Float:vl;
+            get_state(PART:"elm.swallow.content", st, 30, vl);
+            if (!strcmp(st, "default"))
+              set_state(PART:"elm.swallow.content", "collapsed", 0.0);
+            else
+              set_state(PART:"elm.swallow.content", "default", 0.0);
+         }
+      }
+      program { name: "signal";
+         action: SIGNAL_EMIT "elm,anim,done" "elm";
+      }
+   }
+}
+
+group { name: "elm/frame/base/pad_small";
+   parts {
+      part { name: "b0";
+         mouse_events:  0;
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: FRAME_PADDING_SMALL_SIZE_INC FRAME_PADDING_SMALL_SIZE_INC;
+            max: FRAME_PADDING_SMALL_SIZE_INC FRAME_PADDING_SMALL_SIZE_INC;
+            align: 0.0 0.0;
+         }
+      }
+      part { name: "b1";
+         mouse_events:  0;
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: FRAME_PADDING_SMALL_SIZE_INC FRAME_PADDING_SMALL_SIZE_INC;
+            max: FRAME_PADDING_SMALL_SIZE_INC FRAME_PADDING_SMALL_SIZE_INC;
+            align: 1.0 1.0;
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1 {
+               to: "b0";
+               relative: 1.0 1.0;
+               offset: 0 0;
+            }
+            rel2 {
+               to: "b1";
+               relative: 0.0 0.0;
+               offset: -1 -1;
+            }
+         }
+      }
+   }
+}
+
+group { name: "elm/frame/base/pad_medium";
+   parts {
+      part { name: "b0";
+         mouse_events:  0;
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: FRAME_PADDING_MEDIUM_SIZE_INC FRAME_PADDING_MEDIUM_SIZE_INC;
+            max: FRAME_PADDING_MEDIUM_SIZE_INC FRAME_PADDING_MEDIUM_SIZE_INC;
+            align: 0.0 0.0;
+         }
+      }
+      part { name: "b1";
+         mouse_events:  0;
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: FRAME_PADDING_MEDIUM_SIZE_INC FRAME_PADDING_MEDIUM_SIZE_INC;
+            max: FRAME_PADDING_MEDIUM_SIZE_INC FRAME_PADDING_MEDIUM_SIZE_INC;
+            align: 1.0 1.0;
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1 {
+               to: "b0";
+               relative: 1.0 1.0;
+               offset: 0 0;
+            }
+            rel2 {
+               to: "b1";
+               relative: 0.0 0.0;
+               offset: -1 -1;
+            }
+         }
+      }
+   }
+}
+
+group { name: "elm/frame/base/pad_large";
+   parts {
+      part { name: "b0";
+         mouse_events:  0;
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: FRAME_PADDING_LARGE_SIZE_INC FRAME_PADDING_LARGE_SIZE_INC;
+            max: FRAME_PADDING_LARGE_SIZE_INC FRAME_PADDING_LARGE_SIZE_INC;
+            align: 0.0 0.0;
+         }
+      }
+      part { name: "b1";
+         mouse_events:  0;
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: FRAME_PADDING_LARGE_SIZE_INC FRAME_PADDING_LARGE_SIZE_INC;
+            max: FRAME_PADDING_LARGE_SIZE_INC FRAME_PADDING_LARGE_SIZE_INC;
+            align: 1.0 1.0;
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1 {
+               to: "b0";
+               relative: 1.0 1.0;
+               offset: 0 0;
+            }
+            rel2 {
+               to: "b1";
+               relative: 0.0 0.0;
+               offset: -1 -1;
+            }
+         }
+      }
+   }
+}
+
+group { name: "elm/frame/base/pad_huge";
+   parts {
+      part { name: "b0";
+         mouse_events:  0;
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: FRAME_PADDING_HUGE_SIZE_INC FRAME_PADDING_HUGE_SIZE_INC;
+            max: FRAME_PADDING_HUGE_SIZE_INC FRAME_PADDING_HUGE_SIZE_INC;
+            align: 0.0 0.0;
+         }
+      }
+      part { name: "b1";
+         mouse_events:  0;
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: FRAME_PADDING_HUGE_SIZE_INC FRAME_PADDING_HUGE_SIZE_INC;
+            max: FRAME_PADDING_HUGE_SIZE_INC FRAME_PADDING_HUGE_SIZE_INC;
+            align: 1.0 1.0;
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1 {
+               to: "b0";
+               relative: 1.0 1.0;
+               offset: 0 0;
+            }
+            rel2 {
+               to: "b1";
+               relative: 0.0 0.0;
+               offset: -1 -1;
+            }
+         }
+      }
+   }
+}
+
+group { name: "elm/frame/base/outdent_top";
+   images {
+      image: "whitetheme/frame_outdent_top.png" COMP;
+   }
+   parts {
+      part { name: "elm.base0.bottom.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 5;
+            fixed: 1 1;
+            align: 1.0 0.0;
+            rel1{
+               relative: 1.0 1.0;
+            }
+            rel2{
+               relative: 1.0 1.0;
+            }
+         }
+      }
+      part { name: "base0";
+         scale: 1;
+         mouse_events:  0;
+         description { state: "default" 0.0;
+            min: 0 5;
+            fixed: 1 1;
+            rel1 {
+               to_y: "elm.base0.bottom.padding";
+               relative: 0.0 1.0;
+            }
+            image {
+               normal: "whitetheme/frame_outdent_top.png";
+               border: 0 0 0 0;
+               border_scale: 1;
+            }
+            fill.smooth: 0;
+         }
+      }
+      part { name: "elm.swallow.top.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: FRAME_DEFAULT_PADDING_WIDTH_INC FRAME_PADDING_OUTDENT_SIZE_INC;
+            fixed: 1 1;
+            align: 0.0 0.0;
+            rel1{
+               relative: 0.0 0.0;
+            }
+            rel2{
+               relative: 0.0 0.0;
+            }
+         }
+      }
+      part { name: "elm.swallow.bottom.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: FRAME_DEFAULT_PADDING_WIDTH_INC FRAME_PADDING_OUTDENT_SIZE_INC;
+            fixed: 1 1;
+            align: 1.0 1.0;
+            rel1 {
+               to: "elm.base0.bottom.padding";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "elm.base0.bottom.padding";
+               relative: 1.0 0.0;
+            }
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1 {
+               to: "elm.swallow.top.padding";
+               relative: 1.0 1.0;
+            }
+            rel2 {
+               to: "elm.swallow.bottom.padding";
+               relative: 0.0 0.0;
+            }
+         }
+      }
+   }
+}
+
+group { name: "elm/frame/base/outdent_bottom";
+   images {
+      image: "whitetheme/frame_outdent_bottom.png" COMP;
+   }
+   parts {
+      part { name: "base0";
+         scale: 1;
+         mouse_events:  0;
+         description { state: "default" 0.0;
+            align: 1.0 0.0;
+            min: 0 5;
+            fixed: 1 1;
+            rel2 {
+               relative: 1.0 0.0;
+            }
+            image {
+               normal: "whitetheme/frame_outdent_bottom.png";
+               border: 0 0 0 0;
+               border_scale: 1;
+            }
+            fill.smooth: 0;
+         }
+      }
+      part { name: "elm.swallow.top.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: FRAME_DEFAULT_PADDING_WIDTH_INC FRAME_PADDING_OUTDENT_SIZE_INC;
+            fixed: 1 1;
+            align: 0.0 0.0;
+            rel1{
+               to: "base0";
+               relative: 0.0 1.0;
+            }
+            rel2{
+               to: "base0";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.swallow.bottom.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: FRAME_DEFAULT_PADDING_WIDTH_INC FRAME_PADDING_OUTDENT_SIZE_INC;
+            fixed: 1 1;
+            align: 1.0 1.0;
+            rel1 {
+               relative: 1.0 1.0;
+            }
+            rel2 {
+               relative: 1.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1 {
+               to: "elm.swallow.top.padding";
+               relative: 1.0 1.0;
+            }
+            rel2 {
+               to: "elm.swallow.bottom.padding";
+               relative: 0.0 0.0;
+            }
+         }
+      }
+   }
+}
+

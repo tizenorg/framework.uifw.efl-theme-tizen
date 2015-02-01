@@ -1,0 +1,95 @@
+group { name: "elm/separator/horizontal/default";
+   images {
+      image: "whitetheme/line_h_2px.png" COMP;
+   }     
+   parts {
+      part { name: "elm.padding.separator.left";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: SEPARATOR_PADDING_LEFT_INC;
+            fixed: 1 1;
+            align: 0 0;
+            rel2.relative: 0 0;
+         }
+      }
+      part { 
+         name: "elm.padding.separator.right";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: SEPARATOR_PADDING_RIGHT_INC;
+            fixed: 1 1;
+            align: 1 1;
+            rel1.relative: 1 1;
+         }
+      }
+      part { name: "separator"; // separator group
+         description { state: "default" 0.0;
+            min: SEPARATOR_PADDING_MIN_SIZE;
+            rel1 {
+               to: "elm.padding.separator.left";
+               relative: 1 1;
+            }
+            rel2 {
+               to: "elm.padding.separator.right";
+               relative: 0 0;
+            }
+            image {
+               normal: "whitetheme/line_h_2px.png";
+            }
+            fill {
+               smooth: 0;
+            }
+         }
+      }
+   }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+group { name: "elm/separator/vertical/default";
+   images {
+      image: "whitetheme/line_v_2px.png" COMP;
+   }
+   parts {
+      part { name: "elm.padding.separator.left";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: SEPARATOR_PADDING_LEFT_INC;
+            fixed: 1 1;
+            align: 0 0;
+            rel2.relative: 0 0;
+         }
+      }
+      part { name: "elm.padding.separator.right";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: SEPARATOR_PADDING_RIGHT_INC;
+            fixed: 1 1;
+            align: 1 1;
+            rel1.relative: 1 1;
+         }
+      }
+      part { name: "separator"; // separator group
+         description { state: "default" 0.0;
+            min: SEPARATOR_PADDING_MIN_SIZE;
+            rel1 {
+               to: "elm.padding.separator.left";
+               relative: 1 1;
+            }
+            rel2 {
+               to: "elm.padding.separator.right";
+               relative: 0 0;
+            }
+            image {
+               normal: "whitetheme/line_v_2px.png";
+            }
+            fill {
+               smooth: 0;
+            }
+         }
+      }
+   }
+}

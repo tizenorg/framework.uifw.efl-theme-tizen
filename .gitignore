@@ -1,5 +1,2 @@
-/mobile/*.edj
-/mobile/themes/inc/tmp-inc.edc
-
-/wearable/*.edj
-/wearable/themes/inc/tmp-inc.edc
+*.edj
+themes/inc/tmp-inc.edc

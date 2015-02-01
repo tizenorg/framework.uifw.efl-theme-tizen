@@ -1,0 +1,716 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+group {
+   name: "elm/multibuttonentry/base/default";
+
+   data.item: "horizontal_pad" MULTIBUTTONENTRY_BOX_HORIZONTAL_PAD_INC;
+   data.item: "vertical_pad" MULTIBUTTONENTRY_BOX_VERTICAL_PAD_INC;
+   data.item: "closed_button_type" "label"; /* image, label, default: label */
+
+   parts {
+      part {
+         name: "bg";
+         type: RECT;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            color_class: "B0212";
+         }
+      }
+      part {
+         name: "top.left.pad";
+         type: SPACER;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            min : MULTIBUTTONENTRY_WIDTH_PAD_INC MULTIBUTTONENTRY_HEIGHT_PAD_INC;
+            fixed: 1 1;
+            rel2.relative: 0.0 0.0;
+            align: 0.0 0.0;
+         }
+      }
+      part {
+         name: "bottom.right.pad";
+         type: SPACER;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            min : MULTIBUTTONENTRY_WIDTH_PAD_INC MULTIBUTTONENTRY_HEIGHT_PAD_INC;
+            fixed: 1 1;
+            rel1.relative: 1.0 1.0;
+            align: 1.0 1.0;
+         }
+      }
+      part {
+         name: "box.swallow";
+         type: SWALLOW;
+         description {
+            state: "default" 0.0;
+            rel1 {
+               relative: 1.0 1.0;
+               to: "top.left.pad";
+            }
+            rel2 {
+               relative: 0.0 0.0;
+               to: "bottom.right.pad";
+            }
+         }
+      }
+      part { name: "block_events";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+         description {
+            state: "invisible" 0.0;
+            visible: 0;
+         }
+      }
+      part { name: "events";
+         type: RECT;
+         repeat_events: 1;
+         ignore_flags: ON_HOLD;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+      }
+   }
+   programs {
+      program {
+         name: "clicked";
+         signal: "mouse,clicked,1";
+         source: "events";
+         action: SIGNAL_EMIT "elm,action,clicked" "";
+      }
+      program {
+         name: "event_allow";
+         signal: "elm,state,event,allow";
+         source: "";
+         action: STATE_SET "invisible" 0.0;
+         target: "block_events";
+      }
+      program {
+         name: "event_block";
+         signal: "elm,state,event,block";
+         source: "";
+         action: STATE_SET "default" 0.0;
+         target: "block_events";
+      }
+   }
+}
+
+group {
+   name: "elm/multibuttonentry/guidetext/default";
+
+   styles {
+      style {
+         name: "multibuttonentry_guide_style";
+         base: "font=Tizen:style=Regular font_size="MULTIBUTTONENTRY_GUIDE_TEXT_SIZE_INC" color=#FFFFFF color_class=T101 wrap=char text_class=T101";
+         tag:  "br" "\n";
+         tag:  "ps" "ps";
+         tag:  "hilight" "+ font_weight=Bold";
+         tag:  "b" "+ font_weight=Bold";
+         tag:  "tab" "\t";
+      }
+   }
+
+   parts {
+      part {
+         name: "elm.text";
+         type: TEXTBLOCK;
+         mouse_events: 0;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            min: 0 MULTIBUTTONENTRY_GUIDE_HEIGHT_INC;
+            text.style: "multibuttonentry_guide_style";
+         }
+         description {
+            state: "invisible" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+   }
+   programs {
+      program {
+         name: "show";
+         signal: "elm,state,guidetext,show";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "elm.text";
+      }
+      program {
+         name: "hide";
+         signal: "elm,state,guidetext,hide";
+         source: "elm";
+         action: STATE_SET "invisible" 0.0;
+         target: "elm.text";
+      }
+   }
+}
+
+group {
+   name: "elm/multibuttonentry/btn/default";
+
+   styles {
+      style {
+         name: "multibuttonentry_btn_text_style";
+         base: "font=Tizen:style=Regular font_size="MULTIBUTTONENTRY_BUTTON_TEXT_SIZE_INC" color=#FFFFFF color_class=T058 text_class=T058";
+      }
+      style {
+         name: "multibuttonentry_btn_text_pressed_style";
+         base: "font=Tizen:style=Regular font_size="MULTIBUTTONENTRY_BUTTON_TEXT_SIZE_INC" color=#FFFFFF color_class=T058P text_class=T058P";
+      }
+      style {
+         name: "multibuttonentry_btn_text_dim_style";
+         base: "font=Tizen:style=Regular font_size="MULTIBUTTONENTRY_BUTTON_TEXT_SIZE_INC" color=#FFFFFF color_class=T058D text_class=T058D";
+      }
+      style {
+         name: "multibuttonentry_btn_text_ellipsis_style";
+         base: "font=Tizen:style=Regular font_size="MULTIBUTTONENTRY_BUTTON_TEXT_SIZE_INC" color=#FFFFFF color_class=T058 ellipsis=1 text_class=T058";
+      }
+      style {
+         name: "multibuttonentry_btn_text_ellipsis_pressed_style";
+         base: "font=Tizen:style=Regular font_size="MULTIBUTTONENTRY_BUTTON_TEXT_SIZE_INC" color=#FFFFFF color_class=T058P ellipsis=1 text_class=T058P";
+      }
+      style {
+         name: "multibuttonentry_btn_text_ellipsis_dim_style";
+         base: "font=Tizen:style=Regular font_size="MULTIBUTTONENTRY_BUTTON_TEXT_SIZE_INC" color=#FFFFFF color_class=T058D ellipsis=1 text_class=T058D";
+      }
+   }
+
+   images {
+      image: "00_contacts_button_bg_ef.#.png" COMP;
+      image: "00_contacts_button_focus.#.png" COMP;
+   }
+
+   data.item: "button_left_pad" MULTIBUTTONENTRY_BUTTON_PAD_INC;
+   data.item: "button_right_pad" MULTIBUTTONENTRY_BUTTON_PAD_INC;
+   data.item: "focus_highlight" "on";
+
+   parts {
+      part {
+         name: "elm.btn.bg";
+         type: RECT;
+         mouse_events: 0;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            min: 0 MULTIBUTTONENTRY_BUTTON_HEIGHT_INC;
+            color_class: "W0711";
+         }
+         description {
+            state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color_class: "W0711P";
+         }
+         description {
+            state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color_class: "W0711D";
+         }
+      }
+      part {
+         name: "elm.btn.bg.ef";
+         type: IMAGE;
+         mouse_events: 0;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            min: 0 MULTIBUTTONENTRY_BUTTON_HEIGHT_INC;
+            image.normal: "00_contacts_button_bg_ef.#.png";
+            color_class: "W0712";
+         }
+         description {
+            state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+         description {
+            state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color_class: "W0712D";
+         }
+      }
+      part {
+         name: "elm.btn.bg_focus";
+         type: IMAGE;
+         mouse_events: 0;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            min: 0 MULTIBUTTONENTRY_BUTTON_HEIGHT_INC;
+            image.normal: "00_contacts_button_focus.#.png";
+            color_class: "W161";
+            visible: 0;
+         }
+         description {
+            state: "focused" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part {
+         name: "left.padding";
+         type: SPACER;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            min: MULTIBUTTONENTRY_BUTTON_PAD_INC 0;
+            fixed: 1 0;
+            rel2.relative: 0.0 1.0;
+            align: 0.0 0.5;
+         }
+      }
+      part {
+         name: "right.padding";
+         type: SPACER;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            min: MULTIBUTTONENTRY_BUTTON_PAD_INC 0;
+            fixed: 1 0;
+            rel1.relative: 1.0 0.0;
+            align: 1.0 0.5;
+         }
+      }
+      part {
+         name: "elm.btn.text";
+         type: TEXTBLOCK;
+         mouse_events: 0;
+         multiline: 0;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            text {
+               style: "multibuttonentry_btn_text_style";
+               min: 1 0;
+            }
+            rel1 {
+               relative: 1.0 0.0;
+               to: "left.padding";
+            }
+            rel2 {
+               relative: 0.0 1.0;
+               to: "right.padding";
+            }
+         }
+         description {
+            state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            text.style: "multibuttonentry_btn_text_pressed_style";
+         }
+         description {
+            state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "multibuttonentry_btn_text_dim_style";
+         }
+         description {
+            state: "ellipsis" 0.0;
+            inherit: "default" 0.0;
+            text {
+               style: "multibuttonentry_btn_text_ellipsis_style";
+               min: 0 0;
+            }
+         }
+         description {
+            state: "ellipsis_pressed" 0.0;
+            inherit: "ellipsis" 0.0;
+            text.style: "multibuttonentry_btn_text_ellipsis_pressed_style";
+         }
+         description {
+            state: "ellipsis_disabled" 0.0;
+            inherit: "ellipsis" 0.0;
+            text.style: "multibuttonentry_btn_text_ellipsis_dim_style";
+         }
+      }
+      part {
+         name: "events";
+         type: RECT;
+         ignore_flags: ON_HOLD;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+      }
+      part {
+         name: "drag";
+         type: RECT;
+         scale: 1;
+         repeat_events: 1;
+         dragable {
+            x: 1 1 0;
+            y: 1 1 0;
+         }
+         description {
+            state: "default" 0.0;
+            rel1.to: "elm.btn.bg";
+            rel2.to: "elm.btn.bg";
+            color: 0 0 0 0;
+         }
+      }
+   }
+   programs {
+      program {
+         name: "text_ellipsis";
+         signal: "elm,state,text,ellipsis";
+         source: "";
+         script {
+            new st[31];
+            new Float:vl;
+            get_state(PART:"elm.btn.text", st, 30, vl);
+            if (!strcmp(st, "ellipsis_disabled"))
+              set_state(PART:"elm.btn.text", "ellipsis_disabled", 0.0);
+            else
+              set_state(PART:"elm.btn.text", "ellipsis", 0.0);
+         }
+      }
+      program {
+         name: "text_default";
+         signal: "elm,state,text,default";
+         source: "";
+         action: STATE_SET "default" 0.0;
+         target: "elm.btn.text";
+      }
+      program {
+         name: "pressed";
+         signal: "mouse,down,1";
+         source: "drag";
+         script {
+            new st[31];
+            new Float:vl;
+            get_state(PART:"elm.btn.text", st, 30, vl);
+            if (!strcmp(st, "default") || !strcmp(st, "pressed"))
+              set_state(PART:"elm.btn.text", "pressed", 0.0);
+            else if (!strcmp(st, "ellipsis") || !strcmp(st, "ellipsis_pressed"))
+              set_state(PART:"elm.btn.text", "ellipsis_pressed", 0.0);
+            set_state(PART:"elm.btn.bg", "pressed", 0.0);
+            set_state(PART:"elm.btn.bg.ef", "pressed", 0.0);
+         }
+         after: "selected";
+      }
+      program {
+         name: "move";
+         signal: "drag";
+         source: "drag";
+         script {
+            new Float:dx, Float:dy;
+            get_drag(PART:"drag", dx, dy);
+            if ((abs(dx) > 20) || (abs(dy) > 20)) {
+               new st[31];
+               new Float:vl;
+               get_state(PART:"elm.btn.text", st, 30, vl);
+               if (!strcmp(st, "default") || !strcmp(st, "pressed"))
+                 set_state(PART:"elm.btn.text", "default", 0.0);
+               else if (!strcmp(st, "ellipsis") || !strcmp(st, "ellipsis_pressed"))
+                 set_state(PART:"elm.btn.text", "ellipsis", 0.0);
+               set_state(PART:"elm.btn.bg", "default", 0.0);
+               set_state(PART:"elm.btn.bg.ef", "default", 0.0);
+            }
+         }
+      }
+      program {
+         name: "released";
+         signal: "mouse,up,1";
+         source: "drag";
+         script {
+            new st[31];
+            new Float:vl;
+            get_state(PART:"elm.btn.text", st, 30, vl);
+            if (!strcmp(st, "default") || !strcmp(st, "pressed"))
+              set_state(PART:"elm.btn.text", "default", 0.0);
+            else if (!strcmp(st, "ellipsis") || !strcmp(st, "ellipsis_pressed"))
+              set_state(PART:"elm.btn.text", "ellipsis", 0.0);
+            set_state(PART:"elm.btn.bg", "default", 0.0);
+            set_state(PART:"elm.btn.bg.ef", "default", 0.0);
+            set_drag(PART:"drag", 0.0, 0.0);
+         }
+         after: "unselected";
+      }
+      program {
+         name: "selected_elm";
+         signal: "elm,action,btn,selected";
+         source: "";
+         script {
+            new st[31];
+            new Float:vl;
+            get_state(PART:"elm.btn.text", st, 30, vl);
+            if (!strcmp(st, "default") || !strcmp(st, "pressed"))
+              set_state(PART:"elm.btn.text", "default", 0.0);
+            else if (!strcmp(st, "ellipsis") || !strcmp(st, "ellipsis_pressed"))
+              set_state(PART:"elm.btn.text", "ellipsis", 0.0);
+            set_state(PART:"elm.btn.bg", "pressed", 0.0);
+            set_state(PART:"elm.btn.bg.ef", "pressed", 0.0);
+         }
+         after: "selected";
+      }
+      program {
+         name: "unselected_elm";
+         signal: "elm,action,btn,unselected";
+         source: "";
+         script {
+            new st[31];
+            new Float:vl;
+            get_state(PART:"elm.btn.text", st, 30, vl);
+            if (!strcmp(st, "default") || !strcmp(st, "pressed"))
+              set_state(PART:"elm.btn.text", "default", 0.0);
+            else if (!strcmp(st, "ellipsis") || !strcmp(st, "ellipsis_pressed"))
+              set_state(PART:"elm.btn.text", "ellipsis", 0.0);
+            set_state(PART:"elm.btn.bg", "default", 0.0);
+            set_state(PART:"elm.btn.bg.ef", "default", 0.0);
+            set_drag(PART:"drag", 0.0, 0.0);
+         }
+         after: "unselected";
+      }
+      program {
+         name: "enable";
+         signal: "elm,state,enabled";
+         source: "elm";
+         script {
+            new st[31];
+            new Float:vl;
+            get_state(PART:"elm.btn.text", st, 30, vl);
+            if (!strcmp(st, "default") || !strcmp(st, "disabled"))
+              set_state(PART:"elm.btn.text", "default", 0.0);
+            else if (!strcmp(st, "ellipsis") || !strcmp(st, "ellipsis_disabled"))
+              set_state(PART:"elm.btn.text", "ellipsis", 0.0);
+            set_state(PART:"elm.btn.bg", "default", 0.0);
+            set_state(PART:"elm.btn.bg.ef", "default", 0.0);
+         }
+      }
+      program {
+         name: "disable";
+         signal: "elm,state,disabled";
+         source: "elm";
+         script {
+            new st[31];
+            new Float:vl;
+            get_state(PART:"elm.btn.text", st, 30, vl);
+            if (!strcmp(st, "default") || !strcmp(st, "disabled"))
+              set_state(PART:"elm.btn.text", "disabled", 0.0);
+            else if (!strcmp(st, "ellipsis") || !strcmp(st, "ellipsis_disabled"))
+              set_state(PART:"elm.btn.text", "ellipsis_disabled", 0.0);
+            set_state(PART:"elm.btn.bg", "disabled", 0.0);
+            set_state(PART:"elm.btn.bg.ef", "disabled", 0.0);
+         }
+      }
+      program {
+         name: "clicked";
+         signal: "mouse,clicked,1";
+         source: "events";
+         action: SIGNAL_EMIT "elm,action,clicked" "";
+         after: "touch_snd";
+      }
+      program { name: "touch_snd";
+         action: RUN_PLUGIN "touch_sound";
+      }
+      program {
+         name: "selected";
+         action: SIGNAL_EMIT "elm,action,selected" "";
+      }
+      program {
+         name: "unselected";
+         action: SIGNAL_EMIT "elm,action,unselected" "";
+      }
+      program {
+         name: "action_focus";
+         signal: "elm,action,focus_highlight,show";
+         source: "elm";
+         action: STATE_SET "focused" 0.0;
+         target: "elm.btn.bg_focus";
+      }
+      program {
+         name: "action_unfocus";
+         signal: "elm,action,focus_highlight,hide";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "elm.btn.bg_focus";
+      }
+   }
+}
+
+group {
+   name: "elm/multibuttonentry/number/default";
+
+   styles {
+      style {
+         name: "multibuttonentry_number_text_style";
+         base: "font=Tizen:style=Regular font_size="MULTIBUTTONENTRY_BUTTON_TEXT_SIZE_INC" color=#FFFFFF color_class=T059 text_class=T059";
+      }
+      style {
+         name: "multibuttonentry_number_text_ellipsis_style";
+         base: "font=Tizen:style=Regular font_size="MULTIBUTTONENTRY_BUTTON_TEXT_SIZE_INC" color=#FFFFFF color_class=T059 ellipsis=1 text_class=T059";
+      }
+   }
+   parts {
+      part {
+         name: "left.pad";
+         type: SPACER;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            min: MULTIBUTTONENTRY_LABEL_PAD_INC 0;
+            fixed: 1 0;
+            rel2.relative: 0.0 1.0;
+            align: 0.0 0.5;
+         }
+      }
+      part {
+         name: "elm.text";
+         type: TEXTBLOCK;
+         mouse_events: 0;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            min: 0 MULTIBUTTONENTRY_LABEL_HEIGHT_INC;
+            text {
+               style: "multibuttonentry_number_text_style";
+               min: 1 0;
+            }
+            rel1 {
+               relative: 1.0 0.0;
+               to: "left.pad";
+            }
+         }
+         description {
+            state: "ellipsis" 0.0;
+            inherit: "default" 0.0;
+            text.style: "multibuttonentry_number_text_ellipsis_style";
+            text.min: 0 0;
+         }
+      }
+   }
+   programs {
+      program {
+         name: "text,default";
+         signal: "elm,state,number,default";
+         source: "";
+         action: STATE_SET "default" 0.0;
+         target: "elm.text";
+      }
+      program {
+         name: "text,ellipsis";
+         signal: "elm,state,number,ellipsis";
+         source: "";
+         action: STATE_SET "ellipsis" 0.0;
+         target: "elm.text";
+      }
+   }
+}
+
+group {
+   name: "elm/multibuttonentry/closedbutton/default";
+
+   images {
+      image: "00_circle_button_focus.png" COMP;
+      image: "00_button_expand_closed.png" COMP;
+      image: "00_button_expand_closed_ef.png" COMP;
+   }
+
+   parts {
+      part {
+         name: "closed_button_bg";
+         type: RECT;
+         scale: 1;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            min: MULTIBUTTONENTRY_CLOSEDBUTTON_SIZE_INC MULTIBUTTONENTRY_CLOSEDBUTTON_SIZE_INC;
+         }
+      }
+      part {
+         name: "closed_button";
+         scale: 1;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            image.normal: "00_button_expand_closed.png";
+         }
+      }
+      part {
+         name: "closed_effect_button";
+         scale: 1;
+         mouse_events: 0;
+         description {
+            state: "default" 0.0;
+            image.normal: "00_button_expand_closed_ef.png";
+         }
+      }
+   }
+}
+
+group {
+   name: "elm/multibuttonentry/label/default";
+
+   styles {
+      style {
+         name: "multibuttonentry_label_style";
+         base: "font=Tizen:style=Regular font_size="MULTIBUTTONENTRY_LABEL_TEXT_SIZE_INC" color=#FFFFFF color_class=T059 wrap=char text_class=T059";
+         tag:  "br" "\n";
+         tag:  "ps" "ps";
+         tag:  "hilight" "+ font_weight=Bold";
+         tag:  "b" "+ font_weight=Bold";
+         tag:  "tab" "\t";
+      }
+   }
+
+   parts {
+      part {
+         name: "mbe.label.right.padding";
+         type: SPACER;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            min: MULTIBUTTONENTRY_LABEL_PAD_INC 0;
+            fixed: 1 0;
+            rel1.relative: 1.0 0.0;
+            align: 1.0 0.5;
+         }
+      }
+      part {
+         name: "mbe.label";
+         type: TEXTBLOCK;
+         mouse_events: 0;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            min: 0 MULTIBUTTONENTRY_LABEL_HEIGHT_INC;
+            text {
+               style: "multibuttonentry_label_style";
+               min: 1 0;
+            }
+            rel2 {
+               relative: 0.0 1.0;
+               to: "mbe.label.right.padding";
+            }
+         }
+      }
+   }
+}
