@@ -1,0 +1,725 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+group { name: "elm/radio/base/default";
+      images {
+         image: "tw_btn_radiobox_holo_dark.png" COMP;
+         image: "tw_btn_radio_holo_dark.png" COMP;
+         image: "tw_btn_radiobox_line.png" COMP;
+      }
+      script {
+         public radio_state;
+         public radio_disabled;
+         public radio_show;
+         public is_transition_finished = 0;
+      }
+      parts {
+         part { name: "bg";
+            scale: 1;
+            description { state: "default" 0.0;
+               min: RADIO_SIZE;
+               max: RADIO_SIZE;
+               image.normal: "tw_btn_radiobox_holo_dark.png";
+               color: 0 13 25 255; /*(Changeable UI) color_class: "W013L1";*/
+            }
+            description { state: "pressed" 0.0;
+               inherit: "default" 0.0;
+               color: 0 72 132 102; /*(Changeable UI) color_class: "W013L1P";*/
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               color: 35 35 35 255; /*(Changeable UI) color_class: "W013L1D";*/
+            }
+         }
+         part { name: "radio";
+            clip_to: "opacity_clip";
+            scale: 1;
+            description { state: "default" 0.0;
+               max: 0 0;
+               visible: 0;
+               image.normal: "tw_btn_radio_holo_dark.png";
+            }
+            description { state: "on" 0.0;
+               inherit: "default" 0.0;
+               max: RADIO_SIZE;
+               visible: 1;
+               color: 115 191 15 255; /*(Changeable UI) color_class: "W013L2";*/
+            }
+            description { state: "pressed" 0.0;
+               inherit: "on" 0.0;
+               color: 249 249 249 255; /*(Changeable UI) color_class: "W013L2P";*/
+            }
+            description { state: "disabled" 0.0;
+               inherit: "on" 0.0;
+               color: 58 58 58 255; /*(Changeable UI) color_class: "W013L2D";*/
+            }
+         }
+         part { name: "outline";
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1.to: "bg";
+               rel2.to: "bg";
+               image.normal: "tw_btn_radiobox_line.png";
+               color: 249 249 249 76; /*(Changeable UI) color_class: "W241";*/
+            }
+            description { state: "pressed" 0.0;
+               inherit: "default" 0.0;
+               color: 249 249 249 76; /*(Changeable UI) color_class: "W241P";*/
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               color: 249 249 249 76; /*(Changeable UI) color_class: "W241D";*/
+            }
+            description { state: "focused" 0.0;
+               inherit: "default" 0.0;
+               color: 0 110 255 255; /*(Changeable UI) color_class: "W201";*/
+            }
+         }
+         part { name: "opacity_clip";
+            type: RECT;
+            mouse_events: 0;
+            description { state: "default" 0.0;
+               rel1.to: "bg";
+               rel2.to: "bg";
+               color: 255 255 255 0;
+            }
+            description { state: "on" 0.0;
+               inherit: "default" 0.0;
+               color: 255 255 255 255;
+            }
+         }
+         part { name: "event";
+            scale: 1;
+            type: RECT;
+            description { state: "default" 0.0;
+               color: 0 0 0 0;
+            }
+         }
+      }
+      programs {
+         program { name: "show";
+            signal: "show";
+            script {
+               set_int(radio_show,1);
+            }
+         }
+         program { name: "hide";
+            signal: "hide";
+            script {
+               set_int(radio_show,0);
+            }
+         }
+         program { name: "click";
+            signal: "mouse,clicked,1";
+            source: "event";
+            script {
+               if (get_int(radio_disabled) == 1) return;
+               emit("elm,action,radio,toggle", "");
+               run_program(PROGRAM:"play_sample");
+            }
+         }
+         program {
+            name: "play_sample";
+            action: RUN_PLUGIN "touch_sound";
+         }
+         program { name: "unpressed";
+            signal: "mouse,up,1";
+            source: "event";
+            script {
+               if (get_int(radio_disabled) == 1) return;
+               if (get_int(radio_state) == 1) {
+                  if (get_int(is_transition_finished) == 1)
+                    set_state(PART:"radio", "on", 0.0);
+               }
+               else
+                 set_state(PART:"radio", "default", 0.0);
+               set_state(PART:"bg", "default", 0.0);
+               set_state(PART:"outline", "default", 0.0);
+            }
+         }
+         program { name: "pressed";
+            signal: "mouse,down,1";
+            source: "event";
+            script {
+               if (get_int(radio_disabled) == 1) return;
+               if (get_int(radio_state) == 1) {
+                  if (get_int(is_transition_finished) == 1)
+                    set_state(PART:"radio", "pressed", 0.0);
+               }
+               else
+                 set_state(PART:"radio", "default", 0.0);
+               set_state(PART:"bg", "pressed", 0.0);
+               set_state(PART:"outline", "pressed", 0.0);
+            }
+         }
+         program { name: "radio_on";
+            signal: "elm,state,radio,on";
+            source: "elm";
+            script {
+               set_int(radio_state, 1);
+               if (get_int(radio_disabled) == 1) {
+                  set_state(PART:"bg", "disabled", 0.0);
+                  set_state(PART:"outline", "disabled", 0.0);
+                  set_state(PART:"radio", "disabled", 0.0);
+               }
+               else {
+                  if (get_int(radio_show) == 1) {
+                     set_int(is_transition_finished, 0);
+                     run_program(PROGRAM:"radio_show_effect");
+                     run_program(PROGRAM:"radio_draw_effect");
+                  }
+                  else {
+                     set_int(is_transition_finished, 1);
+                     set_state(PART:"radio", "on", 0.0);
+                     set_state(PART:"opacity_clip", "on", 0.0);
+                  }
+                  set_state(PART:"bg", "default", 0.0);
+                  set_state(PART:"outline", "default", 0.0);
+               }
+            }
+         }
+         program { name: "radio_off";
+            signal: "elm,state,radio,off";
+            source: "elm";
+            script {
+               if (get_int(radio_disabled) == 1) {
+                  set_state(PART:"bg", "disabled", 0.0);
+                  set_state(PART:"outline", "disabled", 0.0);
+               }
+               else {
+                  if (get_int(radio_state) == 1) {
+                     set_state(PART:"bg", "default", 0.0);
+                     set_state(PART:"outline", "default", 0.0);
+                     set_state(PART:"radio", "default", 0.0);
+                     set_state(PART:"opacity_clip", "default", 0.0);
+                     set_int(radio_state, 0);
+                  }
+               }
+            }
+         }
+         program { name: "radio_show_effect";
+            action: STATE_SET "on" 0.0;
+            transition: LINEAR 0.233;
+            target: "opacity_clip";
+         }
+         program { name: "radio_draw_effect";
+            action: STATE_SET "on" 0.0;
+            transition: LINEAR 0.267;
+            target: "radio";
+            after: "radio_on_signal";
+         }
+         program { name: "radio_on_signal";
+            script {
+               set_int(is_transition_finished, 1);
+               emit("elm,action,show,finished", "elm");
+            }
+         }
+         program { name: "focus";
+            signal: "elm,action,focus_highlight,show";
+            source: "elm";
+            action: STATE_SET "focused" 0.0;
+            target: "outline";
+         }
+         program { name: "unfocus";
+            signal: "elm,action,focus_highlight,hide";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "outline";
+         }
+         program { name: "disable";
+            signal: "elm,state,disabled";
+            source: "elm";
+            script {
+               if (get_int(radio_state) == 1)
+                  set_state(PART:"radio", "disabled", 0.0);
+               else
+                  set_state(PART:"radio", "default", 0.0);
+               set_state(PART:"bg", "disabled", 0.0);
+               set_state(PART:"outline", "disabled", 0.0);
+               set_int(radio_disabled, 1);
+            }
+         }
+         program { name: "enable";
+            signal: "elm,state,enabled";
+            source: "elm";
+            script {
+               if (get_int(radio_state) == 1)
+                  set_state(PART:"radio", "on", 0.0);
+               else
+                  set_state(PART:"radio", "default", 0.0);
+               set_state(PART:"bg", "default", 0.0);
+               set_state(PART:"outline", "default", 0.0);
+               set_int(radio_disabled, 0);
+            }
+         }
+      }
+   }
+
+group { name: "elm/radio/base/datetime/style1";
+      alias: "elm/radio/base/datetime";
+      images {
+         image: "tw_timepicker_num_bg_new.#.png" COMP;
+      }
+      script {
+         public radio_state;
+         public radio_disabled;
+      }
+      parts {
+         part { name: "base";
+            type: SPACER;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: 0 DATETIME_FIELD_HEIGHT;
+               max: -1 DATETIME_FIELD_HEIGHT;
+               fixed: 0 1;
+            }
+         }
+         part { name: "bg";
+            scale: 1;
+            description { state: "default" 0.0;
+               image.normal: "tw_timepicker_num_bg_new.#.png";
+               color: 9 37 63 255; /*(Changeable UI) color_class: "W0811";*/
+               min: 0 DATETIME_FIELD_HEIGHT;
+               max: -1 DATETIME_FIELD_HEIGHT;
+               fixed: 0 1;
+               rel1.to: "base";
+               rel2.to: "base";
+            }
+            description { state: "pressed" 0.0;
+               inherit: "default" 0.0;
+               color: 0 110 255 255; /*(Changeable UI) color_class: "W0812";*/
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               color: 25 38 51 255; /*(Changeable UI) color_class: "W262D";*/
+            }
+         }
+         part { name: "elm.text";
+            type: TEXT;
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1.to: "bg";
+               rel2.to: "bg";
+               text {
+                  font: "Tizen:style=Bold"; size: "50"; /*(Changeable UI) text_class: "T051";*/
+                  text_class: "tizen";
+                  size: 50;
+                  min: 1 1;
+                  fit: 1 1;
+                  size_range: DATETIME_TEXT_DIGIT_SIZE_INC;
+               }
+               color: 249 249 249 255; /*(Changeable UI) color_class: "T051";*/
+            }
+            description { state: "pressed" 0.0;
+               inherit: "default" 0.0;
+               text.font: "Tizen:style=Bold"; text.size: "50"; /*(Changeable UI) text_class: "T051";*/
+               text.text_class: "tizen";
+               color: 249 249 249 255; /*(Changeable UI) color_class: "T051";*/
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               text.font: "Tizen:style=Bold"; text.size: "50"; /*(Changeable UI) text_class: "T051D";*/
+               text.text_class: "tizen";
+               color: 96 96 96 255; /*(Changeable UI) color_class: "T051D";*/
+            }
+         }
+      }
+      programs {
+         program { name: "click";
+            signal: "mouse,clicked,1";
+            source: "bg";
+            script {
+               if (get_int(radio_disabled) == 1) return;
+               run_program(PROGRAM:"play_sample");
+               emit("elm,action,radio,toggle", "");
+               emit("elm,action,radio,clicked", "");
+            }
+         }
+         program {
+            name: "play_sample";
+            action: RUN_PLUGIN "touch_sound";
+         }
+      program { name: "radio_on";
+         signal: "elm,state,radio,on";
+         source: "elm";
+         script {
+            if (get_int(radio_disabled) == 1) {
+               set_state(PART:"bg", "disabled", 0.0);
+               set_state(PART:"elm.text", "disabled", 0.0);
+            }
+            else {
+               set_state(PART:"bg", "pressed", 0.0);
+               set_state(PART:"elm.text", "pressed", 0.0);
+            }
+         }
+      }
+      program { name: "radio_off";
+         signal: "elm,state,radio,off";
+         source: "elm";
+         script {
+            if (get_int(radio_disabled) == 1) {
+               set_state(PART:"bg", "disabled", 0.0);
+               set_state(PART:"elm.text", "default", 0.0);
+            }
+            else {
+               set_state(PART:"bg", "default", 0.0);
+               set_state(PART:"elm.text", "default", 0.0);
+            }
+         }
+      }
+      program { name: "disable";
+         signal: "elm,state,disabled";
+         source: "elm";
+         script {
+            set_state(PART:"bg", "disabled", 0.0);
+            set_state(PART:"elm.text", "disabled", 0.0);
+            set_int(radio_disabled, 1);
+         }
+      }
+      program { name: "enable";
+         signal: "elm,state,enabled";
+         source: "elm";
+         script {
+            set_state(PART:"bg", "default", 0.0);
+            set_state(PART:"elm.text", "default", 0.0);
+            set_int(radio_disabled, 0);
+         }
+      }
+   }
+}
+
+group { name: "elm/radio/base/datetime/style2";
+   inherit: "elm/radio/base/datetime/style1";
+   parts {
+      part { name: "elm.text";
+         type: TEXT;
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            text {
+               font: "Tizen:style=Bold"; size: "46"; /*(Changeable UI) text_class: "T052";*/
+               text_class: "tizen";
+               size_range: DATETIME_TEXT_STRING_SIZE_INC;
+            }
+            color: 249 249 249 255; /*(Changeable UI) color_class: "T052";*/
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            text.font: "Tizen:style=Bold"; text.size: "46"; /*(Changeable UI) text_class: "T052";*/
+            text.text_class: "tizen";
+            color: 249 249 249 255; /*(Changeable UI) color_class: "T052";*/
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.font: "Tizen:style=Bold"; text.size: "46"; /*(Changeable UI) text_class: "T052D";*/
+            text.text_class: "tizen";
+            color: 96 96 96 255; /*(Changeable UI) color_class: "T052D";*/
+         }
+      }
+   }
+}
+
+group { name: "elm/radio/base/datetime/style3";
+   inherit: "elm/radio/base/datetime/style2";
+   images {
+         image: "tw_timepicker_num_bg_new.#.png" COMP;
+      }
+   parts {
+      part { name: "bg";
+         scale: 1;
+         description { state: "default" 0.0;
+            image.normal: "tw_timepicker_num_bg_new.#.png";
+            color: 9 37 63 255; /*(Changeable UI) color_class: "W0811";*/
+            min: 0 DATETIME_FIELD_HEIGHT;
+            max: -1 DATETIME_FIELD_HEIGHT;
+            fixed: 0 1;
+            rel1.to: "base";
+            rel2.to: "base";
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 0 110 255 255; /*(Changeable UI) color_class: "W0812";*/
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 25 38 51 255; /*(Changeable UI) color_class: "W262D";*/
+         }
+      }
+   }
+}
+// List Radio Style
+
+group { name: "elm/radio/base/list";
+   images {
+      image: "tw_btn_radiobox_holo_dark.png" COMP;
+      image: "tw_btn_radio_holo_dark.png" COMP;
+      image: "tw_btn_radiobox_line.png" COMP;
+   }
+   script {
+      public radio_state;
+      public radio_disabled;
+      public radio_show;
+      public is_transition_finished = 0;
+   }
+   parts {
+      part { name: "bg";
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 50 50;
+            max: 50 50;
+            image.normal: "tw_btn_radiobox_holo_dark.png";
+            color: 0 13 25 255; /*(Changeable UI) color_class: "W013L1";*/
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 0 72 132 102; /*(Changeable UI) color_class: "W013L1P";*/
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 35 35 35 255; /*(Changeable UI) color_class: "W013L1D";*/
+         }
+      }
+      part { name: "radio";
+         clip_to: "opacity_clip";
+         scale: 1;
+         description { state: "default" 0.0;
+            max: 0 0;
+            visible: 0;
+            image.normal: "tw_btn_radio_holo_dark.png";
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            max: RADIO_SIZE;
+            visible: 1;
+            color: 115 191 15 255; /*(Changeable UI) color_class: "W013L2";*/
+         }
+         description { state: "pressed" 0.0;
+            inherit: "on" 0.0;
+            color: 249 249 249 255; /*(Changeable UI) color_class: "W013L2P";*/
+         }
+         description { state: "disabled" 0.0;
+            inherit: "on" 0.0;
+            color: 58 58 58 255; /*(Changeable UI) color_class: "W013L2D";*/
+         }
+      }
+      part { name: "outline";
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image.normal: "tw_btn_radiobox_line.png";
+            color: 249 249 249 76; /*(Changeable UI) color_class: "W241";*/
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 76; /*(Changeable UI) color_class: "W241P";*/
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 76; /*(Changeable UI) color_class: "W241D";*/
+         }
+         description { state: "focused" 0.0;
+            inherit: "default" 0.0;
+            color: 0 110 255 255; /*(Changeable UI) color_class: "W201";*/
+         }
+      }
+      part { name: "opacity_clip";
+         type: RECT;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            color: 255 255 255 0;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+      }
+      part { name: "event";
+         scale: 1;
+         type: RECT;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+      }
+   }
+   programs {
+      program { name: "show";
+         signal: "show";
+         script {
+            set_int(radio_show,1);
+         }
+      }
+      program { name: "hide";
+         signal: "hide";
+            script {
+               set_int(radio_show,0);
+            }
+      }
+      program { name: "click";
+         signal: "mouse,clicked,1";
+         source: "event";
+         script {
+            if (get_int(radio_disabled) == 1) return;
+            emit("elm,action,radio,toggle", "");
+         }
+      }
+      program { name: "unpressed";
+         signal: "mouse,up,1";
+         source: "event";
+         script {
+            if (get_int(radio_disabled) == 1) return;
+            if (get_int(radio_state) == 1) {
+               if (get_int(is_transition_finished) == 1)
+                 set_state(PART:"radio", "on", 0.0);
+            }
+            else
+              set_state(PART:"radio", "default", 0.0);
+            set_state(PART:"bg", "default", 0.0);
+            set_state(PART:"outline", "default", 0.0);
+         }
+      }
+      program { name: "pressed";
+         signal: "mouse,down,1";
+         source: "event";
+         script {
+            if (get_int(radio_disabled) == 1) return;
+            if (get_int(radio_state) == 1) {
+               if (get_int(is_transition_finished) == 1)
+                 set_state(PART:"radio", "pressed", 0.0);
+            }
+            else
+              set_state(PART:"radio", "default", 0.0);
+            set_state(PART:"bg", "pressed", 0.0);
+            set_state(PART:"outline", "pressed", 0.0);
+         }
+      }
+      program { name: "radio_on";
+         signal: "elm,state,radio,on";
+         source: "elm";
+         script {
+            set_int(radio_state, 1);
+            if (get_int(radio_disabled) == 1) {
+               set_state(PART:"bg", "disabled", 0.0);
+               set_state(PART:"outline", "disabled", 0.0);
+               set_state(PART:"radio", "disabled", 0.0);
+            }
+            else {
+               if (get_int(radio_show) == 1) {
+                  set_int(is_transition_finished, 0);
+                  run_program(PROGRAM:"radio_show_effect");
+                  run_program(PROGRAM:"radio_draw_effect");
+               }
+               else {
+                  set_int(is_transition_finished, 1);
+                  set_state(PART:"radio", "on", 0.0);
+                  set_state(PART:"opacity_clip", "on", 0.0);
+               }
+               set_state(PART:"bg", "default", 0.0);
+               set_state(PART:"outline", "default", 0.0);
+            }
+         }
+      }
+      program { name: "radio_off";
+         signal: "elm,state,radio,off";
+         source: "elm";
+         script {
+            if (get_int(radio_disabled) == 1) {
+               set_state(PART:"bg", "disabled", 0.0);
+               set_state(PART:"outline", "disabled", 0.0);
+            }
+            else {
+               if (get_int(radio_state) == 1) {
+                  set_state(PART:"bg", "default", 0.0);
+                  set_state(PART:"outline", "default", 0.0);
+                  set_state(PART:"radio", "default", 0.0);
+                  set_state(PART:"opacity_clip", "default", 0.0);
+                  set_int(radio_state, 0);
+               }
+            }
+         }
+      }
+      program { name: "radio_show_effect";
+         action: STATE_SET "on" 0.0;
+         transition: LINEAR 0.233;
+         target: "opacity_clip";
+      }
+      program { name: "radio_draw_effect";
+         action: STATE_SET "on" 0.0;
+         transition: LINEAR 0.267;
+         target: "radio";
+         after: "radio_on_signal";
+      }
+      program { name: "radio_on_signal";
+         script {
+            set_int(is_transition_finished, 1);
+            emit("elm,action,show,finished", "elm");
+         }
+      }
+      program { name: "focus";
+         signal: "elm,action,focus_highlight,show";
+         source: "elm";
+         action: STATE_SET "focused" 0.0;
+         target: "outline";
+      }
+      program { name: "unfocus";
+         signal: "elm,action,focus_highlight,hide";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "outline";
+      }
+      program { name: "disable";
+         signal: "elm,state,disabled";
+         source: "elm";
+         script {
+            if (get_int(radio_state) == 1)
+               set_state(PART:"radio", "disabled", 0.0);
+            else
+               set_state(PART:"radio", "default", 0.0);
+            set_state(PART:"bg", "disabled", 0.0);
+            set_state(PART:"outline", "disabled", 0.0);
+            set_int(radio_disabled, 1);
+         }
+      }
+      program { name: "enable";
+         signal: "elm,state,enabled";
+         source: "elm";
+         script {
+            if (get_int(radio_state) == 1)
+               set_state(PART:"radio", "on", 0.0);
+            else
+               set_state(PART:"radio", "default", 0.0);
+            set_state(PART:"bg", "default", 0.0);
+            set_state(PART:"outline", "default", 0.0);
+            set_int(radio_disabled, 0);
+         }
+      }
+   }
+}

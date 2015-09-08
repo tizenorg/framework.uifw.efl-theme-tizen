@@ -1,0 +1,182 @@
+group { name: "elm/photo/base/default";
+   images {
+      image: "whitetheme/gengrid_thumb_shadow.png" COMP;
+      image: "whitetheme/gengrid_thumb_stroke.png" COMP;
+   }
+   parts {
+      part { name: "base";
+         mouse_events:  0;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "over";
+            rel2.to: "over";
+            image {
+               normal: "whitetheme/gengrid_thumb_shadow.png";
+               border: PHOTO_DEFAULT_SHADOW_BORDER;
+               border_scale: 1;
+               middle: 0;
+            }
+            fill.smooth : 0;
+         }
+      }
+      part { name: "elm.padding.clip.left-top";
+         mouse_events:  0;
+         type: SPACER ;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0 0;
+            fixed: 1 1;
+            min: PHOTO_DEFAULT_CLIP_PADDING_LEFT_TOP;
+            rel1.to: "over";
+            rel2 {
+               to: "over";
+               relative: 0 0;
+            }
+         }
+      }      
+      part { name: "elm.padding.clip.right-bottom";
+         mouse_events:  0;
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 1 1;
+            fixed: 1 1;
+            min: PHOTO_DEFAULT_CLIP_PADDING_RIGHT_BOTTOM;
+            rel1 {
+               to: "over";
+               relative: 1 1;
+            }
+            rel2.to: "over";
+         }
+      }
+      
+      part { name: "clip";
+         mouse_events:  0;
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            color: PHOTO_DEFAULT_COLOR_VISIBLE;
+            rel1 { 
+               to: "elm.padding.clip.left-top";
+               relative: 1 1;
+            }
+            rel2 {
+               to: "elm.padding.clip.right-bottom";
+               relative: 0 0;
+            }
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         scale: 1;
+         clip_to: "clip";
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "over";
+         mouse_events:  0;
+         scale: 1;
+         description { state: "default" 0.0;
+            image {
+               normal: "whitetheme/gengrid_thumb_stroke.png";
+               border: PHOTO_DEFAULT_STROKE_BORDER;
+               border_scale: 1;
+               middle: 0;
+            }
+            fill.smooth: 0;
+         }
+      }
+   }
+}
+
+group { name: "elm/photo/base/shadow";
+   images {
+      image: "whitetheme/gengrid_thumb_shadow.png" COMP;
+   }
+   script {
+      public message(Msg_Type:type, id, ...) {
+         if( (type==MSG_INT_SET) && (id==0) )
+         {
+            new w;
+            new h;
+            
+            custom_state(PART:"size", "default", 0.0);
+
+            w = getarg(2);
+            h = getarg(3);
+            set_state_val(PART:"size", STATE_REL1_OFFSET, - w/2, - h/2);
+            set_state_val(PART:"size", STATE_REL2_OFFSET, w/2 + 1, h/2 + 1);
+            set_state(PART:"size", "custom", 0.0);
+         }
+      }
+   }
+   parts {
+      part { name: "size";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1.relative: 0.5 0.5;
+            rel2.relative: 0.5 0.5;
+         }
+      }
+      part { name: "shadow";
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            rel1.to: "size";
+            rel2.to: "size";
+            image {
+               normal: "whitetheme/gengrid_thumb_shadow.png";
+               border: PHOTO_DEFAULT_SHADOW_BORDER;
+               border_scale: 1;
+            }
+         }
+      }
+      part { name: "elm.padding.clip.left-top";
+         mouse_events:  0;
+         type: SPACER ;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0 0;
+            fixed: 1 1;
+            min: PHOTO_DEFAULT_CLIP_PADDING_LEFT_TOP;  
+            rel2.relative: 0 0;
+         }
+      }      
+      part { name: "elm.padding.clip.right-bottom";
+         mouse_events:  0;
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 1 1;
+            fixed: 1 1;
+            min: PHOTO_DEFAULT_CLIP_PADDING_RIGHT_BOTTOM;
+            rel1.relative: 1 1;
+         }
+      }
+      part { name: "clip";
+         mouse_events:  0;
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            color: PHOTO_DEFAULT_COLOR_VISIBLE;
+            rel1 { 
+               to: "elm.padding.clip.left-top";
+               relative: 1 1;
+            }
+            rel2 {
+               to: "elm.padding.clip.right-bottom";
+               relative: 0 0;
+            }            
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         scale: 1;
+         clip_to: "clip";
+         description { state: "default" 0.0;
+         }
+      }
+   }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+

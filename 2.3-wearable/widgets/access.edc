@@ -1,0 +1,65 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+///////////////////////////////////////////////////////////////////////////////////////
+//
+// access
+//
+///////////////////////////////////////////////////////////////////////////////////////
+   group { name: "elm/access/base/default";
+      images {
+         image: "tw_focused_effect.#.png" COMP;
+      }
+      parts {
+         part { name: "base";
+            mouse_events:  0;
+            description { state: "default" 0.0;
+              image {
+                normal: "tw_focused_effect.#.png";
+              }
+              fill.smooth: 0;
+              color: 0 110 255 255; /*(Changeable UI) color_class: "W201";*/
+            }
+         }
+      }
+      programs {
+         program { name: "access_focus_sound";
+            signal: "elm,action,focus,sound";
+            source: "elm";
+            action: PLAY_SAMPLE "access_focus_sound" 1.0;
+         }
+         program { name: "access_scroll_sound";
+            signal: "elm,action,scroll,sound";
+            source: "elm";
+            action: PLAY_SAMPLE "access_scroll_sound" 1.0;
+         }
+         program { name: "access_end_sound";
+            signal: "elm,action,end,sound";
+            source: "elm";
+            action: PLAY_SAMPLE "access_end_sound" 1.0;
+         }
+      }
+   }

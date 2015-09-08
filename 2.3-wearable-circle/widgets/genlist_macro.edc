@@ -1,0 +1,1722 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*
+ * vim:ts=3
+*/
+
+//****************************************************************************//
+// *****************  EDJE description have 24 patterns **********************//
+ //**************************************************************************//
+// ------------------
+// | --> HERE
+// ------------------
+ #define DESC_FROM_L( PARAM ) \
+   description { state: "default" 0.0; \
+      fixed: 1 0; \
+      align: 0.0 0.5; \
+      rel2.relative: 0.0 1.0; \
+      PARAM \
+   }
+
+// ------------------
+//         HERE <-- |
+// ------------------
+ #define DESC_FROM_R( PARAM ) \
+   description { state: "default" 0.0; \
+      fixed: 1 0; \
+      align: 1.0 0.5; \
+      rel1.relative: 1 0; \
+      PARAM \
+   }
+
+// ----------
+// |  HERE  |
+// ----------
+// |        |
+// ----------
+ #define DESC_FROM_T( PARAM ) \
+   description { state: "default" 0.0; \
+      fixed: 0 1; \
+      align: 0.5 0.0; \
+      rel2.relative: 1.0 0.0; \
+      PARAM \
+   }
+
+// ----------
+// |  HERE  |
+// ----------
+// |        |
+// ----------
+ #define DESC_FROM_B( PARAM ) \
+   description { state: "default" 0.0; \
+      fixed: 0 1; \
+      rel1.relative: 0.0 1.0; \
+      align: 0.5 1.0; \
+      PARAM \
+   }
+
+// ------------------
+// |  PART == HERE  |
+// ------------------
+ #define DESC_TO( PART, PARAM ) \
+   description { state: "default" 0.0; \
+      rel1 { \
+         relative: 0 0; \
+         to: PART; \
+      } \
+      rel2 { \
+         relative: 1 1; \
+         to: PART; \
+      } \
+      PARAM \
+   }
+
+//      |   TOP  |
+// ---------------------
+// LEFT |  HERE  | RIGHT
+// ---------------------
+//      | BOTTOM |
+#define DESC_LRTB( LEFT, RIGHT, TOP, BOTTOM, PARAM ) \
+   description { state: "default" 0.0; \
+      rel1 { \
+         relative: 1 1; \
+         to_x: LEFT; \
+         to_y: TOP; \
+      } \
+      rel2 { \
+         relative: 0 0; \
+         to_x: RIGHT; \
+         to_y: BOTTOM; \
+      } \
+      PARAM \
+   }
+
+// ---------------------
+// LEFT |--> HERE
+// ---------------------
+#define DESC_L( LEFT, PARAM ) \
+   description { state: "default" 0.0; \
+      align: 0 0.5; \
+      fixed: 1 0; \
+      rel1 { \
+         relative: 1 0; \
+         to_x: LEFT; \
+      } \
+      rel2 { \
+         relative: 1 1; \
+         to_x: LEFT; \
+      } \
+      PARAM \
+   }
+
+// ---------------------
+//   HERE  <--| RIGHT
+// ---------------------
+#define DESC_R( RIGHT, PARAM ) \
+   description { state: "default" 0.0; \
+      align: 1 0.5; \
+      fixed: 1 0; \
+      rel1 { \
+         relative: 0 0; \
+         to_x: RIGHT; \
+      } \
+      rel2 { \
+         relative: 0 1; \
+         to_x: RIGHT; \
+      } \
+      PARAM \
+   }
+
+// --------------------------
+// LEFT |--> HERE  <--| RIGHT
+// --------------------------
+#define DESC_LR( LEFT, RIGHT, PARAM ) \
+   description { state: "default" 0.0; \
+      rel1 { \
+         relative: 1 0; \
+         to_x: LEFT; \
+      } \
+      rel2 { \
+         relative: 0 1; \
+         to_x: RIGHT; \
+      } \
+      PARAM \
+   }
+
+//   |  TOP     |
+// -----------------
+//  |  HERE  <--| RIGHT
+// -----------------
+//  | BOTTOM   |
+#define DESC_RTB( RIGHT, TOP, BOTTOM, PARAM ) \
+   description { state: "default" 0.0; \
+      align: 1 0.5; \
+      rel1 { \
+         relative: 0 1; \
+         to_x: RIGHT; \
+         to_y: TOP; \
+      } \
+      rel2 { \
+         relative: 0 0; \
+         to_x: RIGHT; \
+         to_y: BOTTOM; \
+      } \
+      PARAM \
+   }
+
+// LEFT |  HERE  | RIGHT
+// ---------------------
+//      | BOTTOM |
+#define DESC_LRB( LEFT, RIGHT, BOTTOM, PARAM ) \
+   description { state: "default" 0.0; \
+      align: 0.5 1; \
+      rel1 { \
+         relative: 1 0; \
+         to_x: LEFT; \
+         to_y: BOTTOM; \
+      } \
+      rel2 { \
+         relative: 0 0; \
+         to_x: RIGHT; \
+         to_y: BOTTOM; \
+      } \
+      PARAM \
+   }
+
+//      |   TOP  |
+// ---------------------
+// LEFT |  HERE  | RIGHT
+#define DESC_LRT( LEFT, RIGHT, TOP, PARAM ) \
+   description { state: "default" 0.0; \
+      align: 0.5 0; \
+      rel1 { \
+         relative: 1 1; \
+         to_x: LEFT; \
+         to_y: TOP; \
+      } \
+      rel2 { \
+         relative: 0 1; \
+         to_x: RIGHT; \
+         to_y: TOP; \
+      } \
+      PARAM \
+   }
+
+//      |       TOP  |
+// ---------------------
+// LEFT | -->  HERE  |
+#define DESC_LT( LEFT, TOP, PARAM ) \
+   description { state: "default" 0.0; \
+      align: 0 0; \
+      rel1 { \
+         relative: 1 1; \
+         to_x: LEFT; \
+         to_y: TOP; \
+      } \
+      rel2 { \
+         relative: 1 1; \
+         to_x: LEFT; \
+         to_y: TOP; \
+      } \
+      PARAM \
+   }
+
+// LEFT |  --> HERE  |
+// ---------------------
+//      |     BOTTOM |
+#define DESC_LB( LEFT, BOTTOM, PARAM ) \
+   description { state: "default" 0.0; \
+      align: 0 1; \
+      rel1 { \
+         relative: 1 0; \
+         to_x: LEFT; \
+         to_y: BOTTOM; \
+      } \
+      rel2 { \
+         relative: 1 0; \
+         to_x: LEFT; \
+         to_y: BOTTOM; \
+      } \
+      PARAM \
+   }
+
+//      |     TOP  |
+// ---------------------
+// LEFT |--> HERE  |
+// ---------------------
+//      |   BOTTOM |
+#define DESC_LTB( LEFT, TOP, BOTTOM, PARAM ) \
+   description { state: "default" 0.0; \
+      align: 0 0.5; \
+      rel1 { \
+         relative: 1 1; \
+         to_x: LEFT; \
+         to_y: TOP; \
+      } \
+      rel2 { \
+         relative: 1 0; \
+         to_x: LEFT; \
+         to_y: BOTTOM; \
+      } \
+      PARAM \
+   }
+
+//      |   TOP  |
+// ---------------------
+//     |  HERE <--| RIGHT
+#define DESC_RT( RIGHT, TOP, PARAM ) \
+   description { state: "default" 0.0; \
+      align: 1 0; \
+      rel1 { \
+         relative: 0 1; \
+         to_x: RIGHT; \
+         to_y: TOP; \
+      } \
+      rel2 { \
+         relative: 0 1; \
+         to_x: RIGHT; \
+         to_y: TOP; \
+      } \
+      PARAM \
+   }
+
+//  | HERE <-- | RIGHT
+// ---------------------
+//  |  BOTTOM  |
+#define DESC_RB( RIGHT, BOTTOM, PARAM ) \
+   description { state: "default" 0.0; \
+      align: 1 1; \
+      rel1 { \
+         relative: 0 0; \
+         to_x: RIGHT; \
+         to_y: BOTTOM; \
+      } \
+      rel2 { \
+         relative: 0 0; \
+         to_x: RIGHT; \
+         to_y: BOTTOM; \
+      } \
+      PARAM \
+   }
+
+// |   TOP  |
+// ----------
+// |  HERE  |
+// ----------
+// | BOTTOM |
+#define DESC_TB( TOP, BOTTOM, PARAM ) \
+   description { state: "default" 0.0; \
+      align: 0.5 0.5; \
+      rel1 { \
+         relative: 0 1; \
+         to_y: TOP; \
+      } \
+      rel2 { \
+         relative: 1 0; \
+         to_y: BOTTOM; \
+      } \
+      PARAM \
+   }
+
+// |   TOP  |
+// ----------
+// |  HERE  |
+// ----------
+#define DESC_T( TOP, PARAM ) \
+   description { state: "default" 0.0; \
+      align: 0.5 0.0; \
+      rel1 { \
+         relative: 0 1; \
+         to_y: TOP; \
+      } \
+      rel2 { \
+         relative: 1 1; \
+         to_y: TOP; \
+      } \
+      PARAM \
+   }
+
+// ----------
+// |  HERE  |
+// ----------
+// | BOTTOM |
+#define DESC_B( BOTTOM, PARAM ) \
+   description { state: "default" 0.0; \
+      align: 0.5 1.0; \
+      rel1 { \
+         relative: 0 0; \
+         to_y: BOTTOM; \
+      } \
+      rel2 { \
+         relative: 1 0; \
+         to_y: BOTTOM; \
+      } \
+      PARAM \
+   }
+
+//****************************************************************************//
+//******************************* Part Macros ********************************//
+//****************************************************************************//
+#define PART(TYPE, NAME, DESCRIPION) \
+   part { name: NAME; \
+      scale: 1; \
+      type: TYPE; \
+      DESCRIPION \
+   }
+
+//****************************************************************************//
+//**************************** Genlist Macros ********************************//
+//****************************************************************************//
+
+#define PROLOG_LIST \
+   data.item: "treesize" 0; \
+   data.item: "flips" "elm.flip.icon elm.flip.content"; \
+
+#define IMAGE_FADEOUT \
+   image : "tw_list_fadeout_dark.#.png" COMP; \
+
+#define PART_LIST_TITLE_BG \
+   PART(RECT, "bg", \
+      description { state: "default" 0.0; \
+         color: 7 7 7 0; /*(Changeable UI) color_class: "B0511";*/ \
+      } \
+   ) \
+
+#define PART_LIST_GROUPINDEX_BG \
+   PART(RECT, "title_bg", \
+      description { state: "default" 0.0; \
+         color: 30 30 30 255; /*(Changeable UI) color_class: "B012";*/ \
+      } \
+   ) \
+
+#define PART_CENTER_CHECK \
+   PART(SWALLOW, "elm.swallow.center_check", \
+      description { state: "default" 0.0; \
+         align: 0.5 0.5; \
+      } \
+   ) \
+
+#define PART_CENTER_CHECK_OPACITY \
+   PART(SWALLOW, "elm.swallow.center_check", \
+      clip_to: "opacity_clipper"; \
+      description { state: "default" 0.0; \
+         align: 0.5 0.5; \
+      } \
+   ) \
+
+#define PART_LIST_BG \
+   PART(RECT, "bg",  \
+      description { state: "default" 0.0; \
+         color: 0 0 0 0; \
+      } \
+   )
+
+//**************************** Genlist PADDING *******************************//
+#define DESC_LIST_PADDINGS \
+   description { state: "decorate" 0.0; \
+      inherit: "default" 0.0; \
+      min: 0 0; \
+      max: 0 0; \
+   } \
+   description { state: "decorate_reorder" 0.0; \
+      inherit: "default" 0.0; \
+      min: 0 0; \
+      max: 0 0; \
+   } \
+   description { state: "reorder" 0.0; \
+      inherit: "default" 0.0; \
+      min: 32 0; \
+      max: 32 -1; \
+   }
+
+#define PART_LIST_PADDINGS(LEFT_SIZE, RIGHT_SIZE, TOP_SIZE, BOTTOM_SIZE) \
+   PART(SWALLOW, "elm.swallow.pad", \
+      mouse_events: 0; \
+      DESC_FROM_L( ; ) \
+   ) \
+   PART(SWALLOW, "elm.swallow.colorbar", \
+      mouse_events: 0; \
+      DESC_L("elm.swallow.pad", ) \
+   ) \
+   PART(SPACER, "elm.padding.left", \
+      DESC_L("elm.swallow.pad", \
+         min: LEFT_SIZE 0; \
+         max: LEFT_SIZE -1; \
+      ) \
+   ) \
+   PART(SPACER, "elm.padding.right", \
+      DESC_FROM_R( \
+         min: RIGHT_SIZE 0; \
+         max: RIGHT_SIZE -1; \
+      ) \
+   ) \
+   PART(SPACER, "elm.padding.top", \
+      DESC_FROM_T( \
+         min: 0 TOP_SIZE; \
+         max: -1 TOP_SIZE; \
+      ) \
+   ) \
+   PART(SPACER, "elm.padding.bottom", \
+      DESC_FROM_B( \
+         min: 0 BOTTOM_SIZE; \
+         max: -1 BOTTOM_SIZE; \
+      ) \
+   )
+
+#define PART_LIST_PADDINGS_2TEXT_HIDE(LEFT_SIZE, RIGHT_SIZE, TOP_SIZE, BOTTOM_SIZE, CHANGE_TOP_SIZE, CHANGE_BOTTOM_SIZE) \
+   PART(SWALLOW, "elm.swallow.pad", \
+      mouse_events: 0; \
+      DESC_FROM_L( ; ) \
+   ) \
+   PART(SWALLOW, "elm.swallow.colorbar", \
+      mouse_events: 0; \
+      DESC_L("elm.swallow.pad", ) \
+   ) \
+   PART(SPACER, "elm.padding.left", \
+      DESC_L("elm.swallow.pad", \
+         min: LEFT_SIZE 0; \
+         max: LEFT_SIZE -1; \
+      ) \
+   ) \
+   PART(SPACER, "elm.padding.right", \
+      DESC_FROM_R( \
+         min: RIGHT_SIZE 0; \
+         max: RIGHT_SIZE -1; \
+      ) \
+   ) \
+   PART(SPACER, "elm.padding.top", \
+      DESC_FROM_T( \
+         min: 0 TOP_SIZE; \
+         max: -1 TOP_SIZE; \
+      ) \
+      description { state: "highlighting" 0.0; \
+         inherit: "default" 0.0; \
+         min: 0 CHANGE_TOP_SIZE; \
+         max: -1 CHANGE_TOP_SIZE; \
+      } \
+      description { state: "highlighting_disabled" 0.0; \
+         inherit: "default" 0.0; \
+         min: 0 CHANGE_TOP_SIZE; \
+         max: -1 CHANGE_TOP_SIZE; \
+      } \
+      description { state: "highlighted" 0.0; \
+         inherit: "highlighting" 0.0; \
+      } \
+      description { state: "long_text_highlighted" 0.0; \
+         inherit: "highlighting" 0.0; \
+      } \
+      description { state: "highlighted_disabled" 0.0; \
+         inherit: "highlighting_disabled" 0.0; \
+      } \
+      description { state: "long_text_highlighted_disabled" 0.0; \
+         inherit: "highlighting_disabled" 0.0; \
+      } \
+   ) \
+   PART(SPACER, "elm.padding.bottom", \
+      DESC_FROM_B( \
+         min: 0 BOTTOM_SIZE; \
+         max: -1 BOTTOM_SIZE; \
+      ) \
+      description { state: "long_text_default" 0.0; \
+         inherit: "default" 0.0; \
+      } \
+      description { state: "highlighting" 0.0; \
+         inherit: "default" 0.0; \
+         min: 0 CHANGE_BOTTOM_SIZE; \
+         max: -1 CHANGE_BOTTOM_SIZE; \
+      } \
+      description { state: "highlighting_disabled" 0.0; \
+         inherit: "default" 0.0; \
+         min: 0 CHANGE_BOTTOM_SIZE; \
+         max: -1 CHANGE_BOTTOM_SIZE; \
+      } \
+      description { state: "highlighted" 0.0; \
+         inherit: "highlighting" 0.0; \
+      } \
+      description { state: "long_text_highlighted" 0.0; \
+         inherit: "highlighting" 0.0; \
+      } \
+      description { state: "highlighted_disabled" 0.0; \
+         inherit: "highlighting_disabled" 0.0; \
+      } \
+      description { state: "long_text_highlighted_disabled" 0.0; \
+         inherit: "highlighting_disabled" 0.0; \
+      } \
+   )
+
+#define PART_LIST_PADDINGS_TITLE_SLIDE(LEFT_SIZE, RIGHT_SIZE, TOP_SIZE, BOTTOM_SIZE, EXPANDED_LEFT_SIZE, EXPANDED_RIGHT_SIZE, EXPANDED_TOP_SIZE, EXPANDED_BOTTOM_SIZE) \
+   PART(SPACER, "elm.padding.left", \
+      DESC_FROM_L( \
+         min: LEFT_SIZE 0; \
+         max: LEFT_SIZE -1; \
+      ) \
+      description { state: "expanded" 0.0; \
+         inherit: "default" 0.0; \
+         min: EXPANDED_LEFT_SIZE 0; \
+         max: EXPANDED_LEFT_SIZE -1; \
+      } \
+    ) \
+   PART(SPACER, "elm.padding.right", \
+      DESC_FROM_R( \
+         min: RIGHT_SIZE 0; \
+         max: RIGHT_SIZE -1; \
+      ) \
+      description { state: "expanded" 0.0; \
+         inherit: "default" 0.0; \
+         min: EXPANDED_RIGHT_SIZE 0; \
+         max: EXPANDED_RIGHT_SIZE -1; \
+      } \
+   ) \
+   PART(SPACER, "elm.padding.top", \
+      DESC_FROM_T( \
+         min: 0 TOP_SIZE; \
+         max: -1 TOP_SIZE; \
+      ) \
+      description { state: "expanded" 0.0; \
+         inherit: "default" 0.0; \
+         min: EXPANDED_TOP_SIZE 0; \
+         max: EXPANDED_TOP_SIZE -1; \
+      } \
+   ) \
+   PART(SPACER, "elm.padding.bottom", \
+      DESC_FROM_B( \
+         min: 0 BOTTOM_SIZE; \
+         max: -1 BOTTOM_SIZE; \
+      ) \
+      description { state: "expanded" 0.0; \
+         inherit: "default" 0.0; \
+         min: EXPANDED_BOTTOM_SIZE 0; \
+         max: EXPANDED_BOTTOM_SIZE -1; \
+      } \
+   ) \
+
+//***************************  Slide script ********************************//
+#define SLIDING_PER_FPS 3
+#define SLIDING_FPS     60.0
+
+#define SLIDE_SCRIPT \
+script { \
+    public sliding_timer; \
+    public end_timer; \
+    public text_w; \
+    public org_text_w; \
+    public get_width() { \
+        new x, y, w, h; \
+        get_geometry(PART:"elm.text", x, y, w, h); \
+        set_int(org_text_w, w); \
+        \
+        set_state(PART:"elm.text", "sliding", 0.0); \
+        get_geometry(PART:"elm.text", x, y, w, h); \
+        set_int(text_w, w); \
+    } \
+    public ender(val) { \
+        if (get_int(sliding_timer)) cancel_timer(get_int(sliding_timer)); \
+           set_int(sliding_timer, 0); \
+        if (get_int(end_timer)) cancel_timer(get_int(end_timer)); \
+           set_int(end_timer, 0); \
+        set_state(PART:"elm.text", "highlighted", 0.0); \
+    } \
+    public sliding(val) { \
+        if (val == 0) { \
+            get_width(); \
+            if (get_int(text_w) < get_int(org_text_w)) { \
+                ender(0); \
+                return; \
+            } \
+        } \
+        custom_state(PART:"elm.text", "sliding", 0.0); \
+        set_state_val(PART:"elm.text", STATE_REL1_OFFSET, val, 0); \
+        set_state_val(PART:"elm.text", STATE_REL2_OFFSET, val, -1); \
+        set_state(PART:"elm.text", "custom", 0.0); \
+        val -= SLIDING_PER_FPS; \
+        \
+        if (val <= -get_int(text_w) + (0.5 * get_int(org_text_w))) { \
+            set_int(end_timer, timer(0.5, "ender", 1)); \
+        } else \
+            set_int(sliding_timer, timer(1.0/SLIDING_FPS, "sliding", val)); \
+    } \
+} \
+
+#define SCRIPT_START_SLIDE_TITLE \
+script { \
+   public sliding_timer; \
+   public end_timer; \
+   public text_w; \
+   public org_text_w; \
+   public clipper_w; \
+   public sliding_start; \
+   public get_size_over() { \
+      new x, y, w, w1, w2, w3, h; \
+      get_geometry(PART:"elm.text", x, y, w, h); \
+      get_geometry(PART:"bg", x, y, w1, h); \
+      get_geometry(PART:"elm.padding.left", x, y, w2, h); \
+      get_geometry(PART:"elm.padding.right", x, y, w3, h); \
+      if (w >= (w1 - (w2 + w3))) { \
+         set_int(sliding_start, 1); \
+      } else { \
+         set_int(sliding_start, 0); \
+       } \
+   } \
+   public get_width() { \
+      new x, y, w, h; \
+      get_geometry(PART:"elm.text", x, y, w, h); \
+      set_int(org_text_w, w); \
+      set_state(PART:"elm.text", "sliding", 0.0); \
+      get_geometry(PART:"elm.text", x, y, w, h); \
+      set_int(text_w, w); \
+      get_geometry(PART:"clipper", x, y, w, h); \
+      set_int(clipper_w, w); \
+   } \
+   public ender(val) { \
+      if (get_int(sliding_timer)) cancel_timer(get_int(sliding_timer)); \
+         set_int(sliding_timer, 0); \
+      if (get_int(end_timer)) cancel_timer(get_int(end_timer)); \
+         set_int(end_timer, 0); \
+      set_state(PART:"elm.text", "highlighted", 0.0); \
+   } \
+   public sliding(val) { \
+      get_size_over(); \
+      if (get_int(sliding_start) == 1) { \
+         if (val == 0) { \
+            get_width(); \
+            if (get_int(text_w) < get_int(org_text_w)) { \
+               ender(0); \
+               return; \
+              } \
+          } \
+         custom_state(PART:"elm.text", "sliding", 0.0); \
+         set_state_val(PART:"elm.text", STATE_REL1_OFFSET, val, 0); \
+         set_state_val(PART:"elm.text", STATE_REL2_OFFSET, val, -1); \
+         set_state(PART:"elm.text", "custom", 0.0); \
+         val -= SLIDING_PER_FPS; \
+          \
+         if (get_int(text_w) - get_int(clipper_w) + LIST_SLIDING_END_OFFSET < (val * -1)) { \
+            set_int(end_timer, timer(0.5, "ender", 1)); \
+        } else { \
+            set_int(sliding_timer, timer(1.0/SLIDING_FPS, "sliding", val)); \
+         } \
+      } \
+   } \
+} \
+
+#define SCRIPT_START_SLIDE \
+script { \
+   public sliding_timer; \
+   public end_timer; \
+   public text_w; \
+   public org_text_w; \
+   public sliding_w; \
+   public sliding_start; \
+   public is_disabled; \
+   public is_highlighted; \
+   public is_show; \
+   public is_pre_highlighted; \
+   public sub1_is_sliding; \
+   public sub2_is_sliding; \
+   public sub3_is_sliding; \
+   \
+   public set_disabled(val) { \
+      set_int(is_disabled, val); \
+   } \
+   public set_highlighted(val) { \
+      set_int(is_highlighted, val); \
+   } \
+   public set_show(val) { \
+      set_int(is_show, val); \
+   } \
+   public set_pre_highlighted(val) { \
+      set_int(is_pre_highlighted, val); \
+   } \
+   public get_disabled() { \
+      return get_int(is_disabled); \
+   } \
+   public get_highlighted() { \
+      return get_int(is_highlighted); \
+   } \
+   public get_show() { \
+      return get_int(is_show); \
+   } \
+   public get_pre_highlighted() { \
+      return get_int(is_pre_highlighted); \
+   } \
+   public refresh() { \
+      ender(1); \
+      set_int(sliding_timer, 0); \
+      set_int(end_timer, 0); \
+      set_int(text_w, 0); \
+      set_int(org_text_w, 0); \
+      set_int(sliding_w, 0); \
+      set_int(sliding_start, 0); \
+      set_int(is_disabled, 0); \
+      set_int(is_highlighted, 0); \
+      set_int(is_show, 0); \
+      set_int(is_pre_highlighted, 0); \
+   } \
+   public get_width() { \
+      new x, y, w, h; \
+      get_geometry(PART:"elm.text", x, y, w, h); \
+      set_int(org_text_w, w); \
+      if (get_int(is_disabled)) \
+         set_state(PART:"elm.text", "sliding_disabled", 0.0); \
+      else \
+         set_state(PART:"elm.text", "sliding", 0.0); \
+      get_geometry(PART:"elm.text", x, y, w, h); \
+      set_int(text_w, w); \
+   } \
+   public ender(val) { \
+      if (get_int(sliding_timer)) \
+         cancel_timer(get_int(sliding_timer)); \
+      set_int(sliding_timer, 0); \
+      if (get_int(end_timer)) \
+         cancel_timer(get_int(end_timer)); \
+      set_int(end_timer, 0); \
+      if (!val) { \
+         if (get_int(is_disabled)) { \
+            if (get_int(sliding_start)) \
+               set_state(PART:"elm.text", "long_text_highlighted_disabled", 0.0); \
+            else \
+               set_state(PART:"elm.text", "highlighted_disabled", 0.0); \
+         } else { \
+            if (get_int(sliding_start)) \
+               set_state(PART:"elm.text", "long_text_highlighted", 0.0); \
+            else \
+               set_state(PART:"elm.text", "highlighted", 0.0); \
+         } \
+      } \
+   } \
+   public sliding(val) { \
+      if (get_int(is_disabled)) { \
+         custom_state(PART:"elm.text", "sliding_disabled", 0.0); \
+      } else { \
+         custom_state(PART:"elm.text", "sliding", 0.0); \
+       } \
+      set_state_val(PART:"elm.text", STATE_REL1_OFFSET, val, 0); \
+      set_state_val(PART:"elm.text", STATE_REL2_OFFSET, val, -1); \
+      set_state(PART:"elm.text", "custom", 0.0); \
+      val -= SLIDING_PER_FPS; \
+       \
+      if (get_int(text_w) - get_int(sliding_w) + LIST_SLIDING_END_OFFSET < (val * -1)) { \
+         set_int(end_timer, timer(0.5, "ender", 0)); \
+     } else { \
+         set_int(sliding_timer, timer(1.0/SLIDING_FPS, "sliding", val)); \
+      } \
+   } \
+   public slide_start(val) { \
+     if (get_int(sliding_timer)) { \
+        if (get_int(sliding_start)) { \
+           get_width(); \
+           if (get_int(text_w) < get_int(org_text_w)) { \
+              ender(0); \
+              return; \
+            } \
+           sliding(0); \
+         } \
+      } \
+   } \
+
+#define SCRIPT_SLIDE_SIZE_CHECK \
+   public get_size_over() { \
+      new x, y, w, w1, w2, w3, h; \
+      get_geometry(PART:"elm.text", x, y, w, h); \
+      get_geometry(PART:"bg", x, y, w1, h); \
+      get_geometry(PART:"elm.padding.left", x, y, w2, h); \
+      get_geometry(PART:"elm.padding.right", x, y, w3, h); \
+      set_int(sliding_w, w1 - (w2 + w3)); \
+      if (w >= get_int(sliding_w)) { \
+         set_int(sliding_start, 1); \
+      } else { \
+         set_int(sliding_start, 0); \
+       } \
+   } \
+} \
+
+#define SCRIPT_SLIDE_SUB1_SIZE_CHECK \
+   public get_sub1_size_over() { \
+      new x, y, w, w1, w2, w3, h; \
+      get_geometry(PART:"elm.text.1", x, y, w, h); \
+      get_geometry(PART:"bg", x, y, w1, h); \
+      get_geometry(PART:"elm.padding.left", x, y, w2, h); \
+      get_geometry(PART:"elm.padding.right", x, y, w3, h); \
+      set_int(sliding_w, w1 - (w2 + w3)); \
+      if (w >= get_int(sliding_w)) { \
+         set_int(sub1_is_sliding, 1); \
+      } else { \
+         set_int(sub1_is_sliding, 0); \
+       } \
+   } \
+
+#define SCRIPT_SLIDE_SUB2_SIZE_CHECK \
+   public get_sub2_size_over() { \
+      new x, y, w, w1, w2, w3, h; \
+      get_geometry(PART:"elm.text.2", x, y, w, h); \
+      get_geometry(PART:"bg", x, y, w1, h); \
+      get_geometry(PART:"elm.padding.left", x, y, w2, h); \
+      get_geometry(PART:"elm.padding.right", x, y, w3, h); \
+      set_int(sliding_w, w1 - (w2 + w3)); \
+      if (w >= get_int(sliding_w)) { \
+         set_int(sub2_is_sliding, 1); \
+      } else { \
+         set_int(sub2_is_sliding, 0); \
+       } \
+   } \
+
+#define SCRIPT_SLIDE_SUB3_SIZE_CHECK \
+   public get_sub3_size_over() { \
+      new x, y, w, w1, w2, w3, h; \
+      get_geometry(PART:"elm.text.3", x, y, w, h); \
+      get_geometry(PART:"bg", x, y, w1, h); \
+      get_geometry(PART:"elm.padding.left", x, y, w2, h); \
+      get_geometry(PART:"elm.padding.right", x, y, w3, h); \
+      set_int(sliding_w, w1 - (w2 + w3)); \
+      if (w >= get_int(sliding_w)) { \
+         set_int(sub3_is_sliding, 1); \
+      } else { \
+         set_int(sub3_is_sliding, 0); \
+       } \
+   } \
+
+#define SCRIPT_SLIDE_SIZE_CHECK_1ICON \
+   public get_size_over() { \
+      new x, y, w, w1, w2, w3, w4, w5, h; \
+      get_geometry(PART:"elm.text", x, y, w, h); \
+      get_geometry(PART:"bg", x, y, w1, h); \
+      get_geometry(PART:"elm.padding.left", x, y, w2, h); \
+      get_geometry(PART:"elm.padding.right", x, y, w3, h); \
+      get_geometry(PART:"elm.icon", x, y, w4, h); \
+      get_geometry(PART:"elm.padding.icon", x, y, w5, h); \
+      set_int(sliding_w, w1 - (w2 + w3 + w4 + w5)); \
+      if (w >= get_int(sliding_w)) { \
+         set_int(sliding_start, 1); \
+      } else { \
+         set_int(sliding_start, 0); \
+       } \
+   } \
+} \
+
+#define SCRIPT_SLIDE_SUB1_SIZE_CHECK_1ICON \
+   public get_sub1_size_over() { \
+      new x, y, w, w1, w2, w3, w4, w5, h; \
+      get_geometry(PART:"elm.text.1", x, y, w, h); \
+      get_geometry(PART:"bg", x, y, w1, h); \
+      get_geometry(PART:"elm.padding.left", x, y, w2, h); \
+      get_geometry(PART:"elm.padding.right", x, y, w3, h); \
+      get_geometry(PART:"elm.icon", x, y, w4, h); \
+      get_geometry(PART:"elm.padding.icon", x, y, w5, h); \
+      set_int(sliding_w, w1 - (w2 + w3 + w4 + w5)); \
+      if (w >= get_int(sliding_w)) { \
+         set_int(sub1_is_sliding, 1); \
+      } else { \
+         set_int(sub1_is_sliding, 0); \
+       } \
+   } \
+
+#define SCRIPT_SLIDE_SUB2_SIZE_CHECK_1ICON \
+   public get_sub2_size_over() { \
+      new x, y, w, w1, w2, w3, w4, w5, h; \
+      get_geometry(PART:"elm.text.2", x, y, w, h); \
+      get_geometry(PART:"bg", x, y, w1, h); \
+      get_geometry(PART:"elm.padding.left", x, y, w2, h); \
+      get_geometry(PART:"elm.padding.right", x, y, w3, h); \
+      get_geometry(PART:"elm.icon", x, y, w4, h); \
+      get_geometry(PART:"elm.padding.icon", x, y, w5, h); \
+      set_int(sliding_w, w1 - (w2 + w3 + w4 + w5)); \
+      if (w >= get_int(sliding_w)) { \
+         set_int(sub2_is_sliding, 1); \
+      } else { \
+         set_int(sub2_is_sliding, 0); \
+       } \
+   } \
+
+#define SCRIPT_SLIDE_SIZE_CHECK_1ICON_DIVIDER \
+   public get_size_over() { \
+      new x, y, w, w1, w2, w3, w4, w5, h; \
+      get_geometry(PART:"elm.text", x, y, w, h); \
+      get_geometry(PART:"bg", x, y, w1, h); \
+      get_geometry(PART:"elm.padding.left", x, y, w2, h); \
+      get_geometry(PART:"elm.padding.right", x, y, w3, h); \
+      get_geometry(PART:"elm.icon", x, y, w4, h); \
+      get_geometry(PART:"elm.padding.icon", x, y, w5, h); \
+      set_int(sliding_w, w1 - (w2 + w3 + w4 + w5 + LIST_DIVIDER_WIDTH_INC)); \
+      if (w >= get_int(sliding_w)) { \
+         set_int(sliding_start, 1); \
+      } else { \
+         set_int(sliding_start, 0); \
+      } \
+   } \
+} \
+
+#define SCRIPT_SLIDE_SUB1_SIZE_CHECK_1ICON_DIVIDER \
+   public get_sub1_size_over() { \
+      new x, y, w, w1, w2, w3, w4, w5, h; \
+      get_geometry(PART:"elm.text.1", x, y, w, h); \
+      get_geometry(PART:"bg", x, y, w1, h); \
+      get_geometry(PART:"elm.padding.left", x, y, w2, h); \
+      get_geometry(PART:"elm.padding.right", x, y, w3, h); \
+      get_geometry(PART:"elm.icon", x, y, w4, h); \
+      get_geometry(PART:"elm.padding.icon", x, y, w5, h); \
+      set_int(sliding_w, w1 - (w2 + w3 + w4 + w5 + LIST_DIVIDER_WIDTH_INC)); \
+      if (w >= get_int(sliding_w)) { \
+         set_int(sub1_is_sliding, 1); \
+      } else { \
+         set_int(sub1_is_sliding, 0); \
+      } \
+   } \
+
+#define SCRIPT_SLIDE_SIZE_EDITFIELD_CHECK \
+   public get_size_over() { \
+      new x, y, w, w1, w2, w3, w4, w5, h; \
+      get_geometry(PART:"elm.text", x, y, w, h); \
+      get_geometry(PART:"bg", x, y, w1, h); \
+      get_geometry(PART:"elm.padding.left", x, y, w2, h); \
+      get_geometry(PART:"elm.padding.right", x, y, w3, h); \
+      get_geometry(PART:"elm.padding.left.in", x, y, w4, h); \
+      get_geometry(PART:"elm.padding.right.in", x, y, w5, h); \
+      set_int(sliding_w, w1 - (w2 + w3 + w4 + w5)); \
+      if (w >= get_int(sliding_w)) { \
+         set_int(sliding_start, 1); \
+      } else { \
+         set_int(sliding_start, 0); \
+       } \
+   } \
+}
+
+//***************************  Genlist Programs ****************************//
+#define PROGRAM_LIST_DEFAULT( TARGET ) \
+   program { name: "default"; \
+      signal: "elm,state,default"; \
+      source: "elm"; \
+      action: STATE_SET "default" 0.0; \
+      TARGET \
+   } \
+
+#define PROGRAM_LIST_DEFAULT_SLIDE( TARGET ) \
+   program { name: "default"; \
+      signal: "elm,state,default"; \
+      source: "elm"; \
+      action: STATE_SET "default" 0.0; \
+      TARGET \
+      after: "list_refresh"; \
+   } \
+   program { name: "list_refresh"; \
+      script { \
+         refresh(); \
+      } \
+   } \
+
+#define PROGRAM_LIST_DISABLE( TARGET ) \
+   program { name: "enabled"; \
+      signal: "elm,state,enabled"; \
+      source: "elm"; \
+      action: STATE_SET "default" 0.0; \
+      TARGET \
+   } \
+   program { name: "disabled"; \
+      signal: "elm,state,disabled"; \
+      source: "elm"; \
+      action: STATE_SET "disabled" 0.0; \
+      TARGET \
+   }
+
+#define PROGRAM_LIST_SELECT( TARGET ) \
+   program { name: "selected"; \
+      signal: "elm,state,selected"; \
+      source: "elm"; \
+      action: STATE_SET "selected" 0.0; \
+      TARGET \
+   } \
+   program { name: "unselected"; \
+      signal: "elm,state,unselected"; \
+      source: "elm"; \
+      action: STATE_SET "default" 0.0; \
+      TARGET \
+   }
+
+#define PROGRAM_LIST_HIGHLIGHT( TARGET ) \
+   program { name: "highlighted"; \
+      signal: "elm,state,highlighted"; \
+      source: "elm"; \
+      action: STATE_SET "highlighted" 0.0; \
+      TARGET \
+   } \
+   program { name: "unhighlighted"; \
+      signal: "elm,state,unhighlighted"; \
+      source: "elm"; \
+      action: STATE_SET "default" 0.0; \
+      TARGET \
+   }
+
+#define PROGRAM_LIST_1TEXT_HIGHLIGHT \
+   program { name: "1text_highlighted"; \
+      signal: "elm,state,highlighted"; \
+      source: "elm"; \
+      script { \
+         if (get_show()) { \
+            if (!get_highlighted()) { \
+               set_highlighted(1); \
+               if (get_disabled()) { \
+                  if (get_int(sliding_start)) \
+                  run_program(PROGRAM:"long_text_highlight_disabled"); \
+                  else \
+                  run_program(PROGRAM:"text_highlight_disabled"); \
+               } else { \
+                  if (get_int(sliding_start)) \
+                  run_program(PROGRAM:"long_text_highlight"); \
+                  else \
+                  run_program(PROGRAM:"text_highlight"); \
+               } \
+            } \
+         } \
+         else { \
+            set_pre_highlighted(1); \
+         } \
+      } \
+   } \
+   program { name: "text_highlight"; \
+      transition: CUBIC_BEZIER 0.3 0 0 1 1; \
+      action: STATE_SET "highlighted" 0.0; \
+      target: "elm.text"; \
+      target: "opacity_clipper"; \
+      after: "slide_start"; \
+   } \
+   program { name: "long_text_highlight"; \
+      transition: CUBIC_BEZIER 0.3 0 0 1 1; \
+      action: STATE_SET "long_text_highlighted" 0.0; \
+      target: "elm.text"; \
+      target: "opacity_clipper"; \
+      after: "slide_start"; \
+   } \
+   program { name: "text_highlight_disabled"; \
+      transition: CUBIC_BEZIER 0.3 0 0 1 1; \
+      action: STATE_SET "highlighted" 0.0; \
+      target: "elm.text"; \
+      after: "slide_start"; \
+   } \
+   program { name: "long_text_highlight_disabled"; \
+      transition: CUBIC_BEZIER 0.3 0 0 1 1; \
+      action: STATE_SET "long_text_highlighted" 0.0; \
+      target: "elm.text"; \
+      after: "slide_start"; \
+   } \
+   program { name: "1text_unhighlighted"; \
+      signal: "elm,state,unhighlighted"; \
+      source: "elm"; \
+      script { \
+         if (get_highlighted()) { \
+            set_highlighted(0); \
+            ender(1); \
+            if (get_disabled()) { \
+               if (get_int(sliding_start)) \
+                  run_program(PROGRAM:"long_1text_hide_unhighlighted_disabled"); \
+               else \
+                  run_program(PROGRAM:"1text_hide_unhighlighted_disabled"); \
+            } else { \
+               if (get_int(sliding_start)) \
+                  run_program(PROGRAM:"long_1text_hide_unhighlighted"); \
+               else \
+                  run_program(PROGRAM:"1text_hide_unhighlighted"); \
+            } \
+         } \
+      } \
+   } \
+   program { name: "1text_hide_unhighlighted"; \
+      transition: CUBIC_BEZIER 0.3 0 0 1 1; \
+      action: STATE_SET "default" 0.0; \
+      target: "elm.text"; \
+      target: "opacity_clipper"; \
+   } \
+   program { name: "1text_hide_unhighlighted_disabled"; \
+      transition: CUBIC_BEZIER 0.3 0 0 1 1; \
+      action: STATE_SET "disabled" 0.0; \
+      target: "elm.text"; \
+   } \
+   program { name: "long_1text_hide_unhighlighted"; \
+      transition: CUBIC_BEZIER 0.3 0 0 1 1; \
+      action: STATE_SET "long_text_default" 0.0; \
+      target: "elm.text"; \
+      target: "opacity_clipper"; \
+   } \
+   program { name: "long_1text_hide_unhighlighted_disabled"; \
+      transition: CUBIC_BEZIER 0.3 0 0 1 1; \
+      action: STATE_SET "disabled" 0.0; \
+      target: "elm.text"; \
+   }
+
+#define PROGRAM_LIST_2TEXT_HIGHLIGHT \
+   program { name: "2text_highlighted"; \
+      signal: "elm,state,highlighted"; \
+      source: "elm"; \
+      script { \
+         if (get_show()) { \
+            if (!get_highlighted()) { \
+               set_highlighted(1); \
+               if (get_disabled()) { \
+                  if (get_int(sliding_start)) \
+                  run_program(PROGRAM:"long_2text_hide_highlighted_disabled"); \
+                  else \
+                  run_program(PROGRAM:"2text_hide_highlighted_disabled"); \
+               } else { \
+                  if (get_int(sliding_start)) \
+                  run_program(PROGRAM:"long_2text_hide_highlighted"); \
+                  else \
+                  run_program(PROGRAM:"2text_hide_highlighted"); \
+               } \
+            } \
+         } \
+         else { \
+            set_pre_highlighted(1); \
+         } \
+      } \
+   } \
+   program { name: "2text_hide_highlighted"; \
+      transition: CUBIC_BEZIER 0.4 0 0 1 1; \
+      action: STATE_SET "highlighted" 0.0; \
+      target: "elm.text"; \
+      target: "elm.padding.top"; \
+      target: "elm.padding.bottom"; \
+      target: "opacity_clipper"; \
+      after: "slide_start"; \
+   } \
+   program { name: "2text_hide_highlighted_disabled"; \
+      transition: CUBIC_BEZIER 0.4 0 0 1 1; \
+      action: STATE_SET "highlighted_disabled" 0.0; \
+      target: "elm.text"; \
+      target: "elm.padding.top"; \
+      target: "elm.padding.bottom"; \
+      after: "slide_start"; \
+   } \
+   program { name: "long_2text_hide_highlighted"; \
+      transition: CUBIC_BEZIER 0.4 0 0 1 1; \
+      action: STATE_SET "long_text_highlighted" 0.0; \
+      target: "elm.text"; \
+      target: "elm.padding.top"; \
+      target: "elm.padding.bottom"; \
+      target: "opacity_clipper"; \
+      after: "slide_start"; \
+   } \
+   program { name: "long_2text_hide_highlighted_disabled"; \
+      transition: CUBIC_BEZIER 0.4 0 0 1 1; \
+      action: STATE_SET "long_text_highlighted_disabled" 0.0; \
+      target: "elm.text"; \
+      target: "elm.padding.top"; \
+      target: "elm.padding.bottom"; \
+      after: "slide_start"; \
+   } \
+   program { name: "2text_unhighlighted"; \
+      signal: "elm,state,unhighlighted"; \
+      source: "elm"; \
+      script { \
+         if (get_highlighted()) { \
+            set_highlighted(0); \
+            ender(1); \
+            if (get_disabled()) { \
+               if (get_int(sliding_start)) \
+                  run_program(PROGRAM:"long_2text_hide_unhighlighted_disabled"); \
+               else \
+                  run_program(PROGRAM:"2text_hide_unhighlighted_disabled"); \
+            } else { \
+               if (get_int(sliding_start)) \
+                  run_program(PROGRAM:"long_2text_hide_unhighlighted"); \
+               else \
+                  run_program(PROGRAM:"2text_hide_unhighlighted"); \
+            } \
+         } \
+      } \
+   } \
+   program { name: "2text_hide_unhighlighted"; \
+      transition: CUBIC_BEZIER 0.3 0 0 1 1; \
+      action: STATE_SET "default" 0.0; \
+      target: "elm.text"; \
+      target: "elm.padding.top"; \
+      target: "elm.padding.bottom"; \
+      target: "opacity_clipper"; \
+   } \
+   program { name: "2text_hide_unhighlighted_disabled"; \
+      transition: CUBIC_BEZIER 0.3 0 0 1 1; \
+      action: STATE_SET "disabled" 0.0; \
+      target: "elm.text"; \
+      target: "elm.padding.top"; \
+      target: "elm.padding.bottom"; \
+   } \
+   program { name: "long_2text_hide_unhighlighted"; \
+      transition: CUBIC_BEZIER 0.3 0 0 1 1; \
+      action: STATE_SET "long_text_default" 0.0; \
+      target: "elm.text"; \
+      target: "elm.padding.top"; \
+      target: "elm.padding.bottom"; \
+      target: "opacity_clipper"; \
+   } \
+   program { name: "long_2text_hide_unhighlighted_disabled"; \
+      transition: CUBIC_BEZIER 0.3 0 0 1 1; \
+      action: STATE_SET "long_text_disabled" 0.0; \
+      target: "elm.text"; \
+      target: "elm.padding.top"; \
+      target: "elm.padding.bottom"; \
+   } \
+
+#define PROGRAM_LIST_SUBTEXT_HIGHLIGHT \
+   program { name: "subtext_highlight"; \
+      signal: "elm,state,highlighted"; \
+      source: "elm"; \
+      script { \
+         if (get_show()) { \
+            run_program(PROGRAM:"subtext_highlighted"); \
+         } \
+         else { \
+            set_pre_highlighted(1); \
+         } \
+      } \
+   } \
+   program { name: "subtext_highlighted"; \
+      transition: CUBIC_BEZIER 0.6 0 0 1 1; \
+      action: STATE_SET "highlighted" 0.0; \
+      target: "clipper1"; \
+   } \
+   program { name: "subtext_unhighlighted"; \
+      signal: "elm,state,unhighlighted"; \
+      source: "elm"; \
+      after: "subtext_hide_unhighlighted"; \
+   } \
+   program { name: "subtext_hide_unhighlighted"; \
+      transition: CUBIC_BEZIER 0.3 0 0 1 1; \
+      action: STATE_SET "default" 0.0; \
+      target: "clipper1"; \
+   }
+
+#define PROGRAM_LIST_EDITFIELD_HIGHLIGHT \
+   program { name: "editfield_highlighted"; \
+      signal: "elm,state,highlighted"; \
+      source: "elm"; \
+      transition: CUBIC_BEZIER 0.6 0 0 1 1; \
+      action: STATE_SET "highlighted" 0.0; \
+      target: "clipper.bg"; \
+   } \
+   program { name: "editfield_unhighlighted"; \
+      signal: "elm,state,unhighlighted"; \
+      source: "elm"; \
+      after: "subtext_hide_unhighlighted"; \
+   } \
+   program { name: "subtext_hide_unhighlighted"; \
+      transition: CUBIC_BEZIER 0.3 0 0 1 1; \
+      action: STATE_SET "default" 0.0; \
+      target: "clipper.bg"; \
+   }
+
+#define PROGRAM_LIST_1TEXT_DISABLE \
+   program { name: "1text_enabled"; \
+      signal: "elm,state,enabled"; \
+      source: "elm"; \
+      script { \
+         set_disabled(0); \
+         ender(1); \
+         if (get_highlighted()) { \
+            set_state(PART:"elm.text", "highlighted", 0.0); \
+         } else { \
+            set_state(PART:"elm.text", "default", 0.0); \
+         } \
+      } \
+   } \
+   program { name: "1text_disabled"; \
+      signal: "elm,state,disabled"; \
+      source: "elm"; \
+       script { \
+         set_disabled(1); \
+         ender(1); \
+         if (get_highlighted()) { \
+            set_state(PART:"elm.text", "highlighted_disabled", 0.0); \
+         } else { \
+            set_state(PART:"elm.text", "disabled", 0.0); \
+         } \
+      } \
+   } \
+
+#define PROGRAM_LIST_2TEXT_DISABLE \
+   program { name: "2text_enabled"; \
+      signal: "elm,state,enabled"; \
+      source: "elm"; \
+      script { \
+         set_disabled(0); \
+         ender(1); \
+         if (get_highlighted()) { \
+            set_state(PART:"elm.text", "highlighted", 0.0); \
+         } else { \
+            set_state(PART:"elm.text", "default", 0.0); \
+           } \
+         set_state(PART:"elm.text.1", "default", 0.0); \
+      } \
+   } \
+   program { name: "2text_disabled"; \
+      signal: "elm,state,disabled"; \
+      source: "elm"; \
+      script { \
+         set_disabled(1); \
+         ender(1); \
+         if (get_highlighted()) { \
+            set_state(PART:"elm.text", "highlighted_disabled", 0.0); \
+         } else { \
+            set_state(PART:"elm.text", "disabled", 0.0); \
+         } \
+         set_state(PART:"elm.text.1", "disabled", 0.0); \
+      } \
+   } \
+
+#define PROGRAM_LIST_3TEXT_DISABLE \
+   program { name: "3text_enabled"; \
+      signal: "elm,state,enabled"; \
+      source: "elm"; \
+      script { \
+         set_disabled(0); \
+         ender(1); \
+         if (get_highlighted()) { \
+            set_state(PART:"elm.text", "highlighted", 0.0); \
+         } else { \
+            set_state(PART:"elm.text", "default", 0.0); \
+           } \
+         set_state(PART:"elm.text.1", "default", 0.0); \
+         set_state(PART:"elm.text.2", "default", 0.0); \
+      } \
+   } \
+   program { name: "3text_disabled"; \
+      signal: "elm,state,disabled"; \
+      source: "elm"; \
+      script { \
+         set_disabled(1); \
+         ender(1); \
+         if (get_highlighted()) { \
+            set_state(PART:"elm.text", "highlighted_disabled", 0.0); \
+         } else { \
+            set_state(PART:"elm.text", "disabled", 0.0); \
+         } \
+         set_state(PART:"elm.text.1", "disabled", 0.0); \
+         set_state(PART:"elm.text.2", "disabled", 0.0); \
+      } \
+   } \
+
+#define PROGRAM_LIST_4TEXT_DISABLE \
+   program { name: "4text_enabled"; \
+      signal: "elm,state,enabled"; \
+      source: "elm"; \
+      script { \
+         set_disabled(0); \
+         ender(1); \
+         if (get_highlighted()) { \
+            set_state(PART:"elm.text", "highlighted", 0.0); \
+         } else { \
+            set_state(PART:"elm.text", "default", 0.0); \
+           } \
+         set_state(PART:"elm.text.1", "default", 0.0); \
+         set_state(PART:"elm.text.2", "default", 0.0); \
+         set_state(PART:"elm.text.3", "default", 0.0); \
+      } \
+   } \
+   program { name: "4text_disabled"; \
+      signal: "elm,state,disabled"; \
+      source: "elm"; \
+      script { \
+         set_disabled(1); \
+         ender(1); \
+         if (get_highlighted()) { \
+            set_state(PART:"elm.text", "highlighted_disabled", 0.0); \
+         } else { \
+            set_state(PART:"elm.text", "disabled", 0.0); \
+         } \
+         set_state(PART:"elm.text.1", "disabled", 0.0); \
+         set_state(PART:"elm.text.2", "disabled", 0.0); \
+         set_state(PART:"elm.text.3", "disabled", 0.0); \
+      } \
+   } \
+
+#define PROGRAM_LIST_SOUND \
+   program { name: "play_sound"; \
+      signal: "elm,state,clicked"; \
+      source: "elm"; \
+      script { \
+         run_program(PROGRAM:"play_sample"); \
+      } \
+   } \
+   program { \
+      name: "play_sample"; \
+      action: RUN_PLUGIN "touch_sound"; \
+   }
+
+#define PROGRAM_LIST_FOCUS \
+   program { name: "focused"; \
+      signal: "elm,state,focused"; \
+      source: "elm"; \
+      action: STATE_SET "focused" 0.0; \
+      target: "focus_part"; \
+   } \
+   program { name: "unfocused"; \
+      signal: "elm,state,unfocused"; \
+      source: "elm"; \
+      action: STATE_SET "default" 0.0; \
+      target: "focus_part"; \
+   } \
+
+#define PROGRAM_LIST_TITLE_EXPAND \
+   program { name: "title_expand_show"; \
+      action: STATE_SET "expanded" 0.0; \
+      target: "elm.padding.top"; \
+      target: "elm.padding.bottom"; \
+      target: "elm.padding.left"; \
+      target: "elm.padding.right"; \
+   } \
+   program { name: "title_expand_hide"; \
+      action: STATE_SET "default" 0.0; \
+      target: "elm.padding.top"; \
+      target: "elm.padding.bottom"; \
+      target: "elm.padding.left"; \
+      target: "elm.padding.right"; \
+   } \
+
+#define PROGRAM_LIST_TITLE_TEXT_SLIDE \
+   program { name: "slide_start"; \
+      source: "elm"; \
+      signal: "elm,action,title,slide,start"; \
+      script { \
+         run_program(PROGRAM:"title_expand_show"); \
+         set_int(sliding_timer, timer(0.01, "sliding", 0)); \
+      } \
+   } \
+   program { name: "slide_stop"; \
+      source: "elm"; \
+      signal: "elm,action,title,slide,stop"; \
+      script { \
+         ender(0); \
+         run_program(PROGRAM:"title_expand_hide"); \
+      } \
+   } \
+
+#define PROGRAM_LIST_TEXT_SLIDE \
+   program { name: "slide_start"; \
+      script { \
+         set_int(sliding_timer, timer(0.01, "slide_start", 0)); \
+      } \
+   } \
+   program { name: "slide_stop"; \
+      script { \
+         ender(0); \
+      } \
+   } \
+
+#define PROGRAM_LIST_TITLE_FADEOUT_SET \
+   program { name: "text_fadeout_set"; \
+      signal: "show"; \
+      source: ""; \
+      script { \
+         get_size_over(); \
+         if (get_int(sliding_start)) { \
+            set_state(PART:"fade_out", "default", 0.0); \
+            set_state(PART:"elm.text", "long_text_default", 0.0); \
+         } else { \
+            set_state(PART:"fade_out", "short_text", 0.0); \
+            set_state(PART:"elm.text", "default", 0.0); \
+         } \
+      } \
+   } \
+
+#define PROGRAM_LIST_1TEXT_FADEOUT_SET \
+   program { name: "text_fadeout_set"; \
+      signal: "show"; \
+      source: ""; \
+      script { \
+         set_show(1); \
+         get_size_over(); \
+         if (get_int(sliding_start)) { \
+            set_state(PART:"fade_out", "default", 0.0); \
+            set_state(PART:"elm.text", "long_text_default", 0.0); \
+         } else { \
+            set_state(PART:"fade_out", "short_text", 0.0); \
+            set_state(PART:"elm.text", "default", 0.0); \
+         } \
+         if (get_pre_highlighted()) { \
+            emit("elm,state,highlighted", "elm"); \
+            set_pre_highlighted(0); \
+         } \
+      } \
+   } \
+
+#define PROGRAM_LIST_2TEXT_FADEOUT_SET \
+   program { name: "text_fadeout_set"; \
+      signal: "show"; \
+      source: ""; \
+      script { \
+         set_show(1); \
+         get_size_over(); \
+         if (get_int(sliding_start)) { \
+            set_state(PART:"fade_out", "default", 0.0); \
+            set_state(PART:"elm.text", "long_text_default", 0.0); \
+         } else { \
+            set_state(PART:"fade_out", "short_text", 0.0); \
+            set_state(PART:"elm.text", "default", 0.0); \
+         } \
+         get_sub1_size_over(); \
+         if (get_int(sub1_is_sliding)) { \
+            set_state(PART:"sub_fade_out", "default", 0.0); \
+         } else { \
+            set_state(PART:"sub_fade_out", "short_text", 0.0); \
+         } \
+         if (get_pre_highlighted()) { \
+            emit("elm,state,highlighted", "elm"); \
+            set_pre_highlighted(0); \
+         } \
+      } \
+   } \
+
+#define PROGRAM_LIST_3TEXT_FADEOUT_SET \
+   program { name: "text_fadeout_set"; \
+      signal: "show"; \
+      source: ""; \
+      script { \
+         set_show(1); \
+         get_size_over(); \
+         if (get_int(sliding_start)) { \
+            set_state(PART:"fade_out", "default", 0.0); \
+            set_state(PART:"elm.text", "long_text_default", 0.0); \
+         } else { \
+            set_state(PART:"fade_out", "short_text", 0.0); \
+            set_state(PART:"elm.text", "default", 0.0); \
+         } \
+         get_sub1_size_over(); \
+         if (get_int(sub1_is_sliding)) { \
+            set_state(PART:"sub_fade_out", "default", 0.0); \
+         } else { \
+            set_state(PART:"sub_fade_out", "short_text", 0.0); \
+         } \
+         get_sub2_size_over(); \
+         if (get_int(sub2_is_sliding)) { \
+            set_state(PART:"sub1_fade_out", "default", 0.0); \
+         } else { \
+            set_state(PART:"sub1_fade_out", "short_text", 0.0); \
+         } \
+         if (get_pre_highlighted()) { \
+            emit("elm,state,highlighted", "elm"); \
+            set_pre_highlighted(0); \
+         } \
+      } \
+   } \
+
+#define PROGRAM_LIST_4TEXT_FADEOUT_SET \
+   program { name: "text_fadeout_set"; \
+      signal: "show"; \
+      source: ""; \
+      script { \
+         set_show(1); \
+         get_size_over(); \
+         if (get_int(sliding_start)) { \
+            set_state(PART:"fade_out", "default", 0.0); \
+            set_state(PART:"elm.text", "long_text_default", 0.0); \
+         } else { \
+            set_state(PART:"fade_out", "short_text", 0.0); \
+            set_state(PART:"elm.text", "default", 0.0); \
+         } \
+         get_sub1_size_over(); \
+         if (get_int(sub1_is_sliding)) { \
+            set_state(PART:"sub_fade_out", "default", 0.0); \
+         } else { \
+            set_state(PART:"sub_fade_out", "short_text", 0.0); \
+         } \
+         get_sub2_size_over(); \
+         if (get_int(sub2_is_sliding)) { \
+            set_state(PART:"sub1_fade_out", "default", 0.0); \
+         } else { \
+            set_state(PART:"sub1_fade_out", "short_text", 0.0); \
+         } \
+         get_sub3_size_over(); \
+         if (get_int(sub3_is_sliding)) { \
+            set_state(PART:"sub2_fade_out", "default", 0.0); \
+         } else { \
+            set_state(PART:"sub2_fade_out", "short_text", 0.0); \
+         } \
+         if (get_pre_highlighted()) { \
+            emit("elm,state,highlighted", "elm"); \
+            set_pre_highlighted(0); \
+         } \
+      } \
+   } \
+
+#define PROGRAMS_LIST( TARGET ) \
+   programs { \
+      PROGRAM_LIST_DEFAULT( TARGET \
+         target: "bg"; \
+         target: "elm.padding.left"; \
+         target: "elm.padding.right"; \
+      ) \
+      PROGRAM_LIST_DISABLE( TARGET \
+         target: "bg"; \
+      ) \
+      PROGRAM_LIST_SELECT( TARGET \
+         target: "bg"; \
+      ) \
+      PROGRAM_LIST_HIGHLIGHT( TARGET ) \
+      PROGRAM_LIST_TEXT_SLIDE \
+      PROGRAM_LIST_SOUND \
+   }
+
+#define PROGRAMS_LIST_BUTTON( TARGET ) \
+   programs { \
+      PROGRAM_LIST_DEFAULT( TARGET \
+         target: "elm.padding.left"; \
+         target: "elm.padding.right"; \
+      ) \
+      PROGRAM_LIST_DISABLE( TARGET \
+      ) \
+      PROGRAM_LIST_SELECT( TARGET \
+      ) \
+      PROGRAM_LIST_HIGHLIGHT( TARGET ) \
+      PROGRAM_LIST_SOUND \
+   }
+
+//******************************* Genlist TEXT ********************************//
+#define PARAM_TEXT(STYLE, PARAM) \
+   align: 0.5 0.5; \
+   text { \
+      min: 0 1; \
+      max: 1 1; \
+      style: STYLE; \
+      PARAM \
+   }
+
+#define DESCRIPIONS_TEXT(DISABLED, SELECTED, HIGHLIGHTED) \
+   description { state: "disabled" 0.0; \
+      inherit: "default" 0.0; \
+      text.style: DISABLED; \
+   } \
+   description { state: "selected" 0.0; \
+      inherit: "default" 0.0; \
+      text.style: SELECTED; \
+   } \
+   description { state: "highlighted" 0.0; \
+      inherit: "default" 0.0; \
+      text.style: HIGHLIGHTED; \
+   } \
+   description { state: "sliding" 0.0; \
+      inherit: "default" 0.0; \
+      text.style: HIGHLIGHTED; \
+      text.min: 1 1; \
+      align: 0 0.5; \
+   } \
+

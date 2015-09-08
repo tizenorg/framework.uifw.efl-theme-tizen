@@ -1,0 +1,2171 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+group { name: "elm/check/base/default";
+   images {
+      image: "tw_btn_check_bg_holo_dark.png" COMP;
+      image: "tw_btn_check_holo_dark.png" COMP;
+      image: "tw_btn_check_clipper.png" COMP;
+   }
+   script {
+      public check_state;
+      public check_disabled;
+      public check_visible;
+   }
+   parts {
+      part { name: "bg";
+         scale: 1;
+         clip_to : "bg_opacity_clip";
+         description { state: "default" 0.0;
+            align: 0.0 0.5;
+            min: CHECK_SIZE_INC;
+            max: CHECK_SIZE_INC;
+            image.normal: "tw_btn_check_bg_holo_dark.png";
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            color: 132 191 15 255;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 177 178 174 255;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 75 76 74 255;
+         }
+      }
+      part { name: "bg_opacity_clip";
+         type: RECT;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            color: 255 255 255 0;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 0;
+         }
+      }
+      part { name: "outline";
+         scale: 1;
+         clip_to : "outline_opacity_clip";
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image.normal: "tw_btn_check_bg_holo_dark.png";
+            color: 249 249 249 76;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 204;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 25;
+         }
+         description { state: "focused" 0.0;
+            inherit: "default" 0.0;
+            color: 0 110 255 255; /*(Changeable UI) color_class: "W201";*/
+         }
+      }
+      part { name: "outline_opacity_clip";
+         type: RECT;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            color: 255 255 255 255;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 0;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+      }
+      part { name: "uncheck";
+         type: IMAGE;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image.normal: "tw_btn_check_holo_dark.png";
+            color: 249 249 249 102;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 102;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 255;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 38;
+         }
+      }
+      part { name: "check";
+         type: IMAGE;
+         scale: 1;
+         clip_to: "clipper";
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image.normal: "tw_btn_check_holo_dark.png";
+            color: 249 249 249 255;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 255;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 255;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 76 76 76 255;
+         }
+      }
+      part { name: "clipper";
+         type: IMAGE;
+         scale: 1;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            image.normal: "tw_btn_check_clipper.png";
+            rel1.to: "bg";
+            rel2.to: "bg";
+            rel1.offset: -3 13;
+            rel2.offset: -3 13;
+            min: 0 0;
+            max: 0 0;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            min: CHECK_CLIPPER_SIZE_INC;
+            max: CHECK_CLIPPER_SIZE_INC;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            min: CHECK_CLIPPER_SIZE_INC;
+            max: CHECK_CLIPPER_SIZE_INC;
+         }
+      }
+      part { name: "event";
+         scale: 1;
+         type: RECT;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+      }
+   }
+   programs {
+      program { name: "show";
+         signal: "show";
+         script {
+            set_int(check_visible, 1);
+         }
+      }
+      program { name: "hide";
+         signal: "hide";
+         script {
+            set_int(check_visible, 0);
+         }
+      }
+      program { name: "click";
+         signal: "mouse,clicked,1";
+         source: "event";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            emit("elm,action,check,toggle", "");
+            run_program(PROGRAM:"play_sample");
+         }
+      }
+      program {
+            name: "play_sample";
+            action: RUN_PLUGIN "touch_sound";
+      }
+      program { name: "unpressed";
+         signal: "mouse,up,1";
+         source: "event";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"uncheck", "on", 0.0);
+                 set_state(PART:"check", "on", 0.0);
+                 set_state(PART:"bg", "on", 0.0);
+                 set_state(PART:"outline", "on", 0.0);
+              }
+            else
+              {
+                 set_state(PART:"uncheck", "default", 0.0);
+                 set_state(PART:"check", "default", 0.0);
+                 set_state(PART:"bg", "default", 0.0);
+                 set_state(PART:"outline", "default", 0.0);
+              }
+         }
+      }
+      program { name: "unpressed2";
+         signal: "elm,state,mouse,up";
+         source: "elm";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"uncheck", "on", 0.0);
+                 set_state(PART:"check", "on", 0.0);
+                 set_state(PART:"bg", "on", 0.0);
+                 set_state(PART:"outline", "on", 0.0);
+              }
+            else
+              {
+                 set_state(PART:"uncheck", "default", 0.0);
+                 set_state(PART:"check", "default", 0.0);
+                 set_state(PART:"bg", "default", 0.0);
+                 set_state(PART:"outline", "default", 0.0);
+              }
+         }
+      }
+      program { name: "pressed";
+         signal: "mouse,down,1";
+         source: "event";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            set_state(PART:"uncheck", "pressed", 0.0);
+            set_state(PART:"check", "pressed", 0.0);
+            set_state(PART:"bg", "pressed", 0.0);
+            set_state(PART:"outline", "pressed", 0.0);
+         }
+      }
+      program { name: "pressed2";
+         signal: "elm,state,mouse,down";
+         source: "elm";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            set_state(PART:"uncheck", "pressed", 0.0);
+            set_state(PART:"check", "pressed", 0.0);
+            set_state(PART:"bg", "pressed", 0.0);
+            set_state(PART:"outline", "pressed", 0.0);
+         }
+      }
+      program { name: "check_on";
+         signal: "elm,state,check,on";
+         source: "elm";
+         script {
+            if (get_int(check_disabled) == 1)
+              {
+                 set_state(PART:"bg", "disabled", 0.0);
+                 set_state(PART:"outline", "disabled", 0.0);
+                 set_state(PART:"uncheck", "disabled", 0.0);
+                 set_state(PART:"check", "disabled", 0.0);
+              }
+            else if (get_int(check_visible) == 1)
+              {
+                 run_program(PROGRAM:"clipper_on");
+                 run_program(PROGRAM:"bg_on_show_effect");
+                 run_program(PROGRAM:"bg_on_draw_effect");
+              }
+            else if (get_int(check_visible) == 0)
+              {
+                 set_state(PART:"bg", "on", 0.0);
+                 set_state(PART:"outline", "on", 0.0);
+                 set_state(PART:"uncheck", "on", 0.0);
+                 set_state(PART:"check", "on", 0.0);
+                 set_state(PART:"clipper", "on", 0.0);
+                 set_state(PART:"bg_opacity_clip", "on", 0.0);
+                 set_state(PART:"outline_opacity_clip", "on", 0.0);
+              }
+            set_int(check_state, 1);
+         }
+      }
+      program { name: "check_off";
+         signal: "elm,state,check,off";
+         source: "elm";
+         script {
+            if (get_int(check_disabled) == 1)
+              {
+                 set_state(PART:"bg", "disabled", 0.0);
+                 set_state(PART:"outline", "disabled", 0.0);
+                 set_state(PART:"uncheck", "disabled", 0.0);
+                 set_state(PART:"check", "disabled", 0.0);
+              }
+            else if (get_int(check_visible) == 1)
+              {
+                 run_program(PROGRAM:"clipper_off");
+                 run_program(PROGRAM:"bg_off_show_effect");
+                 run_program(PROGRAM:"bg_off_draw_effect");
+              }
+            else if (get_int(check_visible) == 0)
+              {
+                 set_state(PART:"bg", "default", 0.0);
+                 set_state(PART:"outline", "default", 0.0);
+                 set_state(PART:"uncheck", "default", 0.0);
+                 set_state(PART:"check", "default", 0.0);
+                 set_state(PART:"clipper", "default", 0.0);
+                 set_state(PART:"bg_opacity_clip", "default", 0.0);
+                 set_state(PART:"outline_opacity_clip", "default", 0.0);
+              }
+            set_int(check_state, 0);
+         }
+      }
+      program { name: "clipper_on";
+         action: STATE_SET "on" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.45 0.03 0.41 1.0;
+         target: "clipper";
+         target: "uncheck";
+         target: "check";
+      }
+      program { name: "clipper_off";
+         action: STATE_SET "default" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.45 0.03 0.41 1.0;
+         target: "clipper";
+         target: "uncheck";
+         target: "check";
+      }
+      program { name: "bg_on_show_effect";
+         action: STATE_SET "on" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.45 0.03 0.41 1.0;
+         target: "bg";
+         target: "outline";
+      }
+      program { name: "bg_on_draw_effect";
+         action: STATE_SET "on" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.45 0.03 0.41 1.0;
+         target: "bg_opacity_clip";
+         target: "outline_opacity_clip";
+      }
+      program { name: "bg_off_show_effect";
+         action: STATE_SET "default" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.45 0.03 0.41 1.0;
+         target: "bg";
+         target: "outline";
+      }
+      program { name: "bg_off_draw_effect";
+         action: STATE_SET "default" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.45 0.03 0.41 1.0;
+         target: "bg_opacity_clip";
+         target: "outline_opacity_clip";
+      }
+      program { name: "focus";
+         signal: "elm,action,focus_highlight,show";
+         source: "elm";
+         action: STATE_SET "focused" 0.0;
+         target: "outline";
+      }
+      program { name: "unfocus";
+         signal: "elm,action,focus_highlight,hide";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "outline";
+      }
+      program { name: "disable";
+         signal: "elm,state,disabled";
+         source: "elm";
+         script {
+            set_state(PART:"uncheck", "disabled", 0.0);
+            set_state(PART:"check", "disabled", 0.0);
+            set_state(PART:"bg", "disabled", 0.0);
+            set_state(PART:"outline", "disabled", 0.0);
+            set_state(PART:"clipper", "disabled", 0.0);
+            set_state(PART:"bg_opacity_clip", "disabled", 0.0);
+            set_state(PART:"outline_opacity_clip", "disabled", 0.0);
+            set_int(check_disabled, 1);
+         }
+      }
+      program { name: "enable";
+         signal: "elm,state,enabled";
+         source: "elm";
+         script {
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"uncheck", "on", 0.0);
+                 set_state(PART:"check", "on", 0.0);
+              }
+            else
+              {
+                 set_state(PART:"uncheck", "default", 0.0);
+                 set_state(PART:"check", "default", 0.0);
+              }
+            set_state(PART:"bg", "default", 0.0);
+            set_state(PART:"outline", "default", 0.0);
+            set_state(PART:"clipper", "default", 0.0);
+            set_state(PART:"bg_opacity_clip", "default", 0.0);
+            set_state(PART:"outline_opacity_clip", "default", 0.0);
+            set_int(check_disabled, 0);
+         }
+      }
+   }
+}
+
+// List Check Style
+
+group { name: "elm/check/base/list";
+   images {
+      image: "tw_btn_check_bg_holo_dark.png" COMP;
+      image: "tw_btn_check_holo_dark.png" COMP;
+      image: "tw_btn_check_clipper.png" COMP;
+   }
+   script {
+      public check_state;
+      public check_disabled;
+      public check_visible;
+   }
+   parts {
+      part { name: "bg";
+         scale: 1;
+         clip_to : "bg_opacity_clip";
+         description { state: "default" 0.0;
+            align: 0.0 0.5;
+            min: CHECK_SIZE_INC;
+            max: CHECK_SIZE_INC;
+            image.normal: "tw_btn_check_bg_holo_dark.png";
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            color: 132 191 15 255;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 177 178 174 255;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 75 76 74 255;
+         }
+      }
+      part { name: "bg_opacity_clip";
+         type: RECT;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            color: 255 255 255 0;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 0;
+         }
+      }
+      part { name: "outline";
+         scale: 1;
+         clip_to : "outline_opacity_clip";
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image.normal: "tw_btn_check_bg_holo_dark.png";
+            color: 249 249 249 76;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 204;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 25;
+         }
+         description { state: "focused" 0.0;
+            inherit: "default" 0.0;
+            color: 0 110 255 255; /*(Changeable UI) color_class: "W201";*/
+         }
+      }
+      part { name: "outline_opacity_clip";
+         type: RECT;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            color: 255 255 255 255;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 0;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+      }
+      part { name: "uncheck";
+         type: IMAGE;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image.normal: "tw_btn_check_holo_dark.png";
+            color: 249 249 249 102;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 102;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 102;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 38;
+         }
+      }
+      part { name: "check";
+         type: IMAGE;
+         scale: 1;
+         clip_to: "clipper";
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image.normal: "tw_btn_check_holo_dark.png";
+            color: 249 249 249 255;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 255;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 255;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 76 76 76 255;
+         }
+      }
+      part { name: "clipper";
+         type: IMAGE;
+         scale: 1;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            image.normal: "tw_btn_check_clipper.png";
+            rel1.to: "bg";
+            rel2.to: "bg";
+            rel1.offset: -3 13;
+            rel2.offset: -3 13;
+            min: 0 0;
+            max: 0 0;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            min: CHECK_CLIPPER_SIZE_INC;
+            max: CHECK_CLIPPER_SIZE_INC;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            min: CHECK_CLIPPER_SIZE_INC;
+            max: CHECK_CLIPPER_SIZE_INC;
+         }
+      }
+      part { name: "event";
+         scale: 1;
+         type: RECT;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+      }
+   }
+   programs {
+      program { name: "show";
+         signal: "show";
+         script {
+            set_int(check_visible, 1);
+         }
+      }
+      program { name: "hide";
+         signal: "hide";
+         script {
+            set_int(check_visible, 0);
+         }
+      }
+      program { name: "unpressed";
+         signal: "mouse,up,1";
+         source: "event";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"uncheck", "on", 0.0);
+                 set_state(PART:"check", "on", 0.0);
+                 set_state(PART:"bg", "on", 0.0);
+                 set_state(PART:"outline", "on", 0.0);
+              }
+            else
+              {
+                 set_state(PART:"uncheck", "default", 0.0);
+                 set_state(PART:"check", "default", 0.0);
+                 set_state(PART:"bg", "default", 0.0);
+                 set_state(PART:"outline", "default", 0.0);
+              }
+         }
+      }
+      program { name: "unpressed2";
+         signal: "elm,state,mouse,up";
+         source: "elm";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"uncheck", "on", 0.0);
+                 set_state(PART:"check", "on", 0.0);
+                 set_state(PART:"bg", "on", 0.0);
+                 set_state(PART:"outline", "on", 0.0);
+              }
+            else
+              {
+                 set_state(PART:"uncheck", "default", 0.0);
+                 set_state(PART:"check", "default", 0.0);
+                 set_state(PART:"bg", "default", 0.0);
+                 set_state(PART:"outline", "default", 0.0);
+              }
+         }
+      }
+      program { name: "pressed";
+         signal: "mouse,down,1";
+         source: "event";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            set_state(PART:"uncheck", "pressed", 0.0);
+            set_state(PART:"check", "pressed", 0.0);
+            set_state(PART:"bg", "pressed", 0.0);
+            set_state(PART:"outline", "pressed", 0.0);
+         }
+      }
+      program { name: "pressed2";
+         signal: "elm,state,mouse,down";
+         source: "elm";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            set_state(PART:"uncheck", "pressed", 0.0);
+            set_state(PART:"check", "pressed", 0.0);
+            set_state(PART:"bg", "pressed", 0.0);
+            set_state(PART:"outline", "pressed", 0.0);
+         }
+      }
+      program { name: "check_on";
+         signal: "elm,state,check,on";
+         source: "elm";
+         script {
+            if (get_int(check_disabled) == 1)
+              {
+                 set_state(PART:"bg", "disabled", 0.0);
+                 set_state(PART:"outline", "disabled", 0.0);
+                 set_state(PART:"uncheck", "disabled", 0.0);
+                 set_state(PART:"check", "disabled", 0.0);
+              }
+            else if (get_int(check_visible) == 1)
+              {
+                 run_program(PROGRAM:"clipper_on");
+                 run_program(PROGRAM:"bg_on_show_effect");
+                 run_program(PROGRAM:"bg_on_draw_effect");
+              }
+            else if (get_int(check_visible) == 0)
+              {
+                 set_state(PART:"bg", "on", 0.0);
+                 set_state(PART:"outline", "on", 0.0);
+                 set_state(PART:"uncheck", "on", 0.0);
+                 set_state(PART:"check", "on", 0.0);
+                 set_state(PART:"clipper", "on", 0.0);
+                 set_state(PART:"bg_opacity_clip", "on", 0.0);
+                 set_state(PART:"outline_opacity_clip", "on", 0.0);
+              }
+            set_int(check_state, 1);
+         }
+      }
+      program { name: "check_off";
+         signal: "elm,state,check,off";
+         source: "elm";
+         script {
+            if (get_int(check_disabled) == 1)
+              {
+                 set_state(PART:"bg", "disabled", 0.0);
+                 set_state(PART:"outline", "disabled", 0.0);
+                 set_state(PART:"uncheck", "disabled", 0.0);
+                 set_state(PART:"check", "disabled", 0.0);
+              }
+            else if (get_int(check_visible) == 1)
+              {
+                 run_program(PROGRAM:"clipper_off");
+                 run_program(PROGRAM:"bg_off_show_effect");
+                 run_program(PROGRAM:"bg_off_draw_effect");
+              }
+            else if (get_int(check_visible) == 0)
+              {
+                 set_state(PART:"bg", "default", 0.0);
+                 set_state(PART:"outline", "default", 0.0);
+                 set_state(PART:"uncheck", "default", 0.0);
+                 set_state(PART:"check", "default", 0.0);
+                 set_state(PART:"clipper", "default", 0.0);
+                 set_state(PART:"bg_opacity_clip", "default", 0.0);
+                 set_state(PART:"outline_opacity_clip", "default", 0.0);
+              }
+            set_int(check_state, 0);
+         }
+      }
+      program { name: "clipper_on";
+         action: STATE_SET "on" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.45 0.03 0.41 1.0;
+         target: "clipper";
+         target: "uncheck";
+         target: "check";
+      }
+      program { name: "clipper_off";
+         action: STATE_SET "default" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.45 0.03 0.41 1.0;
+         target: "clipper";
+         target: "uncheck";
+         target: "check";
+      }
+      program { name: "bg_on_show_effect";
+         action: STATE_SET "on" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.45 0.03 0.41 1.0;
+         target: "bg";
+         target: "outline";
+      }
+      program { name: "bg_on_draw_effect";
+         action: STATE_SET "on" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.45 0.03 0.41 1.0;
+         target: "bg_opacity_clip";
+         target: "outline_opacity_clip";
+      }
+      program { name: "bg_off_show_effect";
+         action: STATE_SET "default" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.45 0.03 0.41 1.0;
+         target: "bg";
+         target: "outline";
+      }
+      program { name: "bg_off_draw_effect";
+         action: STATE_SET "default" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.45 0.03 0.41 1.0;
+         target: "bg_opacity_clip";
+         target: "outline_opacity_clip";
+      }
+      program { name: "focus";
+         signal: "elm,action,focus_highlight,show";
+         source: "elm";
+         action: STATE_SET "focused" 0.0;
+         target: "outline";
+      }
+      program { name: "unfocus";
+         signal: "elm,action,focus_highlight,hide";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "outline";
+      }
+      program { name: "disable";
+         signal: "elm,state,disabled";
+         source: "elm";
+         script {
+            set_state(PART:"uncheck", "disabled", 0.0);
+            set_state(PART:"check", "disabled", 0.0);
+            set_state(PART:"bg", "disabled", 0.0);
+            set_state(PART:"outline", "disabled", 0.0);
+            set_state(PART:"clipper", "disabled", 0.0);
+            set_state(PART:"bg_opacity_clip", "disabled", 0.0);
+            set_state(PART:"outline_opacity_clip", "disabled", 0.0);
+            set_int(check_disabled, 1);
+         }
+      }
+      program { name: "enable";
+         signal: "elm,state,enabled";
+         source: "elm";
+         script {
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"uncheck", "on", 0.0);
+                 set_state(PART:"check", "on", 0.0);
+              }
+            else
+              {
+                 set_state(PART:"uncheck", "default", 0.0);
+                 set_state(PART:"check", "default", 0.0);
+              }
+            set_state(PART:"bg", "default", 0.0);
+            set_state(PART:"outline", "default", 0.0);
+            set_state(PART:"clipper", "default", 0.0);
+            set_state(PART:"bg_opacity_clip", "default", 0.0);
+            set_state(PART:"outline_opacity_clip", "default", 0.0);
+            set_int(check_disabled, 0);
+         }
+      }
+   }
+}
+
+group { name: "elm/check/base/list_divider";
+   inherit: "elm/check/base/default";
+   parts{
+      part { name: "elm.padding.left";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            align: 0.0 0.5;
+            min: BUTTON_DIVIDER_BTN_PADDING_LEFT_SIZE_INC 0;
+            max: BUTTON_DIVIDER_BTN_PADDING_LEFT_SIZE_INC -1;
+            rel2.relative: 0.0 1.0;
+         }
+      }
+      part { name: "elm.padding.right";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            align: 1.0 0.5;
+            min: BUTTON_DIVIDER_BTN_PADDING_RIGHT_SIZE_INC 0;
+            max: BUTTON_DIVIDER_BTN_PADDING_RIGHT_SIZE_INC -1;
+            rel1.relative: 1.0 0.0;
+         }
+      }
+      part { name: "bg";
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0.0 0.5;
+            min: CHECK_SIZE_INC;
+            max: CHECK_SIZE_INC;
+            image.normal: "tw_btn_check_bg_holo_dark.png";
+            rel1.to: "elm.padding.left";
+            rel1.relative: 1.0 0.0;
+            rel2.to: "elm.padding.right";
+            rel2.relative: 0.0 1.0;
+            visible : 0;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            color: 132 191 15 255;
+            visible : 1;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 177 178 174 255;
+            visible : 1;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 75 76 74 255;
+            visible : 0;
+         }
+      }
+   }
+}
+
+group { name: "elm/check/base/on&off";
+   images {
+      image: "tw_btn_control_bg_holo_dark.png" COMP;
+      image: "tw_btn_control_on_holo_dark.png" COMP;
+      image: "tw_btn_control_off_holo_dark.png" COMP;
+   }
+   script {
+      public check_state;
+      public check_disabled;
+      public check_visible;
+   }
+   parts {
+      part { name: "bg";
+         scale: 1;
+         clip_to : "bg_opacity_clip";
+         description { state: "default" 0.0;
+            align: 0.0 0.5;
+            min: CHECK_TOGGLE_SIZE_INC;
+            max: CHECK_TOGGLE_SIZE_INC;
+            image.normal: "tw_btn_control_bg_holo_dark.png";
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            color: 132 191 15 255;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 177 178 174 255;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 75 76 74 255;
+         }
+      }
+      part { name: "bg_opacity_clip";
+         type: RECT;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            color: 255 255 255 0;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 0;
+         }
+      }
+      part { name: "outline";
+         scale: 1;
+         clip_to : "outline_opacity_clip";
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image.normal: "tw_btn_control_bg_holo_dark.png";
+            color: 249 249 249 76;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 204;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 25;
+         }
+         description { state: "focused" 0.0;
+            inherit: "default" 0.0;
+            color: 0 110 255 255; /*(Changeable UI) color_class: "W201";*/
+         }
+      }
+      part { name: "outline_opacity_clip";
+         type: RECT;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            color: 255 255 255 255;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 0;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+      }
+      part { name: "check_on";
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image.normal: "tw_btn_control_on_holo_dark.png";
+            map {
+               on: 1;
+               zoom.x: 0.0;
+               zoom.y: 0.0;
+            }
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 255;
+            map {
+               zoom.x: 1.0;
+               zoom.y: 1.0;
+            }
+         }
+         description { state: "on_pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 255;
+            map {
+               zoom.x: 1.0;
+               zoom.y: 1.0;
+            }
+         }
+         description { state: "off_pressed" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 76 76 76 255;
+         }
+      }
+      part { name: "check_off";
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image.normal: "tw_btn_control_off_holo_dark.png";
+            color: 249 249 249 255;
+            map {
+               on: 1;
+               zoom.x: 1.0;
+               zoom.y: 1.0;
+            }
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            map {
+               zoom.x: 0.0;
+               zoom.y: 0.0;
+            }
+         }
+         description { state: "on_pressed" 0.0;
+            inherit: "default" 0.0;
+            map {
+               zoom.x: 0.0;
+               zoom.y: 0.0;
+            }
+         }
+         description { state: "off_pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 255;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 38;
+         }
+      }
+      part { name: "event";
+         scale: 1;
+         type: RECT;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+      }
+   }
+   programs {
+      program { name: "show";
+         signal: "show";
+         script {
+            set_int(check_visible, 1);
+         }
+      }
+      program { name: "hide";
+         signal: "hide";
+         script {
+            set_int(check_visible, 0);
+         }
+      }
+      program { name: "click";
+         signal: "mouse,clicked,1";
+         source: "event";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            emit("elm,action,check,toggle", "");
+            run_program(PROGRAM:"play_sample");
+         }
+      }
+      program {
+            name: "play_sample";
+            action: RUN_PLUGIN "touch_sound";
+      }
+      program { name: "unpressed";
+         signal: "mouse,up,1";
+         source: "event";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"check_on", "on", 0.0);
+                 set_state(PART:"check_off", "on", 0.0);
+                 set_state(PART:"bg", "on", 0.0);
+                 set_state(PART:"outline", "on", 0.0);
+              }
+            else
+              {
+                 set_state(PART:"check_on", "default", 0.0);
+                 set_state(PART:"check_off", "default", 0.0);
+                 set_state(PART:"bg", "default", 0.0);
+                 set_state(PART:"outline", "default", 0.0);
+              }
+         }
+      }
+      program { name: "unpressed2";
+         signal: "elm,state,mouse,up";
+         source: "elm";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"check_on", "on", 0.0);
+                 set_state(PART:"check_off", "on", 0.0);
+                 set_state(PART:"bg", "on", 0.0);
+                 set_state(PART:"outline", "on", 0.0);
+              }
+            else
+              {
+                 set_state(PART:"check_on", "default", 0.0);
+                 set_state(PART:"check_off", "default", 0.0);
+                 set_state(PART:"bg", "default", 0.0);
+                 set_state(PART:"outline", "default", 0.0);
+              }
+         }
+      }
+      program { name: "pressed";
+         signal: "mouse,down,1";
+         source: "event";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"check_on", "on_pressed", 0.0);
+                 set_state(PART:"check_off", "on_pressed", 0.0)
+              }
+            else
+              {
+                 set_state(PART:"check_on", "off_pressed", 0.0);
+                 set_state(PART:"check_off", "off_pressed", 0.0);
+              }
+            set_state(PART:"bg", "pressed", 0.0);
+            set_state(PART:"outline", "pressed", 0.0);
+         }
+      }
+      program { name: "pressed2";
+         signal: "elm,state,mouse,down";
+         source: "elm";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"check_on", "on_pressed", 0.0);
+                 set_state(PART:"check_off", "on_pressed", 0.0)
+              }
+            else
+              {
+                 set_state(PART:"check_on", "off_pressed", 0.0);
+                 set_state(PART:"check_off", "off_pressed", 0.0);
+              }
+            set_state(PART:"bg", "pressed", 0.0);
+            set_state(PART:"outline", "pressed", 0.0);
+         }
+      }
+      program { name: "check_on";
+         signal: "elm,state,check,on";
+         source: "elm";
+         script {
+            if (get_int(check_disabled) == 1)
+              {
+                 set_state(PART:"bg", "disabled", 0.0);
+                 set_state(PART:"outline", "disabled", 0.0);
+                 set_state(PART:"check_on", "disabled", 0.0);
+                 set_state(PART:"check_off", "disabled", 0.0);
+              }
+            else if (get_int(check_visible) == 1)
+              {
+                 run_program(PROGRAM:"start_check_on_show_effect");
+                 run_program(PROGRAM:"bg_on_show_effect");
+                 run_program(PROGRAM:"bg_on_draw_effect");
+              }
+            else if (get_int(check_visible) == 0)
+              {
+                 set_state(PART:"bg", "on", 0.0);
+                 set_state(PART:"outline", "on", 0.0);
+                 set_state(PART:"check_on", "on", 0.0);
+                 set_state(PART:"check_off", "on", 0.0);
+                 set_state(PART:"bg_opacity_clip", "on", 0.0);
+                 set_state(PART:"outline_opacity_clip", "on", 0.0);
+              }
+            set_int(check_state, 1);
+         }
+      }
+      program { name: "check_off";
+         signal: "elm,state,check,off";
+         source: "elm";
+         script {
+            if (get_int(check_disabled) == 1)
+              {
+                 set_state(PART:"bg", "disabled", 0.0);
+                 set_state(PART:"outline", "disabled", 0.0);
+                 set_state(PART:"check_on", "disabled", 0.0);
+                 set_state(PART:"check_off", "disabled", 0.0);
+              }
+            else if (get_int(check_visible) == 1)
+              {
+                 run_program(PROGRAM:"start_check_off_show_effect");
+                 run_program(PROGRAM:"bg_off_show_effect");
+                 run_program(PROGRAM:"bg_off_draw_effect");
+              }
+            else if (get_int(check_visible) == 0)
+              {
+                 set_state(PART:"bg", "default", 0.0);
+                 set_state(PART:"outline", "default", 0.0);
+                 set_state(PART:"check_on", "default", 0.0);
+                 set_state(PART:"check_off", "default", 0.0);
+                 set_state(PART:"bg_opacity_clip", "default", 0.0);
+                 set_state(PART:"outline_opacity_clip", "default", 0.0);
+              }
+            set_int(check_state, 0);
+         }
+      }
+      program { name: "bg_on_show_effect";
+         action: STATE_SET "on" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.45 0.03 0.41 1.0;
+         target: "bg";
+         target: "outline";
+      }
+      program { name: "bg_on_draw_effect";
+         action: STATE_SET "on" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.45 0.03 0.41 1.0;
+         target: "bg_opacity_clip";
+         target: "outline_opacity_clip";
+      }
+      program { name: "bg_off_show_effect";
+         action: STATE_SET "default" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.45 0.03 0.41 1.0;
+         target: "bg";
+         target: "outline";
+      }
+      program { name: "bg_off_draw_effect";
+         action: STATE_SET "default" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.45 0.03 0.41 1.0;
+         target: "bg_opacity_clip";
+         target: "outline_opacity_clip";
+      }
+      program { name: "start_check_on_show_effect";
+         action: STATE_SET "on" 0.0;
+         transition: CUBIC_BEZIER 0.175 0.45 0.03 0.41 1.0;
+         target: "check_off";
+         after: "end_check_on_show_effect";
+      }
+      program { name: "end_check_on_show_effect";
+         action: STATE_SET "on" 0.0;
+         transition: CUBIC_BEZIER 0.175 0.45 0.03 0.41 1.0;
+         target: "check_on";
+      }
+      program { name: "start_check_off_show_effect";
+         action: STATE_SET "default" 0.0;
+         transition: CUBIC_BEZIER 0.175 0.45 0.03 0.41 1.0;
+         target: "check_on";
+         after: "end_check_off_show_effect";
+      }
+      program { name: "end_check_off_show_effect";
+         action: STATE_SET "default" 0.0;
+         transition: CUBIC_BEZIER 0.175 0.45 0.03 0.41 1.0;
+         target: "check_off";
+      }
+      program { name: "focus";
+         signal: "elm,action,focus_highlight,show";
+         source: "elm";
+         action: STATE_SET "focused" 0.0;
+         target: "outline";
+      }
+      program { name: "unfocus";
+         signal: "elm,action,focus_highlight,hide";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "outline";
+      }
+      program { name: "disable";
+         signal: "elm,state,disabled";
+         source: "elm";
+         script {
+            set_state(PART:"check_on", "disabled", 0.0);
+            set_state(PART:"check_off", "disabled", 0.0);
+            set_state(PART:"bg", "disabled", 0.0);
+            set_state(PART:"outline", "disabled", 0.0);
+            set_state(PART:"bg_opacity_clip", "disabled", 0.0);
+            set_state(PART:"outline_opacity_clip", "disabled", 0.0);
+            set_int(check_disabled, 1);
+         }
+      }
+      program { name: "enable";
+         signal: "elm,state,enabled";
+         source: "elm";
+         script {
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"check_on", "on", 0.0);
+                 set_state(PART:"check_off", "on", 0.0);
+              }
+            else
+              {
+                 set_state(PART:"check_on", "default", 0.0);
+                 set_state(PART:"check_off", "default", 0.0);
+              }   
+            set_state(PART:"bg", "default", 0.0);
+            set_state(PART:"outline", "default", 0.0);
+            set_state(PART:"bg_opacity_clip", "default", 0.0);
+            set_state(PART:"outline_opacity_clip", "default", 0.0);
+            set_int(check_disabled, 0);
+         }
+      }
+   }
+}
+
+group { name: "elm/check/base/on&off/list";
+   images {
+      image: "tw_btn_control_bg_holo_dark.png" COMP;
+      image: "tw_btn_control_on_holo_dark.png" COMP;
+      image: "tw_btn_control_off_holo_dark.png" COMP;
+   }
+   script {
+      public check_state;
+      public check_disabled;
+      public check_visible;
+   }
+   parts {
+      part { name: "bg";
+         scale: 1;
+         clip_to : "bg_opacity_clip";
+         description { state: "default" 0.0;
+            align: 0.0 0.5;
+            min: CHECK_TOGGLE_SIZE_INC;
+            max: CHECK_TOGGLE_SIZE_INC;
+            image.normal: "tw_btn_control_bg_holo_dark.png";
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            color: 132 191 15 255;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 177 178 174 255;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 75 76 74 255;
+         }
+      }
+      part { name: "bg_opacity_clip";
+         type: RECT;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            color: 255 255 255 0;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 0;
+         }
+      }
+      part { name: "outline";
+         scale: 1;
+         clip_to : "outline_opacity_clip";
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image.normal: "tw_btn_control_bg_holo_dark.png";
+            color: 249 249 249 76;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 204;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 25;
+         }
+         description { state: "focused" 0.0;
+            inherit: "default" 0.0;
+            color: 0 110 255 255; /*(Changeable UI) color_class: "W201";*/
+         }
+      }
+      part { name: "outline_opacity_clip";
+         type: RECT;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            color: 255 255 255 255;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 0;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+      }
+      part { name: "check_on";
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image.normal: "tw_btn_control_on_holo_dark.png";
+            map {
+               on: 1;
+               zoom.x: 0.0;
+               zoom.y: 0.0;
+            }
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 255;
+            map {
+               zoom.x: 1.0;
+               zoom.y: 1.0;
+            }
+         }
+         description { state: "on_pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 255;
+            map {
+               zoom.x: 1.0;
+               zoom.y: 1.0;
+            }
+         }
+         description { state: "off_pressed" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 76 76 76 255;
+         }
+      }
+      part { name: "check_off";
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image.normal: "tw_btn_control_off_holo_dark.png";
+            color: 249 249 249 255;
+            map {
+               on: 1;
+               zoom.x: 1.0;
+               zoom.y: 1.0;
+            }
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            map {
+               zoom.x: 0.0;
+               zoom.y: 0.0;
+            }
+         }
+         description { state: "on_pressed" 0.0;
+            inherit: "default" 0.0;
+            map {
+               zoom.x: 0.0;
+               zoom.y: 0.0;
+            }
+         }
+         description { state: "off_pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 255;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 38;
+         }
+      }
+      part { name: "event";
+         scale: 1;
+         type: RECT;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+      }
+   }
+   programs {
+      program { name: "show";
+         signal: "show";
+         script {
+            set_int(check_visible, 1);
+         }
+      }
+      program { name: "hide";
+         signal: "hide";
+         script {
+            set_int(check_visible, 0);
+         }
+      }
+      program { name: "click";
+         signal: "mouse,clicked,1";
+         source: "event";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            emit("elm,action,check,toggle", "");
+            run_program(PROGRAM:"play_sample");
+         }
+      }
+      program {
+            name: "play_sample";
+            action: RUN_PLUGIN "touch_sound";
+      }
+      program { name: "unpressed";
+         signal: "mouse,up,1";
+         source: "event";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"check_on", "on", 0.0);
+                 set_state(PART:"check_off", "on", 0.0);
+                 set_state(PART:"bg", "on", 0.0);
+                 set_state(PART:"outline", "on", 0.0);
+              }
+            else
+              {
+                 set_state(PART:"check_on", "default", 0.0);
+                 set_state(PART:"check_off", "default", 0.0);
+                 set_state(PART:"bg", "default", 0.0);
+                 set_state(PART:"outline", "default", 0.0);
+              }
+         }
+      }
+      program { name: "unpressed2";
+         signal: "elm,state,mouse,up";
+         source: "elm";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"check_on", "on", 0.0);
+                 set_state(PART:"check_off", "on", 0.0);
+                 set_state(PART:"bg", "on", 0.0);
+                 set_state(PART:"outline", "on", 0.0);
+              }
+            else
+              {
+                 set_state(PART:"check_on", "default", 0.0);
+                 set_state(PART:"check_off", "default", 0.0);
+                 set_state(PART:"bg", "default", 0.0);
+                 set_state(PART:"outline", "default", 0.0);
+              }
+         }
+      }
+      program { name: "pressed";
+         signal: "mouse,down,1";
+         source: "event";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"check_on", "on_pressed", 0.0);
+                 set_state(PART:"check_off", "on_pressed", 0.0)
+              }
+            else
+              {
+                 set_state(PART:"check_on", "off_pressed", 0.0);
+                 set_state(PART:"check_off", "off_pressed", 0.0);
+              }
+            set_state(PART:"bg", "pressed", 0.0);
+            set_state(PART:"outline", "pressed", 0.0);
+         }
+      }
+      program { name: "pressed2";
+         signal: "elm,state,mouse,down";
+         source: "elm";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"check_on", "on_pressed", 0.0);
+                 set_state(PART:"check_off", "on_pressed", 0.0)
+              }
+            else
+              {
+                 set_state(PART:"check_on", "off_pressed", 0.0);
+                 set_state(PART:"check_off", "off_pressed", 0.0);
+              }
+            set_state(PART:"bg", "pressed", 0.0);
+            set_state(PART:"outline", "pressed", 0.0);
+         }
+      }
+      program { name: "check_on";
+         signal: "elm,state,check,on";
+         source: "elm";
+         script {
+            if (get_int(check_disabled) == 1)
+              {
+                 set_state(PART:"bg", "disabled", 0.0);
+                 set_state(PART:"outline", "disabled", 0.0);
+                 set_state(PART:"check_on", "disabled", 0.0);
+                 set_state(PART:"check_off", "disabled", 0.0);
+              }
+            else if (get_int(check_visible) == 1)
+              {
+                 run_program(PROGRAM:"start_check_on_show_effect");
+                 run_program(PROGRAM:"bg_on_show_effect");
+                 run_program(PROGRAM:"bg_on_draw_effect");
+              }
+            else if (get_int(check_visible) == 0)
+              {
+                 set_state(PART:"bg", "on", 0.0);
+                 set_state(PART:"outline", "on", 0.0);
+                 set_state(PART:"check_on", "on", 0.0);
+                 set_state(PART:"check_off", "on", 0.0);
+                 set_state(PART:"bg_opacity_clip", "on", 0.0);
+                 set_state(PART:"outline_opacity_clip", "on", 0.0);
+              }
+            set_int(check_state, 1);
+         }
+      }
+      program { name: "check_off";
+         signal: "elm,state,check,off";
+         source: "elm";
+         script {
+            if (get_int(check_disabled) == 1)
+              {
+                 set_state(PART:"bg", "disabled", 0.0);
+                 set_state(PART:"outline", "disabled", 0.0);
+                 set_state(PART:"check_on", "disabled", 0.0);
+                 set_state(PART:"check_off", "disabled", 0.0);
+              }
+            else if (get_int(check_visible) == 1)
+              {
+                 run_program(PROGRAM:"start_check_off_show_effect");
+                 run_program(PROGRAM:"bg_off_show_effect");
+                 run_program(PROGRAM:"bg_off_draw_effect");
+              }
+            else if (get_int(check_visible) == 0)
+              {
+                 set_state(PART:"bg", "default", 0.0);
+                 set_state(PART:"outline", "default", 0.0);
+                 set_state(PART:"check_on", "default", 0.0);
+                 set_state(PART:"check_off", "default", 0.0);
+                 set_state(PART:"bg_opacity_clip", "default", 0.0);
+                 set_state(PART:"outline_opacity_clip", "default", 0.0);
+              }
+            set_int(check_state, 0);
+         }
+      }
+      program { name: "bg_on_show_effect";
+         action: STATE_SET "on" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.45 0.03 0.41 1.0;
+         target: "bg";
+         target: "outline";
+      }
+      program { name: "bg_on_draw_effect";
+         action: STATE_SET "on" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.45 0.03 0.41 1.0;
+         target: "bg_opacity_clip";
+         target: "outline_opacity_clip";
+      }
+      program { name: "bg_off_show_effect";
+         action: STATE_SET "default" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.45 0.03 0.41 1.0;
+         target: "bg";
+         target: "outline";
+      }
+      program { name: "bg_off_draw_effect";
+         action: STATE_SET "default" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.45 0.03 0.41 1.0;
+         target: "bg_opacity_clip";
+         target: "outline_opacity_clip";
+      }
+      program { name: "start_check_on_show_effect";
+         action: STATE_SET "on" 0.0;
+         transition: CUBIC_BEZIER 0.175 0.45 0.03 0.41 1.0;
+         target: "check_off";
+         after: "end_check_on_show_effect";
+      }
+      program { name: "end_check_on_show_effect";
+         action: STATE_SET "on" 0.0;
+         transition: CUBIC_BEZIER 0.175 0.45 0.03 0.41 1.0;
+         target: "check_on";
+      }
+      program { name: "start_check_off_show_effect";
+         action: STATE_SET "default" 0.0;
+         transition: CUBIC_BEZIER 0.175 0.45 0.03 0.41 1.0;
+         target: "check_on";
+         after: "end_check_off_show_effect";
+      }
+      program { name: "end_check_off_show_effect";
+         action: STATE_SET "default" 0.0;
+         transition: CUBIC_BEZIER 0.175 0.45 0.03 0.41 1.0;
+         target: "check_off";
+      }
+      program { name: "focus";
+         signal: "elm,action,focus_highlight,show";
+         source: "elm";
+         action: STATE_SET "focused" 0.0;
+         target: "outline";
+      }
+      program { name: "unfocus";
+         signal: "elm,action,focus_highlight,hide";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "outline";
+      }
+      program { name: "disable";
+         signal: "elm,state,disabled";
+         source: "elm";
+         script {
+            set_state(PART:"check_on", "disabled", 0.0);
+            set_state(PART:"check_off", "disabled", 0.0);
+            set_state(PART:"bg", "disabled", 0.0);
+            set_state(PART:"outline", "disabled", 0.0);
+            set_state(PART:"bg_opacity_clip", "disabled", 0.0);
+            set_state(PART:"outline_opacity_clip", "disabled", 0.0);
+            set_int(check_disabled, 1);
+         }
+      }
+      program { name: "enable";
+         signal: "elm,state,enabled";
+         source: "elm";
+         script {
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"check_on", "on", 0.0);
+                 set_state(PART:"check_off", "on", 0.0);
+              }
+            else
+              {
+                 set_state(PART:"check_on", "default", 0.0);
+                 set_state(PART:"check_off", "default", 0.0);
+              }   
+            set_state(PART:"bg", "default", 0.0);
+            set_state(PART:"outline", "default", 0.0);
+            set_state(PART:"bg_opacity_clip", "default", 0.0);
+            set_state(PART:"outline_opacity_clip", "default", 0.0);
+            set_int(check_disabled, 0);
+         }
+      }
+   }
+}
+
+group { name: "elm/check/base/popup";
+inherit: "elm/check/base/default";
+   alias: "elm/check/base/small";
+   images {
+      image: "tw_btn_check_small_bg_holo_dark.png" COMP;
+      image: "tw_btn_check_small_holo_dark.png" COMP;
+   }
+   parts {
+      part { name: "bg";
+         scale: 1;
+         clip_to : "bg_opacity_clip";
+         description { state: "default" 0.0;
+            align: 0.0 0.5;
+            min: CHECK_SMALL_SIZE_INC;
+            max: CHECK_SMALL_SIZE_INC;
+            image.normal: "tw_btn_check_small_bg_holo_dark.png";
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            color: 132 191 15 255; /* color_class: "W012L1"; */
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 177 178 174 255; /* color_class: "W012L1P"; */
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 75 76 74 255; /* color_class: "W012L1D"; */
+         }
+      }
+      part { name: "outline";
+         scale: 1;
+         clip_to : "outline_opacity_clip";
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image.normal: "tw_btn_check_small_bg_holo_dark.png";
+            color: 249 249 249 76; /* color_class: "W014L2"; */
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 204; /* color_class: "W012L2P"; */
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 25; /* color_class: "W012L2D"; */
+         }
+         description { state: "focused" 0.0;
+            inherit: "default" 0.0;
+            /* color_class: "W201"; */
+         }
+      }
+      part { name: "uncheck";
+         type: IMAGE;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image.normal: "tw_btn_check_small_holo_dark.png";
+            color: 249 249 249 102; /* color_class: "W012L4"; */
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            /* color_class: "W012L4"; */
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            /* color_class: "W012L4"; */
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 38; /* color_class: "W012L4D"; */
+         }
+      }
+      part { name: "check";
+         type: IMAGE;
+         scale: 1;
+         clip_to: "clipper";
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            image.normal: "tw_btn_check_small_holo_dark.png";
+            color: 249 249 249 255; /* color_class: "W012L3"; */
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            /* color_class: "W012L3"; */
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 255; /* color_class: "W012L3P"; */
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 76 76 76 255; /* color_class: "W012L3D"; */
+         }
+      }
+      part { name: "padding_before_text";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0.0 0.5;
+            min: 0 0;
+            fixed: 1 0;
+            rel1 {
+               to_x: "check";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "check";
+               relative: 1.0 1.0;
+            }
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            min: CHECK_PADDING_SIZE_INC;
+            max: CHECK_PADDING_SIZE_INC;
+         }
+      }
+      part { name: "elm.text";
+         type: TEXTBLOCK;
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: CHECK_TEXT_WIDTH_SIZE_INC 0;
+            rel1 {
+               relative: 1.0 0.0;
+               to_x: "padding_before_text";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+            }
+            align: 0.0 0.5;
+            rel2.offset: -7 0;
+            text {
+               style: "check_text_normal";
+               align: 0.0 0.5;
+               min: 0 1;
+            }
+         }
+      }
+   }
+   programs {
+      program { name: "text_show";
+         signal: "elm,state,text,visible";
+         source: "elm";
+         action: STATE_SET "visible" 0.0;
+         target: "padding_before_text";
+      }
+      program { name: "text_hide";
+         signal: "elm,state,text,hidden";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "padding_before_text";
+      }
+   }
+}
+
+group { name: "elm/check/base/genlist/select_mode";
+   alias: "elm/check/base/genlist/edit_mode";
+   images {
+      image: "tw_list_check_ic.png" COMP;
+      image: "tw_list_check_line.png" COMP;
+   }
+   script {
+      public check_state;
+      public check_disabled;
+      public check_visible;
+   }
+   parts {
+      part { name: "check";
+         clip_to: "sequence_clip";
+         scale: 1;
+         description { state: "default" 0.0;
+            min: CHECK_SIZE_INC;
+            max: CHECK_SIZE_INC;
+            image.normal: "tw_list_check_ic.png";
+            visible: 0;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 115 191 15 255; /*(Changeable UI) color_class: "B0261";*/
+         }
+         description { state: "pressed" 0.0;
+            inherit: "on" 0.0;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "on" 0.0;
+         }
+      }
+      part { name: "check_line";
+         clip_to: "sequence_clip";
+         scale: 1;
+         description { state: "default" 0.0;
+            min: CHECK_SIZE_INC;
+            max: CHECK_SIZE_INC;
+            image.normal: "tw_list_check_line.png";
+            visible: 0;
+         }
+         description { state: "on" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 229 229 229 255; /*(Changeable UI) color_class: "B0262";*/
+         }
+         description { state: "pressed" 0.0;
+            inherit: "on" 0.0;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "on" 0.0;
+         }
+      }
+      part { name: "sequence_clip";
+         type: RECT;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            rel1.to: "check";
+            rel2 {
+               relative: 0.0 1.0;
+               to: "check";
+            }
+            color: 255 255 255 255;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            rel2 {
+               relative: 1.0 1.0;
+               to: "check";
+            }
+         }
+      }
+      part { name: "event";
+         scale: 1;
+         type: RECT;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+      }
+   }
+   programs {
+      program { name: "show";
+         signal: "show";
+         script {
+            set_int(check_visible, 1);
+         }
+      }
+      program { name: "hide";
+         signal: "hide";
+         script {
+            set_int(check_visible, 0);
+         }
+      }
+      program { name: "click";
+         signal: "mouse,clicked,1";
+         source: "event";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            emit("elm,action,check,toggle", "");
+            run_program(PROGRAM:"play_sample");
+         }
+      }
+      program {
+            name: "play_sample";
+            action: RUN_PLUGIN "touch_sound";
+      }
+      program { name: "unpressed";
+         signal: "mouse,up,1";
+         source: "event";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"check", "on", 0.0);
+                 set_state(PART:"check_line", "on", 0.0);
+              }
+            else
+              {
+                 set_state(PART:"check", "default", 0.0);
+                 set_state(PART:"check_line", "default", 0.0);
+              }
+         }
+      }
+      program { name: "unpressed2";
+         signal: "elm,state,mouse,up";
+         source: "elm";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"check", "on", 0.0);
+                 set_state(PART:"check_line", "on", 0.0);
+              }
+            else
+              {
+                 set_state(PART:"check", "default", 0.0);
+                 set_state(PART:"check_line", "default", 0.0);
+              }
+         }
+      }
+      program { name: "pressed";
+         signal: "mouse,down,1";
+         source: "event";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"check", "pressed", 0.0);
+                 set_state(PART:"check_line", "pressed", 0.0);
+              }
+            else
+              {
+                 set_state(PART:"check", "default", 0.0);
+                 set_state(PART:"check_line", "default", 0.0);
+              }
+         }
+      }
+      program { name: "pressed2";
+         signal: "elm,state,mouse,down";
+         source: "elm";
+         script {
+            if (get_int(check_disabled) == 1) return;
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"check", "pressed", 0.0);
+                 set_state(PART:"check_line", "pressed", 0.0);
+              }
+            else
+              {
+                 set_state(PART:"check", "default", 0.0);
+                 set_state(PART:"check_line", "default", 0.0);
+              }
+         }
+      }
+      program { name: "check_on";
+         signal: "elm,state,check,on";
+         source: "elm";
+         script {
+            if (get_int(check_disabled) == 1)
+              {
+                 set_state(PART:"check", "disabled", 0.0);
+                 set_state(PART:"check_line", "disabled", 0.0);
+                 set_state(PART:"sequence_clip", "visible", 0.0);
+              }
+            else if (get_int(check_visible) == 1)
+              {
+                 run_program(PROGRAM:"check_show_effect");
+                 run_program(PROGRAM:"check_draw_effect");
+              }
+            else if (get_int(check_visible) == 0)
+              {
+                 set_state(PART:"check", "on", 0.0);
+                 set_state(PART:"check_line", "on", 0.0);
+                 set_state(PART:"sequence_clip", "visible", 0.0);
+              }
+            set_int(check_state, 1);
+         }
+      }
+      program { name: "check_off";
+         signal: "elm,state,check,off";
+         source: "elm";
+         script {
+            set_state(PART:"check", "default", 0.0);
+            set_state(PART:"check_line", "default", 0.0);
+            set_state(PART:"sequence_clip", "default", 0.0);
+            set_int(check_state, 0);
+         }
+      }
+      program { name: "check_show_effect";
+         action: STATE_SET "on" 0.0;
+         transition: CUBIC_BEZIER 0.3 0 0 0.1 1;
+         target: "check";
+         target: "check_line";
+      }
+      program { name: "check_draw_effect";
+         action: STATE_SET "visible" 0.0;
+         transition: CUBIC_BEZIER 0.3 0 0 0.1 1;
+         target: "sequence_clip";
+      }
+      program { name: "disable";
+         signal: "elm,state,disabled";
+         source: "elm";
+         script {
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"check", "disabled", 0.0);
+                 set_state(PART:"check_line", "disabled", 0.0);
+              }
+            else
+              {
+                 set_state(PART:"check", "default", 0.0);
+                 set_state(PART:"check_line", "default", 0.0);
+              }
+            set_int(check_disabled, 1);
+         }
+      }
+      program { name: "enable";
+         signal: "elm,state,enabled";
+         source: "elm";
+         script {
+            if (get_int(check_state) == 1)
+              {
+                 set_state(PART:"check", "on", 0.0);
+                 set_state(PART:"check_line", "on", 0.0);
+              }
+            else
+              {
+                 set_state(PART:"check", "default", 0.0);
+                 set_state(PART:"check_line", "default", 0.0);
+              }
+            set_int(check_disabled, 0);
+         }
+      }
+   }
+}

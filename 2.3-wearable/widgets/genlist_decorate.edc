@@ -1,0 +1,93 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*
+ * vim:ts=3
+ */
+#include "genlist_macro.edc"
+
+group { name: "elm/genlist/item/edit_default/default";
+
+   PROLOG_LIST
+   data.item: "contents" "elm.edit.icon.1";
+
+   script {
+      public enabling;
+      public disabling;
+   }
+   parts {
+      PART_LIST_BG
+      PART_LIST_BOTTOMLINE
+      PART_LIST_PADDINGS(
+         0, LIST_PADDING_R_ICON_RIGHT_SIZE,
+         2, 2 // FIXME: arbitrary value to prevent overlap with bottom lines
+      )
+      PART(SWALLOW, "elm.swallow.decorate.content",
+         DESC_LR("elm.padding.left", "elm.edit.icon1.padding",
+           min: 0 LIST_1LINE_HEIGHT;
+         )
+      )
+      PART(SWALLOW, "elm.edit.icon.1",
+         DESC_R("elm.padding.right", align: 1 0.5; )
+      )
+      PART(SWALLOW, "elm.edit.icon1.padding",
+         DESC_R("elm.edit.icon.1",
+            min: LIST_PADDING_R_ICON_DEFAULT_SIZE 0;
+            max: LIST_PADDING_R_ICON_DEFAULT_SIZE -1;
+         )
+      )
+      PART(RECT, "block_events_on_animation",
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+            visible: 0;
+         }
+         description { state: "block" 0.0;
+            inherit: "default" 0.0;
+             visible: 1;
+         }
+      )
+   }
+   programs {
+      PROGRAM_LIST_DEFAULT(
+         target: "bg";
+         target: "bg_clip";
+         target: "bottom_line";
+         target: "bottom_line_clip";
+         target: "elm.padding.left";
+         target: "elm.padding.right";
+      )
+      PROGRAM_LIST_DISABLE(
+         target: "bg";
+      )
+      PROGRAM_LIST_SELECT(
+         target: "bg";
+      )
+      PROGRAM_LIST_SOUND
+      PROGRAM_LIST_DECORATE(
+         target: "elm.edit.icon.1";
+      )
+   }
+}

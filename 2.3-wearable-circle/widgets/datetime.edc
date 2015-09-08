@@ -1,0 +1,1781 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// datetime
+///////////////////////////////////////////////////////////////////////////////
+
+#define UP_SWALLOW_BTN(_to_part, _visibility) \
+   part { \
+      name: "up_btn_"#_to_part; \
+      type: SWALLOW; \
+      scale: 1; \
+      description { state: "default" 0.0; \
+         align: 0.5 0.0; \
+         min: DATETIME_TOP_FOOT_BUTTON_SWALLOW_SIZE_INC; \
+         max: DATETIME_TOP_FOOT_BUTTON_SWALLOW_SIZE_INC; \
+         fixed: 1 1; \
+         visible: _visibility; \
+         rel1 { \
+            to: _to_part; \
+         } \
+         rel2 { \
+            to: _to_part; \
+         } \
+      } \
+   }
+
+#define DOWN_SWALLOW_BTN(_to_part, _visibility) \
+   part { \
+      name: "down_btn_"#_to_part; \
+      type: SWALLOW; \
+      scale: 1; \
+      description { state: "default" 0.0; \
+         align: 0.5 1.0; \
+         min: DATETIME_TOP_FOOT_BUTTON_SWALLOW_SIZE_INC; \
+         max: DATETIME_TOP_FOOT_BUTTON_SWALLOW_SIZE_INC; \
+         fixed: 1 1; \
+         visible: _visibility; \
+         rel1 { \
+            to: _to_part; \
+         } \
+         rel2 { \
+            to: _to_part; \
+         } \
+      } \
+   }
+
+group { name: "elm/datetime/base/default";
+   alias: "elm/datetime/base/datepicker_layout";
+   parts {
+      part { name: "bg";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: DATETIME_DATE_PICKER_BG_MIN_SIZE_INC;
+            max: DATETIME_DATE_PICKER_BG_MIN_SIZE_INC;
+            fixed: 1 1;
+         }
+      }
+      UP_SWALLOW_BTN(field0.padding, 1)
+      part { name: "field0.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_DATE_YEAR_FIELD_WIDTH_INC 0;
+            rel1.to: "bg";
+            rel2 {
+               relative: 0.0 1.0;
+               to: "bg";
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "month" 0.0;
+            inherit: "default";
+            min: DATETIME_DATE_MONTH_FIELD_WIDTH_INC 0;
+         }
+         description { state: "date" 0.0;
+            inherit: "default";
+            min: DATETIME_DATE_DATE_FIELD_WIDTH_INC 0;
+         }
+      }
+      part { name: "field0";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 DATETIME_FIELD_HEIGHT_INC;
+            max: -1 DATETIME_FIELD_HEIGHT_INC;
+            fixed: 1 1;
+            rel1.to: "field0.padding";
+            rel2.to: "field0.padding";
+         }
+      }
+      DOWN_SWALLOW_BTN(field0.padding, 1)
+      part { name: "field.padding0";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_DATE_FIELD_PADDING_WIDTH_INC 0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "field0.padding";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "field0.padding";
+            }
+            align: 0.0 0.5;
+         }
+      }
+      UP_SWALLOW_BTN(field1.padding, 1)
+      part { name: "field1.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_DATE_MONTH_FIELD_WIDTH_INC 0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "field.padding0";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "field.padding0";
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "year" 0.0;
+            inherit: "default";
+            min: DATETIME_DATE_YEAR_FIELD_WIDTH_INC 0;
+         }
+         description { state: "date" 0.0;
+            inherit: "default";
+            min: DATETIME_DATE_DATE_FIELD_WIDTH_INC 0;
+         }
+      }
+      part { name: "field1";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 DATETIME_FIELD_HEIGHT_INC;
+            max: -1 DATETIME_FIELD_HEIGHT_INC;
+            fixed: 1 1;
+            rel1.to: "field1.padding";
+            rel2.to: "field1.padding";
+         }
+      }
+      DOWN_SWALLOW_BTN(field1.padding, 1)
+      part { name: "field.padding1";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_DATE_FIELD_PADDING_WIDTH_INC 0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "field1.padding";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "field1.padding";
+            }
+            align: 0.0 0.5;
+         }
+      }
+      UP_SWALLOW_BTN(field2.padding, 1)
+      part { name: "field2.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_DATE_DATE_FIELD_WIDTH_INC 0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "field.padding1";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "field.padding1";
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "year" 0.0;
+            inherit: "default";
+            min: DATETIME_DATE_YEAR_FIELD_WIDTH_INC 0;
+         }
+         description { state: "month" 0.0;
+            inherit: "default";
+            min: DATETIME_DATE_MONTH_FIELD_WIDTH_INC 0;
+         }
+      }
+      part { name: "field2";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 DATETIME_FIELD_HEIGHT_INC;
+            max: -1 DATETIME_FIELD_HEIGHT_INC;
+            fixed: 1 1;
+            rel1.to: "field2.padding";
+            rel2.to: "field2.padding";
+         }
+      }
+      DOWN_SWALLOW_BTN(field2.padding, 1)
+      UP_SWALLOW_BTN(field3.padding, 0)
+      part { name: "field3.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "field3";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            align: 0.0 0.5;
+            visible: 0;
+         }
+      }
+      DOWN_SWALLOW_BTN(field3.padding, 0)
+      UP_SWALLOW_BTN(field4.padding, 0)
+      part { name: "field4.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "field4";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            align: 0.0 0.5;
+            visible: 0;
+         }
+      }
+      DOWN_SWALLOW_BTN(field4.padding, 0)
+      UP_SWALLOW_BTN(field5.padding, 0)
+      part { name: "field5.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "field5";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            align: 0.0 0.5;
+            visible: 0;
+         }
+      }
+      DOWN_SWALLOW_BTN(field5.padding, 0)
+   }
+   programs {
+      program { name: "field0.year";
+         signal: "elm,state,field0,year";
+         source: "*";
+         action: STATE_SET "default" 0.0;
+         target: "field0.padding";
+      }
+      program { name: "field0.month";
+         signal: "elm,state,field0,month";
+         source: "*";
+         action: STATE_SET "month" 0.0;
+         target: "field0.padding";
+      }
+      program { name: "field0.date";
+         signal: "elm,state,field0,date";
+         source: "*";
+         action: STATE_SET "date" 0.0;
+         target: "field0.padding";
+      }
+      program { name: "field1.year";
+         signal: "elm,state,field1,year";
+         source: "*";
+         action: STATE_SET "year" 0.0;
+         target: "field1.padding";
+      }
+      program { name: "field1.month";
+         signal: "elm,state,field1,month";
+         source: "*";
+         action: STATE_SET "default" 0.0;
+         target: "field1.padding";
+      }
+      program { name: "field1.date";
+         signal: "elm,state,field1,date";
+         source: "*";
+         action: STATE_SET "date" 0.0;
+         target: "field1.padding";
+      }
+      program { name: "field2.year";
+         signal: "elm,state,field2,year";
+         source: "*";
+         action: STATE_SET "year" 0.0;
+         target: "field2.padding";
+      }
+      program { name: "field2.month";
+         signal: "elm,state,field2,month";
+         source: "*";
+         action: STATE_SET "month" 0.0;
+         target: "field2.padding";
+      }
+      program { name: "field2.date";
+         signal: "elm,state,field2,date";
+         source: "*";
+         action: STATE_SET "default" 0.0;
+         target: "field2.padding";
+      }
+   }
+}
+
+group { name: "elm/datetime/base/timepicker_layout";
+   images {
+      image: "time_picker_control_dot.png" COMP;
+   }
+   parts {
+      part { name: "bg";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: DATETIME_TIME_PICKER_BG_MIN_SIZE_INC;
+            max: DATETIME_TIME_PICKER_BG_MIN_SIZE_INC;
+            fixed: 1 1;
+         }
+      }
+      part { name: "left.padding";
+         type: SPACER;
+         scale:1;
+         description { state: "default" 0.0;
+            min: 0 0;
+            fixed: 1 1;
+            rel1.to: "bg";
+            rel2 {
+               relative: 0.0 1.0;
+               to: "bg";
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "ampm_hide" 0.0;
+            inherit: "default" 0.0;
+            min: DATETIME_TIME_LEFT_PADDING_MIN_WIDTH_INC 0;
+            fixed: 1 0;
+         }
+      }
+      UP_SWALLOW_BTN(field3.padding, 1)
+      part { name: "field3.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_TIME_HOUR_FIELD_WIDTH_INC 0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "left.padding";
+            }
+            rel2.to: "left.padding";
+            align: 0.0 0.5;
+         }
+         description { state: "minute" 0.0;
+            inherit: "default" 0.0;
+            min: DATETIME_TIME_MINUTE_FIELD_WIDTH_INC 0;
+         }
+         description { state: "ampm" 0.0;
+            inherit: "default" 0.0;
+            min: DATETIME_TIME_AMPM_FIELD_WIDTH_INC 0;
+         }
+         description { state: "ampm_hide" 0.0;
+            inherit: "default" 0.0;
+            min: 0 0;
+            max: 0 0;
+         }
+      }
+      part { name: "field3";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 DATETIME_FIELD_HEIGHT_INC;
+            max: -1 DATETIME_FIELD_HEIGHT_INC;
+            fixed: 0 1;
+            rel1.to: "field3.padding";
+            rel2.to: "field3.padding";
+            visible: 1;
+         }
+         description { state: "ampm_hide" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+      DOWN_SWALLOW_BTN(field3.padding, 1)
+      part { name: "field.padding3";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_DATE_FIELD_PADDING_WIDTH_INC 0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "field3.padding";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "field3.padding";
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "colon" 0.0;
+            inherit: "default" 0.0;
+            min: DATETIME_TIME_COLON_BG_MIN_SIZE_INC 0;
+         }
+      }
+      UP_SWALLOW_BTN(field4.padding, 1)
+      part { name: "field4.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_TIME_MINUTE_FIELD_WIDTH_INC 0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "field.padding3";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "field.padding3";
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "hour" 0.0;
+            inherit: "default" 0.0;
+            min: DATETIME_TIME_HOUR_FIELD_WIDTH_INC 0;
+         }
+      }
+      part { name: "field4";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 DATETIME_FIELD_HEIGHT_INC;
+            max: -1 DATETIME_FIELD_HEIGHT_INC;
+            fixed: 0 1;
+            rel1.to: "field4.padding";
+            rel2.to: "field4.padding";
+            visible: 1;
+         }
+      }
+      DOWN_SWALLOW_BTN(field4.padding, 1)
+      part { name: "field.padding4";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_DATE_FIELD_PADDING_WIDTH_INC 0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "field4.padding";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "field4.padding";
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "colon" 0.0;
+            inherit: "default" 0.0;
+            min: DATETIME_TIME_COLON_BG_MIN_SIZE_INC 0;
+         }
+      }
+      UP_SWALLOW_BTN(field5.padding, 1)
+      part { name: "field5.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_TIME_AMPM_FIELD_WIDTH_INC 0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "field.padding4";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "field.padding4";
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "hour" 0.0;
+            inherit: "default" 0.0;
+            min: DATETIME_TIME_HOUR_FIELD_WIDTH_INC 0;
+         }
+         description { state: "minute" 0.0;
+            inherit: "default" 0.0;
+            min: DATETIME_TIME_MINUTE_FIELD_WIDTH_INC 0;
+         }
+         description { state: "ampm_hide" 0.0;
+            inherit: "default" 0.0;
+            min: 0 0;
+            max: 0 0;
+         }
+      }
+      part { name: "field5";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 DATETIME_FIELD_HEIGHT_INC;
+            max: -1 DATETIME_FIELD_HEIGHT_INC;
+            fixed: 1 1;
+            rel1.to: "field5.padding";
+            rel2.to: "field5.padding";
+            visible: 1;
+         }
+         description { state: "ampm_hide" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+      DOWN_SWALLOW_BTN(field5.padding, 1)
+      part { name: "colon";
+         scale: 1;
+         description { state: "default" 0.0;
+            min: DATETIME_TIME_COLON_IMAGE_SIZE_INC;
+            max: DATETIME_TIME_COLON_IMAGE_SIZE_INC;
+            fixed: 1 1;
+            image.normal: "time_picker_control_dot.png";
+            color: 249 249 249 153; /*(Changeable UI) color_class: "W084";*/
+            rel1.to: "field.padding3";
+            rel2.to: "field.padding3";
+         }
+         description { state: "field4" 0.0;
+            inherit: "default" 0.0;
+            rel1.to: "field.padding4";
+            rel2.to: "field.padding4";
+         }
+      }
+      UP_SWALLOW_BTN(field0.padding, 0)
+      part { name: "field0.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "field0";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            align: 0.0 0.5;
+            visible: 0;
+         }
+      }
+      DOWN_SWALLOW_BTN(field0.padding, 0)
+      UP_SWALLOW_BTN(field1.padding, 0)
+      part { name: "field1.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "field1";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            align: 0.0 0.5;
+            visible: 0;
+         }
+      }
+      DOWN_SWALLOW_BTN(field1.padding, 0)
+      UP_SWALLOW_BTN(field2.padding, 0)
+      part { name: "field2.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "field2";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            align: 0.0 0.5;
+            visible: 0;
+         }
+      }
+      DOWN_SWALLOW_BTN(field2.padding, 0)
+   }
+   programs {
+      program { name: "field3.hour";
+         signal: "elm,state,field3,hour";
+         source: "*";
+         script {
+            set_state(PART:"field3.padding", "default", 0.0);
+            set_state(PART:"field3", "default", 0.0);
+         }
+      }
+      program { name: "field3.minute";
+         signal: "elm,state,field3,minute";
+         source: "*";
+         action: STATE_SET "minute" 0.0;
+         script {
+            set_state(PART:"field3.padding", "minute", 0.0);
+            set_state(PART:"field3", "default", 0.0);
+         }
+      }
+      program { name: "field3.ampm";
+         signal: "elm,state,field3,ampm";
+         source: "*";
+         action: STATE_SET "ampm" 0.0;
+         script {
+            set_state(PART:"field3.padding", "ampm", 0.0);
+            set_state(PART:"field3", "default", 0.0);
+            set_state(PART:"left.padding", "default", 0.0);
+            set_state(PART:"field.padding4", "colon", 0.0);
+            set_state(PART:"field.padding3", "defuault", 0.0);
+            set_state(PART:"colon", "field4", 0.0);
+         }
+      }
+      program { name: "field4.hour";
+         signal: "elm,state,field4,hour";
+         source: "*";
+         action: STATE_SET "hour" 0.0;
+         target: "field4.padding";
+      }
+      program { name: "field4.minute";
+         signal: "elm,state,field4,minute";
+         source: "*";
+         action: STATE_SET "default" 0.0;
+         target: "field4.padding";
+      }
+      program { name: "field5.hour";
+         signal: "elm,state,field5,hour";
+         source: "*";
+         script {
+            set_state(PART:"field5.padding", "hour", 0.0);
+            set_state(PART:"field5", "default", 0.0);
+         }
+      }
+      program { name: "field5.minute";
+         signal: "elm,state,field5,minute";
+         source: "*";
+         script {
+            set_state(PART:"field5.padding", "minute", 0.0);
+            set_state(PART:"field5", "default", 0.0);
+         }
+      }
+      program { name: "field5.ampm";
+         signal: "elm,state,field5,ampm";
+         source: "*";
+         script {
+            set_state(PART:"field5.padding", "default", 0.0);
+            set_state(PART:"field5", "default", 0.0);
+            set_state(PART:"left.padding", "default", 0.0);
+            set_state(PART:"field.padding3", "colon", 0.0);
+            set_state(PART:"field.padding4", "defualt", 0.0);
+            set_state(PART:"colon", "default", 0.0);
+         }
+      }
+      program { name: "field3.ampm.hide";
+         signal: "elm,state,field3,ampm,hide";
+         source: "*";
+         action: STATE_SET "ampm_hide" 0.0;
+         target: "field3";
+         target: "field3.padding";
+         target: "left.padding";
+      }
+      program { name: "field5.ampm.hide";
+         signal: "elm,state,field5,ampm,hide";
+         source: "*";
+         action: STATE_SET "ampm_hide" 0.0;
+         target: "field5";
+         target: "field5.padding";
+         target: "left.padding";
+      }
+   }
+}
+
+group { name: "elm/datetime/datepicker_layout/entry";
+   parts {
+      part { name: "bg";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: DATETIME_DATE_PICKER_BG_NO_BTN_MIN_SIZE_INC;
+            max: DATETIME_DATE_PICKER_BG_NO_BTN_MIN_SIZE_INC;
+            align: 0.5 0.0;
+            fixed: 1 1;
+         }
+      }
+      part { name: "field0.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_DATE_YEAR_FIELD_WIDTH_INC 0;
+            rel1.to: "bg";
+            rel2 {
+               relative: 0.0 1.0;
+               to: "bg";
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "month" 0.0;
+            inherit: "default";
+            min: DATETIME_DATE_MONTH_FIELD_WIDTH_INC 0;
+         }
+         description { state: "date" 0.0;
+            inherit: "default";
+            min: DATETIME_DATE_DATE_FIELD_WIDTH_INC 0;
+         }
+      }
+      part { name: "field0";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 DATETIME_FIELD_HEIGHT_INC;
+            max: -1 DATETIME_FIELD_HEIGHT_INC;
+            fixed: 0 1;
+            rel1.to: "field0.padding";
+            rel2.to: "field0.padding";
+         }
+      }
+      part { name: "field.padding0";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_DATE_FIELD_PADDING_WIDTH_INC 0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "field0.padding";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "field0.padding";
+            }
+            align: 0.0 0.5;
+         }
+      }
+      part { name: "field1.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_DATE_MONTH_FIELD_WIDTH_INC 0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "field.padding0";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "field.padding0";
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "year" 0.0;
+            inherit: "default";
+            min: DATETIME_DATE_YEAR_FIELD_WIDTH_INC 0;
+         }
+         description { state: "date" 0.0;
+            inherit: "default";
+            min: DATETIME_DATE_DATE_FIELD_WIDTH_INC 0;
+         }
+      }
+      part { name: "field1";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 DATETIME_FIELD_HEIGHT_INC;
+            max: -1 DATETIME_FIELD_HEIGHT_INC;
+            fixed: 0 1;
+            rel1.to: "field1.padding";
+            rel2.to: "field1.padding";
+         }
+      }
+      part { name: "field.padding1";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_DATE_FIELD_PADDING_WIDTH_INC 0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "field1.padding";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "field1.padding";
+            }
+            align: 0.0 0.5;
+         }
+      }
+      part { name: "field2.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_DATE_DATE_FIELD_WIDTH_INC 0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "field.padding1";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "field.padding1";
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "year" 0.0;
+            inherit: "default";
+            min: DATETIME_DATE_YEAR_FIELD_WIDTH_INC 0;
+         }
+         description { state: "month" 0.0;
+            inherit: "default";
+            min: DATETIME_DATE_MONTH_FIELD_WIDTH_INC 0;
+         }
+      }
+      part { name: "field2";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 DATETIME_FIELD_HEIGHT_INC;
+            max: -1 DATETIME_FIELD_HEIGHT_INC;
+            fixed: 0 1;
+            rel1.to: "field2.padding";
+            rel2.to: "field2.padding";
+         }
+      }
+      part { name: "field3.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "field3";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            align: 0.0 0.5;
+            visible: 0;
+         }
+      }
+      part { name: "field4.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "field4";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            align: 0.0 0.5;
+            visible: 0;
+         }
+      }
+      part { name: "field5.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "field5";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            align: 0.0 0.5;
+            visible: 0;
+         }
+      }
+   }
+   programs {
+      program { name: "field0.year";
+         signal: "elm,state,field0,year";
+         source: "*";
+         action: STATE_SET "default" 0.0;
+         target: "field0.padding";
+      }
+      program { name: "field0.month";
+         signal: "elm,state,field0,month";
+         source: "*";
+         action: STATE_SET "month" 0.0;
+         target: "field0.padding";
+      }
+      program { name: "field0.date";
+         signal: "elm,state,field0,date";
+         source: "*";
+         action: STATE_SET "date" 0.0;
+         target: "field0.padding";
+      }
+      program { name: "field1.year";
+         signal: "elm,state,field1,year";
+         source: "*";
+         action: STATE_SET "year" 0.0;
+         target: "field1.padding";
+      }
+      program { name: "field1.month";
+         signal: "elm,state,field1,month";
+         source: "*";
+         action: STATE_SET "default" 0.0;
+         target: "field1.padding";
+      }
+      program { name: "field1.date";
+         signal: "elm,state,field1,date";
+         source: "*";
+         action: STATE_SET "date" 0.0;
+         target: "field1.padding";
+      }
+      program { name: "field2.year";
+         signal: "elm,state,field2,year";
+         source: "*";
+         action: STATE_SET "year" 0.0;
+         target: "field2.padding";
+      }
+      program { name: "field2.month";
+         signal: "elm,state,field2,month";
+         source: "*";
+         action: STATE_SET "month" 0.0;
+         target: "field2.padding";
+      }
+      program { name: "field2.date";
+         signal: "elm,state,field2,date";
+         source: "*";
+         action: STATE_SET "default" 0.0;
+         target: "field2.padding";
+      }
+   }
+}
+
+group { name: "elm/datetime/timepicker_layout/entry";
+   images {
+      image: "time_picker_control_dot.png" COMP;
+   }
+   parts {
+      part { name: "bg";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: DATETIME_TIME_PICKER_BG_NO_BTN_MIN_SIZE_INC;
+            max: DATETIME_TIME_PICKER_BG_NO_BTN_MIN_SIZE_INC;
+            align: 0.5 0.0;
+            fixed: 1 1;
+         }
+      }
+      part { name: "left.padding";
+         type: SPACER;
+         scale:1;
+         description { state: "default" 0.0;
+            min: 0 0;
+            fixed: 1 1;
+            rel1.to: "bg";
+            rel2 {
+               relative: 0.0 1.0;
+               to: "bg";
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "ampm_hide" 0.0;
+            inherit: "default" 0.0;
+            min: DATETIME_TIME_LEFT_PADDING_MIN_WIDTH_INC 0;
+            fixed: 1 0;
+         }
+      }
+      part { name: "field3.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_TIME_HOUR_FIELD_WIDTH_INC 0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "left.padding";
+            }
+            rel2.to: "left.padding";
+            align: 0.0 0.5;
+         }
+         description { state: "minute" 0.0;
+            inherit: "default" 0.0;
+            min: DATETIME_TIME_MINUTE_FIELD_WIDTH_INC 0;
+         }
+         description { state: "ampm" 0.0;
+            inherit: "default" 0.0;
+            min: DATETIME_TIME_AMPM_FIELD_WIDTH_INC 0;
+         }
+         description { state: "ampm_hide" 0.0;
+            inherit: "default" 0.0;
+            min: 0 0;
+            max: 0 0;
+         }
+      }
+      part { name: "field3";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 DATETIME_FIELD_HEIGHT_INC;
+            max: -1 DATETIME_FIELD_HEIGHT_INC;
+            fixed: 0 1;
+            rel1.to: "field3.padding";
+            rel2.to: "field3.padding";
+            visible: 1;
+         }
+         description { state: "ampm_hide" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+      part { name: "field.padding3";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_DATE_FIELD_PADDING_WIDTH_INC 0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "field3.padding";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "field3.padding";
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "colon" 0.0;
+            inherit: "default" 0.0;
+            min: DATETIME_TIME_COLON_BG_MIN_SIZE_INC 0;
+         }
+      }
+      part { name: "field4.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_TIME_MINUTE_FIELD_WIDTH_INC 0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "field.padding3";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "field.padding3";
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "hour" 0.0;
+            inherit: "default" 0.0;
+            min: DATETIME_TIME_HOUR_FIELD_WIDTH_INC 0;
+         }
+      }
+      part { name: "field4";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 DATETIME_FIELD_HEIGHT_INC;
+            max: -1 DATETIME_FIELD_HEIGHT_INC;
+            fixed: 0 1;
+            rel1.to: "field4.padding";
+            rel2.to: "field4.padding";
+            visible: 1;
+         }
+      }
+      part { name: "field.padding4";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_DATE_FIELD_PADDING_WIDTH_INC 0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "field4.padding";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "field4.padding";
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "colon" 0.0;
+            inherit: "default" 0.0;
+            min: DATETIME_TIME_COLON_BG_MIN_SIZE_INC 0;
+         }
+      }
+      part { name: "field5.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_TIME_AMPM_FIELD_WIDTH_INC 0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "field.padding4";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "field.padding4";
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "hour" 0.0;
+            inherit: "default" 0.0;
+            min: DATETIME_TIME_HOUR_FIELD_WIDTH_INC 0;
+         }
+         description { state: "minute" 0.0;
+            inherit: "default" 0.0;
+            min: DATETIME_TIME_MINUTE_FIELD_WIDTH_INC 0;
+         }
+         description { state: "ampm_hide" 0.0;
+            inherit: "default" 0.0;
+            min: 0 0;
+            max: 0 0;
+         }
+      }
+      part { name: "field5";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 DATETIME_FIELD_HEIGHT_INC;
+            max: -1 DATETIME_FIELD_HEIGHT_INC;
+            fixed: 1 1;
+            rel1.to: "field5.padding";
+            rel2.to: "field5.padding";
+            visible: 1;
+         }
+         description { state: "ampm_hide" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+      part { name: "colon";
+         scale: 1;
+         description { state: "default" 0.0;
+            min: DATETIME_TIME_COLON_IMAGE_SIZE_INC;
+            max: DATETIME_TIME_COLON_IMAGE_SIZE_INC;
+            fixed: 1 1;
+            image.normal: "time_picker_control_dot.png";
+            color: 249 249 249 153; /*(Changeable UI) color_class: "W084";*/
+            rel1.to: "field.padding3";
+            rel2.to: "field.padding3";
+         }
+         description { state: "field4" 0.0;
+            inherit: "default" 0.0;
+            rel1.to: "field.padding4";
+            rel2.to: "field.padding4";
+         }
+      }
+      part { name: "field0.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "field0";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            align: 0.0 0.5;
+            visible: 0;
+         }
+      }
+      part { name: "field1.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "field1";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            align: 0.0 0.5;
+            visible: 0;
+         }
+      }
+      part { name: "field2.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "field2";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            align: 0.0 0.5;
+            visible: 0;
+         }
+      }
+   }
+   programs {
+      program { name: "field3.hour";
+         signal: "elm,state,field3,hour";
+         source: "*";
+         script {
+            set_state(PART:"field3.padding", "default", 0.0);
+            set_state(PART:"field3", "default", 0.0);
+         }
+      }
+      program { name: "field3.minute";
+         signal: "elm,state,field3,minute";
+         source: "*";
+         action: STATE_SET "minute" 0.0;
+         script {
+            set_state(PART:"field3.padding", "minute", 0.0);
+            set_state(PART:"field3", "default", 0.0);
+         }
+      }
+      program { name: "field3.ampm";
+         signal: "elm,state,field3,ampm";
+         source: "*";
+         action: STATE_SET "ampm" 0.0;
+         script {
+            set_state(PART:"field3.padding", "ampm", 0.0);
+            set_state(PART:"field3", "default", 0.0);
+            set_state(PART:"left.padding", "default", 0.0);
+            set_state(PART:"field.padding4", "colon", 0.0);
+            set_state(PART:"field.padding3", "defuault", 0.0);
+            set_state(PART:"colon", "field4", 0.0);
+         }
+      }
+      program { name: "field4.hour";
+         signal: "elm,state,field4,hour";
+         source: "*";
+         action: STATE_SET "hour" 0.0;
+         target: "field4.padding";
+      }
+      program { name: "field4.minute";
+         signal: "elm,state,field4,minute";
+         source: "*";
+         action: STATE_SET "default" 0.0;
+         target: "field4.padding";
+      }
+      program { name: "field5.hour";
+         signal: "elm,state,field5,hour";
+         source: "*";
+         script {
+            set_state(PART:"field5.padding", "hour", 0.0);
+            set_state(PART:"field5", "default", 0.0);
+         }
+      }
+      program { name: "field5.minute";
+         signal: "elm,state,field5,minute";
+         source: "*";
+         script {
+            set_state(PART:"field5.padding", "minute", 0.0);
+            set_state(PART:"field5", "default", 0.0);
+         }
+      }
+      program { name: "field5.ampm";
+         signal: "elm,state,field5,ampm";
+         source: "*";
+         script {
+            set_state(PART:"field5.padding", "default", 0.0);
+            set_state(PART:"field5", "default", 0.0);
+            set_state(PART:"left.padding", "default", 0.0);
+            set_state(PART:"field.padding3", "colon", 0.0);
+            set_state(PART:"field.padding4", "defualt", 0.0);
+            set_state(PART:"colon", "default", 0.0);
+         }
+      }
+      program { name: "field3.ampm.hide";
+         signal: "elm,state,field3,ampm,hide";
+         source: "*";
+         action: STATE_SET "ampm_hide" 0.0;
+         target: "field3";
+         target: "field3.padding";
+         target: "left.padding";
+      }
+      program { name: "field5.ampm.hide";
+         signal: "elm,state,field5,ampm,hide";
+         source: "*";
+         action: STATE_SET "ampm_hide" 0.0;
+         target: "field5";
+         target: "field5.padding";
+         target: "left.padding";
+      }
+   }
+}
+
+group { name: "elm/datetime/base/datepicker/circle";
+   parts {
+      part { name: "bg";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+         }
+      }
+      part { name: "base";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 DATETIME_FIELD_HEIGHT_INC;
+            max: -1 DATETIME_FIELD_HEIGHT_INC;
+            fixed: 0 1;
+         }
+      }
+      part { name: "left_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: DATETIME_DATE_LEFT_PADDING_WIDTH_INC 0;
+            fixed: 1 0;
+            rel1 {
+               to: "base";
+            }
+            rel2 {
+               to: "base";
+               relative: 0.0 1.0;
+            }
+            align: 0.0 0.5;
+         }
+      }
+      part { name: "field0";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: DATETIME_DATE_YEAR_FIELD_WIDTH_INC 0;
+            fixed: 1 0;
+            rel1 {
+               to: "left_padding";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "left_padding";
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "month" 0.0;
+            inherit: "default";
+            min: DATETIME_DATE_MONTH_FIELD_WIDTH_INC 0;
+         }
+         description { state: "date" 0.0;
+            inherit: "default";
+            min: DATETIME_DATE_DAY_FIELD_WIDTH_INC 0;
+         }
+      }
+      part { name: "field0_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: DATETIME_DATE_FIELD_PADDING_WIDTH_INC 0;
+            fixed: 1 0;
+            rel1 {
+               to: "field0";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "field0";
+            }
+            align: 0.0 0.5;
+         }
+      }
+      part { name: "field1";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: DATETIME_DATE_MONTH_FIELD_WIDTH_INC 0;
+            fixed: 1 0;
+            rel1 {
+               to: "field0_padding";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "field0_padding";
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "year" 0.0;
+            inherit: "default";
+            min: DATETIME_DATE_YEAR_FIELD_WIDTH_INC 0;
+         }
+         description { state: "date" 0.0;
+            inherit: "default";
+            min: DATETIME_DATE_DAY_FIELD_WIDTH_INC 0;
+         }
+      }
+      part { name: "field1_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: DATETIME_DATE_FIELD_PADDING_WIDTH_INC 0;
+            fixed: 1 0;
+            rel1 {
+               to: "field1";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "field1";
+            }
+            align: 0.0 0.5;
+         }
+      }
+      part { name: "field2";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: DATETIME_DATE_DAY_FIELD_WIDTH_INC 0;
+            fixed: 1 0;
+            rel1 {
+               to: "field1_padding";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "field1_padding";
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "year" 0.0;
+            inherit: "default";
+            min: DATETIME_DATE_YEAR_FIELD_WIDTH_INC 0;
+         }
+         description { state: "month" 0.0;
+            inherit: "default";
+            min: DATETIME_DATE_MONTH_FIELD_WIDTH_INC 0;
+         }
+      }
+      part { name: "field3";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: 0 0;
+            max: 0 0;
+            visible: 0;
+         }
+      }
+      part { name: "field4";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: 0 0;
+            max: 0 0;
+            visible: 0;
+         }
+      }
+      part { name: "field5";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: 0 0;
+            max: 0 0;
+            visible: 0;
+         }
+      }
+   }
+   programs {
+      program { name: "field0.year";
+         signal: "elm,state,field0,year";
+         source: "*";
+         action: STATE_SET "default" 0.0;
+         target: "field0";
+      }
+      program { name: "field0.month";
+         signal: "elm,state,field0,month";
+         source: "*";
+         action: STATE_SET "month" 0.0;
+         target: "field0";
+      }
+      program { name: "field0.date";
+         signal: "elm,state,field0,date";
+         source: "*";
+         action: STATE_SET "date" 0.0;
+         target: "field0";
+      }
+      program { name: "field1.year";
+         signal: "elm,state,field1,year";
+         source: "*";
+         action: STATE_SET "year" 0.0;
+         target: "field1";
+      }
+      program { name: "field1.month";
+         signal: "elm,state,field1,month";
+         source: "*";
+         action: STATE_SET "default" 0.0;
+         target: "field1";
+      }
+      program { name: "field1.date";
+         signal: "elm,state,field1,date";
+         source: "*";
+         action: STATE_SET "date" 0.0;
+         target: "field1";
+      }
+      program { name: "field2.year";
+         signal: "elm,state,field2,year";
+         source: "*";
+         action: STATE_SET "year" 0.0;
+         target: "field2";
+      }
+      program { name: "field2.month";
+         signal: "elm,state,field2,month";
+         source: "*";
+         action: STATE_SET "month" 0.0;
+         target: "field2";
+      }
+      program { name: "field2.date";
+         signal: "elm,state,field2,date";
+         source: "*";
+         action: STATE_SET "default" 0.0;
+         target: "field2";
+      }
+   }
+}
+
+group { name: "elm/datetime/base/timepicker/circle";
+   parts {
+      part { name: "bg";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+         }
+      }
+      part { name: "base";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 DATETIME_FIELD_HEIGHT_INC;
+            max: -1 DATETIME_FIELD_HEIGHT_INC;
+            fixed: 0 1;
+         }
+      }
+      part { name: "left_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: DATETIME_TIME_12HR_LEFT_PADDING_WIDTH_INC 0;
+            fixed: 1 0;
+            rel1 {
+               to: "base";
+            }
+            rel2 {
+               to: "base";
+               relative: 0.0 1.0;
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "ampm_hide" 0.0;
+            inherit: "default" 0.0;
+            min: DATETIME_TIME_24HR_LEFT_PADDING_WIDTH_INC 0;
+         }
+      }
+      part { name: "field3";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: DATETIME_TIME_FIELD_WIDTH_INC 0;
+            fixed: 1 1;
+            rel1 {
+               to: "left_padding";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "left_padding";
+            }
+            align: 0.0 0.5;
+         }
+      }
+      part { name: "field3_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_TIME_FIELD_PADDING_WIDTH_INC 0;
+            max: DATETIME_TIME_FIELD_PADDING_WIDTH_INC -1;
+            rel1 {
+               to: "field3";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "field3";
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "back_colon";
+            inherit: "default" 0.0;
+            min: DATETIME_TIME_FIELD_PADDING_12HR_WIDTH_INC 0;
+            max: DATETIME_TIME_FIELD_PADDING_12HR_WIDTH_INC -1;
+         }
+      }
+      part { name: "field4";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: DATETIME_TIME_FIELD_WIDTH_INC 0;
+            fixed: 1 1;
+            rel1 {
+               to: "field3_padding";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "field3_padding";
+            }
+            align: 0.0 0.5;
+         }
+      }
+      part { name: "field4_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: DATETIME_TIME_FIELD_PADDING_12HR_WIDTH_INC 0;
+            max: DATETIME_TIME_FIELD_PADDING_12HR_WIDTH_INC -1;
+            rel1 {
+               to: "field4";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "field4";
+               relative: 1.0 1.0;
+            }
+            align: 0.0 0.5;
+         }
+         description { state: "back_colon" 0.0;
+            min: DATETIME_TIME_FIELD_PADDING_WIDTH_INC 0;
+            max: DATETIME_TIME_FIELD_PADDING_WIDTH_INC -1;
+            inherit: "default" 0.0;
+         }
+      }
+      part { name: "field5";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: DATETIME_TIME_FIELD_WIDTH_INC 0;
+            fixed: 1 1;
+            rel1 {
+               to: "field4_padding";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "field4_padding";
+            }
+            align: 0.0 0.0;
+         }
+      }
+      part { name: "hour.minute.colon";
+         type: IMAGE;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: DATETIME_TIME_COLON_IMAGE_SIZE_INC;
+            max: DATETIME_TIME_COLON_IMAGE_SIZE_INC;
+            rel1 {
+               to: "field3_padding";
+            }
+            rel2 {
+               to: "field3_padding";
+               offset: 0 RADIO_DATETIME_FIELD_OVERLAP_HEIGHT_INC;
+            }
+            align: 0.5 1.0;
+            /*(Changeable UI) color_class: "W284"*/
+            color: 153 153 153 255;
+            image.normal: "time_picker_control_dot.png";
+         }
+         description { state: "back_colon" 0.0;
+            inherit: "default" 0.0;
+            rel1 {
+               to: "field4_padding";
+            }
+            rel2 {
+               to: "field4_padding";
+               offset: 0 RADIO_DATETIME_FIELD_OVERLAP_HEIGHT_INC;
+            }
+         }
+      }
+      part { name: "field0";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: 0 0;
+            max: 0 0;
+            visible: 0;
+         }
+      }
+      part { name: "field1";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: 0 0;
+            max: 0 0;
+            visible: 0;
+         }
+      }
+      part { name: "field2";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: 0 0;
+            max: 0 0;
+            visible: 0;
+         }
+      }
+   }
+   programs {
+      program { name: "ampm_hide";
+         signal: "elm,state,ampm,hide";
+         source: "elm";
+         script {
+            set_state(PART:"left_padding", "ampm_hide", 0.0);
+            set_state(PART:"hour.minute.colon", "default", 0.0);
+         }
+      }
+      program { name: "ampm_show";
+         signal: "elm,state,ampm,show";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "left_padding";
+      }
+      program { name: "colon_position_front";
+         signal: "elm,action,colon,front";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "hour.minute.colon";
+         target: "field3_padding";
+         target: "field4_padding";
+      }
+      program { name: "colon_position_back";
+         signal: "elm,action,colon,back";
+         source: "elm";
+         action: STATE_SET "back_colon" 0.0;
+         target: "hour.minute.colon";
+         target: "field3_padding";
+         target: "field4_padding";
+      }
+   }
+}

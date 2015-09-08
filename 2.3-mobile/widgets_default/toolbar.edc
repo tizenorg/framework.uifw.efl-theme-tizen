@@ -1,0 +1,140 @@
+group { name: "elm/toolbar/more/default";
+   images {
+      image: "whitetheme/toolbar_more_bg.png" COMP;
+      image: "whitetheme/line_h_2px.png" COMP;
+   }
+   parts {
+      part { name: "base";
+         scale: 1;
+         mouse_events: 1;
+         description { state: "default" 0.0;
+            rel1.relative: 0.0 0.0;
+            rel2.relative: 1.0 0.0;
+            image {
+               normal: "whitetheme/toolbar_more_bg.png";
+               border: TOOLBAR_MORE_BG_BORDER_INC;
+               border_scale: 1;
+            }
+            image.middle: SOLID;
+         }
+         description { state: "open" 0.0;
+            inherit: "default" 0.0;
+            rel2.relative: 1.0 1.0;
+         }
+         description { state: "open2" 0.0;
+            inherit: "default" 0.0;
+            rel2.relative: 1.0 2.0;
+         }
+      }
+      part { name: "clipper";
+         type: RECT;
+         scale: 1;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1 {
+               to: "base";
+            }
+            rel2 {
+               to: "base";
+            }
+         }
+         description { state: "open" 0.0;
+            inherit: "default" 0.0;
+            rel2.relative: 1.0 1.0;
+         }
+         description { state: "open2" 0.0;
+            inherit: "default" 0.0;
+            rel2.relative: 1.0 0.5;
+         }
+      }
+      part { name: "clipper2";
+         type: RECT;
+         scale: 1;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1 {
+               relative: 0.0 0.5;
+               to: "base";
+            }
+            rel2 {
+               to: "base";
+            }
+         }
+         description { state: "open" 0.0;
+            inherit: "default" 0.0;
+            rel1.relative: 0.0 1.0;
+         }
+         description { state: "open2" 0.0;
+            inherit: "default" 0.0;
+            rel1.relative: 0.0 0.5;
+         }
+      }
+      part { name: "elm.swallow.content";
+         clip_to: "clipper";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "clipper";
+            rel2.to: "clipper";
+         }
+      }
+      part { name: "elm.swallow.content2";
+         clip_to: "clipper2";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "clipper2";
+            rel2.to: "clipper2";
+         }
+      }
+      part { name: "separator2";
+         scale: 1;
+         //clip_to: "clipper2";
+         description { state: "default" 0.0;
+            min: 1 2;
+            max: 9999 2;
+            fixed: 1 1;
+            rel1 {
+                relative: 0 0.0;
+                to: "clipper2";
+            }
+            rel2 {
+                relative: 1 0.0;
+                to: "clipper2";
+            }
+            image {
+               normal: "whitetheme/line_h_2px.png";
+            }
+         }
+      }
+      programs {
+         program { name: "open";
+            signal:  "elm,state,open";
+            source:  "elm";
+            action:  STATE_SET "open" 0.0;
+            target:  "base";
+            target:  "clipper";
+            target:  "clipper2";
+            transition: DECELERATE 0.2;
+         }
+         program { name: "open2";
+            signal:  "elm,state,open2";
+            source:  "elm";
+            action:  STATE_SET "open2" 0.0;
+            target:  "base";
+            target:  "clipper";
+            target:  "clipper2";
+            transition: DECELERATE 0.2;
+         }
+         program { name: "close";
+            signal:  "elm,state,close";
+            source:  "elm";
+            action:  STATE_SET "default" 0.0;
+            target:  "base";
+            transition: DECELERATE 0.2;
+         }
+      }
+   }
+}

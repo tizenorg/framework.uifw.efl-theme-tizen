@@ -1,0 +1,612 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#include "genlist_macro.edc"
+
+group { name: "elm/genlist/item/default/default";
+   alias: "elm/list/item/default";
+   alias: "elm/list/item_odd/default";
+   alias: "elm/list/item_compress/default";
+   alias: "elm/list/item_compress_odd/default";
+   alias: "elm/genlist/item_compress/default";
+   alias: "elm/genlist/item/default_style/default";
+   alias: "elm/genlist/item_compress/default_style";
+
+   data.item: "treesize" GENLIST_TREESIZE_DEFAULT;
+   data.item: "texts" "elm.text";
+   data.item: "contents" "elm.swallow.icon elm.swallow.end";
+
+   parts {
+      LIST_PART_BG_NOCLASS
+      PART(SWALLOW, "elm.swallow.pad",
+         DSC_FROM_L("default" 0.0, );
+         mouse_events: 0;
+      )
+      PART(SPACER, "elm.padding.top",
+         DSC_FROM_T("default" 0.0,
+            min: 0 LIST_PADDING_TOP_SIZE;
+            max: -1 LIST_PADDING_TOP_SIZE;
+         )
+      )
+      PART(SPACER, "elm.padding.bottom",
+         DSC_FROM_B("default" 0.0,
+            min: 0 LIST_PADDING_BOTTOM_SIZE;
+            max: -1 LIST_PADDING_BOTTOM_SIZE;
+         )
+      )
+      PART(SWALLOW, "elm.padding.left",
+         DSC_L("default" 0.0,
+            "elm.swallow.pad",
+            min: LIST_LEFT_PADDING_SIZE 0;
+            max: LIST_LEFT_PADDING_SIZE -1;
+         )
+      )
+      PART(SWALLOW, "elm.padding.right",
+         DSC_FROM_R("default" 0.0,
+            min: LIST_RIGHT_PADDING_SIZE 0;
+            max: LIST_RIGHT_PADDING_SIZE -1;
+         )
+      )
+      PART(SWALLOW, "elm.swallow.icon",
+         DSC_L("default" 0.0,
+            "elm.padding.left",
+         )
+      )
+      PART(SWALLOW, "elm.swallow.end",
+         DSC_R("default" 0.0,
+            "elm.padding.right",
+         )
+      )
+      PART(SPACER, "elm.padding.center.left",
+         DSC_L("default" 0.0,
+            "elm.swallow.icon",
+            min: 0 -0;
+            max: 0 -1;
+         )
+         description { state: "enabled" 0.0;
+            inherit: "default" 0.0;
+            min: LIST_PADDING_CENTER_LEFT_SIZE -0;
+            max: LIST_PADDING_CENTER_LEFT_SIZE -1;
+         }
+      )
+      PART(SPACER, "elm.padding.center.right",
+         DSC_R("default" 0.0,
+            "elm.swallow.end",
+            min: 0 0;
+            max: 0 -1;
+         )
+         description { state: "enabled" 0.0;
+            inherit: "default" 0.0;
+            min: LIST_PADDING_CENTER_RIGHT_SIZE 0;
+            max: LIST_PADDING_CENTER_RIGHT_SIZE -1;
+         }
+      )
+      PART(TEXTBLOCK, "elm.text",
+         DSC_LRTB("default" 0.0,
+            "elm.padding.center.left", "elm.padding.center.right", "elm.padding.top", "elm.padding.bottom",
+            min: 0 LIST_TEXT_MAIN_HEIGHT;
+            text.min: 0 1;
+            text.style: "list_text_main";
+            fixed: 1 0;;
+         )
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_dim";
+         }
+      )
+      PART(RECT, "elm.bottomline",
+         DSC_FROM_B("default" 0.0,
+            min: 0 LIST_BOTTOMLINE_HEIGHT;
+            max: -1  LIST_BOTTOMLINE_HEIGHT;
+            color: 192 213 222 255;
+         )
+      )
+   }
+   LIST_PROGRAMS( target: "elm.text"; )
+   programs {
+      LIST_PROGRAM_PAD
+   }
+}
+
+group { name: "elm/genlist/item/group_index/default";
+   alias: "elm/genlist/item_compress/group_index";
+   alias: "elm/genlist/item/groupindex/default";
+   alias: "elm/genlist/item_compress/groupindex";
+
+   data.item: "treesize" GENLIST_TREESIZE_DEFAULT;
+   data.item: "texts" "elm.text";
+   data.item: "contents" "elm.swallow.icon elm.swallow.end";
+
+   parts {
+      LIST_PART_BG_GROUP
+      PART(SWALLOW, "elm.swallow.pad",
+         DSC_FROM_L("default" 0.0, );
+         mouse_events: 0;
+      )
+      PART(SPACER, "elm.padding.top",
+         DSC_FROM_T("default" 0.0,
+            min: 0 LIST_INDEX_PADDING_TOP_SIZE;
+            max: -1 LIST_INDEX_PADDING_TOP_SIZE;
+         )
+      )
+      PART(SPACER, "elm.padding.bottom",
+         DSC_FROM_B("default" 0.0,
+            min: 0 LIST_INDEX_PADDING_BOTTOM_SIZE;
+            max: -1 LIST_INDEX_PADDING_BOTTOM_SIZE;
+         )
+      )
+      PART(SPACER, "elm.padding.left",
+         DSC_L("default" 0.0,
+            "elm.swallow.pad",
+            min: LIST_INDEX_PADDING_LEFT_SIZE 0;
+            max: LIST_INDEX_PADDING_LEFT_SIZE -1;
+         )
+      )
+      PART(SPACER, "elm.padding.right",
+         DSC_FROM_R("default" 0.0,
+            min: LIST_INDEX_PADDING_RIGHT_SIZE 0;
+            max: LIST_INDEX_PADDING_RIGHT_SIZE -1;
+         )
+      )
+      PART(SWALLOW, "elm.swallow.icon",
+         DSC_LTB("default" 0.0,
+            "elm.padding.left", "elm.padding.top", "elm.padding.bottom",
+         )
+      )
+      PART(SWALLOW, "elm.swallow.end",
+         DSC_RTB("default" 0.0,
+            "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+         )
+      )
+      PART(TEXTBLOCK, "elm.text",
+         DSC_LRTB("default" 0.0,
+            "elm.swallow.icon", "elm.swallow.end", "elm.padding.top", "elm.padding.bottom",
+            min: 0 LIST_INDEX_HEIGHT;
+            text.min: 0 1;
+            text.style: "list_text_index_main";
+         )
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_index_main_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_index_main_dim";
+         }
+      )
+      PART(RECT, "elm.bottomline",
+         DSC_FROM_B("default" 0.0,
+            min: 0 LIST_INDEX_BOTTOMLINE_HEIGHT;
+            max: -1  LIST_INDEX_BOTTOMLINE_HEIGHT;
+            color: 192 213 222 255;
+         )
+      )
+   }
+}
+
+group { name: "elm/genlist/item/double_label/default";
+   alias: "elm/genlist/item_compress/double_label";
+
+   data.item: "treesize" GENLIST_TREESIZE_DEFAULT;
+   data.item: "texts" "elm.text elm.text.sub";
+   data.item: "contents" "elm.swallow.icon elm.swallow.end";
+
+   parts {
+      LIST_PART_BG_NOCLASS
+      PART(SWALLOW, "elm.swallow.pad",
+         DSC_FROM_L("default" 0.0, );
+         mouse_events: 0;
+      )
+      PART(SPACER, "elm.padding.top",
+         DSC_FROM_T("default" 0.0,
+            min: 0 LIST_2LINE_PADDING_TOP_SIZE;
+            max: -1 LIST_2LINE_PADDING_TOP_SIZE;
+         )
+      )
+      PART(SPACER, "elm.padding.bottom",
+         DSC_FROM_B("default" 0.0,
+            min: 0 LIST_2LINE_PADDING_BOTTOM_SIZE;
+            max: -1 LIST_2LINE_PADDING_BOTTOM_SIZE;
+         )
+      )
+      PART(SPACER, "elm.padding.left",
+         DSC_FROM_L("default" 0.0,
+            min: LIST_LEFT_PADDING_SIZE 0;
+            max: LIST_LEFT_PADDING_SIZE -1;
+         )
+      )
+      PART(SWALLOW, "elm.swallow.icon",
+         DSC_L("default" 0.0,
+            "elm.padding.left",
+         )
+      )
+      PART(SPACER, "elm.padding.right",
+         DSC_FROM_R("default" 0.0,
+            min: LIST_RIGHT_PADDING_SIZE 0;
+            max: LIST_RIGHT_PADDING_SIZE -1;
+         )
+      )
+      PART(SWALLOW, "elm.swallow.end",
+         DSC_R("default" 0.0,
+            "elm.padding.right",
+         )
+      )
+      PART(SPACER, "elm.padding.center.left",
+         DSC_L("default" 0.0,
+            "elm.swallow.icon",
+            min: 0 -0;
+            max: 0 -1;
+         )
+         description { state: "enabled" 0.0;
+            inherit: "default" 0.0;
+            min: LIST_PADDING_CENTER_LEFT_SIZE -0;
+            max: LIST_PADDING_CENTER_LEFT_SIZE -1;
+         }
+      )
+      PART(SPACER, "elm.padding.center.right",
+         DSC_R("default" 0.0,
+            "elm.swallow.end",
+            min: 0 0;
+            max: 0 -1;
+         )
+         description { state: "enabled" 0.0;
+            inherit: "default" 0.0;
+            min: LIST_PADDING_CENTER_RIGHT_SIZE 0;
+            max: LIST_PADDING_CENTER_RIGHT_SIZE -1;
+         }
+      )
+      PART(TEXTBLOCK, "elm.text",
+         DSC_LRT("default" 0.0,
+            "elm.swallow.icon", "elm.swallow.end", "elm.padding.top",
+            min: 0 LIST_TEXT_MAIN_HEIGHT;
+            text.min: 0 1;
+            text.style: "list_text_main";
+            fixed: 1 0;;
+         )
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_dim";
+         }
+      )
+      PART(TEXTBLOCK, "elm.text.sub",
+         DSC_LRTB("default" 0.0,
+            "elm.swallow.icon", "elm.swallow.end", "elm.text", "elm.padding.bottom",
+            min: 0 LIST_TEXT_SUB_HEIGHT;
+            text.min: 0 1;
+            text.style: "list_text_sub_01";
+            fixed: 1 0;;
+         )
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_01_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_01_dim";
+         }
+      )
+      PART(RECT, "elm.bottomline",
+         DSC_FROM_B("default" 0.0,
+            min: 0 LIST_BOTTOMLINE_HEIGHT;
+            max: -1 LIST_BOTTOMLINE_HEIGHT;
+            color: 192 213 222 255;
+         )
+      )
+   }
+   LIST_PROGRAMS( target: "elm.text"; target: "elm.text.sub"; )
+   programs {
+      LIST_PROGRAM_PAD
+   }
+}
+
+group { name: "elm/genlist/item/full/default";
+   alias: "elm/genlist/item_compress/full";
+
+   data.item: "treesize" GENLIST_TREESIZE_DEFAULT;
+   data.item: "contents" "elm.swallow.content";
+
+   parts {
+      LIST_PART_BG_NOCLASS
+      PART(SWALLOW, "elm.swallow.pad",
+         DSC_FROM_L("default" 0.0, );
+         mouse_events: 0;
+      )
+      PART(SWALLOW, "elm.swallow.content",
+         description { state: "default" 0.0;
+            rel1.relative: 1.0 0.0;
+            rel1.to_x: "elm.swallow.pad";
+         }
+      )
+      PART(RECT, "elm.bottomline",
+         DSC_FROM_B("default" 0.0,
+            min: 0 LIST_BOTTOMLINE_HEIGHT;
+            max: -1 LIST_BOTTOMLINE_HEIGHT;
+            color: 192 213 222 255;
+         )
+      )
+   }
+   LIST_PROGRAMS( ; )
+}
+
+group { name: "elm/genlist/item/one_icon/default";
+   alias: "elm/genlist/item_compress/one_icon";
+
+   data.item: "treesize" GENLIST_TREESIZE_DEFAULT;
+   data.item: "texts" "elm.text";
+   data.item: "contents" "elm.swallow.icon";
+
+   parts {
+      LIST_PART_BG_NOCLASS
+      PART(SWALLOW, "elm.swallow.pad",
+         DSC_FROM_L("default" 0.0, );
+         mouse_events: 0;
+      )
+      PART(SPACER, "elm.padding.top",
+         DSC_FROM_T("default" 0.0,
+            min: 0 LIST_TOP_PADDING_SIZE;
+            max: -1 LIST_TOP_PADDING_SIZE;
+         )
+      )
+      PART(SPACER, "elm.padding.bottom",
+         DSC_FROM_B("default" 0.0,
+            min: 0 LIST_BOTTOM_PADDING_SIZE;
+            max: -1 LIST_BOTTOM_PADDING_SIZE;
+         )
+      )
+      PART(SPACER, "elm.padding.left",
+         DSC_FROM_L("default" 0.0,
+            min: LIST_LEFT_PADDING_SIZE 0;
+            max: LIST_LEFT_PADDING_SIZE -1;
+         )
+      )
+      PART(SWALLOW, "elm.swallow.icon",
+         DSC_L("default" 0.0,
+            "elm.padding.left",
+         )
+      )
+      PART(SPACER, "elm.padding.right",
+         DSC_FROM_R("default" 0.0,
+            min: LIST_DEFAULT_PADDING_SIZE 0;
+            max: LIST_DEFAULT_PADDING_SIZE -1;
+         )
+      )
+      PART(SPACER, "elm.padding.center.left",
+         DSC_L("default" 0.0,
+            "elm.swallow.icon",
+            min: LIST_TEXT_LEFT_PADDING_SIZE -0;
+            max: LIST_TEXT_LEFT_PADDING_SIZE -1;
+         )
+      )
+      PART(TEXTBLOCK, "elm.text",
+         DSC_LRTB("default" 0.0,
+            "elm.padding.center.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            min: 0 LIST_TEXT_MAIN_HEIGHT;
+            text.min: 0 1;
+            text.style: "list_text_main";
+            fixed: 1 0;;
+         )
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_dim";
+         }
+      )
+      PART(RECT, "elm.bottomline",
+         DSC_FROM_B("default" 0.0,
+            min: 0 LIST_BOTTOMLINE_HEIGHT;
+            max: -1 LIST_BOTTOMLINE_HEIGHT;
+            color: 192 213 222 255;
+         )
+      )
+   }
+   LIST_PROGRAMS( target: "elm.text"; )
+}
+
+group { name: "elm/genlist/item/end_icon/default";
+   alias: "elm/genlist/item_compress/end_icon";
+
+   data.item: "treesize" GENLIST_TREESIZE_DEFAULT;
+   data.item: "texts" "elm.text";
+   data.item: "contents" "elm.swallow.icon";
+
+   parts {
+      LIST_PART_BG_NOCLASS
+      PART(SWALLOW, "elm.swallow.pad",
+         DSC_FROM_L("default" 0.0, );
+         mouse_events: 0;
+      )
+      PART(SPACER, "elm.padding.top",
+         DSC_FROM_T("default" 0.0,
+            min: 0 LIST_TOP_PADDING_SIZE;
+            max: -1 LIST_TOP_PADDING_SIZE;
+         )
+      )
+      PART(SPACER, "elm.padding.bottom",
+         DSC_FROM_B("default" 0.0,
+            min: 0 LIST_BOTTOM_PADDING_SIZE;
+            max: -1 LIST_BOTTOM_PADDING_SIZE;
+         )
+      )
+      PART(SPACER, "elm.padding.left",
+         DSC_FROM_L("default" 0.0,
+            min: LIST_DEFAULT_PADDING_SIZE 0;
+            max: LIST_DEFAULT_PADDING_SIZE -1;
+         )
+      )
+      PART(SPACER, "elm.padding.right",
+         DSC_FROM_R("default" 0.0,
+            min: LIST_RIGHT_PADDING_SIZE 0;
+            max: LIST_RIGHT_PADDING_SIZE -1;
+         )
+      )
+      PART(SWALLOW, "elm.swallow.icon",
+         DSC_R("default" 0.0,
+            "elm.padding.right",
+         )
+      )
+      PART(SPACER, "elm.padding.center.right",
+         DSC_R("default" 0.0,
+            "elm.swallow.icon",
+            min: LIST_TEXT_RIGHT_PADDING_SIZE 0;
+            max: LIST_TEXT_RIGHT_PADDING_SIZE -1;
+         )
+      )
+      PART(TEXTBLOCK, "elm.text",
+         DSC_LRTB("default" 0.0,
+            "elm.padding.left", "elm.padding.center.right", "elm.padding.top", "elm.padding.bottom",
+            min: 0 LIST_TEXT_MAIN_HEIGHT;
+            text.min: 0 1;
+            text.style: "list_text_main";
+            fixed: 1 0;;
+         )
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_dim";
+         }
+      )
+      PART(RECT, "elm.bottomline",
+         DSC_FROM_B("default" 0.0,
+            min: 0 LIST_BOTTOMLINE_HEIGHT;
+            max: -1 LIST_BOTTOMLINE_HEIGHT;
+            color: 192 213 222 255;
+         )
+      )
+   }
+   LIST_PROGRAMS( target: "elm.text"; )
+}
+
+group { name: "elm/genlist/item/message/default";
+   alias: "elm/genlist/item_compress/message";
+
+   data.item: "treesize" GENLIST_TREESIZE_DEFAULT;
+   data.item: "texts" "elm.text elm.title.1 elm.title.2";
+
+   parts {
+      LIST_PART_BG_NOCLASS
+      PART(SWALLOW, "elm.swallow.pad",
+         DSC_FROM_L("default" 0.0, );
+         mouse_events: 0;
+      )
+      PART(SPACER, "elm.padding.top",
+         DSC_FROM_T("default" 0.0,
+            min: 0 LIST_WRAP_PADDING_TOP_SIZE;
+            max: -1 LIST_WRAP_PADDING_TOP_SIZE;
+         )
+      )
+      PART(SPACER, "elm.padding.bottom",
+         DSC_FROM_B("default" 0.0,
+            min: 0 LIST_WRAP_PADDING_BOTTOM_SIZE;
+            max: -1 LIST_WRAP_PADDING_BOTTOM_SIZE;
+         )
+      )
+      PART(SPACER, "elm.padding.left",
+         DSC_FROM_L("default" 0.0,
+            min: LIST_LEFT_PADDING_SIZE 0;
+            max: LIST_RIGHT_PADDING_SIZE -1;
+         )
+      )
+      PART(SPACER, "elm.padding.right",
+         DSC_FROM_R("default" 0.0,
+            min: LIST_DEFAULT_PADDING_SIZE 0;
+            max: LIST_DEFAULT_PADDING_SIZE -1;
+         )
+      )
+      PART(TEXTBLOCK, "elm.text",
+         DSC_LRT("default" 0.0,
+            "elm.padding.left", "elm.padding.right", "elm.padding.top",
+            min: 0 LIST_TEXT_MAIN_HEIGHT;
+            text.min: 0 1;
+            text.style: "list_text_main";
+            fixed: 1 0;;
+         )
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_dim";
+         }
+      )
+      PART(TEXTBLOCK, "elm.title.1",
+         DSC_LRT("default" 0.0,
+            "elm.padding.left", "elm.padding.right", "elm.text",
+            min: 0 LIST_TEXT_MAIN_HEIGHT;
+            text.min: 0 1;
+            text.style: "list_text_main";
+            fixed: 1 0;;
+         )
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_dim";
+         }
+      )
+      PART(TEXTBLOCK, "elm.title.2",
+         DSC_LRTB("default" 0.0,
+            "elm.padding.left", "elm.padding.right", "elm.title.1", "elm.padding.bottom",
+            min: 0 LIST_TEXT_MAIN_HEIGHT;
+            text.min: 0 1;
+            text.style: "list_text_main";
+            fixed: 1 0;;
+         )
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_dim";
+         }
+      )
+      PART(RECT, "elm.bottomline",
+         DSC_FROM_B("default" 0.0,
+            min: 0 LIST_BOTTOMLINE_HEIGHT;
+            max: -1 LIST_BOTTOMLINE_HEIGHT;
+            color: 192 213 222 255;
+         )
+      )
+   }
+   LIST_PROGRAMS( target: "elm.text"; target: "elm.title.1"; target: "elm.title.2"; )
+}

@@ -1,0 +1,2828 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*
+ * vim:ts=3
+*/
+#include "genlist_macro.edc"
+
+group { name: "elm/genlist/item/default/default";
+   alias: "elm/list/item/default";
+   alias: "elm/list/item_odd/default";
+   alias: "elm/list/item_compress/default";
+   alias: "elm/list/item_compress_odd/default";
+
+   IMAGE_FADEOUT
+   PROLOG_LIST
+   SLIDE_SCRIPT
+   data.item: "texts" "elm.text";
+   data.item: "contents" "elm.swallow.icon elm.swallow.end elm.swallow.center_check";
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE_INC, LIST_PADDING_RIGHT_SIZE_INC,
+         LIST_1LINE_PADDING_TOP_SIZE_INC, LIST_1LINE_PADDING_BOTTOM_SIZE_INC
+      )
+      PART(SWALLOW, "elm.swallow.icon",
+         DESC_L("elm.padding.left",)
+      )
+      PART(TEXT, "elm.text",
+         DESC_LRTB("elm.swallow.icon", "elm.swallow.end", "elm.padding.top", "elm.padding.bottom",
+            min: 0 0;
+            text {
+               min: 0 1;
+               font: "Tizen:style=Light"; size: "36"; /*(Changeable UI) text_class: "T0211";*/
+               text_class: "list_item";
+               align: 0.5 0.5;
+            }
+            color: 249 249 249 255; /*(Changeable UI) color_class: "T0211";*/
+         )
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 102 102 102 255; /*(Changeable UI) color_class: "T0211D";*/
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 255; /*(Changeable UI) color_class: "T0211P";*/
+         }
+      )
+      PART(SWALLOW, "elm.swallow.end",
+         DESC_RTB("elm.padding.right", "elm.padding.top", "elm.padding.bottom",)
+      )
+      PART_CENTER_CHECK
+   }
+   PROGRAMS_LIST( target: "elm.text"; target: "elm.swallow.icon"; target: "elm.swallow.end"; )
+}
+
+group { name: "elm/genlist/item/1icon/default";
+
+   data.item: "contents" "elm.icon elm.swallow.center_check";
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE_INC, LIST_PADDING_RIGHT_SIZE_INC, 2, 2
+      )
+      PART(SWALLOW, "elm.icon",
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            align: 0.5 0.5;
+         )
+      )
+   }
+}
+
+group { name: "elm/genlist/item/1icon/no_padding/default";
+
+   data.item: "contents" "elm.icon elm.swallow.center_check";
+
+   parts {
+      PART_LIST_BG
+      PART(SWALLOW, "elm.icon",
+         description { state: "default" 0.0;
+            align: 0.5 0.5;
+            min: 0 2;
+         }
+      )
+   }
+}
+
+group { name: "elm/genlist/item/groupindex/default";
+
+   PROLOG_LIST
+   data.item: "texts" "elm.text";
+
+   images {
+      image: "tw_list_sub_line_left.#.png" COMP;
+      image: "tw_list_sub_line_right.#.png" COMP;
+   }
+
+   parts {
+      PART_LIST_PADDINGS(
+         LIST_GROUPINDEX_PADDING_LEFT_SIZE_INC, LIST_GROUPINDEX_PADDING_RIGHT_SIZE_INC,
+         LIST_GROUPINDEX_PADDING_TOP_SIZE_INC, LIST_GROUPINDEX_PADDING_BOTTOM_SIZE_INC
+      )
+      PART(RECT, "clipper",
+         DESC_LR("elm.padding.left.center", "elm.padding.right.center",
+         )
+      )
+      PART(TEXTBLOCK, "elm.text",
+         clip_to: "clipper";
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            min: 0 LIST_TEXT_GROUPINDEX_HEIGHT_INC;
+            PARAM_TEXT("list_text_groupindex_normal",)
+         )
+      )
+      PART(SPACER, "elm.padding.left.center",
+         DESC_R("elm.text",
+            min: LIST_GROUPINDEX_PADDING_CENTER_SIZE_INC 0;
+            max: LIST_GROUPINDEX_PADDING_CENTER_SIZE_INC -1;
+            fixed: 1 0;
+         )
+      )
+      PART(SPACER, "elm.padding.right.center",
+         DESC_L("elm.text",
+            min: LIST_GROUPINDEX_PADDING_CENTER_SIZE_INC 0;
+            max: LIST_GROUPINDEX_PADDING_CENTER_SIZE_INC -1;
+            fixed: 1 0;
+         )
+      )
+      PART(IMAGE, "left",
+         description { state: "default" 0.0;
+            min: 0 LIST_GROUPINDEX_SUB_LINE_HEIGHT_INC;
+            max: -1 LIST_GROUPINDEX_SUB_LINE_HEIGHT_INC;
+            fixed: 0 1;
+            align: 0.0 0.5;
+            image.normal: "tw_list_sub_line_left.#.png";
+            color: 26 64 91 255; /*(Changeable UI) color_class: "B023";*/
+            rel1 {
+               relative: 0 0;
+               to_x: "elm.padding.left";
+            }
+            rel2 {
+               relative: 0 1;
+               to_x: "elm.padding.left.center";
+            }
+         }
+      )
+      PART(IMAGE, "right",
+         description { state: "default" 0.0;
+            min: 0 LIST_GROUPINDEX_SUB_LINE_HEIGHT_INC;
+            max: -1 LIST_GROUPINDEX_SUB_LINE_HEIGHT_INC;
+            fixed: 0 1;
+            align: 0.0 0.5;
+            image.normal: "tw_list_sub_line_right.#.png";
+            color: 26 64 91 255; /*(Changeable UI) color_class: "B023";*/
+            rel1 {
+               relative: 1 0;
+               to_x: "elm.padding.right.center";
+            }
+            rel2 {
+               relative: 1 1;
+               to_x: "elm.padding.right";
+            }
+         }
+      )
+   }
+}
+
+group { name: "elm/genlist/item/title/default";
+
+   PROLOG_LIST
+   SCRIPT_START_SLIDE_TITLE
+   data.item: "texts" "elm.text";
+
+   images {
+      image: "tw_list_fadeout_right_masking.#.png" COMP;
+      image: "sdk_list_no_fadeout_masking.#.png" COMP;
+   }
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS_TITLE_SLIDE(
+         LIST_TITLE_PADDING_LEFT_SIZE_INC, LIST_TITLE_PADDING_RIGHT_SIZE_INC, LIST_TITLE_PADDING_TOP_SIZE_INC, LIST_TITLE_PADDING_BOTTOM_SIZE_INC,
+         LIST_TITLE_PADDING_EXPANDED_LEFT_SIZE_INC, LIST_TITLE_PADDING_EXPANDED_RIGHT_SIZE_INC, LIST_TITLE_PADDING_EXPANDED_TOP_SIZE_INC, LIST_TITLE_PADDING_EXPANDED_BOTTOM_SIZE_INC
+      )
+      PART(RECT, "clipper",
+         DESC_LR("elm.padding.left", "elm.padding.right",
+         )
+      )
+      PART(IMAGE, "fade_out",
+         clip_to: "clipper";
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(TEXTBLOCK, "elm.text",
+         clip_to: "fade_out";
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            min: 0 LIST_TEXT_TITLE_HEIGHT_INC;
+            PARAM_TEXT("list_text_title_normal",)
+         )
+      )
+   }
+   programs {
+      PROGRAM_LIST_DEFAULT(target: "elm.padding.top"; target: "elm.padding.bottom"; target: "elm.padding.left"; target: "elm.padding.right"; target: "fade_out"; )
+      PROGRAM_LIST_TITLE_EXPAND
+      PROGRAM_LIST_TITLE_TEXT_SLIDE
+      PROGRAM_LIST_TITLE_FADEOUT_SET
+      PROGRAM_LIST_SOUND
+   }
+}
+
+group { name: "elm/genlist/item/title_with_groupindex/default";
+
+   PROLOG_LIST
+   SCRIPT_START_SLIDE_TITLE
+   data.item: "texts" "elm.text";
+
+   images {
+      image: "tw_list_fadeout_right_masking.#.png" COMP;
+      image: "sdk_list_no_fadeout_masking.#.png" COMP;
+   }
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_TITLE_GROUP_PADDING_LEFT_SIZE_INC, LIST_TITLE_GROUP_PADDING_RIGHT_SIZE_INC,
+         LIST_TITLE_GROUP_PADDING_TOP_SIZE_INC, LIST_TITLE_GROUP_PADDING_BOTTOM_SIZE_INC
+      )
+      PART(RECT, "clipper",
+         DESC_LR("elm.padding.left", "elm.padding.right",
+         )
+      )
+      PART(IMAGE, "fade_out",
+         clip_to: "clipper";
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(TEXTBLOCK, "elm.text",
+         clip_to: "fade_out";
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            min: 0 LIST_TEXT_TITLE_HEIGHT_INC;
+            PARAM_TEXT("list_text_title_normal",)
+         )
+      )
+   }
+   programs {
+      PROGRAM_LIST_DEFAULT(target: "elm.padding.top"; target: "elm.padding.bottom"; target: "elm.padding.left"; target: "elm.padding.right"; target: "fade_out"; )
+      PROGRAM_LIST_TITLE_EXPAND
+      PROGRAM_LIST_TITLE_TEXT_SLIDE
+      PROGRAM_LIST_TITLE_FADEOUT_SET
+      PROGRAM_LIST_SOUND
+   }
+}
+
+group { name: "elm/genlist/item/1text/default";
+
+   PROLOG_LIST
+   SCRIPT_START_SLIDE
+   SCRIPT_SLIDE_SIZE_CHECK
+   data.item: "texts" "elm.text";
+   data.item: "contents" "elm.swallow.center_check";
+
+   images {
+      image: "tw_list_fadeout_right_masking.#.png" COMP;
+      image: "sdk_list_no_fadeout_masking.#.png" COMP;
+   }
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE_INC, LIST_PADDING_RIGHT_SIZE_INC,
+         LIST_1LINE_PADDING_TOP_SIZE_INC, LIST_1LINE_PADDING_BOTTOM_SIZE_INC
+      )
+      PART(RECT, "opacity_clipper",
+         scale: 1;
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color: 255 255 255 153;
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "highlighted" 0.0;
+         }
+      )
+      PART(RECT, "clipper",
+         clip_to: "opacity_clipper";
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color_class: "clipper";
+         )
+      )
+      PART(IMAGE, "fade_out",
+         clip_to: "clipper";
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(TEXTBLOCK, "elm.text",
+         clip_to: "fade_out";
+         scale: 1;
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            fixed: 1 0;
+            min: 0 LIST_TEXT_MAIN_HEIGHT_INC;
+            max: -1 -1;
+            PARAM_TEXT("list_text_main_normal",)
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_normal";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_disabled";
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_highlight";
+         }
+         description { state: "highlighted_disabled" 0.0;
+            inherit: "disabled" 0.0;
+         }
+         description { state: "long_text_disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_disabled";
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_highlight";
+         }
+         description { state: "long_text_highlighted_disabled" 0.0;
+            inherit: "long_text_disabled" 0.0;
+         }
+         description { state: "sliding" 0.0;
+            inherit: "long_text_highlighted" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+         description { state: "sliding_disabled" 0.0;
+            inherit: "long_text_highlighted_disabled" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_press";
+         }
+      )
+      PART_CENTER_CHECK_OPACITY
+   }
+   programs {
+      PROGRAM_LIST_DEFAULT_SLIDE(target: "elm.text"; target: "bg"; target: "opacity_clipper"; target: "fade_out"; )
+      PROGRAM_LIST_1TEXT_HIGHLIGHT
+      PROGRAM_LIST_1TEXT_DISABLE
+      PROGRAM_LIST_1TEXT_FADEOUT_SET
+      PROGRAM_LIST_TEXT_SLIDE
+      PROGRAM_LIST_SOUND
+   }
+}
+
+group { name: "elm/genlist/item/1text.1icon/default";
+
+   PROLOG_LIST
+   SCRIPT_START_SLIDE
+   SCRIPT_SLIDE_SIZE_CHECK_1ICON
+   data.item: "texts" "elm.text";
+   data.item: "contents" "elm.icon elm.swallow.center_check";
+
+   images {
+      image: "tw_list_fadeout_right_masking.#.png" COMP;
+      image: "sdk_list_no_fadeout_masking.#.png" COMP;
+   }
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_ICON_LEFT_SIZE_INC, LIST_PADDING_RIGHT_SIZE_INC,
+         LIST_1LINE_PADDING_TOP_SIZE_INC, LIST_1LINE_PADDING_BOTTOM_SIZE_INC
+      )
+      PART(SPACER, "elm.padding.icon",
+         DESC_L("elm.icon",
+            fixed: 1 0;
+            min: LIST_PADDING_ICON_CENTER_SIZE_INC 0;
+            max: LIST_PADDING_ICON_CENTER_SIZE_INC -1;
+         )
+      )
+      PART(SWALLOW, "elm.icon",
+         clip_to: "clipper";
+         DESC_L("elm.padding.left",
+           fixed: 1 1;
+         )
+      )
+      PART(RECT, "opacity_clipper",
+         scale: 1;
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color: 255 255 255 153;
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "highlighted" 0.0;
+         }
+      )
+      PART(RECT, "clipper",
+         clip_to: "opacity_clipper";
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color_class: "clipper";
+         )
+      )
+      PART(IMAGE, "fade_out",
+         clip_to: "clipper";
+         DESC_LRTB("elm.padding.icon", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(TEXTBLOCK, "elm.text",
+         clip_to: "fade_out";
+         scale: 1;
+         DESC_LRTB("elm.padding.icon", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            fixed: 1 0;
+            min: 0 LIST_TEXT_MAIN_HEIGHT_INC;
+            PARAM_TEXT("list_text_main_normal",)
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_normal";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_disabled";
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_highlight";
+         }
+         description { state: "highlighted_disabled" 0.0;
+            inherit: "disabled" 0.0;
+         }
+         description { state: "long_text_disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_disabled";
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_highlight";
+         }
+         description { state: "long_text_highlighted_disabled" 0.0;
+            inherit: "long_text_disabled" 0.0;
+         }
+         description { state: "sliding" 0.0;
+            inherit: "long_text_highlighted" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+         description { state: "sliding_disabled" 0.0;
+            inherit: "long_text_highlighted_disabled" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_press";
+         }
+      )
+      PART_CENTER_CHECK_OPACITY
+   }
+   programs {
+      PROGRAM_LIST_DEFAULT_SLIDE(target: "elm.text"; target: "bg"; target: "opacity_clipper"; target: "fade_out"; )
+      PROGRAM_LIST_1TEXT_HIGHLIGHT
+      PROGRAM_LIST_1TEXT_DISABLE
+      PROGRAM_LIST_1TEXT_FADEOUT_SET
+      PROGRAM_LIST_TEXT_SLIDE
+      PROGRAM_LIST_SOUND
+   }
+}
+
+group { name: "elm/genlist/item/1text.1icon.1/default";
+
+   PROLOG_LIST
+   SCRIPT_START_SLIDE
+   SCRIPT_SLIDE_SIZE_CHECK_1ICON
+   data.item: "texts" "elm.text";
+   data.item: "contents" "elm.icon elm.swallow.center_check";
+
+   images {
+      image: "tw_list_fadeout_right_masking.#.png" COMP;
+      image: "sdk_list_no_fadeout_masking.#.png" COMP;
+   }
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE_INC, LIST_PADDING_ICON_RIGHT_SIZE_INC,
+         LIST_1LINE_PADDING_TOP_SIZE_INC, LIST_1LINE_PADDING_BOTTOM_SIZE_INC
+      )
+      PART(SWALLOW, "elm.icon",
+         clip_to: "clipper";
+         DESC_R("elm.padding.right",
+           fixed: 1 1;
+         )
+      )
+      PART(SPACER, "elm.padding.icon",
+         DESC_R("elm.icon",
+            fixed: 1 0;
+            min: LIST_PADDING_ICON_CENTER_SIZE_INC 0;
+            max: LIST_PADDING_ICON_CENTER_SIZE_INC -1;
+         )
+      )
+      PART(RECT, "opacity_clipper",
+         scale: 1;
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color: 255 255 255 153;
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "highlighted" 0.0;
+         }
+      )
+      PART(RECT, "clipper",
+         clip_to: "opacity_clipper";
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color_class: "clipper";
+         )
+      )
+      PART(IMAGE, "fade_out",
+         clip_to: "clipper";
+         DESC_LRTB("elm.padding.left", "elm.padding.icon", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(TEXTBLOCK, "elm.text",
+         clip_to: "fade_out";
+         scale: 1;
+         DESC_LRTB("elm.padding.left", "elm.padding.icon", "elm.padding.top", "elm.padding.bottom",
+            fixed: 1 0;
+            min: 0 LIST_TEXT_MAIN_HEIGHT_INC;
+            PARAM_TEXT("list_text_main_normal",)
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_normal";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_disabled";
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_highlight";
+         }
+         description { state: "highlighted_disabled" 0.0;
+            inherit: "disabled" 0.0;
+         }
+         description { state: "long_text_disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_disabled";
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_highlight";
+         }
+         description { state: "long_text_highlighted_disabled" 0.0;
+            inherit: "long_text_disabled" 0.0;
+         }
+         description { state: "sliding" 0.0;
+            inherit: "long_text_highlighted" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+         description { state: "sliding_disabled" 0.0;
+            inherit: "long_text_highlighted_disabled" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_press";
+         }
+      )
+      PART_CENTER_CHECK_OPACITY
+   }
+   programs {
+      PROGRAM_LIST_DEFAULT_SLIDE(target: "elm.text"; target: "bg"; target: "opacity_clipper"; target: "fade_out"; )
+      PROGRAM_LIST_1TEXT_HIGHLIGHT
+      PROGRAM_LIST_1TEXT_DISABLE
+      PROGRAM_LIST_1TEXT_FADEOUT_SET
+      PROGRAM_LIST_TEXT_SLIDE
+      PROGRAM_LIST_SOUND
+   }
+}
+
+group { name: "elm/genlist/item/1text.1icon.divider/default";
+
+   PROLOG_LIST
+   SCRIPT_START_SLIDE
+   SCRIPT_SLIDE_SIZE_CHECK_1ICON_DIVIDER
+   data.item: "texts" "elm.text";
+   data.item: "contents" "elm.icon elm.swallow.center_check";
+
+   images {
+      image: "tw_list_fadeout_right_masking.#.png" COMP;
+      image: "sdk_list_no_fadeout_masking.#.png" COMP;
+      image: "thumbnail_rotary_small_circle.png" COMP;
+   }
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE_INC, 0,
+         LIST_1LINE_PADDING_TOP_SIZE_INC, LIST_1LINE_PADDING_BOTTOM_SIZE_INC
+      )
+      PART(RECT, "opacity_clipper",
+         scale: 1;
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color: 255 255 255 153;
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "highlighted" 0.0;
+         }
+      )
+      PART(RECT, "clipper",
+         clip_to: "opacity_clipper";
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color_class: "clipper";
+         )
+      )
+      PART(IMAGE, "fade_out",
+         clip_to: "clipper";
+         DESC_LRTB("elm.padding.left", "elm.padding.icon", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(TEXTBLOCK, "elm.text",
+         clip_to: "fade_out";
+         scale: 1;
+         DESC_LRTB("elm.padding.left", "elm.padding.icon", "elm.padding.top", "elm.padding.bottom",
+            fixed: 1 0;
+            min: 0 LIST_TEXT_MAIN_HEIGHT_INC;
+            PARAM_TEXT("list_text_main_normal",)
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_normal";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_disabled";
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_highlight";
+         }
+         description { state: "highlighted_disabled" 0.0;
+            inherit: "disabled" 0.0;
+         }
+         description { state: "long_text_disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_disabled";
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_highlight";
+         }
+         description { state: "long_text_highlighted_disabled" 0.0;
+            inherit: "long_text_disabled" 0.0;
+         }
+         description { state: "sliding" 0.0;
+            inherit: "long_text_highlighted" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+         description { state: "sliding_disabled" 0.0;
+            inherit: "long_text_highlighted_disabled" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_press";
+         }
+      )
+      PART(SWALLOW, "elm.icon",
+         clip_to: "clipper";
+         DESC_R("elm.padding.right",
+            min: BUTTON_DIVIDER_BTN_SIZE_INC 0;
+            max: BUTTON_DIVIDER_BTN_SIZE_INC -1;
+         )
+      )
+      PART(RECT, "elm.divider",
+         clip_to: "clipper";
+         DESC_R("elm.icon",
+            min: LIST_DIVIDER_WIDTH_INC LIST_DIVIDER_HEIGHT_INC;
+            max: LIST_DIVIDER_WIDTH_INC LIST_DIVIDER_HEIGHT_INC;
+            color: 249 249 249 76; /*(Changeable UI) color_class: "B0221L1";*/
+         )
+      )
+      PART(SPACER, "elm.padding.icon",
+         DESC_R("elm.divider",
+            fixed: 1 0;
+            min: LIST_PADDING_DIVIDER_LEFT_SIZE_INC 0;
+            max: LIST_PADDING_DIVIDER_LEFT_SIZE_INC -1;
+         )
+      )
+      PART_CENTER_CHECK_OPACITY
+   }
+   programs {
+      PROGRAM_LIST_DEFAULT_SLIDE(target: "elm.text"; target: "bg"; target: "opacity_clipper"; target: "fade_out";)
+      PROGRAM_LIST_1TEXT_HIGHLIGHT
+      PROGRAM_LIST_1TEXT_DISABLE
+      PROGRAM_LIST_1TEXT_FADEOUT_SET
+      PROGRAM_LIST_TEXT_SLIDE
+      PROGRAM_LIST_SOUND
+   }
+}
+
+group { name: "elm/genlist/item/2text/default";
+
+   PROLOG_LIST
+   SCRIPT_START_SLIDE
+   SCRIPT_SLIDE_SUB1_SIZE_CHECK
+   SCRIPT_SLIDE_SIZE_CHECK
+   data.item: "texts" "elm.text elm.text.1";
+   data.item: "contents" "elm.swallow.center_check";
+
+   images {
+      image: "tw_list_fadeout_right_masking.#.png" COMP;
+      image: "sdk_list_no_fadeout_masking.#.png" COMP;
+   }
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS_2TEXT_HIDE(
+         LIST_PADDING_LEFT_SIZE_INC, LIST_PADDING_RIGHT_SIZE_INC,
+         LIST_1LINE_PADDING_TOP_SIZE_INC, LIST_1LINE_PADDING_BOTTOM_SIZE_INC,
+         LIST_2LINE_PADDING_TOP_SIZE_INC, LIST_2LINE_PADDING_BOTTOM_SIZE_INC
+      )
+      PART(RECT, "opacity_clipper",
+         scale: 1;
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color: 255 255 255 153;
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "highlighted" 0.0;
+         }
+      )
+      PART(RECT, "clipper",
+         clip_to: "opacity_clipper";
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color_class: "clipper";
+         )
+      )
+      PART(IMAGE, "fade_out",
+         clip_to: "clipper";
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(IMAGE, "sub_fade_out",
+         clip_to: "clipper1";
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(TEXTBLOCK, "elm.text",
+         clip_to: "fade_out";
+         scale: 1;
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            fixed: 1 0;
+            min: 0 LIST_TEXT_MAIN_HEIGHT_INC;
+            PARAM_TEXT("list_text_main_normal",)
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_normal";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_disabled";
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_highlight";
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "highlighted_disabled" 0.0;
+            inherit: "disabled" 0.0;
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "long_text_disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_disabled";
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_highlight";
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "long_text_highlighted_disabled" 0.0;
+            inherit: "long_text_disabled" 0.0;
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_press";
+         }
+         description { state: "sliding" 0.0;
+            inherit: "long_text_highlighted" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+         description { state: "sliding_disabled" 0.0;
+            inherit: "long_text_highlighted_disabled" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+      )
+      part {
+         name: "clipper1";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+         description {
+            state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+      }
+      part {
+         name: "elm.padding.bottom.1";
+         type: SPACER;
+         description {
+            state: "default" 0.0;
+            fixed: 0 1;
+            min: 0 LIST_2LINE_PADDING_BOTTOM_SIZE_INC;
+            max: -1 LIST_2LINE_PADDING_BOTTOM_SIZE_INC;
+            align: 0.0 1.0;
+            rel1.relative: 0.0 1.0;
+            rel2.relative: 1.0 1.0;
+         }
+      }
+      PART(TEXTBLOCK, "elm.text.1",
+         clip_to: "sub_fade_out";
+         description {
+            state: "default" 0.0;
+            align: 0.5 1.0;
+            min: 0 LIST_TEXT_SUB_HEIGHT_INC;
+            rel1 {
+               to_x: "elm.padding.left";
+               to_y: "elm.padding.bottom.1";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "elm.padding.right";
+               to_y: "elm.padding.bottom.1";
+               relative: 0.0 0.0;
+            }
+            text {
+               min: 0 1;
+               max: 1 1;
+               style: "list_text_sub_normal";
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_dim";
+         }
+      )
+      PART_CENTER_CHECK_OPACITY
+   }
+   programs {
+      PROGRAM_LIST_DEFAULT_SLIDE(target: "elm.text"; target: "elm.text.1"; target: "elm.padding.top"; target: "elm.padding.bottom"; target: "bg"; target: "clipper"; target: "clipper1"; target: "opacity_clipper"; target: "fade_out"; target: "sub_fade_out"; )
+      PROGRAM_LIST_2TEXT_HIGHLIGHT
+      PROGRAM_LIST_2TEXT_DISABLE
+      PROGRAM_LIST_SUBTEXT_HIGHLIGHT
+      PROGRAM_LIST_2TEXT_FADEOUT_SET
+      PROGRAM_LIST_TEXT_SLIDE
+      PROGRAM_LIST_SOUND
+   }
+}
+
+group { name: "elm/genlist/item/2text.1icon/default";
+
+   PROLOG_LIST
+   SCRIPT_START_SLIDE
+   SCRIPT_SLIDE_SUB1_SIZE_CHECK_1ICON
+   SCRIPT_SLIDE_SIZE_CHECK_1ICON
+   data.item: "texts" "elm.text elm.text.1";
+   data.item: "contents" "elm.icon elm.swallow.center_check";
+
+   images {
+      image: "tw_list_fadeout_right_masking.#.png" COMP;
+      image: "sdk_list_no_fadeout_masking.#.png" COMP;
+   }
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS_2TEXT_HIDE(
+         LIST_PADDING_ICON_LEFT_SIZE_INC, LIST_PADDING_RIGHT_SIZE_INC,
+         LIST_1LINE_PADDING_TOP_SIZE_INC, LIST_1LINE_PADDING_BOTTOM_SIZE_INC,
+         LIST_2LINE_PADDING_TOP_SIZE_INC, LIST_2LINE_PADDING_BOTTOM_SIZE_INC
+      )
+      PART(SWALLOW, "elm.icon",
+         clip_to: "clipper";
+         DESC_L("elm.padding.left",
+         )
+      )
+      PART(SPACER, "elm.padding.icon",
+         DESC_L("elm.icon",
+            fixed: 1 0;
+            min: LIST_PADDING_ICON_CENTER_SIZE_INC 0;
+            max: LIST_PADDING_ICON_CENTER_SIZE_INC -1;
+         )
+      )
+      PART(RECT, "opacity_clipper",
+         scale: 1;
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color: 255 255 255 153;
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "highlighted" 0.0;
+         }
+      )
+      PART(RECT, "clipper",
+         clip_to: "opacity_clipper";
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color_class: "clipper";
+         )
+      )
+      PART(IMAGE, "fade_out",
+         clip_to: "clipper";
+         DESC_LRTB("elm.padding.icon", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(IMAGE, "sub_fade_out",
+         clip_to: "clipper1";
+         DESC_LRTB("elm.padding.icon", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(TEXTBLOCK, "elm.text",
+         clip_to: "fade_out";
+         scale: 1;
+         DESC_LRTB("elm.padding.icon", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            fixed: 1 0;
+            min: 0 LIST_TEXT_MAIN_HEIGHT_INC;
+            PARAM_TEXT("list_text_main_normal",)
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_normal";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_disabled";
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_highlight";
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "highlighted_disabled" 0.0;
+            inherit: "disabled" 0.0;
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "long_text_disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_disabled";
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_highlight";
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "long_text_highlighted_disabled" 0.0;
+            inherit: "long_text_disabled" 0.0;
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_press";
+         }
+         description { state: "sliding" 0.0;
+            inherit: "long_text_highlighted" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+         description { state: "sliding_disabled" 0.0;
+            inherit: "long_text_highlighted_disabled" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+      )
+      part {
+         name: "clipper1";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+         description {
+            state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+      }
+      part {
+         name: "elm.padding.bottom.1";
+         type: SPACER;
+         description {
+            state: "default" 0.0;
+            fixed: 0 1;
+            min: 0 LIST_2LINE_PADDING_BOTTOM_SIZE_INC;
+            max: -1 LIST_2LINE_PADDING_BOTTOM_SIZE_INC;
+            align: 0.0 1.0;
+            rel1.relative: 0.0 1.0;
+            rel2.relative: 1.0 1.0;
+         }
+      }
+      PART(TEXTBLOCK, "elm.text.1",
+         clip_to: "sub_fade_out";
+         description {
+            state: "default" 0.0;
+            align: 0.5 1.0;
+            min: 0 LIST_TEXT_SUB_HEIGHT_INC;
+            rel1 {
+               to_x: "elm.padding.icon";
+               to_y: "elm.padding.bottom.1";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "elm.padding.right";
+               to_y: "elm.padding.bottom.1";
+               relative: 0.0 0.0;
+            }
+            text {
+               min: 0 1;
+               max: 1 1;
+               style: "list_text_sub_normal";
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_dim";
+         }
+      )
+      PART_CENTER_CHECK_OPACITY
+   }
+   programs {
+      PROGRAM_LIST_DEFAULT_SLIDE(target: "elm.text"; target: "elm.text.1"; target: "elm.padding.top"; target: "elm.padding.bottom"; target: "bg"; target: "clipper"; target: "clipper1"; target: "opacity_clipper"; target: "fade_out"; target: "sub_fade_out"; )
+      PROGRAM_LIST_2TEXT_HIGHLIGHT
+      PROGRAM_LIST_2TEXT_DISABLE
+      PROGRAM_LIST_SUBTEXT_HIGHLIGHT
+      PROGRAM_LIST_2TEXT_FADEOUT_SET
+      PROGRAM_LIST_TEXT_SLIDE
+      PROGRAM_LIST_SOUND
+   }
+}
+
+group { name: "elm/genlist/item/2text.1icon.1/default";
+
+   PROLOG_LIST
+   SCRIPT_START_SLIDE
+   SCRIPT_SLIDE_SUB1_SIZE_CHECK_1ICON
+   SCRIPT_SLIDE_SIZE_CHECK_1ICON
+   data.item: "texts" "elm.text elm.text.1";
+   data.item: "contents" "elm.icon elm.swallow.center_check";
+
+   images {
+      image: "tw_list_fadeout_right_masking.#.png" COMP;
+      image: "sdk_list_no_fadeout_masking.#.png" COMP;
+   }
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS_2TEXT_HIDE(
+         LIST_PADDING_LEFT_SIZE_INC, LIST_PADDING_ICON_RIGHT_SIZE_INC,
+         LIST_1LINE_PADDING_TOP_SIZE_INC, LIST_1LINE_PADDING_BOTTOM_SIZE_INC,
+         LIST_2LINE_PADDING_TOP_SIZE_INC, LIST_2LINE_PADDING_BOTTOM_SIZE_INC
+      )
+      PART(SWALLOW, "elm.icon",
+         clip_to: "clipper";
+         DESC_R("elm.padding.right",
+         )
+      )
+      PART(SPACER, "elm.padding.icon",
+         DESC_R("elm.icon",
+            fixed: 1 0;
+            min: LIST_PADDING_ICON_CENTER_SIZE_INC 0;
+            max: LIST_PADDING_ICON_CENTER_SIZE_INC -1;
+         )
+      )
+      PART(RECT, "opacity_clipper",
+         scale: 1;
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color: 255 255 255 153;
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "highlighted" 0.0;
+         }
+      )
+      PART(RECT, "clipper",
+         clip_to: "opacity_clipper";
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color_class: "clipper";
+         )
+      )
+      PART(IMAGE, "fade_out",
+         clip_to: "clipper";
+         DESC_LRTB("elm.padding.left", "elm.padding.icon", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(IMAGE, "sub_fade_out",
+         clip_to: "clipper1";
+         DESC_LRTB("elm.padding.left", "elm.padding.icon", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(TEXTBLOCK, "elm.text",
+         clip_to: "fade_out";
+         scale: 1;
+         DESC_LRTB("elm.padding.left", "elm.padding.icon", "elm.padding.top", "elm.padding.bottom",
+            fixed: 1 0;
+            min: 0 LIST_TEXT_MAIN_HEIGHT_INC;
+            PARAM_TEXT("list_text_main_normal",)
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_normal";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_disabled";
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_highlight";
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "highlighted_disabled" 0.0;
+            inherit: "disabled" 0.0;
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "long_text_disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_disabled";
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_highlight";
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "long_text_highlighted_disabled" 0.0;
+            inherit: "long_text_disabled" 0.0;
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_press";
+         }
+         description { state: "sliding" 0.0;
+            inherit: "long_text_highlighted" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+         description { state: "sliding_disabled" 0.0;
+            inherit: "long_text_highlighted_disabled" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+      )
+      part {
+         name: "clipper1";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+         description {
+            state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+      }
+      part {
+         name: "elm.padding.bottom.1";
+         type: SPACER;
+         description {
+            state: "default" 0.0;
+            fixed: 0 1;
+            min: 0 LIST_2LINE_PADDING_BOTTOM_SIZE_INC;
+            max: -1 LIST_2LINE_PADDING_BOTTOM_SIZE_INC;
+            align: 0.0 1.0;
+            rel1.relative: 0.0 1.0;
+            rel2.relative: 1.0 1.0;
+         }
+      }
+      PART(TEXTBLOCK, "elm.text.1",
+         clip_to: "sub_fade_out";
+         description {
+            state: "default" 0.0;
+            align: 0.5 1.0;
+            min: 0 LIST_TEXT_SUB_HEIGHT_INC;
+            rel1 {
+               to_x: "elm.padding.left";
+               to_y: "elm.padding.bottom.1";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "elm.padding.icon";
+               to_y: "elm.padding.bottom.1";
+               relative: 0.0 0.0;
+            }
+            text {
+               min: 0 1;
+               max: 1 1;
+               style: "list_text_sub_normal";
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_dim";
+         }
+      )
+      PART_CENTER_CHECK_OPACITY
+   }
+   programs {
+      PROGRAM_LIST_DEFAULT_SLIDE(target: "elm.text"; target: "elm.text.1"; target: "elm.padding.top"; target: "elm.padding.bottom"; target: "bg"; target: "clipper"; target: "clipper1"; target: "opacity_clipper"; target: "fade_out"; target: "sub_fade_out"; )
+      PROGRAM_LIST_2TEXT_HIGHLIGHT
+      PROGRAM_LIST_2TEXT_DISABLE
+      PROGRAM_LIST_SUBTEXT_HIGHLIGHT
+      PROGRAM_LIST_2TEXT_FADEOUT_SET
+      PROGRAM_LIST_TEXT_SLIDE
+      PROGRAM_LIST_SOUND
+   }
+}
+
+group { name: "elm/genlist/item/2text.1icon.divider/default";
+
+   PROLOG_LIST
+   SCRIPT_START_SLIDE
+   SCRIPT_SLIDE_SUB1_SIZE_CHECK_1ICON_DIVIDER
+   SCRIPT_SLIDE_SIZE_CHECK_1ICON_DIVIDER
+   data.item: "texts" "elm.text elm.text.1";
+   data.item: "contents" "elm.icon elm.swallow.center_check";
+
+   images {
+      image: "tw_list_fadeout_right_masking.#.png" COMP;
+      image: "sdk_list_no_fadeout_masking.#.png" COMP;
+   }
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS_2TEXT_HIDE(
+         LIST_PADDING_LEFT_SIZE_INC, LIST_PADDING_ICON_RIGHT_SIZE_INC,
+         LIST_1LINE_PADDING_TOP_SIZE_INC, LIST_1LINE_PADDING_BOTTOM_SIZE_INC,
+         LIST_2LINE_PADDING_TOP_SIZE_INC, LIST_2LINE_PADDING_BOTTOM_SIZE_INC
+      )
+      PART(RECT, "opacity_clipper",
+         scale: 1;
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color: 255 255 255 153;
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "highlighted" 0.0;
+         }
+      )
+      PART(RECT, "clipper",
+         clip_to: "opacity_clipper";
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color_class: "clipper";
+         )
+      )
+      PART(IMAGE, "fade_out",
+         clip_to: "clipper";
+         DESC_LRTB("elm.padding.left", "elm.padding.icon", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(IMAGE, "sub_fade_out",
+         clip_to: "clipper1";
+         DESC_LRTB("elm.padding.left", "elm.padding.icon", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(TEXTBLOCK, "elm.text",
+         clip_to: "fade_out";
+         scale: 1;
+         DESC_LRTB("elm.padding.left", "elm.padding.icon", "elm.padding.top", "elm.padding.bottom",
+            fixed: 1 0;
+            min: 0 LIST_TEXT_MAIN_HEIGHT_INC;
+            PARAM_TEXT("list_text_main_normal",)
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_normal";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_disabled";
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_highlight";
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "highlighted_disabled" 0.0;
+            inherit: "disabled" 0.0;
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "long_text_disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_disabled";
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_highlight";
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "long_text_highlighted_disabled" 0.0;
+            inherit: "long_text_disabled" 0.0;
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_press";
+         }
+         description { state: "sliding" 0.0;
+            inherit: "long_text_highlighted" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+         description { state: "sliding_disabled" 0.0;
+            inherit: "long_text_highlighted_disabled" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+      )
+      part {
+         name: "clipper1";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+         description {
+            state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+      }
+      part {
+         name: "elm.padding.bottom.1";
+         type: SPACER;
+         description {
+            state: "default" 0.0;
+            fixed: 0 1;
+            min: 0 LIST_2LINE_PADDING_BOTTOM_SIZE_INC;
+            max: -1 LIST_2LINE_PADDING_BOTTOM_SIZE_INC;
+            align: 0.0 1.0;
+            rel1.relative: 0.0 1.0;
+            rel2.relative: 1.0 1.0;
+         }
+      }
+      PART(TEXTBLOCK, "elm.text.1",
+         clip_to: "sub_fade_out";
+         description {
+            state: "default" 0.0;
+            align: 0.5 1.0;
+            min: 0 LIST_TEXT_SUB_HEIGHT_INC;
+            rel1 {
+               to_x: "elm.padding.left";
+               to_y: "elm.padding.bottom.1";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "elm.padding.icon";
+               to_y: "elm.padding.bottom.1";
+               relative: 0.0 0.0;
+            }
+            text {
+               min: 0 1;
+               max: 1 1;
+               style: "list_text_sub_normal";
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_dim";
+         }
+      )
+      PART(SWALLOW, "elm.icon",
+         clip_to: "clipper";
+         DESC_R("elm.padding.right",
+            min: BUTTON_DIVIDER_BTN_SIZE_INC 0;
+            max: BUTTON_DIVIDER_BTN_SIZE_INC -1;
+         )
+      )
+      PART(RECT, "elm.divider",
+         clip_to: "clipper";
+         DESC_R("elm.icon",
+            min: LIST_DIVIDER_WIDTH_INC LIST_DIVIDER_HEIGHT_INC;
+            max: LIST_DIVIDER_WIDTH_INC LIST_DIVIDER_HEIGHT_INC;
+            color: 249 249 249 76; /*(Changeable UI) color_class: "B0221L1";*/
+         )
+      )
+      PART(SPACER, "elm.padding.icon",
+         DESC_R("elm.divider",
+            fixed: 1 0;
+            min: LIST_PADDING_DIVIDER_LEFT_SIZE_INC 0;
+            max: LIST_PADDING_DIVIDER_LEFT_SIZE_INC -1;
+         )
+      )
+      PART_CENTER_CHECK_OPACITY
+   }
+   programs {
+      PROGRAM_LIST_DEFAULT_SLIDE(target: "elm.text"; target: "elm.text.1"; target: "elm.padding.top"; target: "elm.padding.bottom"; target: "bg"; target: "clipper"; target: "clipper1"; target: "opacity_clipper"; target: "fade_out"; target: "sub_fade_out"; )
+      PROGRAM_LIST_2TEXT_HIGHLIGHT
+      PROGRAM_LIST_2TEXT_DISABLE
+      PROGRAM_LIST_SUBTEXT_HIGHLIGHT
+      PROGRAM_LIST_2TEXT_FADEOUT_SET
+      PROGRAM_LIST_TEXT_SLIDE
+      PROGRAM_LIST_SOUND
+   }
+}
+
+group { name: "elm/genlist/item/3text/default";
+
+   PROLOG_LIST
+   SCRIPT_START_SLIDE
+   SCRIPT_SLIDE_SUB1_SIZE_CHECK
+   SCRIPT_SLIDE_SUB2_SIZE_CHECK
+   SCRIPT_SLIDE_SIZE_CHECK
+   data.item: "texts" "elm.text elm.text.1 elm.text.2";
+   data.item: "contents" "elm.swallow.center_check";
+
+   images {
+      image: "tw_list_fadeout_right_masking.#.png" COMP;
+      image: "sdk_list_no_fadeout_masking.#.png" COMP;
+   }
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS_2TEXT_HIDE(
+         LIST_PADDING_LEFT_SIZE_INC, LIST_PADDING_RIGHT_SIZE_INC,
+         LIST_3LINE_PADDING_TOP_SIZE_INC, LIST_3LINE_PADDING_BOTTOM_SIZE_INC,
+         LIST_3LINE_PADDING_CHANGED_TOP_SIZE_INC, LIST_3LINE_PADDING_CHANGED_BOTTOM_SIZE_INC
+      )
+      PART(RECT, "opacity_clipper",
+         scale: 1;
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color: 255 255 255 153;
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "highlighted" 0.0;
+         }
+      )
+      PART(RECT, "clipper",
+         clip_to: "opacity_clipper";
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color_class: "clipper";
+         )
+      )
+      PART(IMAGE, "fade_out",
+         clip_to: "clipper";
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(IMAGE, "sub_fade_out",
+         clip_to: "clipper1";
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(IMAGE, "sub1_fade_out",
+         clip_to: "clipper1";
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(TEXTBLOCK, "elm.text",
+         clip_to: "fade_out";
+         scale: 1;
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            fixed: 1 0;
+            min: 0 LIST_TEXT_MAIN_HEIGHT_INC;
+            PARAM_TEXT("list_text_main_normal",)
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_normal";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_disabled";
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_highlight";
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "highlighted_disabled" 0.0;
+            inherit: "disabled" 0.0;
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "long_text_disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_disabled";
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_highlight";
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "long_text_highlighted_disabled" 0.0;
+            inherit: "long_text_disabled" 0.0;
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_press";
+         }
+         description { state: "sliding" 0.0;
+            inherit: "long_text_highlighted" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+         description { state: "sliding_disabled" 0.0;
+            inherit: "long_text_highlighted_disabled" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+      )
+      part {
+         name: "clipper1";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+         description {
+            state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+       }
+      part {
+         name: "elm.padding.bottom.1";
+         type: SPACER;
+         description {
+            state: "default" 0.0;
+            fixed: 0 1;
+            min: 0 LIST_3LINE_PADDING_CHANGED_BOTTOM_SIZE_INC;
+            max: -1 LIST_3LINE_PADDING_CHANGED_BOTTOM_SIZE_INC;
+            align: 0.0 1.0;
+            rel1.relative: 0.0 1.0;
+            rel2.relative: 1.0 1.0;
+         }
+       }
+      PART(TEXTBLOCK, "elm.text.1",
+         clip_to: "sub_fade_out";
+         description {
+            state: "default" 0.0;
+            align: 0.5 1.0;
+            min: 0 LIST_TEXT_SUB_HEIGHT_INC;
+            rel1 {
+               to_x: "elm.padding.left";
+               to_y: "elm.padding.center";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "elm.padding.right";
+               to_y: "elm.padding.center";
+               relative: 0.0 0.0;
+            }
+            text {
+               min: 0 1;
+               max: 1 1;
+               style: "list_text_sub_normal";
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_dim";
+         }
+      )
+      part {
+         name: "elm.padding.center";
+         type: SPACER;
+         description {
+            state: "default" 0.0;
+            fixed: 0 1;
+            min: 0 LIST_3LINE_PADDING_CENTER_SIZE_INC;
+            max: -1 LIST_3LINE_PADDING_CENTER_SIZE_INC;
+            align: 0.5 1.0;
+            rel1 {
+               to_x: "elm.padding.left";
+               to_y: "elm.text.2";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "elm.padding.right";
+               to_y: "elm.text.2";
+               relative: 0.0 0.0;
+            }
+         }
+       }
+      PART(TEXTBLOCK, "elm.text.2",
+         clip_to: "sub1_fade_out";
+         description {
+            state: "default" 0.0;
+            align: 0.5 1.0;
+            min: 0 LIST_TEXT_SUB_HEIGHT_INC;
+            rel1 {
+               to_x: "elm.padding.left";
+               to_y: "elm.padding.bottom.1";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "elm.padding.right";
+               to_y: "elm.padding.bottom.1";
+               relative: 0.0 0.0;
+            }
+            text {
+               min: 0 1;
+               max: 1 1;
+               style: "list_text_sub_normal";
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_dim";
+         }
+      )
+      PART_CENTER_CHECK_OPACITY
+   }
+   programs {
+      PROGRAM_LIST_DEFAULT_SLIDE(target: "elm.text"; target: "elm.text.1"; target: "elm.text.2"; target: "elm.padding.top"; target: "elm.padding.bottom"; target: "bg"; target: "clipper"; target: "clipper1"; target: "opacity_clipper"; target: "fade_out"; target: "sub_fade_out"; target: "sub1_fade_out"; )
+      PROGRAM_LIST_2TEXT_HIGHLIGHT
+      PROGRAM_LIST_3TEXT_DISABLE
+      PROGRAM_LIST_SUBTEXT_HIGHLIGHT
+      PROGRAM_LIST_3TEXT_FADEOUT_SET
+      PROGRAM_LIST_TEXT_SLIDE
+      PROGRAM_LIST_SOUND
+   }
+}
+
+group { name: "elm/genlist/item/3text.1icon/default";
+
+   PROLOG_LIST
+   SCRIPT_START_SLIDE
+   SCRIPT_SLIDE_SUB1_SIZE_CHECK_1ICON
+   SCRIPT_SLIDE_SUB2_SIZE_CHECK_1ICON
+   SCRIPT_SLIDE_SIZE_CHECK_1ICON
+   data.item: "texts" "elm.text elm.text.1 elm.text.2";
+   data.item: "contents" "elm.icon elm.swallow.center_check";
+
+   images {
+      image: "tw_list_fadeout_right_masking.#.png" COMP;
+      image: "sdk_list_no_fadeout_masking.#.png" COMP;
+   }
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS_2TEXT_HIDE(
+         LIST_PADDING_ICON_LEFT_SIZE_INC, LIST_PADDING_RIGHT_SIZE_INC,
+         LIST_3LINE_PADDING_TOP_SIZE_INC, LIST_3LINE_PADDING_BOTTOM_SIZE_INC,
+         LIST_3LINE_PADDING_CHANGED_TOP_SIZE_INC, LIST_3LINE_PADDING_CHANGED_BOTTOM_SIZE_INC
+      )
+      PART(SWALLOW, "elm.icon",
+         clip_to: "clipper";
+         DESC_L("elm.padding.left",
+         )
+      )
+      PART(SPACER, "elm.padding.icon",
+         DESC_L("elm.icon",
+            fixed: 1 0;
+            min: LIST_PADDING_ICON_CENTER_SIZE_INC 0;
+            max: LIST_PADDING_ICON_CENTER_SIZE_INC -1;
+         )
+      )
+      PART(RECT, "opacity_clipper",
+         scale: 1;
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color: 255 255 255 153;
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "highlighted" 0.0;
+         }
+      )
+      PART(RECT, "clipper",
+         clip_to: "opacity_clipper";
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color_class: "clipper";
+         )
+      )
+      PART(IMAGE, "fade_out",
+         clip_to: "clipper";
+         DESC_LRTB("elm.padding.icon", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(IMAGE, "sub_fade_out",
+         clip_to: "clipper1";
+         DESC_LRTB("elm.padding.icon", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(IMAGE, "sub1_fade_out",
+         clip_to: "clipper1";
+         DESC_LRTB("elm.padding.icon", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(TEXTBLOCK, "elm.text",
+         clip_to: "fade_out";
+         scale: 1;
+         DESC_LRTB("elm.padding.icon", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            fixed: 1 0;
+            min: 0 LIST_TEXT_MAIN_HEIGHT_INC;
+            PARAM_TEXT("list_text_main_normal",)
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_normal";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_disabled";
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_highlight";
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "highlighted_disabled" 0.0;
+            inherit: "disabled" 0.0;
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "long_text_disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_disabled";
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_highlight";
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "long_text_highlighted_disabled" 0.0;
+            inherit: "long_text_disabled" 0.0;
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_press";
+         }
+         description { state: "sliding" 0.0;
+            inherit: "long_text_highlighted" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+         description { state: "sliding_disabled" 0.0;
+            inherit: "long_text_highlighted_disabled" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+      )
+      part {
+         name: "clipper1";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+         description {
+            state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+      }
+      part {
+         name: "elm.padding.bottom.1";
+         type: SPACER;
+         description {
+            state: "default" 0.0;
+            fixed: 0 1;
+            min: 0 LIST_3LINE_PADDING_CHANGED_BOTTOM_SIZE_INC;
+            max: -1 LIST_3LINE_PADDING_CHANGED_BOTTOM_SIZE_INC;
+            align: 0.0 1.0;
+            rel1.relative: 0.0 1.0;
+            rel2.relative: 1.0 1.0;
+         }
+      }
+      PART(TEXTBLOCK, "elm.text.1",
+         clip_to: "sub_fade_out";
+         description {
+            state: "default" 0.0;
+            align: 0.5 1.0;
+            min: 0 LIST_TEXT_SUB_HEIGHT_INC;
+            rel1 {
+               to_x: "elm.padding.icon";
+               to_y: "elm.padding.center";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "elm.padding.right";
+               to_y: "elm.padding.center";
+               relative: 0.0 0.0;
+            }
+            text {
+               min: 0 1;
+               max: 1 1;
+               style: "list_text_sub_normal";
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_dim";
+         }
+      )
+      part {
+         name: "elm.padding.center";
+         type: SPACER;
+         description {
+            state: "default" 0.0;
+            fixed: 0 1;
+            min: 0 LIST_3LINE_PADDING_CENTER_SIZE_INC;
+            max: -1 LIST_3LINE_PADDING_CENTER_SIZE_INC;
+            align: 0.5 1.0;
+            rel1 {
+               to_x: "elm.padding.icon";
+               to_y: "elm.text.2";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "elm.padding.right";
+               to_y: "elm.text.2";
+               relative: 0.0 0.0;
+            }
+         }
+       }
+      PART(TEXTBLOCK, "elm.text.2",
+         clip_to: "sub1_fade_out";
+         description {
+            state: "default" 0.0;
+            align: 0.5 1.0;
+            min: 0 LIST_TEXT_SUB_HEIGHT_INC;
+            rel1 {
+               to_x: "elm.padding.icon";
+               to_y: "elm.padding.bottom.1";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "elm.padding.right";
+               to_y: "elm.padding.bottom.1";
+               relative: 0.0 0.0;
+            }
+            text {
+               min: 0 1;
+               max: 1 1;
+               style: "list_text_sub_normal";
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_dim";
+         }
+      )
+      PART_CENTER_CHECK_OPACITY
+   }
+   programs {
+      PROGRAM_LIST_DEFAULT_SLIDE(target: "elm.text"; target: "elm.text.1"; target: "elm.text.2"; target: "elm.padding.top"; target: "elm.padding.bottom"; target: "bg"; target: "clipper"; target: "clipper1"; target: "opacity_clipper"; target: "fade_out"; target: "sub_fade_out"; target: "sub1_fade_out"; )
+      PROGRAM_LIST_2TEXT_HIGHLIGHT
+      PROGRAM_LIST_3TEXT_DISABLE
+      PROGRAM_LIST_SUBTEXT_HIGHLIGHT
+      PROGRAM_LIST_3TEXT_FADEOUT_SET
+      PROGRAM_LIST_TEXT_SLIDE
+      PROGRAM_LIST_SOUND
+   }
+}
+
+group { name: "elm/genlist/item/3text.1icon.1/default";
+
+   PROLOG_LIST
+   SCRIPT_START_SLIDE
+   SCRIPT_SLIDE_SUB1_SIZE_CHECK_1ICON
+   SCRIPT_SLIDE_SUB2_SIZE_CHECK_1ICON
+   SCRIPT_SLIDE_SIZE_CHECK_1ICON
+   data.item: "texts" "elm.text elm.text.1 elm.text.2";
+   data.item: "contents" "elm.icon elm.swallow.center_check";
+
+   images {
+      image: "tw_list_fadeout_right_masking.#.png" COMP;
+      image: "sdk_list_no_fadeout_masking.#.png" COMP;
+   }
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS_2TEXT_HIDE(
+         LIST_PADDING_LEFT_SIZE_INC, LIST_PADDING_ICON_RIGHT_SIZE_INC,
+         LIST_3LINE_PADDING_TOP_SIZE_INC, LIST_3LINE_PADDING_BOTTOM_SIZE_INC,
+         LIST_3LINE_PADDING_CHANGED_TOP_SIZE_INC, LIST_3LINE_PADDING_CHANGED_BOTTOM_SIZE_INC
+      )
+      PART(SWALLOW, "elm.icon",
+         clip_to: "clipper";
+         DESC_R("elm.padding.right",
+         )
+      )
+      PART(SPACER, "elm.padding.icon",
+         DESC_R("elm.icon",
+            fixed: 1 0;
+            min: LIST_PADDING_ICON_CENTER_SIZE_INC 0;
+            max: LIST_PADDING_ICON_CENTER_SIZE_INC -1;
+         )
+      )
+      PART(RECT, "opacity_clipper",
+         scale: 1;
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color: 255 255 255 153;
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "highlighted" 0.0;
+         }
+      )
+      PART(RECT, "clipper",
+         clip_to: "opacity_clipper";
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color_class: "clipper";
+         )
+      )
+      PART(IMAGE, "fade_out",
+         clip_to: "clipper";
+         DESC_LRTB("elm.padding.left", "elm.padding.icon", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(IMAGE, "sub_fade_out",
+         clip_to: "clipper1";
+         DESC_LRTB("elm.padding.left", "elm.padding.icon", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(IMAGE, "sub1_fade_out",
+         clip_to: "clipper1";
+         DESC_LRTB("elm.padding.left", "elm.padding.icon", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(TEXTBLOCK, "elm.text",
+         clip_to: "fade_out";
+         scale: 1;
+         DESC_LRTB("elm.padding.left", "elm.padding.icon", "elm.padding.top", "elm.padding.bottom",
+            fixed: 1 0;
+            min: 0 LIST_TEXT_MAIN_HEIGHT_INC;
+            PARAM_TEXT("list_text_main_normal",)
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_normal";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_disabled";
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_highlight";
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "highlighted_disabled" 0.0;
+            inherit: "disabled" 0.0;
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "long_text_disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_disabled";
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_highlight";
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "long_text_highlighted_disabled" 0.0;
+            inherit: "long_text_disabled" 0.0;
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_press";
+         }
+         description { state: "sliding" 0.0;
+            inherit: "long_text_highlighted" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+         description { state: "sliding_disabled" 0.0;
+            inherit: "long_text_highlighted_disabled" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+      )
+      part {
+         name: "clipper1";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+         description {
+            state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+      }
+      part {
+         name: "elm.padding.bottom.1";
+         type: SPACER;
+         description {
+            state: "default" 0.0;
+            fixed: 0 1;
+            min: 0 LIST_3LINE_PADDING_CHANGED_BOTTOM_SIZE_INC;
+            max: -1 LIST_3LINE_PADDING_CHANGED_BOTTOM_SIZE_INC;
+            align: 0.0 1.0;
+            rel1.relative: 0.0 1.0;
+            rel2.relative: 1.0 1.0;
+         }
+      }
+      PART(TEXTBLOCK, "elm.text.1",
+         clip_to: "sub_fade_out";
+         description {
+            state: "default" 0.0;
+            align: 0.5 1.0;
+            min: 0 LIST_TEXT_SUB_HEIGHT_INC;
+            rel1 {
+               to_x: "elm.padding.left";
+               to_y: "elm.padding.center";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "elm.padding.icon";
+               to_y: "elm.padding.center";
+               relative: 0.0 0.0;
+            }
+            text {
+               min: 0 1;
+               max: 1 1;
+               style: "list_text_sub_normal";
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_dim";
+         }
+      )
+      part {
+         name: "elm.padding.center";
+         type: SPACER;
+         description {
+            state: "default" 0.0;
+            fixed: 0 1;
+            min: 0 LIST_3LINE_PADDING_CENTER_SIZE_INC;
+            max: -1 LIST_3LINE_PADDING_CENTER_SIZE_INC;
+            align: 0.5 1.0;
+            rel1 {
+               to_x: "elm.padding.left";
+               to_y: "elm.text.2";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "elm.padding.icon";
+               to_y: "elm.text.2";
+               relative: 0.0 0.0;
+            }
+         }
+       }
+      PART(TEXTBLOCK, "elm.text.2",
+         clip_to: "sub1_fade_out";
+         description {
+            state: "default" 0.0;
+            align: 0.5 1.0;
+            min: 0 LIST_TEXT_SUB_HEIGHT_INC;
+            rel1 {
+               to_x: "elm.padding.left";
+               to_y: "elm.padding.bottom.1";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "elm.padding.icon";
+               to_y: "elm.padding.bottom.1";
+               relative: 0.0 0.0;
+            }
+            text {
+               min: 0 1;
+               max: 1 1;
+               style: "list_text_sub_normal";
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_dim";
+         }
+      )
+      PART_CENTER_CHECK_OPACITY
+   }
+   programs {
+      PROGRAM_LIST_DEFAULT_SLIDE(target: "elm.text"; target: "elm.text.1"; target: "elm.text.2"; target: "elm.padding.top"; target: "elm.padding.bottom"; target: "bg"; target: "clipper"; target: "clipper1"; target: "opacity_clipper"; target: "fade_out"; target: "sub_fade_out"; target: "sub1_fade_out"; )
+      PROGRAM_LIST_2TEXT_HIGHLIGHT
+      PROGRAM_LIST_3TEXT_DISABLE
+      PROGRAM_LIST_SUBTEXT_HIGHLIGHT
+      PROGRAM_LIST_3TEXT_FADEOUT_SET
+      PROGRAM_LIST_TEXT_SLIDE
+      PROGRAM_LIST_SOUND
+   }
+}
+
+group { name: "elm/genlist/item/4text/default";
+
+   PROLOG_LIST
+   SCRIPT_START_SLIDE
+   SCRIPT_SLIDE_SUB1_SIZE_CHECK
+   SCRIPT_SLIDE_SUB2_SIZE_CHECK
+   SCRIPT_SLIDE_SUB3_SIZE_CHECK
+   SCRIPT_SLIDE_SIZE_CHECK
+   data.item: "texts" "elm.text elm.text.1 elm.text.2 elm.text.3";
+   data.item: "contents" "elm.swallow.center_check";
+
+   images {
+      image: "tw_list_fadeout_right_masking.#.png" COMP;
+      image: "sdk_list_no_fadeout_masking.#.png" COMP;
+   }
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS_2TEXT_HIDE(
+         LIST_PADDING_LEFT_SIZE_INC, LIST_PADDING_RIGHT_SIZE_INC,
+         LIST_4LINE_PADDING_TOP_SIZE_INC, LIST_4LINE_PADDING_BOTTOM_SIZE_INC,
+         LIST_4LINE_PADDING_CHANGED_TOP_SIZE_INC, LIST_4LINE_PADDING_CHANGED_BOTTOM_SIZE_INC
+      )
+      PART(RECT, "opacity_clipper",
+         scale: 1;
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color: 255 255 255 153;
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "highlighted" 0.0;
+         }
+      )
+      PART(RECT, "clipper",
+         clip_to: "opacity_clipper";
+         DESC_LR("elm.padding.left", "elm.padding.right",
+         color_class: "clipper";
+         )
+      )
+      PART(IMAGE, "fade_out",
+         clip_to: "clipper";
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(IMAGE, "sub_fade_out",
+         clip_to: "clipper1";
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(IMAGE, "sub1_fade_out",
+         clip_to: "clipper1";
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(IMAGE, "sub2_fade_out",
+         clip_to: "clipper1";
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(TEXTBLOCK, "elm.text",
+         clip_to: "fade_out";
+         scale: 1;
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            fixed: 1 0;
+            min: 0 LIST_TEXT_MAIN_HEIGHT_INC;
+            PARAM_TEXT("list_text_main_normal",)
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_normal";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_disabled";
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_highlight";
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "highlighted_disabled" 0.0;
+            inherit: "disabled" 0.0;
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "long_text_disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_disabled";
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_main_highlight";
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "long_text_highlighted_disabled" 0.0;
+            inherit: "long_text_disabled" 0.0;
+            rel2.to_y: "elm.text.1";
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_press";
+         }
+         description { state: "sliding" 0.0;
+            inherit: "long_text_highlighted" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+         description { state: "sliding_disabled" 0.0;
+            inherit: "long_text_highlighted_disabled" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+      )
+      part {
+         name: "clipper1";
+         type: RECT;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+         description {
+            state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+       }
+      part {
+         name: "elm.padding.bottom.1";
+         type: SPACER;
+         description {
+            state: "default" 0.0;
+            fixed: 0 1;
+            min: 0 LIST_4LINE_PADDING_CHANGED_BOTTOM_SIZE_INC;
+            max: -1 LIST_4LINE_PADDING_CHANGED_BOTTOM_SIZE_INC;
+            align: 0.0 1.0;
+            rel1.relative: 0.0 1.0;
+            rel2.relative: 1.0 1.0;
+         }
+       }
+      PART(TEXTBLOCK, "elm.text.1",
+         clip_to: "sub_fade_out";
+         description {
+            state: "default" 0.0;
+            align: 0.5 1.0;
+            min: 0 LIST_TEXT_SUB_HEIGHT_INC;
+            rel1 {
+               to_x: "elm.padding.left";
+               to_y: "elm.text.2";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "elm.padding.right";
+               to_y: "elm.text.2";
+               relative: 0.0 0.0;
+            }
+            text {
+               min: 0 1;
+               max: 1 1;
+               style: "list_text_sub_normal";
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_dim";
+         }
+      )
+      PART(TEXTBLOCK, "elm.text.2",
+         clip_to: "sub1_fade_out";
+         description {
+            state: "default" 0.0;
+            align: 0.5 1.0;
+            min: 0 LIST_TEXT_SUB_HEIGHT_INC;
+            rel1 {
+               to_x: "elm.padding.left";
+               to_y: "elm.padding.center";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "elm.padding.right";
+               to_y: "elm.padding.center";
+               relative: 0.0 0.0;
+            }
+            text {
+               min: 0 1;
+               max: 1 1;
+               style: "list_text_sub_normal";
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_dim";
+         }
+      )
+      part {
+         name: "elm.padding.center";
+         type: SPACER;
+         description {
+            state: "default" 0.0;
+            fixed: 0 1;
+            min: 0 LIST_3LINE_PADDING_CENTER_SIZE_INC;
+            max: -1 LIST_3LINE_PADDING_CENTER_SIZE_INC;
+            align: 0.5 1.0;
+            rel1 {
+               to_x: "elm.padding.left";
+               to_y: "elm.text.3";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "elm.padding.right";
+               to_y: "elm.text.3";
+               relative: 0.0 0.0;
+            }
+         }
+       }
+      PART(TEXTBLOCK, "elm.text.3",
+         clip_to: "sub2_fade_out";
+         description {
+            state: "default" 0.0;
+            align: 0.5 1.0;
+            min: 0 LIST_TEXT_SUB_HEIGHT_INC;
+            rel1 {
+               to_x: "elm.padding.left";
+               to_y: "elm.padding.bottom.1";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "elm.padding.right";
+               to_y: "elm.padding.bottom.1";
+               relative: 0.0 0.0;
+            }
+            text {
+               min: 0 1;
+               max: 1 1;
+               style: "list_text_sub_normal";
+            }
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_sub_dim";
+         }
+      )
+      PART_CENTER_CHECK_OPACITY
+   }
+   programs {
+      PROGRAM_LIST_DEFAULT_SLIDE(target: "elm.text"; target: "elm.text.1"; target: "elm.text.2"; target: "elm.text.3"; target: "elm.padding.top"; target: "elm.padding.bottom"; target: "bg"; target: "clipper"; target: "clipper1"; target: "opacity_clipper"; target: "fade_out"; target: "sub_fade_out"; target: "sub1_fade_out"; target: "sub2_fade_out"; )
+      PROGRAM_LIST_2TEXT_HIGHLIGHT
+      PROGRAM_LIST_4TEXT_DISABLE
+      PROGRAM_LIST_SUBTEXT_HIGHLIGHT
+      PROGRAM_LIST_4TEXT_FADEOUT_SET
+      PROGRAM_LIST_TEXT_SLIDE
+      PROGRAM_LIST_SOUND
+   }
+}
+
+group { name: "elm/genlist/item/multiline/default";
+
+   PROLOG_LIST
+   data.item: "texts" "elm.text";
+   data.item: "contents" "elm.swallow.center_check";
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE_INC, LIST_PADDING_RIGHT_SIZE_INC,
+         LIST_1LINE_PADDING_TOP_SIZE_INC, LIST_1LINE_PADDING_BOTTOM_SIZE_INC
+      )
+      PART(TEXTBLOCK, "elm.text",
+         scale: 1;
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            min: 0 0;
+            PARAM_TEXT("list_text_multiline_normal",)
+         )
+      )
+      PART_CENTER_CHECK
+   }
+   programs {
+      PROGRAM_LIST_SOUND
+   }
+}
+
+group { name: "elm/genlist/item/editfield/default";
+
+   PROLOG_LIST
+   SCRIPT_START_SLIDE
+   SCRIPT_SLIDE_SIZE_EDITFIELD_CHECK
+   data.item: "texts" "elm.text";
+
+   images {
+      image: "b_list_edit_field_bg.png" COMP;
+      image: "tw_list_fadeout_right_masking.#.png" COMP;
+      image: "sdk_list_no_fadeout_masking.#.png" COMP;
+   }
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_EDITFIELD_LEFT_PADDING_SIZE_INC, LIST_EDITFIELD_RIGHT_PADDING_SIZE_INC,
+         LIST_EDITFIELD_TOP_PADDING_SIZE_INC, LIST_EDITFIELD_BOTTOM_PADDING_SIZE_INC
+      )
+      PART(RECT, "opacity_clipper",
+         scale: 1;
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color: 255 255 255 153;
+         )
+         description { state: "long_text_default" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "highlighted" 0.0;
+         }
+      )
+      PART(RECT, "clipper",
+         clip_to: "opacity_clipper";
+         DESC_LR("elm.padding.left.in", "elm.padding.right.in",
+            color_class: "clipper";
+         )
+      )
+      PART(IMAGE, "fade_out",
+         clip_to: "clipper";
+         DESC_LRTB("elm.padding.left.in", "elm.padding.right.in", "elm.padding.top", "elm.padding.bottom",
+            image.normal: "tw_list_fadeout_right_masking.#.png";
+         )
+         description { state: "short_text" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "sdk_list_no_fadeout_masking.#.png";
+         }
+      )
+      PART(RECT, "clipper.bg",
+         DESC_LR("elm.padding.left", "elm.padding.right",
+            color: 0 0 0 0;
+         )
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+      )
+      PART(IMAGE, "focus_bg",
+         clip_to: "clipper.bg";
+         description { state: "default" 0.0;
+            align: 0.5 0.5;
+            image.normal: "b_list_edit_field_bg.png";
+            color: 249 249 249 38; /* color_class: "B02112"; */
+            rel1 {
+               to_x: "elm.padding.left";
+               to_y: "elm.padding.top";
+               relative: 1.0 1.0;
+            }
+            rel2 {
+               to_x: "elm.padding.right";
+               to_y: "elm.padding.bottom";
+               relative: 0.0 0.0;
+            }
+         }
+      )
+      PART(SPACER, "elm.padding.left.in",
+         DESC_L("elm.padding.left",
+            min: LIST_EDITFIELD_LEFT_IN_PADDING_SIZE_INC 0;
+            max: LIST_EDITFIELD_LEFT_IN_PADDING_SIZE_INC -1;
+         )
+      )
+      PART(SPACER, "elm.padding.right.in",
+         DESC_R("elm.padding.right",
+            min: LIST_EDITFIELD_RIGHT_IN_PADDING_SIZE_INC 0;
+            max: LIST_EDITFIELD_RIGHT_IN_PADDING_SIZE_INC -1;
+         )
+      )
+      PART(SPACER, "elm.padding.top.in",
+         DESC_T("elm.padding.top",
+            min: 0 LIST_EDITFIELD_TOP_IN_PADDING_SIZE_INC;
+            max: -1 LIST_EDITFIELD_TOP_IN_PADDING_SIZE_INC;
+         )
+      )
+      PART(SPACER, "elm.padding.bottom.in",
+         DESC_B("elm.padding.bottom",
+            min: 0 LIST_EDITFIELD_BOTTOM_IN_PADDING_SIZE_INC;
+            max: -1 LIST_EDITFIELD_BOTTOM_IN_PADDING_SIZE_INC;
+         )
+      )
+      PART(TEXTBLOCK, "elm.text",
+         clip_to: "fade_out";
+         scale: 1;
+         DESC_LRTB("elm.padding.left.in", "elm.padding.right.in", "elm.padding.top.in", "elm.padding.bottom.in",
+            fixed: 1 0;
+            min: 0 LIST_TEXT_EDITFIELD_HEIGHT_INC;
+            PARAM_TEXT("list_text_editfield_normal",)
+         )
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_editfield_disabled";
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "highlighted_disabled" 0.0;
+            inherit: "disabled" 0.0;
+         }
+         description { state: "long_text_disabled" 0.0;
+            inherit: "disabled" 0.0;
+            text.style: "list_long_text_editfield_disabled";
+         }
+         description { state: "long_text_highlighted" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_long_text_editfield_normal";
+         }
+         description { state: "long_text_highlighted_disabled" 0.0;
+            inherit: "long_text_disabled" 0.0;
+         }
+         description { state: "sliding" 0.0;
+            inherit: "long_text_highlighted" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+         description { state: "sliding_disabled" 0.0;
+            inherit: "long_text_highlighted_disabled" 0.0;
+            text.min: 1 1;
+            align: 0 0.5;
+         }
+      )
+   }
+   programs {
+      PROGRAM_LIST_DEFAULT_SLIDE(target: "elm.text"; target: "bg"; target: "focus_bg"; target: "opacity_clipper"; target: "fade_out"; )
+      PROGRAM_LIST_1TEXT_HIGHLIGHT
+      PROGRAM_LIST_EDITFIELD_HIGHLIGHT
+      PROGRAM_LIST_1TEXT_DISABLE
+      PROGRAM_LIST_1TEXT_FADEOUT_SET
+      PROGRAM_LIST_TEXT_SLIDE
+      PROGRAM_LIST_SOUND
+   }
+}
+
+group { name: "elm/genlist/item/padding/default";
+   parts {
+      part { name: "base";
+         type: SPACER;
+         scale: 1;
+         description {
+            min: 0 115;
+         }
+      }
+   }
+}

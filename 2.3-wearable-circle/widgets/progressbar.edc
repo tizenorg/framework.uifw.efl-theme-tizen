@@ -1,0 +1,903 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+   group { name: "elm/progressbar/horizontal/default";
+      parts {
+         part { name: "access";
+            type: RECT;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               color: 0 0 0 0;
+            }
+         }
+         part { name: "background";
+            type: RECT;
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1.to: "elm.swallow.bar";
+               rel2.to: "elm.swallow.bar";
+               color: 0 66 114 255; /* color_class: "B065L3"; */
+            }
+         }
+         part { name: "elm.swallow.bar";
+            mouse_events: 0;
+            scale: 1;
+            type: SWALLOW;
+            description { state: "default" 0.0;
+               min: 1 PROGRESSBAR_HEIGHT_INC;
+               max: -1 PROGRESSBAR_HEIGHT_INC;
+            }
+         }
+         part { name: "drag.background";
+            mouse_events: 0;
+            type: RECT;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               visible: 0;
+               rel1.to: "elm.swallow.bar";
+               rel2.to: "elm.swallow.bar";
+            }
+         }
+         part { name: "elm.progress.progressbar";
+            type: RECT;
+            mouse_events: 0;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               min: 0 0;
+               fixed: 1 1;
+               rel1.to: "elm.swallow.bar";
+               rel2 {
+                  to_x: "elm.cur.progressbar";
+                  to_y: "elm.swallow.bar";
+                  offset: -1 -1;
+                  relative: 0.5 1.0;
+               }
+              color: 0 148 255 255; /*color_class: "B065L2"; */
+            }
+            description {
+               state: "invert" 0.0;
+               inherit: "default" 0.0;
+               rel1 {
+                  to_y: "elm.swallow.bar";
+                  to_x: "elm.cur.progressbar";
+                  relative: 0.0 0.0;
+               }
+               rel2.to: "elm.swallow.bar";
+               rel2.relative: 1.0 1.0;
+            }
+            description {
+               state: "state_begin" 0.0;
+               inherit: "default" 0.0;
+               rel1 {
+                  to: "elm.swallow.bar";
+                  relative: 0.0 0.0;
+               }
+               rel2 {
+                  to: "elm.swallow.bar";
+                  relative: 0.1 1.0;
+               }
+            }
+            description {
+               state: "state_end" 0.0;
+               inherit: "default" 0.0;
+               rel1 {
+                  to: "elm.swallow.bar";
+                  relative: 0.0 0.0;
+               }
+               rel2 {
+                  to: "elm.swallow.bar";
+                  relative: 1.0 1.0;
+               }
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               color: 116 195 252 255; /* color_class: "B0651L2"; */
+            }
+         }
+         part { name: "elm.cur.progressbar";
+            mouse_events: 0;
+            scale: 1;
+            dragable {
+               confine: "drag.background";
+               x: 1 1 1;
+               y: 0 0 0;
+            }
+            description { state: "default" 0.0;
+               min: 0 10;
+               fixed: 1 1;
+               visible: 0;
+               rel1.to: "drag.background";
+               rel2.to: "drag.background";
+           }
+         }
+         part { name: "progress-rect";
+            type: RECT;
+            mouse_events: 0;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               rel1.to: "elm.progress.progressbar";
+               rel2.to: "elm.progress.progressbar";
+               color: 0 0 0 0;
+            }
+         }
+      }
+      programs {
+         program { name: "slide_to_end";
+            action:  STATE_SET "state_end" 0.0;
+            transition: LINEAR 0.5;
+            target: "elm.progress.progressbar";
+            after: "slide_to_begin";
+         }
+         program { name: "slide_to_begin";
+            signal: "elm,state,slide,begin";
+            action: STATE_SET "state_begin" 0.0;
+            target: "elm.progress.progressbar";
+            transition: LINEAR 0.5;
+            after: "slide_to_end";
+         }
+         program { name: "start_pulse";
+            signal: "elm,state,pulse,start";
+            source: "elm";
+         }
+         program { name: "stop_pulse";
+            signal: "elm,state,pulse,stop";
+            source: "elm";
+            action: ACTION_STOP;
+            target: "slide_to_begin";
+            target: "slide_to_end";
+            target: "start_pulse";
+         }
+         program { name: "state_pulse";
+            signal: "elm,state,pulse";
+            source: "elm";
+            action: STATE_SET "state_begin" 0.0;
+            target: "elm.progress.progressbar";
+         }
+         program { name: "state_fraction";
+            signal: "elm,state,fraction";
+            source: "elm";
+            action: ACTION_STOP;
+            target: "slide_to_begin";
+            target: "slide_to_end";
+            target: "start_pulse";
+            action: STATE_SET "default" 0.0;
+            target: "elm.progress.progressbar";
+         }
+         program { name: "set_invert_on";
+            signal: "elm,state,inverted,on";
+            source: "elm";
+            action:  STATE_SET "invert" 0.0;
+            target: "elm.progress.progressbar";
+         }
+         program { name: "set_invert_off";
+            signal: "elm,state,inverted,off";
+            source: "elm";
+            action:  STATE_SET "default" 0.0;
+            target: "elm.progress.progressbar";
+         }
+         program { name: "progressbar_disable";
+            signal: "elm,state,disabled";
+            source: "elm";
+            action:  STATE_SET "disabled" 0.0;
+            target: "elm.progress.progressbar";
+            target: "background";
+         }
+         program { name: "progressbar_enable";
+            signal: "elm,state,enabled";
+            source: "elm";
+            action:  STATE_SET "default" 0.0;
+            target: "elm.progress.progressbar";
+            target: "background";
+         }
+      }
+   }
+
+   group { name: "elm/progressbar/horizontal/pending_list";
+      images {
+         image: "tw_progressbar_indeterminate1_holo_dark.png" COMP;
+         image: "tw_progressbar_indeterminate2_holo_dark.png" COMP;
+         image: "tw_progressbar_indeterminate3_holo_dark.png" COMP;
+         image: "tw_progressbar_indeterminate4_holo_dark.png" COMP;
+         image: "tw_progressbar_indeterminate5_holo_dark.png" COMP;
+      }
+      parts {
+         part { name: "access";
+            type: RECT;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               color: 0 0 0 0;
+            }
+         }
+         part { name: "background";
+            type: RECT;
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: 0 6;
+               rel1.relative: 0 0;
+               rel2.relative: 1 0;
+               align: 0.5 0;
+               fixed: 0 1;
+               color: 0 66 114 255; /*(Changeable UI) color_class: "B065L3";*/
+            }
+         }
+         part { name: "elm.progress.progressbar";
+            mouse_events: 0;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               min: 0 0;
+               fixed: 1 1;
+               rel1.to: "background";
+               rel2.to: "background";
+               image {
+                  normal: "tw_progressbar_indeterminate1_holo_dark.png";
+                  border: 0 0 0 0;
+               }
+               color: 0 148 255 255; /*(Changeable UI) color_class: "B0652L2";*/
+            }
+            description {
+               state: "state_begin" 0.0;
+               inherit: "default" 0.0;
+            }
+            description {
+               state: "sliding1" 0.0;
+               inherit: "default" 0.0;
+               image.normal: "tw_progressbar_indeterminate2_holo_dark.png";
+               color: 0 148 255 255; /*(Changeable UI) color_class: "B0652L2";*/
+            }
+            description {
+               state: "sliding2" 0.0;
+               inherit: "default" 0.0;
+               image.normal: "tw_progressbar_indeterminate3_holo_dark.png";
+               color: 0 148 255 255; /*(Changeable UI) color_class: "B0652L2";*/
+            }
+            description {
+               state: "sliding3" 0.0;
+               inherit: "default" 0.0;
+               image.normal: "tw_progressbar_indeterminate4_holo_dark.png";
+               color: 0 148 255 255; /*(Changeable UI) color_class: "B0652L2";*/
+            }
+            description {
+               state: "state_end" 1.0;
+               inherit: "default" 0.0;
+               image.normal: "tw_progressbar_indeterminate5_holo_dark.png";
+               color: 0 148 255 255; /*(Changeable UI) color_class: "B0652L2";*/
+            }
+         }
+      }
+      script {
+         public state_end = 0;
+      }
+      programs {
+         program { name: "slide_to_begin";
+            signal: "elm,state,slide,begin";
+            in: 0.05 0.0;
+            script {
+               set_state(PART:"elm.progress.progressbar", "state_begin", 0.0);
+               set_int(state_end, 0);
+            }
+            after: "sliding1";
+         }
+         program { name: "sliding1";
+            in: 0.05 0.0;
+            script {
+               set_state(PART:"elm.progress.progressbar", "sliding1", 0.0);
+               set_int(state_end, 0);
+            }
+            after: "sliding2";
+         }
+         program { name: "sliding2";
+            in: 0.05 0.0;
+            script {
+               set_state(PART:"elm.progress.progressbar", "sliding2", 0.0);
+               set_int(state_end, 0);
+            }
+            after: "sliding3";
+         }
+         program { name: "sliding3";
+            in: 0.05 0.0;
+            script {
+               set_state(PART:"elm.progress.progressbar", "sliding3", 0.0);
+               set_int(state_end, 0);
+            }
+            after: "slide_to_end";
+         }
+         program { name: "slide_to_end";
+            in: 0.05 0.0;
+            script {
+               set_state(PART:"elm.progress.progressbar", "state_end", 0.0);
+               set_int(state_end, 1);
+            }
+            after: "slide_to_begin";
+         }
+         program { name: "start_pulse";
+            signal: "elm,state,pulse,start";
+            source: "elm";
+            after: "slide_to_end";
+         }
+         program { name: "stop_pulse";
+            signal: "elm,state,pulse,stop";
+            source: "elm";
+            action: ACTION_STOP;
+            target: "slide_to_begin";
+            target: "sliding1";
+            target: "sliding2";
+            target: "sliding3";
+            target: "slide_to_end";
+            target: "start_pulse";
+            after: "init_pulse";
+         }
+         program { name: "init_pulse";
+            action: STATE_SET "default" 0.0;
+            target: "elm.progress.progressbar";
+         }
+         program { name: "progressbar_disable";
+            signal: "elm,state,disabled";
+            source: "elm";
+            after: "stop_pulse";
+         }
+         program { name: "progressbar_enable";
+            signal: "elm,state,enabled";
+            source: "elm";
+            after: "start_pulse";
+         }
+      }
+   }
+
+
+// Circular UI
+group { name: "elm/progressbar/horizontal/process";
+   images {
+      image: "tw_loading_00.png" COMP;
+      image: "tw_loading_01.png" COMP;
+      image: "tw_loading_02.png" COMP;
+      image: "tw_loading_03.png" COMP;
+      image: "tw_loading_04.png" COMP;
+      image: "tw_loading_05.png" COMP;
+      image: "tw_loading_06.png" COMP;
+      image: "tw_loading_07.png" COMP;
+      image: "tw_loading_08.png" COMP;
+      image: "tw_loading_09.png" COMP;
+      image: "tw_loading_10.png" COMP;
+      image: "tw_loading_11.png" COMP;
+      image: "tw_loading_12.png" COMP;
+      image: "tw_loading_13.png" COMP;
+      image: "tw_loading_14.png" COMP;
+      image: "tw_loading_15.png" COMP;
+      image: "tw_loading_16.png" COMP;
+      image: "tw_loading_17.png" COMP;
+      image: "tw_loading_18.png" COMP;
+      image: "tw_loading_19.png" COMP;
+      image: "tw_loading_20.png" COMP;
+      image: "tw_loading_21.png" COMP;
+      image: "tw_loading_22.png" COMP;
+      image: "tw_loading_23.png" COMP;
+      image: "tw_loading_24.png" COMP;
+      image: "tw_loading_25.png" COMP;
+      image: "tw_loading_26.png" COMP;
+      image: "tw_loading_27.png" COMP;
+      image: "tw_loading_28.png" COMP;
+      image: "tw_loading_29.png" COMP;
+      image: "tw_loading_30.png" COMP;
+      image: "tw_loading_31.png" COMP;
+      image: "tw_loading_32.png" COMP;
+      image: "tw_loading_33.png" COMP;
+      image: "tw_loading_34.png" COMP;
+      image: "tw_loading_35.png" COMP;
+      image: "tw_loading_36.png" COMP;
+      image: "tw_loading_37.png" COMP;
+      image: "tw_loading_38.png" COMP;
+      image: "tw_loading_39.png" COMP;
+      image: "tw_loading_40.png" COMP;
+      image: "tw_loading_41.png" COMP;
+      image: "tw_loading_42.png" COMP;
+      image: "tw_loading_43.png" COMP;
+      image: "tw_loading_44.png" COMP;
+      image: "tw_loading_45.png" COMP;
+      image: "tw_loading_46.png" COMP;
+      image: "tw_loading_47.png" COMP;
+      image: "tw_loading_48.png" COMP;
+      image: "tw_loading_49.png" COMP;
+      image: "tw_loading_50.png" COMP;
+      image: "tw_loading_51.png" COMP;
+      image: "tw_loading_52.png" COMP;
+      image: "tw_loading_53.png" COMP;
+      image: "tw_loading_54.png" COMP;
+      image: "tw_loading_55.png" COMP;
+      image: "tw_loading_56.png" COMP;
+      image: "tw_loading_57.png" COMP;
+      image: "tw_loading_58.png" COMP;
+      image: "tw_loading_59.png" COMP;
+   }
+   parts {
+      part { name: "access";
+         type: RECT;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "elm.background.progressbar";
+         mouse_events: 0;
+         scale: 1;
+         type: RECT;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "bar";
+         mouse_events: 0;
+         scale: 1;
+         clip_to: "elm.background.progressbar";
+         description { state: "default" 0.0;
+            min: PROGRESSBAR_ACTIVITY_FULLSCREEN_SIZE_INC;
+            max: PROGRESSBAR_ACTIVITY_FULLSCREEN_SIZE_INC;
+            aspect: 1.0 1.0;
+            aspect_preference: BOTH;
+            image.normal: "tw_loading_00.png";
+            image.tween: "tw_loading_01.png";
+            image.tween: "tw_loading_02.png";
+            image.tween: "tw_loading_03.png";
+            image.tween: "tw_loading_04.png";
+            image.tween: "tw_loading_05.png";
+            image.tween: "tw_loading_06.png";
+            image.tween: "tw_loading_07.png";
+            image.tween: "tw_loading_08.png";
+            image.tween: "tw_loading_09.png";
+            image.tween: "tw_loading_10.png";
+            image.tween: "tw_loading_11.png";
+            image.tween: "tw_loading_12.png";
+            image.tween: "tw_loading_13.png";
+            image.tween: "tw_loading_14.png";
+            image.tween: "tw_loading_15.png";
+            image.tween: "tw_loading_16.png";
+            image.tween: "tw_loading_17.png";
+            image.tween: "tw_loading_18.png";
+            image.tween: "tw_loading_19.png";
+            image.tween: "tw_loading_20.png";
+            image.tween: "tw_loading_21.png";
+            image.tween: "tw_loading_22.png";
+            image.tween: "tw_loading_23.png";
+            image.tween: "tw_loading_24.png";
+            image.tween: "tw_loading_25.png";
+            image.tween: "tw_loading_26.png";
+            image.tween: "tw_loading_27.png";
+            image.tween: "tw_loading_28.png";
+            image.tween: "tw_loading_29.png";
+            image.tween: "tw_loading_30.png";
+            image.tween: "tw_loading_31.png";
+            image.tween: "tw_loading_32.png";
+            image.tween: "tw_loading_33.png";
+            image.tween: "tw_loading_34.png";
+            image.tween: "tw_loading_35.png";
+            image.tween: "tw_loading_36.png";
+            image.tween: "tw_loading_37.png";
+            image.tween: "tw_loading_38.png";
+            image.tween: "tw_loading_39.png";
+            image.tween: "tw_loading_40.png";
+            image.tween: "tw_loading_41.png";
+            image.tween: "tw_loading_42.png";
+            image.tween: "tw_loading_43.png";
+            image.tween: "tw_loading_44.png";
+            image.tween: "tw_loading_45.png";
+            image.tween: "tw_loading_46.png";
+            image.tween: "tw_loading_47.png";
+            image.tween: "tw_loading_48.png";
+            image.tween: "tw_loading_49.png";
+            image.tween: "tw_loading_50.png";
+            image.tween: "tw_loading_51.png";
+            image.tween: "tw_loading_52.png";
+            image.tween: "tw_loading_53.png";
+            image.tween: "tw_loading_54.png";
+            image.tween: "tw_loading_55.png";
+            image.tween: "tw_loading_56.png";
+            image.tween: "tw_loading_57.png";
+            image.tween: "tw_loading_58.png";
+            image.tween: "tw_loading_59.png";
+            color: 0 148 255 255; /* color_class: "B065L6"; */
+         }
+      }
+   }
+   programs {
+      program { name: "start_pulse";
+         signal: "elm,state,pulse,start";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "bar";
+         transition: LINEAR 1.8;
+         after: "start_pulse";
+      }
+      program { name: "stop_pulse";
+         signal: "elm,state,pulse,stop";
+         source: "elm";
+         action: ACTION_STOP;
+         target: "start_pulse";
+         after: "init_pulse";
+      }
+      program { name: "init_pulse";
+         action: STATE_SET "default" 0.0;
+         target: "bar";
+      }
+   }
+}
+
+group { name: "elm/progressbar/horizontal/process/small";
+   images {
+      image: "tw_loading_small_00.png" COMP;
+      image: "tw_loading_small_01.png" COMP;
+      image: "tw_loading_small_02.png" COMP;
+      image: "tw_loading_small_03.png" COMP;
+      image: "tw_loading_small_04.png" COMP;
+      image: "tw_loading_small_05.png" COMP;
+      image: "tw_loading_small_06.png" COMP;
+      image: "tw_loading_small_07.png" COMP;
+      image: "tw_loading_small_08.png" COMP;
+      image: "tw_loading_small_09.png" COMP;
+      image: "tw_loading_small_10.png" COMP;
+      image: "tw_loading_small_11.png" COMP;
+      image: "tw_loading_small_12.png" COMP;
+      image: "tw_loading_small_13.png" COMP;
+      image: "tw_loading_small_14.png" COMP;
+      image: "tw_loading_small_15.png" COMP;
+      image: "tw_loading_small_16.png" COMP;
+      image: "tw_loading_small_17.png" COMP;
+      image: "tw_loading_small_18.png" COMP;
+      image: "tw_loading_small_19.png" COMP;
+      image: "tw_loading_small_20.png" COMP;
+      image: "tw_loading_small_21.png" COMP;
+      image: "tw_loading_small_22.png" COMP;
+      image: "tw_loading_small_23.png" COMP;
+      image: "tw_loading_small_24.png" COMP;
+      image: "tw_loading_small_25.png" COMP;
+      image: "tw_loading_small_26.png" COMP;
+      image: "tw_loading_small_27.png" COMP;
+      image: "tw_loading_small_28.png" COMP;
+      image: "tw_loading_small_29.png" COMP;
+      image: "tw_loading_small_30.png" COMP;
+      image: "tw_loading_small_31.png" COMP;
+      image: "tw_loading_small_32.png" COMP;
+      image: "tw_loading_small_33.png" COMP;
+      image: "tw_loading_small_34.png" COMP;
+      image: "tw_loading_small_35.png" COMP;
+      image: "tw_loading_small_36.png" COMP;
+      image: "tw_loading_small_37.png" COMP;
+      image: "tw_loading_small_38.png" COMP;
+      image: "tw_loading_small_39.png" COMP;
+      image: "tw_loading_small_40.png" COMP;
+      image: "tw_loading_small_41.png" COMP;
+      image: "tw_loading_small_42.png" COMP;
+      image: "tw_loading_small_43.png" COMP;
+      image: "tw_loading_small_44.png" COMP;
+      image: "tw_loading_small_45.png" COMP;
+      image: "tw_loading_small_46.png" COMP;
+      image: "tw_loading_small_47.png" COMP;
+      image: "tw_loading_small_48.png" COMP;
+      image: "tw_loading_small_49.png" COMP;
+      image: "tw_loading_small_50.png" COMP;
+      image: "tw_loading_small_51.png" COMP;
+      image: "tw_loading_small_52.png" COMP;
+      image: "tw_loading_small_53.png" COMP;
+      image: "tw_loading_small_54.png" COMP;
+      image: "tw_loading_small_55.png" COMP;
+      image: "tw_loading_small_56.png" COMP;
+      image: "tw_loading_small_57.png" COMP;
+      image: "tw_loading_small_58.png" COMP;
+      image: "tw_loading_small_59.png" COMP;
+   }
+   parts {
+      part { name: "access";
+         type: RECT;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "elm.background.progressbar";
+         mouse_events: 0;
+         scale: 1;
+         type: RECT;
+         description {
+            state: "default" 0.0;
+         }
+      }
+      part { name: "bar";
+         mouse_events: 0;
+         scale: 1;
+         clip_to: "elm.background.progressbar";
+         description {
+            state: "default" 0.0;
+            min: PROGRESSBAR_ACTIVITY_SMALL_SIZE_INC PROGRESSBAR_ACTIVITY_SMALL_SIZE_INC;
+            max: PROGRESSBAR_ACTIVITY_SMALL_SIZE_INC PROGRESSBAR_ACTIVITY_SMALL_SIZE_INC;
+            aspect: 1.0 1.0;
+            aspect_preference: BOTH;
+            image.normal: "tw_loading_small_00.png";
+            image.tween: "tw_loading_small_01.png";
+            image.tween: "tw_loading_small_02.png";
+            image.tween: "tw_loading_small_03.png";
+            image.tween: "tw_loading_small_04.png";
+            image.tween: "tw_loading_small_05.png";
+            image.tween: "tw_loading_small_06.png";
+            image.tween: "tw_loading_small_07.png";
+            image.tween: "tw_loading_small_08.png";
+            image.tween: "tw_loading_small_09.png";
+            image.tween: "tw_loading_small_10.png";
+            image.tween: "tw_loading_small_11.png";
+            image.tween: "tw_loading_small_12.png";
+            image.tween: "tw_loading_small_13.png";
+            image.tween: "tw_loading_small_14.png";
+            image.tween: "tw_loading_small_15.png";
+            image.tween: "tw_loading_small_16.png";
+            image.tween: "tw_loading_small_17.png";
+            image.tween: "tw_loading_small_18.png";
+            image.tween: "tw_loading_small_19.png";
+            image.tween: "tw_loading_small_20.png";
+            image.tween: "tw_loading_small_21.png";
+            image.tween: "tw_loading_small_22.png";
+            image.tween: "tw_loading_small_23.png";
+            image.tween: "tw_loading_small_24.png";
+            image.tween: "tw_loading_small_25.png";
+            image.tween: "tw_loading_small_26.png";
+            image.tween: "tw_loading_small_27.png";
+            image.tween: "tw_loading_small_28.png";
+            image.tween: "tw_loading_small_29.png";
+            image.tween: "tw_loading_small_30.png";
+            image.tween: "tw_loading_small_31.png";
+            image.tween: "tw_loading_small_32.png";
+            image.tween: "tw_loading_small_33.png";
+            image.tween: "tw_loading_small_34.png";
+            image.tween: "tw_loading_small_35.png";
+            image.tween: "tw_loading_small_36.png";
+            image.tween: "tw_loading_small_37.png";
+            image.tween: "tw_loading_small_38.png";
+            image.tween: "tw_loading_small_39.png";
+            image.tween: "tw_loading_small_40.png";
+            image.tween: "tw_loading_small_41.png";
+            image.tween: "tw_loading_small_42.png";
+            image.tween: "tw_loading_small_43.png";
+            image.tween: "tw_loading_small_44.png";
+            image.tween: "tw_loading_small_45.png";
+            image.tween: "tw_loading_small_46.png";
+            image.tween: "tw_loading_small_47.png";
+            image.tween: "tw_loading_small_48.png";
+            image.tween: "tw_loading_small_49.png";
+            image.tween: "tw_loading_small_50.png";
+            image.tween: "tw_loading_small_51.png";
+            image.tween: "tw_loading_small_52.png";
+            image.tween: "tw_loading_small_53.png";
+            image.tween: "tw_loading_small_54.png";
+            image.tween: "tw_loading_small_55.png";
+            image.tween: "tw_loading_small_56.png";
+            image.tween: "tw_loading_small_57.png";
+            image.tween: "tw_loading_small_58.png";
+            image.tween: "tw_loading_small_59.png";
+            color: 0 148 255 255; /*color_class: "B065L6";*/
+         }
+      }
+   }
+   programs {
+      program { name: "start_pulse";
+         signal: "elm,state,pulse,start";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "bar";
+         transition: LINEAR 1.8;
+         after: "start_pulse";
+      }
+      program { name: "stop_pulse";
+         signal: "elm,state,pulse,stop";
+         source: "elm";
+         action: ACTION_STOP;
+         target: "start_pulse";
+         after: "init_pulse";
+      }
+      program { name: "init_pulse";
+         action: STATE_SET "default" 0.0;
+         target: "bar";
+      }
+   }
+}
+
+group { name: "elm/progressbar/horizontal/process/popup/small";
+   images {
+      image: "tw_loading_small_00.png" COMP;
+      image: "tw_loading_small_01.png" COMP;
+      image: "tw_loading_small_02.png" COMP;
+      image: "tw_loading_small_03.png" COMP;
+      image: "tw_loading_small_04.png" COMP;
+      image: "tw_loading_small_05.png" COMP;
+      image: "tw_loading_small_06.png" COMP;
+      image: "tw_loading_small_07.png" COMP;
+      image: "tw_loading_small_08.png" COMP;
+      image: "tw_loading_small_09.png" COMP;
+      image: "tw_loading_small_10.png" COMP;
+      image: "tw_loading_small_11.png" COMP;
+      image: "tw_loading_small_12.png" COMP;
+      image: "tw_loading_small_13.png" COMP;
+      image: "tw_loading_small_14.png" COMP;
+      image: "tw_loading_small_15.png" COMP;
+      image: "tw_loading_small_16.png" COMP;
+      image: "tw_loading_small_17.png" COMP;
+      image: "tw_loading_small_18.png" COMP;
+      image: "tw_loading_small_19.png" COMP;
+      image: "tw_loading_small_20.png" COMP;
+      image: "tw_loading_small_21.png" COMP;
+      image: "tw_loading_small_22.png" COMP;
+      image: "tw_loading_small_23.png" COMP;
+      image: "tw_loading_small_24.png" COMP;
+      image: "tw_loading_small_25.png" COMP;
+      image: "tw_loading_small_26.png" COMP;
+      image: "tw_loading_small_27.png" COMP;
+      image: "tw_loading_small_28.png" COMP;
+      image: "tw_loading_small_29.png" COMP;
+      image: "tw_loading_small_30.png" COMP;
+      image: "tw_loading_small_31.png" COMP;
+      image: "tw_loading_small_32.png" COMP;
+      image: "tw_loading_small_33.png" COMP;
+      image: "tw_loading_small_34.png" COMP;
+      image: "tw_loading_small_35.png" COMP;
+      image: "tw_loading_small_36.png" COMP;
+      image: "tw_loading_small_37.png" COMP;
+      image: "tw_loading_small_38.png" COMP;
+      image: "tw_loading_small_39.png" COMP;
+      image: "tw_loading_small_40.png" COMP;
+      image: "tw_loading_small_41.png" COMP;
+      image: "tw_loading_small_42.png" COMP;
+      image: "tw_loading_small_43.png" COMP;
+      image: "tw_loading_small_44.png" COMP;
+      image: "tw_loading_small_45.png" COMP;
+      image: "tw_loading_small_46.png" COMP;
+      image: "tw_loading_small_47.png" COMP;
+      image: "tw_loading_small_48.png" COMP;
+      image: "tw_loading_small_49.png" COMP;
+      image: "tw_loading_small_50.png" COMP;
+      image: "tw_loading_small_51.png" COMP;
+      image: "tw_loading_small_52.png" COMP;
+      image: "tw_loading_small_53.png" COMP;
+      image: "tw_loading_small_54.png" COMP;
+      image: "tw_loading_small_55.png" COMP;
+      image: "tw_loading_small_56.png" COMP;
+      image: "tw_loading_small_57.png" COMP;
+      image: "tw_loading_small_58.png" COMP;
+      image: "tw_loading_small_59.png" COMP;
+   }
+   parts {
+      part { name: "access";
+         type: RECT;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "elm.background.progressbar";
+         mouse_events: 0;
+         scale: 1;
+         type: RECT;
+         description {
+            state: "default" 0.0;
+         }
+      }
+      part { name: "bar";
+         mouse_events: 0;
+         scale: 1;
+         clip_to: "elm.background.progressbar";
+         description {
+            state: "default" 0.0;
+            min: PROGRESSBAR_ACTIVITY_POPUP_SMALL_SIZE_INC PROGRESSBAR_ACTIVITY_POPUP_SMALL_SIZE_INC;
+            max: PROGRESSBAR_ACTIVITY_POPUP_SMALL_SIZE_INC PROGRESSBAR_ACTIVITY_POPUP_SMALL_SIZE_INC;
+            aspect: 1.0 1.0;
+            aspect_preference: BOTH;
+            image.normal: "tw_loading_small_00.png";
+            image.tween: "tw_loading_small_01.png";
+            image.tween: "tw_loading_small_02.png";
+            image.tween: "tw_loading_small_03.png";
+            image.tween: "tw_loading_small_04.png";
+            image.tween: "tw_loading_small_05.png";
+            image.tween: "tw_loading_small_06.png";
+            image.tween: "tw_loading_small_07.png";
+            image.tween: "tw_loading_small_08.png";
+            image.tween: "tw_loading_small_09.png";
+            image.tween: "tw_loading_small_10.png";
+            image.tween: "tw_loading_small_11.png";
+            image.tween: "tw_loading_small_12.png";
+            image.tween: "tw_loading_small_13.png";
+            image.tween: "tw_loading_small_14.png";
+            image.tween: "tw_loading_small_15.png";
+            image.tween: "tw_loading_small_16.png";
+            image.tween: "tw_loading_small_17.png";
+            image.tween: "tw_loading_small_18.png";
+            image.tween: "tw_loading_small_19.png";
+            image.tween: "tw_loading_small_20.png";
+            image.tween: "tw_loading_small_21.png";
+            image.tween: "tw_loading_small_22.png";
+            image.tween: "tw_loading_small_23.png";
+            image.tween: "tw_loading_small_24.png";
+            image.tween: "tw_loading_small_25.png";
+            image.tween: "tw_loading_small_26.png";
+            image.tween: "tw_loading_small_27.png";
+            image.tween: "tw_loading_small_28.png";
+            image.tween: "tw_loading_small_29.png";
+            image.tween: "tw_loading_small_30.png";
+            image.tween: "tw_loading_small_31.png";
+            image.tween: "tw_loading_small_32.png";
+            image.tween: "tw_loading_small_33.png";
+            image.tween: "tw_loading_small_34.png";
+            image.tween: "tw_loading_small_35.png";
+            image.tween: "tw_loading_small_36.png";
+            image.tween: "tw_loading_small_37.png";
+            image.tween: "tw_loading_small_38.png";
+            image.tween: "tw_loading_small_39.png";
+            image.tween: "tw_loading_small_40.png";
+            image.tween: "tw_loading_small_41.png";
+            image.tween: "tw_loading_small_42.png";
+            image.tween: "tw_loading_small_43.png";
+            image.tween: "tw_loading_small_44.png";
+            image.tween: "tw_loading_small_45.png";
+            image.tween: "tw_loading_small_46.png";
+            image.tween: "tw_loading_small_47.png";
+            image.tween: "tw_loading_small_48.png";
+            image.tween: "tw_loading_small_49.png";
+            image.tween: "tw_loading_small_50.png";
+            image.tween: "tw_loading_small_51.png";
+            image.tween: "tw_loading_small_52.png";
+            image.tween: "tw_loading_small_53.png";
+            image.tween: "tw_loading_small_54.png";
+            image.tween: "tw_loading_small_55.png";
+            image.tween: "tw_loading_small_56.png";
+            image.tween: "tw_loading_small_57.png";
+            image.tween: "tw_loading_small_58.png";
+            image.tween: "tw_loading_small_59.png";
+            color: 0 148 255 255; /*color_class: "B065L6";*/
+         }
+      }
+   }
+   programs {
+      program { name: "start_pulse";
+         signal: "elm,state,pulse,start";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "bar";
+         transition: LINEAR 1.8;
+         after: "start_pulse";
+      }
+      program { name: "stop_pulse";
+         signal: "elm,state,pulse,stop";
+         source: "elm";
+         action: ACTION_STOP;
+         target: "start_pulse";
+         after: "init_pulse";
+      }
+      program { name: "init_pulse";
+         action: STATE_SET "default" 0.0;
+         target: "bar";
+      }
+   }
+}

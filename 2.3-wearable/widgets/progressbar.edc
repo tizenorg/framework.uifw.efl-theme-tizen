@@ -1,0 +1,605 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+   group { name: "elm/progressbar/horizontal/default";
+      parts {
+         part { name: "access";
+            type: RECT;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               color: 0 0 0 0;
+            }
+         }
+         part { name: "background";
+            type: RECT;
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1.to: "elm.swallow.bar";
+               rel2.to: "elm.swallow.bar";
+               color: 71 71 71 255; /*(Changeable UI) color_class: "B065L3";*/
+            }
+         }
+         part { name: "elm.swallow.bar";
+            mouse_events: 0;
+            scale: 1;
+            type: SWALLOW;
+            description { state: "default" 0.0;
+               min: 1 PROGRESSBAR_HEIGHT;
+               max: -1 PROGRESSBAR_HEIGHT;
+            }
+         }
+         part { name: "drag.background";
+            mouse_events: 0;
+            type: RECT;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               visible: 0;
+               rel1.to: "elm.swallow.bar";
+               rel2.to: "elm.swallow.bar";
+            }
+         }
+         part { name: "elm.progress.progressbar";
+            type: RECT;
+            mouse_events: 0;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               min: 0 0;
+               fixed: 1 1;
+               rel1.to: "elm.swallow.bar";
+               rel2 {
+                  to_x: "elm.cur.progressbar";
+                  to_y: "elm.swallow.bar";
+                  offset: -1 -1;
+                  relative: 0.5 1.0;
+               }
+              color: 0 110 255 255; /*(Changeable UI) color_class: "B065L2";*/
+            }
+            description {
+               state: "invert" 0.0;
+               inherit: "default" 0.0;
+               rel1 {
+                  to_y: "elm.swallow.bar";
+                  to_x: "elm.cur.progressbar";
+                  relative: 0.0 0.0;
+               }
+               rel2.to: "elm.swallow.bar";
+               rel2.relative: 1.0 1.0;
+            }
+            description {
+               state: "state_begin" 0.0;
+               inherit: "default" 0.0;
+               rel1 {
+                  to: "elm.swallow.bar";
+                  relative: 0.0 0.0;
+               }
+               rel2 {
+                  to: "elm.swallow.bar";
+                  relative: 0.1 1.0;
+               }
+            }
+            description {
+               state: "state_end" 0.0;
+               inherit: "default" 0.0;
+               rel1 {
+                  to: "elm.swallow.bar";
+                  relative: 0.0 0.0;
+               }
+               rel2 {
+                  to: "elm.swallow.bar";
+                  relative: 1.0 1.0;
+               }
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               color: 0 110 255 38; /*(Changeable UI) color_class: "B0651L2";*/
+            }
+         }
+         part { name: "elm.cur.progressbar";
+            mouse_events: 0;
+            scale: 1;
+            dragable {
+               confine: "drag.background";
+               x: 1 1 1;
+               y: 0 0 0;
+            }
+            description { state: "default" 0.0;
+               min: 0 10;
+               fixed: 1 1;
+               visible: 0;
+               rel1.to: "drag.background";
+               rel2.to: "drag.background";
+           }
+         }
+         part { name: "progress-rect";
+            type: RECT;
+            mouse_events: 0;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               rel1.to: "elm.progress.progressbar";
+               rel2.to: "elm.progress.progressbar";
+               color: 0 0 0 0;
+            }
+         }
+      }
+      programs {
+         program { name: "slide_to_end";
+            action:  STATE_SET "state_end" 0.0;
+            transition: LINEAR 0.5;
+            target: "elm.progress.progressbar";
+            after: "slide_to_begin";
+         }
+         program { name: "slide_to_begin";
+            signal: "elm,state,slide,begin";
+            action: STATE_SET "state_begin" 0.0;
+            target: "elm.progress.progressbar";
+            transition: LINEAR 0.5;
+            after: "slide_to_end";
+         }
+         program { name: "start_pulse";
+            signal: "elm,state,pulse,start";
+            source: "elm";
+         }
+         program { name: "stop_pulse";
+            signal: "elm,state,pulse,stop";
+            source: "elm";
+            action: ACTION_STOP;
+            target: "slide_to_begin";
+            target: "slide_to_end";
+            target: "start_pulse";
+         }
+         program { name: "state_pulse";
+            signal: "elm,state,pulse";
+            source: "elm";
+            action: STATE_SET "state_begin" 0.0;
+            target: "elm.progress.progressbar";
+         }
+         program { name: "state_fraction";
+            signal: "elm,state,fraction";
+            source: "elm";
+            action: ACTION_STOP;
+            target: "slide_to_begin";
+            target: "slide_to_end";
+            target: "start_pulse";
+            action: STATE_SET "default" 0.0;
+            target: "elm.progress.progressbar";
+         }
+         program { name: "set_invert_on";
+            signal: "elm,state,inverted,on";
+            source: "elm";
+            action:  STATE_SET "invert" 0.0;
+            target: "elm.progress.progressbar";
+         }
+         program { name: "set_invert_off";
+            signal: "elm,state,inverted,off";
+            source: "elm";
+            action:  STATE_SET "default" 0.0;
+            target: "elm.progress.progressbar";
+         }
+         program { name: "progressbar_disable";
+            signal: "elm,state,disabled";
+            source: "elm";
+            action:  STATE_SET "disabled" 0.0;
+            target: "elm.progress.progressbar";
+            target: "background";
+         }
+         program { name: "progressbar_enable";
+            signal: "elm,state,enabled";
+            source: "elm";
+            action:  STATE_SET "default" 0.0;
+            target: "elm.progress.progressbar";
+            target: "background";
+         }
+      }
+   }
+
+   group { name: "elm/progressbar/horizontal/pending_list";
+      images {
+         image: "tw_progressbar_indeterminate1_holo_dark.png" COMP;
+         image: "tw_progressbar_indeterminate2_holo_dark.png" COMP;
+         image: "tw_progressbar_indeterminate3_holo_dark.png" COMP;
+         image: "tw_progressbar_indeterminate4_holo_dark.png" COMP;
+         image: "tw_progressbar_indeterminate5_holo_dark.png" COMP;
+      }
+      parts {
+         part { name: "access";
+            type: RECT;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               color: 0 0 0 0;
+            }
+         }
+         part { name: "background";
+            type: RECT;
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: PROGRESSBAR_PENDING_SIZE;
+               max: PROGRESSBAR_PENDING_SIZE;
+               fixed: 0 1;
+               color: 71 71 71 255; /*(Changeable UI) color_class: "B065L3";*/
+            }
+         }
+         part { name: "elm.progress.progressbar";
+            mouse_events: 0;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               min: 0 0;
+               fixed: 1 1;
+               rel1.to: "background";
+               rel2.to: "background";
+               image {
+                  normal: "tw_progressbar_indeterminate1_holo_dark.png";
+                  border: 0 0 0 0;
+               }
+               color: 0 88 204 255; /*(Changeable UI) color_class: "B0652L2";*/
+            }
+            description {
+               state: "state_begin" 0.0;
+               inherit: "default" 0.0;
+            }
+            description {
+               state: "sliding1" 0.0;
+               inherit: "default" 0.0;
+               image.normal: "tw_progressbar_indeterminate2_holo_dark.png";
+               color: 0 88 204 255; /*(Changeable UI) color_class: "B0652L2";*/
+            }
+            description {
+               state: "sliding2" 0.0;
+               inherit: "default" 0.0;
+               image.normal: "tw_progressbar_indeterminate3_holo_dark.png";
+               color: 0 88 204 255; /*(Changeable UI) color_class: "B0652L2";*/
+            }
+            description {
+               state: "sliding3" 0.0;
+               inherit: "default" 0.0;
+               image.normal: "tw_progressbar_indeterminate4_holo_dark.png";
+               color: 0 88 204 255; /*(Changeable UI) color_class: "B0652L2";*/
+            }
+            description {
+               state: "state_end" 1.0;
+               inherit: "default" 0.0;
+               image.normal: "tw_progressbar_indeterminate5_holo_dark.png";
+               color: 0 88 204 255; /*(Changeable UI) color_class: "B0652L2";*/
+            }
+         }
+      }
+      script {
+         public state_end = 0;
+      }
+      programs {
+         program { name: "slide_to_begin";
+            signal: "elm,state,slide,begin";
+            in: 0.05 0.0;
+            script {
+               set_state(PART:"elm.progress.progressbar", "state_begin", 0.0);
+               set_int(state_end, 0);
+            }
+            after: "sliding1";
+         }
+         program { name: "sliding1";
+            in: 0.05 0.0;
+            script {
+               set_state(PART:"elm.progress.progressbar", "sliding1", 0.0);
+               set_int(state_end, 0);
+            }
+            after: "sliding2";
+         }
+         program { name: "sliding2";
+            in: 0.05 0.0;
+            script {
+               set_state(PART:"elm.progress.progressbar", "sliding2", 0.0);
+               set_int(state_end, 0);
+            }
+            after: "sliding3";
+         }
+         program { name: "sliding3";
+            in: 0.05 0.0;
+            script {
+               set_state(PART:"elm.progress.progressbar", "sliding3", 0.0);
+               set_int(state_end, 0);
+            }
+            after: "slide_to_end";
+         }
+         program { name: "slide_to_end";
+            in: 0.05 0.0;
+            script {
+               set_state(PART:"elm.progress.progressbar", "state_end", 0.0);
+               set_int(state_end, 1);
+            }
+            after: "slide_to_begin";
+         }
+         program { name: "start_pulse";
+            signal: "elm,state,pulse,start";
+            source: "elm";
+            after: "slide_to_end";
+         }
+         program { name: "stop_pulse";
+            signal: "elm,state,pulse,stop";
+            source: "elm";
+            action: ACTION_STOP;
+            target: "slide_to_begin";
+            target: "sliding1";
+            target: "sliding2";
+            target: "sliding3";
+            target: "slide_to_end";
+            target: "start_pulse";
+            after: "init_pulse";
+         }
+         program { name: "init_pulse";
+            action: STATE_SET "default" 0.0;
+            target: "elm.progress.progressbar";
+         }
+         program { name: "progressbar_disable";
+            signal: "elm,state,disabled";
+            source: "elm";
+            after: "stop_pulse";
+         }
+         program { name: "progressbar_enable";
+            signal: "elm,state,enabled";
+            source: "elm";
+            after: "start_pulse";
+         }
+      }
+   }
+
+group { name: "elm/progressbar/horizontal/process";
+   images {
+      image: "tw_widget_activity_00.png" COMP;
+      image: "tw_widget_activity_01.png" COMP;
+      image: "tw_widget_activity_02.png" COMP;
+      image: "tw_widget_activity_03.png" COMP;
+      image: "tw_widget_activity_04.png" COMP;
+      image: "tw_widget_activity_05.png" COMP;
+      image: "tw_widget_activity_06.png" COMP;
+      image: "tw_widget_activity_07.png" COMP;
+      image: "tw_widget_activity_08.png" COMP;
+      image: "tw_widget_activity_09.png" COMP;
+      image: "tw_widget_activity_10.png" COMP;
+      image: "tw_widget_activity_11.png" COMP;
+      image: "tw_widget_activity_12.png" COMP;
+      image: "tw_widget_activity_13.png" COMP;
+      image: "tw_widget_activity_14.png" COMP;
+      image: "tw_widget_activity_15.png" COMP;
+      image: "tw_widget_activity_16.png" COMP;
+      image: "tw_widget_activity_17.png" COMP;
+      image: "tw_widget_activity_18.png" COMP;
+      image: "tw_widget_activity_19.png" COMP;
+      image: "tw_widget_activity_20.png" COMP;
+      image: "tw_widget_activity_21.png" COMP;
+      image: "tw_widget_activity_22.png" COMP;
+      image: "tw_widget_activity_23.png" COMP;
+      image: "tw_widget_activity_24.png" COMP;
+      image: "tw_widget_activity_25.png" COMP;
+      image: "tw_widget_activity_26.png" COMP;
+      image: "tw_widget_activity_27.png" COMP;
+      image: "tw_widget_activity_28.png" COMP;
+      image: "tw_widget_activity_29.png" COMP;
+   }
+   parts {
+      part { name: "access";
+         type: RECT;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "elm.background.progressbar";
+         mouse_events: 0;
+         scale: 1;
+         type: RECT;
+         description {
+            state: "default" 0.0;
+         }
+      }
+      part { name: "bar";
+         mouse_events: 0;
+         scale: 1;
+         clip_to: "elm.background.progressbar";
+         description {
+            state: "default" 0.0;
+            min: PROGRESSBAR_ACTIVITY_IMAGE_SIZE PROGRESSBAR_ACTIVITY_IMAGE_SIZE;
+            max: PROGRESSBAR_ACTIVITY_IMAGE_SIZE PROGRESSBAR_ACTIVITY_IMAGE_SIZE;
+            aspect: 1.0 1.0;
+            aspect_preference: BOTH;
+            image.normal: "tw_widget_activity_00.png";
+            image.tween: "tw_widget_activity_01.png";
+            image.tween: "tw_widget_activity_02.png";
+            image.tween: "tw_widget_activity_03.png";
+            image.tween: "tw_widget_activity_04.png";
+            image.tween: "tw_widget_activity_05.png";
+            image.tween: "tw_widget_activity_06.png";
+            image.tween: "tw_widget_activity_07.png";
+            image.tween: "tw_widget_activity_08.png";
+            image.tween: "tw_widget_activity_09.png";
+            image.tween: "tw_widget_activity_10.png";
+            image.tween: "tw_widget_activity_11.png";
+            image.tween: "tw_widget_activity_12.png";
+            image.tween: "tw_widget_activity_13.png";
+            image.tween: "tw_widget_activity_14.png";
+            image.tween: "tw_widget_activity_15.png";
+            image.tween: "tw_widget_activity_16.png";
+            image.tween: "tw_widget_activity_17.png";
+            image.tween: "tw_widget_activity_18.png";
+            image.tween: "tw_widget_activity_19.png";
+            image.tween: "tw_widget_activity_20.png";
+            image.tween: "tw_widget_activity_21.png";
+            image.tween: "tw_widget_activity_22.png";
+            image.tween: "tw_widget_activity_23.png";
+            image.tween: "tw_widget_activity_24.png";
+            image.tween: "tw_widget_activity_25.png";
+            image.tween: "tw_widget_activity_26.png";
+            image.tween: "tw_widget_activity_27.png";
+            image.tween: "tw_widget_activity_28.png";
+            image.tween: "tw_widget_activity_29.png";
+            color: 0 110 255 255; /*(Changeable UI) color_class: "B066L1";*/
+         }
+      }
+   }
+   programs {
+      program { name: "start_pulse";
+         signal: "elm,state,pulse,start";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "bar";
+         transition: LINEAR 1.8;
+         after: "start_pulse";
+      }
+      program { name: "stop_pulse";
+         signal: "elm,state,pulse,stop";
+         source: "elm";
+         action: ACTION_STOP;
+         target: "start_pulse";
+         after: "init_pulse";
+      }
+      program { name: "init_pulse";
+         action: STATE_SET "default" 0.0;
+         target: "bar";
+      }
+   }
+}
+
+group { name: "elm/progressbar/horizontal/process/groupindex";
+   images {
+      image: "tw_widget_actionbar_activity_00.png" COMP;
+      image: "tw_widget_actionbar_activity_01.png" COMP;
+      image: "tw_widget_actionbar_activity_02.png" COMP;
+      image: "tw_widget_actionbar_activity_03.png" COMP;
+      image: "tw_widget_actionbar_activity_04.png" COMP;
+      image: "tw_widget_actionbar_activity_05.png" COMP;
+      image: "tw_widget_actionbar_activity_06.png" COMP;
+      image: "tw_widget_actionbar_activity_07.png" COMP;
+      image: "tw_widget_actionbar_activity_08.png" COMP;
+      image: "tw_widget_actionbar_activity_09.png" COMP;
+      image: "tw_widget_actionbar_activity_10.png" COMP;
+      image: "tw_widget_actionbar_activity_11.png" COMP;
+      image: "tw_widget_actionbar_activity_12.png" COMP;
+      image: "tw_widget_actionbar_activity_13.png" COMP;
+      image: "tw_widget_actionbar_activity_14.png" COMP;
+      image: "tw_widget_actionbar_activity_15.png" COMP;
+      image: "tw_widget_actionbar_activity_16.png" COMP;
+      image: "tw_widget_actionbar_activity_17.png" COMP;
+      image: "tw_widget_actionbar_activity_18.png" COMP;
+      image: "tw_widget_actionbar_activity_19.png" COMP;
+      image: "tw_widget_actionbar_activity_20.png" COMP;
+      image: "tw_widget_actionbar_activity_21.png" COMP;
+      image: "tw_widget_actionbar_activity_22.png" COMP;
+      image: "tw_widget_actionbar_activity_23.png" COMP;
+      image: "tw_widget_actionbar_activity_24.png" COMP;
+      image: "tw_widget_actionbar_activity_25.png" COMP;
+      image: "tw_widget_actionbar_activity_26.png" COMP;
+      image: "tw_widget_actionbar_activity_27.png" COMP;
+      image: "tw_widget_actionbar_activity_28.png" COMP;
+      image: "tw_widget_actionbar_activity_29.png" COMP;
+   }
+   parts {
+      part { name: "access";
+         type: RECT;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "elm.background.progressbar";
+         mouse_events: 0;
+         scale: 1;
+         type: RECT;
+         description {
+            state: "default" 0.0;
+         }
+      }
+      part { name: "bar";
+         mouse_events: 0;
+         scale: 1;
+         clip_to: "elm.background.progressbar";
+         description {
+            state: "default" 0.0;
+            min: PROGRESSBAR_ACTIVITY_GROUPINDEX_IMAGE_SIZE PROGRESSBAR_ACTIVITY_GROUPINDEX_IMAGE_SIZE;
+            max: PROGRESSBAR_ACTIVITY_GROUPINDEX_IMAGE_SIZE PROGRESSBAR_ACTIVITY_GROUPINDEX_IMAGE_SIZE;
+            aspect: 1.0 1.0;
+            aspect_preference: BOTH;
+            image.normal: "tw_widget_actionbar_activity_00.png";
+            image.tween: "tw_widget_actionbar_activity_01.png";
+            image.tween: "tw_widget_actionbar_activity_02.png";
+            image.tween: "tw_widget_actionbar_activity_03.png";
+            image.tween: "tw_widget_actionbar_activity_04.png";
+            image.tween: "tw_widget_actionbar_activity_05.png";
+            image.tween: "tw_widget_actionbar_activity_06.png";
+            image.tween: "tw_widget_actionbar_activity_07.png";
+            image.tween: "tw_widget_actionbar_activity_08.png";
+            image.tween: "tw_widget_actionbar_activity_09.png";
+            image.tween: "tw_widget_actionbar_activity_10.png";
+            image.tween: "tw_widget_actionbar_activity_11.png";
+            image.tween: "tw_widget_actionbar_activity_12.png";
+            image.tween: "tw_widget_actionbar_activity_13.png";
+            image.tween: "tw_widget_actionbar_activity_14.png";
+            image.tween: "tw_widget_actionbar_activity_15.png";
+            image.tween: "tw_widget_actionbar_activity_16.png";
+            image.tween: "tw_widget_actionbar_activity_17.png";
+            image.tween: "tw_widget_actionbar_activity_18.png";
+            image.tween: "tw_widget_actionbar_activity_19.png";
+            image.tween: "tw_widget_actionbar_activity_20.png";
+            image.tween: "tw_widget_actionbar_activity_21.png";
+            image.tween: "tw_widget_actionbar_activity_22.png";
+            image.tween: "tw_widget_actionbar_activity_23.png";
+            image.tween: "tw_widget_actionbar_activity_24.png";
+            image.tween: "tw_widget_actionbar_activity_25.png";
+            image.tween: "tw_widget_actionbar_activity_26.png";
+            image.tween: "tw_widget_actionbar_activity_27.png";
+            image.tween: "tw_widget_actionbar_activity_28.png";
+            image.tween: "tw_widget_actionbar_activity_29.png";
+            color: 0 110 255 255; /*(Changeable UI) color_class: "B066L1";*/
+         }
+      }
+   }
+   programs {
+      program { name: "start_pulse";
+         signal: "elm,state,pulse,start";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "bar";
+         transition: LINEAR 1.8;
+         after: "start_pulse";
+      }
+      program { name: "stop_pulse";
+         signal: "elm,state,pulse,stop";
+         source: "elm";
+         action: ACTION_STOP;
+         target: "start_pulse";
+         after: "init_pulse";
+      }
+      program { name: "init_pulse";
+         action: STATE_SET "default" 0.0;
+         target: "bar";
+      }
+   }
+}

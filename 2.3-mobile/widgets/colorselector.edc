@@ -1,0 +1,312 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+group {
+   name: "elm/colorselector/palette/colorplane";
+   alias: "elm/colorselector/palette/default";
+   data.item: "horizontal_pad" COLORSELECTOR_PORTRAIT_HOR_PAD_COLORPLANE_INC;
+   data.item: "vertical_pad" COLORSELECTOR_PORTRAIT_VER_PAD_COLORPLANE_INC;
+
+   parts {
+      part { name: "base";
+         type: SPACER;
+         description { state: "default" 0.0;
+            align: 0.0 0.0;
+            min: COLORSELECTOR_PALETTE_COLORPLANE_WIDTH_INC COLORSELECTOR_PALETTE_COLORPLANE_HEIGHT_INC;
+            max: -1 -1;
+         }
+      }
+      part { name: "top_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 COLORSELECTOR_TOPBOTTOM_PAD_COLORPLANE_INC;
+            fixed: 0 1;
+            rel1 {
+               relative: 0.0 0.0;
+               to: "base";
+            }
+            rel2 {
+               relative: 1.0 0.0;
+               to: "base";
+            }
+            align: 0.0 0.0;
+         }
+      }
+      part { name: "palette";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            align: 0.0 0.0;
+            fixed: 0 1;
+            rel1 {
+               relative: 0.0 1.0;
+               to_y: "top_padding";
+            }
+            rel2.to_y: "top_padding";
+         }
+      }
+      part{ name: "palette_bottom_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 COLORSELECTOR_TOPBOTTOM_PAD_COLORPLANE_INC;
+            fixed: 0 1;
+            rel1 {
+               relative: 0.0 1.0;
+               to: "palette";
+            }
+            rel2.to: "palette";
+            align: 0.0 0.0;
+         }
+      }
+   }
+}
+
+group {
+   name: "elm/colorselector/item/colorplane";
+   alias: "elm/colorselector/item/default";
+   images {
+      set {
+         name: "core_color_picker_palette_selected";
+         image {
+            image: SMALL"images/Controls/core_color_picker_palette_selected.png" COMP;
+         }
+         image {
+            image: MEDIUM"images/Controls/core_color_picker_palette_selected.png" COMP;
+         }
+      }
+      set {
+         name: "core_color_picker_palette_selected_bg";
+         image {
+            image: SMALL"images/Controls/core_color_picker_palette_selected_bg.png" COMP;
+         }
+         image {
+            image: MEDIUM"images/Controls/core_color_picker_palette_selected_bg.png" COMP;
+         }
+      }
+      set {
+         name: "core_color_picker_color_shadow";
+         image {
+            image: SMALL"images/Controls/core_color_picker_color_shadow.png" COMP;
+         }
+         image {
+            image: MEDIUM"images/Controls/core_color_picker_color_shadow.png" COMP;
+         }
+      }
+      set {
+         name: "core_color_picker_palette_focused";
+         image {
+            image: SMALL"images/Controls/core_color_picker_palette_focused.png" COMP;
+         }
+         image {
+            image: MEDIUM"images/Controls/core_color_picker_palette_focused.png" COMP;
+         }
+      }
+   }
+   parts {
+      part {
+         name: "color_bg";
+         type: SPACER;
+         mouse_events:1;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            min: COLORSELECTOR_PALETTE_COLORBG_MIN_COLORPLANE_INC;
+         }
+      }
+      part { name: "color_obj";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1.to: "color_bg";
+            rel2.to: "color_bg";
+         }
+      }
+      part {
+         name: "color_shadow";
+         type: IMAGE;
+         mouse_events: 0;
+         description{
+            state: "default" 0.0;
+            image.normal: "core_color_picker_color_shadow";
+            rel1.to: "color_obj";
+            rel2.to: "color_obj";
+         }
+      }
+      part {
+         name: "selected_bg_image";
+         type: IMAGE;
+         mouse_events: 0;
+         description{
+            state: "default" 0.0;
+            visible: 0;
+            rel1.to: "color_bg";
+            rel2.to: "color_bg";
+            image.normal: "core_color_picker_palette_selected_bg";
+         }
+         description {
+            state: "selected" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 7 7 7 127; /*(Changeable UI) color_class: "W162";*/
+         }
+      }
+      part {
+         name: "selected_image";
+         description {
+            state: "default" 0.0;
+            visible: 0;
+            rel1 {
+               to: "color_bg";
+               offset: -1 -1;
+            }
+            rel2 {
+               to: "color_bg";
+               offset: 0 0;
+            }
+            image.normal: "core_color_picker_palette_selected";
+         }
+         description {
+            state: "selected" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 244 244 244 255; /*(Changeable UI) color_class: "W162L1";*/
+         }
+      }
+      part { name: "over1";
+         type: RECT;
+         repeat_events: 1;
+         description {
+            state: "default" 0.0;
+            rel1.to: "color_bg";
+            rel2.to: "color_bg";
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "highlight";
+         type: IMAGE;
+         scale: 1;
+         description { state: "default" 0.0;
+            visible: 0;
+            image.normal: "core_color_picker_palette_focused";
+            color: 4 110 239 255; /*(Changeable UI) color_class: "W161";*/
+         }
+         description { state: "highlighted" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+   }
+   programs {
+      program { name: "item_select";
+         source: "elm";
+         signal: "elm,state,selected";
+         script {
+            set_state(PART:"selected_image", "selected", 0.0);
+            set_state(PART:"selected_bg_image", "selected", 0.0);
+            emit("elm,state,up", "");
+         }
+      }
+      program { name: "item_unselect";
+         source: "elm";
+         signal: "elm,state,unselected";
+         script {
+            set_state(PART:"selected_image", "default", 0.0);
+            set_state(PART:"selected_bg_image", "default", 0.0);
+         }
+      }
+      program { name: "item_down";
+         signal: "mouse,down,1";
+         source: "over1";
+         script {
+            emit("elm,state,down", "");
+         }
+      }
+      program { name: "item_clicked";
+         signal: "mouse,clicked,1";
+         source: "over1";
+         script {
+            set_state(PART:"selected_image", "selected", 0.0);
+            set_state(PART:"selected_bg_image", "selected", 0.0);
+            emit("elm,state,up", "");
+         }
+      }
+      program { name: "item_unfocus_all";
+         source: "elm";
+         signal: "elm,state,unhighlight";
+         script {
+            set_state(PART:"selected_image", "default", 0.0);
+            set_state(PART:"selected_bg_image", "default", 0.0);
+         }
+      }
+      program { name: "highlight_on";
+         signal: "elm,highlight,on";
+         source: "elm";
+         action: STATE_SET "highlighted" 0.0;
+         target: "highlight";
+      }
+      program { name: "highlight_off";
+         signal: "elm,highlight,off";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "highlight";
+      }
+      program { name: "touch_sound_over1";
+        signal: "mouse,clicked,1";
+        source: "over1";
+        action: RUN_PLUGIN "touch_sound";
+      }
+   }
+}
+
+group {
+   name: "elm/colorselector/item/color/colorplane";
+   alias: "elm/colorselector/item/color/colorplane_landscape";
+   alias: "elm/colorselector/item/color/default";
+   images {
+      set {
+         name: "core_color_picker_palette";
+         image {
+            image: SMALL"images/Controls/core_color_picker_palette.png" COMP;
+         }
+         image {
+            image: MEDIUM"images/Controls/core_color_picker_palette.png" COMP;
+         }
+      }
+   }
+   parts {
+      part {
+         name: "color_image";
+         type: IMAGE;
+         mouse_events: 1;
+         scale: 1;
+         description{
+            state: "default" 0.0;
+            image.normal: "core_color_picker_palette";
+         }
+      }
+   }
+}
+

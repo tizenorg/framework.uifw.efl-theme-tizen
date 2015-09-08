@@ -1,0 +1,325 @@
+group { name: "elm/thumb/base/default";
+   images {
+      image: "whitetheme/gengrid_thumb_shadow.png" COMP;
+      image: "whitetheme/gengrid_thumb_stroke.png" COMP;
+      image: "whitetheme/progress_wheel_0.png" COMP;
+      image: "whitetheme/progress_wheel_1.png" COMP;
+      image: "whitetheme/progress_wheel_2.png" COMP;
+      image: "whitetheme/progress_wheel_3.png" COMP;
+      image: "whitetheme/progress_wheel_4.png" COMP;
+      image: "whitetheme/progress_wheel_5.png" COMP;
+      image: "whitetheme/progress_wheel_6.png" COMP;
+      image: "whitetheme/progress_wheel_7.png" COMP;
+      image: "whitetheme/progress_wheel_8.png" COMP;
+      image: "whitetheme/progress_wheel_9.png" COMP;
+      image: "whitetheme/progress_wheel_10.png" COMP;
+      image: "whitetheme/progress_wheel_11.png" COMP;
+      image: "whitetheme/progress_wheel_12.png" COMP;
+      image: "whitetheme/progress_wheel_13.png" COMP;
+      image: "whitetheme/progress_wheel_14.png" COMP;
+      image: "whitetheme/progress_wheel_15.png" COMP;
+      image: "whitetheme/progress_wheel_16.png" COMP;
+      image: "whitetheme/progress_wheel_17.png" COMP;
+      image: "whitetheme/progress_wheel_18.png" COMP;
+      image: "whitetheme/progress_wheel_19.png" COMP;
+      image: "whitetheme/progress_wheel_20.png" COMP;
+      image: "whitetheme/progress_wheel_21.png" COMP;
+      image: "whitetheme/progress_wheel_22.png" COMP;
+      image: "whitetheme/progress_wheel_23.png" COMP;
+      image: "whitetheme/progress_wheel_24.png" COMP;
+      image: "whitetheme/progress_wheel_25.png" COMP;
+      image: "whitetheme/progress_wheel_26.png" COMP;
+      image: "whitetheme/progress_wheel_27.png" COMP;
+      image: "whitetheme/progress_wheel_28.png" COMP;
+      image: "whitetheme/progress_wheel_29.png" COMP;
+   }
+   parts {
+      part { name: "base";
+         mouse_events:  0;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "over";
+            rel2.to: "over";
+            image {
+               normal: "whitetheme/gengrid_thumb_shadow.png";
+               border: THUMB_DEFAULT_SHADOW_BORDER;
+               border_scale: 1;
+               middle: 0;
+            }
+            fill.smooth : 0;
+         }
+      }
+      part { name: "elm.padding.clip.left-top";
+         mouse_events:  0;
+         type: SPACER ;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0 0;
+            fixed: 1 1;
+            min: THUMB_DEFAULT_CLIP_PADDING_LEFT_TOP;
+            rel1.to: "over";    
+            rel2 {
+               to: "over";
+               relative: 0 0;
+            }
+         }
+      }
+      part { name: "elm.padding.clip.right-bottom";
+         mouse_events:  0;
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 1 1;
+            fixed: 1 1;
+            min: THUMB_DEFAULT_CLIP_PADDING_RIGHT_BOTTOM;
+            rel1 {
+               to: "over";
+               relative: 1 1;
+            }
+            rel2.to: "over";
+         }
+      }
+      part { name: "clip";
+         mouse_events:  0;
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            color: THUMB_DEFAULT_COLOR_VISIBLE;
+            rel1 { 
+               to: "elm.padding.clip.left-top";
+               relative: 1 1;
+            }
+            rel2 {
+               to: "elm.padding.clip.right-bottom";
+               relative: 0 0;
+            }
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         scale: 1;
+         clip_to: "clip";
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "progress";
+         mouse_events: 0;
+         scale: 1;
+         clip_to: "clip";
+         description { state: "default" 0.0;
+            min: THUMB_DEFAULT_PROGRESS_BG_SIZE;
+            max: THUMB_DEFAULT_PROGRESS_BG_SIZE;
+            visible: 0;
+            aspect: 1.0 1.0;
+            aspect_preference: BOTH;
+         }
+         description { state: "pulse" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            image {
+               normal: "whitetheme/progress_wheel_0.png";
+               tween:  "whitetheme/progress_wheel_1.png";
+               tween:  "whitetheme/progress_wheel_2.png";
+               tween:  "whitetheme/progress_wheel_3.png";
+               tween:  "whitetheme/progress_wheel_4.png";
+               tween:  "whitetheme/progress_wheel_5.png";
+               tween:  "whitetheme/progress_wheel_6.png";
+               tween:  "whitetheme/progress_wheel_7.png";
+               tween:  "whitetheme/progress_wheel_8.png";
+               tween:  "whitetheme/progress_wheel_9.png";
+               tween:  "whitetheme/progress_wheel_10.png";
+               tween:  "whitetheme/progress_wheel_11.png";
+               tween:  "whitetheme/progress_wheel_12.png";
+               tween:  "whitetheme/progress_wheel_13.png";
+               tween:  "whitetheme/progress_wheel_14.png";
+               tween:  "whitetheme/progress_wheel_15.png";
+               tween:  "whitetheme/progress_wheel_16.png";
+               tween:  "whitetheme/progress_wheel_17.png";
+               tween:  "whitetheme/progress_wheel_18.png";
+               tween:  "whitetheme/progress_wheel_19.png";
+               tween:  "whitetheme/progress_wheel_20.png";
+               tween:  "whitetheme/progress_wheel_21.png";
+               tween:  "whitetheme/progress_wheel_22.png";
+               tween:  "whitetheme/progress_wheel_23.png";
+               tween:  "whitetheme/progress_wheel_24.png";
+               tween:  "whitetheme/progress_wheel_25.png";
+               tween:  "whitetheme/progress_wheel_26.png";
+               tween:  "whitetheme/progress_wheel_27.png";
+               tween:  "whitetheme/progress_wheel_28.png";
+               tween:  "whitetheme/progress_wheel_29.png";
+               border: THUMB_DEFAULT_PROGRESS_BG_BORDER;
+               border_scale: 1;
+            }
+         }
+      }
+      part { name: "over";
+         mouse_events:  0;
+         scale: 1;
+         description { state: "default" 0.0;
+            image {
+               normal: "whitetheme/gengrid_thumb_stroke.png";
+               border: THUMB_DEFAULT_STROKE_BORDER;
+               border_scale: 1;
+               middle: 0;
+            }
+            fill.smooth: 0;
+         }
+      }
+      programs {
+         program { name: "start_pulse";
+            signal: "elm,state,pulse,start";
+            source: "elm";
+            action: STATE_SET "pulse" 0.0;
+            target: "progress";
+            transition: LINEAR 0.5;
+            after: "start_pulse";
+         }
+         program { name: "stop_pulse";
+            signal: "elm,state,pulse,stop";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "progress";
+         }
+      }
+   }
+}
+
+group { name: "elm/thumb/base/noframe";
+   images {
+      image: "whitetheme/progress_wheel_0.png" COMP;
+      image: "whitetheme/progress_wheel_1.png" COMP;
+      image: "whitetheme/progress_wheel_2.png" COMP;
+      image: "whitetheme/progress_wheel_3.png" COMP;
+      image: "whitetheme/progress_wheel_4.png" COMP;
+      image: "whitetheme/progress_wheel_5.png" COMP;
+      image: "whitetheme/progress_wheel_6.png" COMP;
+      image: "whitetheme/progress_wheel_7.png" COMP;
+      image: "whitetheme/progress_wheel_8.png" COMP;
+      image: "whitetheme/progress_wheel_9.png" COMP;
+      image: "whitetheme/progress_wheel_10.png" COMP;
+      image: "whitetheme/progress_wheel_11.png" COMP;
+      image: "whitetheme/progress_wheel_12.png" COMP;
+      image: "whitetheme/progress_wheel_13.png" COMP;
+      image: "whitetheme/progress_wheel_14.png" COMP;
+      image: "whitetheme/progress_wheel_15.png" COMP;
+      image: "whitetheme/progress_wheel_16.png" COMP;
+      image: "whitetheme/progress_wheel_17.png" COMP;
+      image: "whitetheme/progress_wheel_18.png" COMP;
+      image: "whitetheme/progress_wheel_19.png" COMP;
+      image: "whitetheme/progress_wheel_20.png" COMP;
+      image: "whitetheme/progress_wheel_21.png" COMP;
+      image: "whitetheme/progress_wheel_22.png" COMP;
+      image: "whitetheme/progress_wheel_23.png" COMP;
+      image: "whitetheme/progress_wheel_24.png" COMP;
+      image: "whitetheme/progress_wheel_25.png" COMP;
+      image: "whitetheme/progress_wheel_26.png" COMP;
+      image: "whitetheme/progress_wheel_27.png" COMP;
+      image: "whitetheme/progress_wheel_28.png" COMP;
+      image: "whitetheme/progress_wheel_29.png" COMP;
+   }
+   parts {
+      part { name: "elm.padding.content.left-top";
+         mouse_events:  0;
+         type: SPACER ;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0 0;
+            fixed: 1 1;
+            min: THUMB_DEFAULT_CLIP_PADDING_LEFT_TOP;   
+            rel2.relative: 0 0;
+         }
+      }
+      part { name: "elm.padding.content.right-bottom";
+         mouse_events:  0;
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 1 1;
+            fixed: 1 1;
+            min: THUMB_DEFAULT_CLIP_PADDING_RIGHT_BOTTOM;
+            rel1.relative: 1 1;
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1 { 
+               to: "elm.padding.content.left-top";
+               relative: 1 1;
+            }
+            rel2 {
+               to: "elm.padding.content.right-bottom";
+               relative: 0 0;
+            }
+         }
+      }
+      part { name: "progress";
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: THUMB_DEFAULT_PROGRESS_BG_SIZE;
+            max: THUMB_DEFAULT_PROGRESS_BG_SIZE;
+            visible: 0;
+            aspect: 1.0 1.0;
+            aspect_preference: BOTH;
+         }
+         description { state: "pulse" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            image {
+               normal: "whitetheme/progress_wheel_0.png";
+               tween:  "whitetheme/progress_wheel_1.png";
+               tween:  "whitetheme/progress_wheel_2.png";
+               tween:  "whitetheme/progress_wheel_3.png";
+               tween:  "whitetheme/progress_wheel_4.png";
+               tween:  "whitetheme/progress_wheel_5.png";
+               tween:  "whitetheme/progress_wheel_6.png";
+               tween:  "whitetheme/progress_wheel_7.png";
+               tween:  "whitetheme/progress_wheel_8.png";
+               tween:  "whitetheme/progress_wheel_9.png";
+               tween:  "whitetheme/progress_wheel_10.png";
+               tween:  "whitetheme/progress_wheel_11.png";
+               tween:  "whitetheme/progress_wheel_12.png";
+               tween:  "whitetheme/progress_wheel_13.png";
+               tween:  "whitetheme/progress_wheel_14.png";
+               tween:  "whitetheme/progress_wheel_15.png";
+               tween:  "whitetheme/progress_wheel_16.png";
+               tween:  "whitetheme/progress_wheel_17.png";
+               tween:  "whitetheme/progress_wheel_18.png";
+               tween:  "whitetheme/progress_wheel_19.png";
+               tween:  "whitetheme/progress_wheel_20.png";
+               tween:  "whitetheme/progress_wheel_21.png";
+               tween:  "whitetheme/progress_wheel_22.png";
+               tween:  "whitetheme/progress_wheel_23.png";
+               tween:  "whitetheme/progress_wheel_24.png";
+               tween:  "whitetheme/progress_wheel_25.png";
+               tween:  "whitetheme/progress_wheel_26.png";
+               tween:  "whitetheme/progress_wheel_27.png";
+               tween:  "whitetheme/progress_wheel_28.png";
+               tween:  "whitetheme/progress_wheel_29.png";
+               border: THUMB_DEFAULT_PROGRESS_BG_BORDER;
+               border_scale: 1;
+            }
+         }
+      }
+      programs {
+         program { name: "start_pulse";
+            signal: "elm,state,pulse,start";
+            source: "elm";
+            action: STATE_SET "pulse" 0.0;
+            target: "progress";
+            transition: LINEAR 0.5;
+            after: "start_pulse";
+         }
+         program { name: "stop_pulse";
+            signal: "elm,state,pulse,stop";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "progress";
+         }
+      }
+   }
+}
+
+
+

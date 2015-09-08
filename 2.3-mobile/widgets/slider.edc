@@ -1,0 +1,1463 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+   group { name: "elm/slider/horizontal/indicator/default";
+      images {
+         set {
+            name: "core_slider_handle_normal";
+            image {
+               image: SMALL"images/Controls/core_slider_handle_normal.png" COMP;
+            }
+            image {
+               image: MEDIUM"images/Controls/core_slider_handle_normal.png" COMP;
+            }
+         }
+         set {
+            name: "core_slider_handle_press";
+            image {
+               image: SMALL"images/Controls/core_slider_handle_press.png" COMP;
+            }
+            image {
+               image: MEDIUM"images/Controls/core_slider_handle_press.png" COMP;
+            }
+         }
+      }
+      parts {
+         part { name: "access";
+            type: RECT;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               color: 0 0 0 0;
+            }
+         }
+         part { name: "button_events";
+            type: RECT;
+            mouse_events: 1;
+            scale: 1;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               min: 2*SLIDER_INDICATOR_SIZE_INC 1.5*SLIDER_INDICATOR_SIZE_INC;
+               aspect: 1.0 1.0;
+               aspect_preference: VERTICAL;
+               color: 0 0 0 0;
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               visible: 0;
+            }
+         }
+         part { name: "button0";
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               min: SLIDER_INDICATOR_SIZE_INC SLIDER_INDICATOR_SIZE_INC;
+               max: SLIDER_INDICATOR_SIZE_INC SLIDER_INDICATOR_SIZE_INC;
+               image {
+                  normal: "core_slider_handle_normal";
+               }
+               color: 2 61 132 255; /*(Changeable UI) color_class: "W0641";*/
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               color: 137 166 198 255; /*(Changeable UI) color_class: "W0641D";*/
+               visible: 1;
+            }
+         }
+         part { name: "button0_press";
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               min: SLIDER_INDICATOR_SIZE_INC SLIDER_INDICATOR_SIZE_INC;
+               max: SLIDER_INDICATOR_SIZE_INC SLIDER_INDICATOR_SIZE_INC;
+               image {
+                  normal: "core_slider_handle_press";
+               }
+               color: 0 81 181 102; /*(Changeable UI) color_class: "W0641P";*/
+               visible: 0;
+            }
+            description { state: "pressed" 0.0;
+               inherit: "default" 0.0;
+               visible: 1;
+            }
+         }
+      }
+      programs {
+         program { name: "mouse_down";
+            signal: "mouse,down,*";
+            source: "button_events";
+            action:  STATE_SET "pressed" 0.0;
+            target: "button0_press";
+         }
+         program { name: "mouse_up";
+            signal: "mouse,up,*";
+            source: "button_events";
+            action:  STATE_SET "default" 0.0;
+            target: "button0_press";
+         }
+         program { name: "slider_disable";
+            signal: "elm,state,disabled";
+            source: "elm";
+            action:  STATE_SET "disabled" 0.0;
+            target: "button0";
+            target: "button_events";
+         }
+         program { name: "slider_enable";
+            signal: "elm,state,enabled";
+            source: "elm";
+            action:  STATE_SET "default" 0.0;
+            target: "button0";
+            target: "button_events";
+         }
+      }
+   }
+group { name: "elm/slider/horizontal/default";
+      images {
+         set {
+            name: "core_progress_bar.#";
+            image {
+               image: SMALL"images/Controls/core_progress_bar.#.png" COMP;
+            }
+            image {
+               image: MEDIUM"images/Controls/core_progress_bar.#.png" COMP;
+            }
+         }
+         set {
+            name: "core_slider_center_point_bg";
+            image {
+               image: SMALL"images/Controls/core_slider_center_point_bg.png" COMP;
+            }
+            image {
+               image: MEDIUM"images/Controls/core_slider_center_point_bg.png" COMP;
+            }
+         }
+      }
+      script {
+         public invert_on = 0;
+         public popup_show = 1;
+         public show = 0;
+         public set_popup_show() {
+            set_int(popup_show, 1);
+         }
+         public set_popup_hide() {
+            set_int(popup_show, 0);
+         }
+         public set_invert_on() {
+            set_state(PART:"level", "inverted", 0.0);
+            set_state(PART:"level2", "inverted", 0.0);
+            set_int(invert_on, 1);
+         }
+         public set_invert_off() {
+            set_state(PART:"level", "default", 0.0);
+            set_state(PART:"level2", "default", 0.0);
+            set_int(invert_on, 0);
+         }
+         public thumb_down() {
+            if (get_int(invert_on) == 0) {
+              set_state(PART:"level", "pressed", 0.0);
+              set_state(PART:"level2", "pressed", 0.0);
+            }
+            if (get_int(popup_show) == 1)
+               emit("popup,show", "elm");
+            }
+         public thumb_up() {
+            if (get_int(invert_on) == 0) {
+              set_state(PART:"level", "default", 0.0);
+              set_state(PART:"level2", "default", 0.0);
+            }
+            if (get_int(popup_show) == 1)
+               emit("popup,hide", "elm");
+            }
+         public drag_state() {
+            new Float:dx, Float:dy;
+            get_drag(PART:"elm.dragable.slider", dx, dy);
+            if (dx > 0.5) {
+              set_state(PART:"level", "default", 0.0);
+              set_state(PART:"level2", "default", 0.0);
+              set_int(invert_on, 0);
+            }
+            else {
+              set_state(PART:"level", "inverted", 0.0);
+              set_state(PART:"level2", "inverted", 0.0);
+              set_int(invert_on, 1);
+            }
+         }
+      }
+         parts {
+            part { name: "access";
+               type: RECT;
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  color: 0 0 0 0;
+               }
+            }
+            part {
+               name: "bg";
+               type: SPACER;
+               scale: 1;
+               description {
+                  state: "default" 0.0;
+                  min: 0 SLIDER_SWALLOWBAR_HEIGHT_INC;
+               }
+            }
+            part {
+               name: "bar_image_left_padding";
+               type: SPACER;
+               scale: 1;
+               description {
+                  state: "default" 0.0;
+                  min: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
+                  max: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
+                  fixed: 1 0;
+                  rel1.to: "bg";
+                  rel2 {
+                     relative: 0.0  1.0;
+                     to: "bg";
+                  }
+                  align: 0.0 0.5;
+               }
+            }
+            part { name: "elm.swallow.icon";
+               type: SWALLOW;
+               clip_to: "icon_clipper";
+               scale: 1;
+               description { state: "default" 0.0;
+                  visible: 0;
+                  align: 0.0 0.5;
+                  max: SLIDER_SWALLOWBAR_HEIGHT_INC SLIDER_SWALLOWBAR_HEIGHT_INC;
+                  rel1 {
+                     relative: 1.0 0.0;
+                     to_x: "bar_image_left_padding";
+                     to_y: "bg";
+                  }
+                  rel2 {
+                     relative: 1.0 1.0;
+                     to_x: "bar_image_left_padding";
+                     to_y: "bg";
+                  }
+               }
+               description { state: "visible" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+               }
+            }
+            part {
+               name: "bar_icon_right_padding_1";
+               type: SPACER;
+               scale: 1;
+               description {
+                  state: "default" 0.0;
+                  align: 0.0 0.5;
+                  min: 0 0;
+                  max: 0 0;
+                  rel1 {
+                     relative: 1.0  0.0;
+                     to: "elm.swallow.icon";
+                  }
+                  rel2 {
+                     relative: 1.0  1.0;
+                     to: "elm.swallow.icon";
+                  }
+                  fixed: 1 1;
+               }
+               description { state: "visible";
+                  inherit: "default" 0.0;
+                  min: SLIDER_ICON_PADDING_SIZE_INC;
+                  max: SLIDER_ICON_PADDING_SIZE_INC;
+               }
+            }
+            part {
+               name: "bar_icon_right_padding_2";
+               type: SPACER;
+               scale: 1;
+               description {
+                  state: "default" 0.0;
+                  align: 0.0 0.5;
+                  min: 0 0;
+                  max: 0 0;
+                  rel1 {
+                     relative: 1.0  0.0;
+                     to: "bar_icon_right_padding_1";
+                  }
+                  rel2 {
+                     relative: 1.0  1.0;
+                     to: "bar_icon_right_padding_1";
+                  }
+                  fixed: 1 1;
+               }
+               description { state: "visible";
+                  inherit: "default" 0.0;
+                  min: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
+                  max: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
+               }
+            }
+            part { name: "base";
+               mouse_events: 0;
+               scale: 1;
+               description { state: "default" 0.0;
+                  min: 0 SLIDER_BASE_HEIGHT_INC;
+                  max: -1 SLIDER_BASE_HEIGHT_INC;
+                  rel1 {
+                     to: "bar_icon_right_padding_2";
+                     relative: 1.0 0.0;
+                  }
+                  rel2 {
+                     to: "bar_image_right_padding";
+                     relative: 0.0 1.0;
+                  }
+                  fixed: 0 1;
+                  image.normal: "core_progress_bar.#";
+                  color: 178 178 178 255; /*(Changeable UI) color_class: "W062L1";*/
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "default" 0.0;
+                  color: 178 178 178 255; /*(Changeable UI) color_class: "W062L1D";*/
+               }
+            }
+            part { name: "drag_base";
+               type: "SPACER";
+               description { state: "default" 0.0;
+                  min: 0 SLIDER_SWALLOWBAR_HEIGHT_INC;
+                  rel1 {
+                     to_x: "bar_image_left_padding";
+                     to_y: "bg";
+                     relative: 0.0 0.0;
+                  }
+                  rel2.to: "bg";
+                  fixed: 1 1;
+               }
+               description { state: "visible" 0.0;
+                  inherit: "default" 0.0;
+                  rel1 {
+                     to_x: "bar_icon_right_padding_2";
+                     to_y: "bg";
+                     relative: 0.0 0.0;
+                  }
+                  rel2.to: "bg";
+               }
+            }
+            part { name: "level";
+               mouse_events: 0;
+               scale: 1;
+               clip_to: "clipper";
+               description { state: "default" 0.0;
+                  rel1 {
+                     to_x: "bar_icon_right_padding_2";
+                     relative: 1.0 0.0;
+                  }
+                  rel2 {
+                     to_x: "elm.dragable.slider";
+                     relative: 0.5 1.0;
+                  }
+                  fixed: 1 1;
+                  min: 0 SLIDER_BASE_HEIGHT_INC;
+                  max: -1 SLIDER_BASE_HEIGHT_INC;
+                  image.normal: "core_progress_bar.#";
+               }
+               description { state: "inverted" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 0;
+               }
+            }
+            part { name: "level2";
+               mouse_events: 0;
+               scale: 1;
+               clip_to: "clipper";
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  visible: 0;
+                  rel1 {
+                     to_y: "base";
+                     to_x: "elm.dragable.slider";
+                     relative: 0.5 0.0;
+                  }
+                  rel2.to: "base";
+                  image.normal: "core_progress_bar.#";
+               }
+               description { state: "inverted" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+               }
+            }
+            part {
+               name: "bar_image_right_padding";
+               type: SPACER;
+               scale: 1;
+               description {
+                  state: "default" 0.0;
+                  min: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
+                  max: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
+                  fixed: 1 0;
+                  rel1 {
+                     relative: 1.0  0.0;
+                     to: "bg";
+                  }
+                  rel2 {
+                     relative: 1.0  1.0;
+                     to: "bg";
+                  }
+                  align: 1.0 0.5;
+               }
+            }
+            part { name: "icon_clipper";
+               scale: 1;
+               type: RECT;
+               description { state: "default" 0.0;
+                  color: 82 92 99 255; /*(Changeable UI) color_class: "W0661";*/
+               }
+               description { state: "disabled" 0.0;
+                  color: 137 166 198 255; /*(Changeable UI) color_class: "W0661D";*/
+               }
+            }
+            part { name: "elm.swallow.bar";
+               type: SWALLOW;
+               scale: 1;
+               description { state: "default" 0.0;
+                  min: 0  SLIDER_SWALLOWBAR_HEIGHT_INC;
+                  max: -1 SLIDER_SWALLOWBAR_HEIGHT_INC;
+                  fixed: 0 1;
+                  rel1 {
+                     to: "bar_icon_right_padding_2";
+                     relative: 1.0 0.0;
+                  }
+                  rel2 {
+                     to: "bar_image_right_padding";
+                     relative: 0.0 1.0;
+                  }
+               }
+            }
+            part { name:"center_point";
+               scale: 1;
+               description { state: "default" 0.0;
+                  min: SLIDER_CENTER_POINT_SIZE_INC;
+                  max: SLIDER_CENTER_POINT_SIZE_INC;
+                  visible: 0;
+                  image.normal: "core_slider_center_point_bg";
+                  rel1.to: "base";
+                  rel2.to: "base";
+                  fixed: 0 1;
+                  color: 178 178 178 255; /*(Changeable UI) color_class: "W062L1";*/
+               }
+               description { state: "visible" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+                  color: 178 178 178 255; /*(Changeable UI) color_class: "W062L1D";*/
+               }
+            }
+            part { name: "elm.track.slider";
+               type: SWALLOW;
+               mouse_events: 0;
+               scale: 1;
+               description { state: "default" 0.0;
+                  min: 0 SLIDER_POPUP_HEIGHT_INC;
+                  max: -1 SLIDER_POPUP_HEIGHT_INC;
+                  align: 0.5 1.0;
+                  fixed: 0 1;
+                  rel1.to: "elm.dragable.slider";
+                  rel1.offset: 0 8;
+                  rel2 {
+                     relative: 1.0 0.0;
+                     to: "elm.dragable.slider";
+                     offset: 0 8;
+                  }
+               }
+            }
+            part { name: "elm.dragable.slider";
+               type: GROUP;
+               source: "elm/slider/horizontal/indicator/default";
+               mouse_events: 1;
+               scale: 1;
+               dragable {
+                  x: 1 1 0;
+                  y: 0 0 0;
+                  confine: "drag_base";
+               }
+               description { state: "default" 0.0;
+                  min: SLIDER_INDICATOR_SIZE_INC SLIDER_INDICATOR_SIZE_INC;
+                  fixed: 1 1;
+                  align: 0.5 0.5;
+                  rel1.to: "drag_base";
+                  rel1.relative: 0.5 0.5;
+                  rel2.to: "drag_base";
+                  rel2.relative: 0.5 0.5;
+                  color: 0 0 0 0;
+               }
+            }
+            part { name: "disabler";
+               type: RECT;
+               mouse_events: 1;
+               repeat_events: 0;
+               scale: 1;
+               description { state: "default" 0.0;
+                  visible: 0;
+                  color: 0 0 0 0;
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+               }
+            }
+            part { name: "clipper";
+               type: RECT;
+               description { state: "default" 0.0;
+                  color: 2 61 132 255; /*(Changeable UI) color_class: "W062L2";*/
+               }
+               description { state: "pressed" 0.0;
+                  color: 2 61 132 255; /*(Changeable UI) color_class: "W062L2P";*/
+               }
+               description { state: "disabled" 0.0;
+                  color: 137 166 198 255; /*(Changeable UI) color_class: "W062L2D";*/
+               }
+            }
+         }
+      programs {
+         program { name: "invert_on";
+            signal: "elm,state,inverted,on";
+            source: "elm";
+            script {
+               set_invert_on();
+            }
+         }
+         program { name: "invert_off";
+            signal: "elm,state,inverted,off";
+            source: "elm";
+            script {
+               set_invert_off();
+            }
+         }
+         program { name: "val_show";
+            signal: "mouse,down,*";
+            source: "elm.dragable.slider";
+            script {
+               thumb_down();
+            }
+         }
+         program { name: "val_hide";
+            signal: "mouse,up,*";
+            source: "elm.dragable.slider";
+            script {
+               thumb_up();
+            }
+         }
+         program { name: "popup_show";
+            signal: "elm,state,val,show";
+            source: "elm";
+            script {
+               set_popup_show();
+            }
+         }
+         program { name: "popup_hide";
+            signal: "elm,state,val,hide";
+            source: "elm";
+            script {
+               set_popup_hide();
+            }
+         }
+         program { name: "icon_show";
+            signal: "elm,state,icon,visible";
+            source: "elm";
+            action:  STATE_SET "visible" 0.0;
+            target: "elm.swallow.icon";
+            target: "bar_icon_right_padding_1";
+            target: "bar_icon_right_padding_2";
+            target: "drag_base";
+         }
+         program { name: "center_point_enable";
+            signal: "slider,center,point,show";
+            source: "elm";
+            script {
+               set_state(PART:"center_point", "visible", 0.0);
+               set_int(show, 1);
+            }
+         }
+         program { name: "center_point_disable";
+            signal: "slider,center,point,hide";
+            source: "elm";
+            script {
+               set_state(PART:"center_point", "default", 0.0);
+               set_int(show, 0);
+            }
+         }
+         program { name: "slider_disable";
+            signal: "elm,state,disabled";
+            source: "elm";
+            script {
+               if (get_int(show))
+                  set_state(PART:"center_point", "disabled", 0.0);
+               set_state(PART:"disabler", "disabled", 0.0);
+               set_state(PART:"icon_clipper", "disabled", 0.0);
+               set_state(PART:"clipper", "disabled", 0.0);
+               set_state(PART:"base", "disabled", 0.0);
+            }
+         }
+         program { name: "slider_enable";
+            signal: "elm,state,enabled";
+            source: "elm";
+            script {
+               if (get_int(show))
+                  set_state(PART:"center_point", "default", 0.0);
+               set_state(PART:"disabler", "default", 0.0);
+               set_state(PART:"icon_clipper", "default", 0.0);
+               set_state(PART:"clipper", "default", 0.0);
+               set_state(PART:"base", "default", 0.0);
+            }
+         }
+      }
+   }
+
+group { name: "elm/slider/horizontal/center_point";
+      inherit: "elm/slider/horizontal/default";
+         parts {
+            part { name: "level";
+               mouse_events: 0;
+               scale: 1;
+               clip_to: "clipper";
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  rel1 {
+                     to_x: "center_point";
+                     to_y: "base";
+                     relative: 0.5 0.0;
+                  }
+                  rel2 {
+                     to_x: "elm.dragable.slider";
+                     to_y: "base";
+                     relative: 0.5 1.0;
+                  }
+               }
+               description { state: "inverted" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 0;
+               }
+               description { state: "pressed" 0.0;
+                  inherit: "default" 0.0;
+               }
+            }
+            part { name: "level2";
+               mouse_events: 0;
+               scale: 1;
+               clip_to: "clipper";
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  visible: 0;
+                  rel1 {
+                     to_x: "elm.dragable.slider";
+                     to_y: "base";
+                     relative: 0.5 0.0;
+                  }
+                  rel2 {
+                     to_x: "center_point";
+                     to_y: "base";
+                     relative: 0.5 1.0;
+                  }
+                  image.normal: "core_progress_bar.#";
+               }
+               description { state: "inverted" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+               }
+               description { state: "pressed" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+               }
+            }
+            part { name:"center_point";
+               scale: 1;
+               description { state: "default" 0.0;
+                  min: SLIDER_CENTER_POINT_SIZE_INC;
+                  max: SLIDER_CENTER_POINT_SIZE_INC;
+                  image.normal: "core_slider_center_point_bg";
+                  rel1.to: "base";
+                  rel2.to: "base";
+                  fixed: 0 1;
+                  visible: 1;
+                  color: 178 178 178 255; /*(Changeable UI) color_class: "W062L1";*/
+               }
+            }
+         }
+         programs {
+            program { name: "center_point_calc";
+               signal: "drag";
+               source: "elm.dragable.slider";
+               script {
+                  drag_state();
+               }
+            }
+            program { name: "center_point_calc1";
+               signal: "drag,start";
+               source: "elm.dragable.slider";
+               script {
+                  drag_state();
+               }
+            }
+            program { name: "center_point_calc2";
+               signal: "drag,set";
+               source: "elm.dragable.slider";
+               script {
+                  drag_state();
+               }
+            }
+            program { name: "center_point_calc3";
+               signal: "mouse,up,*";
+               source: "elm.swallow.bar";
+               script {
+                  drag_state();
+               }
+            }
+            program { name: "center_point_calc4";
+               signal: "mouse,move";
+               source: "elm.swallow.bar";
+               script {
+                  drag_state();
+               }
+            }
+         }
+   }
+group { name: "elm/slider/vertical/default";
+  images {
+      set {
+         name: "core_progress_bar_v.#";
+         image {
+            image: SMALL"images/Controls/core_progress_bar_v.#.png" COMP;
+         }
+         image {
+            image: MEDIUM"images/Controls/core_progress_bar_v.#.png" COMP;
+         }
+      }
+      set {
+         name: "core_slider_center_point_bg_v";
+         image {
+            image: SMALL"images/Controls/core_slider_center_point_bg_v.png" COMP;
+         }
+         image {
+            image: MEDIUM"images/Controls/core_slider_center_point_bg_v.png" COMP;
+         }
+      }
+  }
+  script {
+     public invert_on = 0;
+     public show = 0;
+     public popup_show = 1;
+     public set_popup_show() {
+        set_int(popup_show, 1);
+     }
+     public set_popup_hide() {
+        set_int(popup_show, 0);
+     }
+     public set_invert_on() {
+        set_state(PART:"level", "inverted", 0.0);
+        set_state(PART:"level2", "inverted", 0.0);
+        set_int(invert_on, 1);
+     }
+     public set_invert_off() {
+        set_state(PART:"level", "default", 0.0);
+        set_state(PART:"level2", "default", 0.0);
+        set_int(invert_on, 0);
+     }
+     public thumb_down() {
+        if (get_int(invert_on) == 0) {
+           set_state(PART:"level", "pressed", 0.0);
+           set_state(PART:"level2", "pressed", 0.0);
+        }
+        if (get_int(popup_show) == 1)
+           emit("popup,show", "elm");
+        }
+     public thumb_up() {
+        if (get_int(invert_on) == 0) {
+           set_state(PART:"level", "default", 0.0);
+           set_state(PART:"level2", "default", 0.0);
+        }
+        if (get_int(popup_show) == 1)
+           emit("popup,hide", "elm");
+        }
+     public drag_state() {
+        new Float:dx, Float:dy;
+        get_drag(PART:"elm.dragable.slider", dx, dy);
+        if (dy > 0.5) {
+          set_state(PART:"level", "default", 0.0);
+          set_state(PART:"level2", "default", 0.0);
+          set_int(invert_on, 0);
+        }
+        else {
+          set_state(PART:"level", "inverted", 0.0);
+          set_state(PART:"level2", "inverted", 0.0);
+          set_int(invert_on, 1);
+        }
+     }
+  }
+  parts {
+     part { name: "access";
+        type: RECT;
+           description { state: "default" 0.0;
+           fixed: 1 1;
+           color: 0 0 0 0;
+           }
+      }
+        part {
+           name: "bg";
+           type: SPACER;
+           scale: 1;
+           description {
+              state: "default" 0.0;
+              min: SLIDER_SWALLOWBAR_WIDTH_INC 0;
+              max: SLIDER_SWALLOWBAR_WIDTH_INC -1;
+           }
+        }
+        part {
+           name: "bar_image_top_padding";
+           type: SPACER;
+           scale: 1;
+           description {
+              state: "default" 0.0;
+              min: SLIDER_TOP_BOTTOM_PADDING_SIZE_INC;
+              max: SLIDER_TOP_BOTTOM_PADDING_SIZE_INC;
+              fixed: 1 1;
+              rel1 {
+                 relative: 0.0  0.0;
+                 to: "bg";
+              }
+              rel2 {
+                 relative: 1.0  0.0;
+                 to: "bg";
+              }
+              align: 0.5 0.0;
+           }
+        }
+        part { name: "base";
+           mouse_events: 0;
+           scale: 1;
+           description { state: "default" 0.0;
+              min: SLIDER_VERTICAL_BASE_HEIGHT_INC 0;
+              max: SLIDER_VERTICAL_BASE_HEIGHT_INC -1;
+              fixed: 1 1;
+              rel1 {
+                 to: "bar_image_top_padding";
+                 relative: 0.0 1.0;
+              }
+              rel2 {
+                 to: "bar_image_bottom_padding";
+                 relative: 1.0 0.0;
+              }
+              fixed: 1 1;
+              image.normal: "core_progress_bar_v.#";
+              color: 178 178 178 255; /*(Changeable UI) color_class: "W062L1";*/
+           }
+           description { state: "disabled" 0.0;
+              inherit: "default" 0.0;
+              color: 178 178 178 255; /*(Changeable UI) color_class: "W062L1D";*/
+           }
+        }
+        part { name: "drag_base";
+           type: "SPACER";
+           description { state: "default" 0.0;
+              min: SLIDER_SWALLOWBAR_HEIGHT_INC 0;
+              rel1 {
+                 to: "bar_image_top_padding";
+                 relative: 0.0 0.0;
+              }
+              rel2 {
+                 to: "bg";
+                 relative: 1.0 1.0;
+              }
+              fixed: 1 1;
+           }
+           description { state: "visible" 0.0;
+              inherit: "default" 0.0;
+              rel1 {
+                 to: "bar_image_top_padding";
+                 relative: 0.0 0.0;
+              }
+              rel2 {
+                 to: "bg";
+                 relative: 1.0 1.0;
+              }
+           }
+        }
+        part { name: "level";
+           mouse_events: 0;
+           scale: 1;
+           clip_to: "clipper";
+           description { state: "default" 0.0;
+              visible: 0;
+              rel1 {
+                 to_y: "elm.dragable.slider";
+                 to_x: "base";
+                 relative: 0.0 0.5;
+              }
+              rel2 {
+                 to_y: "bar_image_bottom_padding";
+                 to_x: "base";
+                 relative: 1.0 0.0;
+              }
+              fixed: 1 1;
+              min: SLIDER_BASE_HEIGHT_INC 0;
+              max: SLIDER_BASE_HEIGHT_INC -1;
+              image.normal: "core_progress_bar_v.#";
+           }
+           description { state: "inverted" 0.0;
+              inherit: "default" 0.0;
+              visible: 1;
+           }
+        }
+        part { name: "level2";
+           mouse_events: 0;
+           scale: 1;
+           clip_to: "clipper";
+           description { state: "default" 0.0;
+              fixed: 1 1;
+              rel1 {
+                 to: "base";
+                 relative: 0.5 0.0;
+              }
+              rel2 {
+                 to_y: "elm.dragable.slider";
+                 to_x: "bar_image_top_padding";
+                 relative: 0.5 0.5;
+              }
+              fixed: 1 1;
+              min: SLIDER_BASE_HEIGHT_INC 0;
+              max: SLIDER_BASE_HEIGHT_INC -1;
+              image.normal: "core_progress_bar_v.#";
+           }
+           description { state: "inverted" 0.0;
+              inherit: "default" 0.0;
+              visible: 0;
+           }
+        }
+        part {
+           name: "bar_image_bottom_padding";
+           type: SPACER;
+           scale: 1;
+           description {
+              state: "default" 0.0;
+              min: SLIDER_TOP_BOTTOM_PADDING_SIZE_INC;
+              max: SLIDER_TOP_BOTTOM_PADDING_SIZE_INC;
+              fixed: 1 1;
+              rel1 {
+                 relative: 0.0  1.0;
+                 to: "bg";
+              }
+              rel2 {
+                 relative: 1.0  1.0;
+                 to: "bg";
+              }
+              align: 0.5 1.0;
+           }
+        }
+        part { name: "elm.swallow.bar";
+           type: SWALLOW;
+           scale: 1;
+           description { state: "default" 0.0;
+              min: SLIDER_SWALLOWBAR_HEIGHT_INC 0;
+              max: SLIDER_SWALLOWBAR_HEIGHT_INC -1;
+              fixed: 1 0;
+              rel1 {
+                 to: "bar_image_top_padding";
+                 relative: 0.0 1.0;
+              }
+              rel2 {
+                 to: "bar_image_bottom_padding";
+                 relative: 1.0 0.0;
+              }
+           }
+        }
+        part { name:"center_point";
+           scale: 1;
+           description { state: "default" 0.0;
+              min: SLIDER_VERTICAL_CENTER_POINT_SIZE_INC;
+              max: SLIDER_VERTICAL_CENTER_POINT_SIZE_INC;
+              visible: 0;
+              image.normal: "core_slider_center_point_bg_v";
+              rel1.to: "base";
+              rel2.to: "base";
+              fixed: 1 0;
+              color: 178 178 178 255; /*(Changeable UI) color_class: "W062L1";*/
+           }
+           description { state: "visible" 0.0;
+              inherit: "default" 0.0;
+              visible: 1;
+           }
+           description { state: "disabled" 0.0;
+              inherit: "default" 0.0;
+              visible: 1;
+              color: 178 178 178 255; /*(Changeable UI) color_class: "W062L1D";*/
+           }
+        }
+        part { name: "elm.track.slider";
+           type: SWALLOW;
+           mouse_events: 0;
+           scale: 1;
+           description { state: "default" 0.0;
+              min: 0 SLIDER_POPUP_HEIGHT_INC;
+              max: -1 SLIDER_POPUP_HEIGHT_INC;
+              align: 0.5 1.0;
+              fixed: 0 1;
+              rel1.to: "elm.dragable.slider";
+              rel1.offset: 0 8;
+              rel2 {
+                 relative: 1.0 0.0;
+                 to: "elm.dragable.slider";
+                 offset: 0 8;
+              }
+           }
+        }
+        part { name: "elm.dragable.slider";
+           type: GROUP;
+           source: "elm/slider/horizontal/indicator/default";
+           mouse_events: 1;
+           scale: 1;
+           dragable {
+              x: 0 0 0;
+              y: 1 1 0;
+              confine: "drag_base";
+           }
+           description { state: "default" 0.0;
+              min: SLIDER_INDICATOR_SIZE_INC SLIDER_INDICATOR_SIZE_INC;
+              fixed: 1 1;
+              align: 0.5 0.5;
+              rel1.to: "drag_base";
+              rel1.relative: 0.5 0.5;
+              rel2.to: "drag_base";
+              rel2.relative: 0.5 0.5;
+              color: 0 0 0 0;
+           }
+        }
+        part { name: "disabler";
+           type: RECT;
+           mouse_events: 1;
+           repeat_events: 0;
+           scale: 1;
+           description { state: "default" 0.0;
+              visible: 0;
+              color: 0 0 0 0;
+           }
+           description { state: "disabled" 0.0;
+              inherit: "default" 0.0;
+              visible: 1;
+           }
+        }
+        part { name: "clipper";
+           type: RECT;
+           description { state: "default" 0.0;
+              color: 2 61 132 255; /*(Changeable UI) color_class: "W062L2";*/
+           }
+           description { state: "pressed" 0.0;
+              color: 2 61 132 255; /*(Changeable UI) color_class: "W062L2P";*/
+           }
+           description { state: "disabled" 0.0;
+              color: 137 166 198 255; /*(Changeable UI) color_class: "W062L2D";*/
+           }
+        }
+     }
+     programs {
+        program { name: "invert_on";
+           signal: "elm,state,inverted,on";
+           source: "elm";
+           script {
+              set_invert_on();
+           }
+        }
+        program { name: "invert_off";
+           signal: "elm,state,inverted,off";
+           source: "elm";
+           script {
+              set_invert_off();
+           }
+        }
+        program { name: "val_show";
+           signal: "mouse,down,*";
+           source: "elm.dragable.slider";
+           script {
+              thumb_down();
+           }
+        }
+        program { name: "val_hide";
+           signal: "mouse,up,*";
+           source: "elm.dragable.slider";
+           script {
+              thumb_up();
+           }
+        }
+        program { name: "popup_show";
+           signal: "elm,state,val,show";
+           source: "elm";
+           script {
+              set_popup_show();
+           }
+        }
+        program { name: "popup_hide";
+           signal: "elm,state,val,hide";
+           source: "elm";
+           script {
+              set_popup_hide();
+           }
+        }
+        program { name: "icon_show";
+           signal: "elm,state,icon,visible";
+           source: "elm";
+           action:  STATE_SET "visible" 0.0;
+           target: "drag_base";
+        }
+        program { name: "center_point_enable";
+           signal: "slider,center,point,show";
+           source: "elm";
+           action:  STATE_SET "visible" 0.0;
+           target: "center_point";
+        }
+        program { name: "center_point_disable";
+           signal: "slider,center,point,hide";
+           source: "elm";
+           action:  STATE_SET "default" 0.0;
+           target: "center_point";
+        }
+         program { name: "slider_disable";
+            signal: "elm,state,disabled";
+            source: "elm";
+            script {
+               if (get_int(show))
+                  set_state(PART:"center_point", "disabled", 0.0);
+               set_state(PART:"disabler", "disabled", 0.0);
+               set_state(PART:"clipper", "disabled", 0.0);
+               set_state(PART:"base", "disabled", 0.0);
+            }
+         }
+         program { name: "slider_enable";
+            signal: "elm,state,enabled";
+            source: "elm";
+            script {
+               if (get_int(show))
+                  set_state(PART:"center_point", "default", 0.0);
+               set_state(PART:"disabler", "default", 0.0);
+               set_state(PART:"clipper", "default", 0.0);
+               set_state(PART:"base", "default", 0.0);
+            }
+         }
+      }
+   }
+   group { name: "elm/slider/horizontal/popup/default";
+      alias: "elm/slider/vertical/popup/default";
+      images {
+         set {
+            name: "core_slider_popup_bg";
+            image {
+               image: SMALL"images/Controls/core_slider_popup_bg.png" COMP;
+            }
+            image {
+               image: MEDIUM"images/Controls/core_slider_popup_bg.png" COMP;
+            }
+         }
+         set {
+            name: "core_slider_popup_bg_stroke";
+            image {
+               image: SMALL"images/Controls/core_slider_popup_bg_stroke.png" COMP;
+            }
+            image {
+               image: MEDIUM"images/Controls/core_slider_popup_bg_stroke.png" COMP;
+            }
+         }
+         set {
+            name: "core_slider_popup_bg_ef";
+            image {
+               image: SMALL"images/Controls/core_slider_popup_bg_ef.png" COMP;
+            }
+            image {
+               image: MEDIUM"images/Controls/core_slider_popup_bg_ef.png" COMP;
+            }
+         }
+      }
+      parts {
+         part { name: "bg";
+            type: SPACER;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: SLIDER_POPUP_WIDTH_INC SLIDER_POPUP_HEIGHT_INC;
+               max: -1 SLIDER_POPUP_HEIGHT_INC;
+            }
+         }
+         part { name: "bg.image";
+            scale: 1;
+            description { state: "default" 0.0;
+               visible: 0;
+               min: SLIDER_POPUP_WIDTH_INC SLIDER_POPUP_HEIGHT_INC;
+               max: -1 SLIDER_POPUP_HEIGHT_INC;
+               image.normal: "core_slider_popup_bg";
+               color: 255 255 255 255; /*(Changeable UI) color_class: "W0631";*/
+            }
+            description { state: "visible" 0.0;
+               inherit: "default" 0.0;
+               visible: 1;
+            }
+         }
+         part { name: "bg.effect.image";
+            scale: 1;
+            description { state: "default" 0.0;
+               visible: 0;
+               min: SLIDER_POPUP_WIDTH_INC SLIDER_POPUP_HEIGHT_INC;
+               max: -1 SLIDER_POPUP_HEIGHT_INC;
+               image.normal: "core_slider_popup_bg_ef";
+            }
+            description { state: "visible" 0.0;
+               inherit: "default" 0.0;
+               visible: 1;
+            }
+         }
+         part { name: "bg.stroke";
+            scale: 1;
+            description { state: "default" 0.0;
+               visible: 0;
+               min: SLIDER_POPUP_WIDTH_INC SLIDER_POPUP_HEIGHT_INC;
+               max: -1 SLIDER_POPUP_HEIGHT_INC;
+               image.normal: "core_slider_popup_bg_stroke";
+               color: 2 61 132 255; /*(Changeable UI) color_class: "W0632";*/
+            }
+            description { state: "visible" 0.0;
+               inherit: "default" 0.0;
+               visible: 1;
+            }
+         }
+         part {
+            name: "indicator.top.pad";
+            type: SPACER;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               min: 0 SLIDER_INDICATOR_PADDING_TOP;
+               max: -1 SLIDER_INDICATOR_PADDING_TOP;
+               fixed: 0 1;
+               rel1 {
+                  relative: 0.0  0.0;
+                  to: "bg.image";
+               }
+               rel2 {
+                  relative: 1.0  0.0;
+                  to: "bg.image";
+               }
+               align: 0.5 0.0;
+            }
+         }
+         part {
+            name: "indicator.bottom.pad";
+            type: SPACER;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               min: 0 SLIDER_INDICATOR_PADDING_BOTTOM;
+               max: -1 SLIDER_INDICATOR_PADDING_BOTTOM;
+               fixed: 0 1;
+               rel1 {
+                  relative: 0.0  1.0;
+                  to: "bg.image";
+               }
+               rel2 {
+                  relative: 1.0  1.0;
+                  to: "bg.image";
+               }
+               align: 0.5 1.0;
+            }
+         }
+         part { name: "elm.indicator";
+            type: TEXT;
+            scale: 1;
+            description { state: "default" 0.0;
+               visible: 0;
+               min: SLIDER_INDICATOR_TEXT_SIZE_WIDTH SLIDER_INDICATOR_TEXT_SIZE_HEIGHT;
+               max: -1 SLIDER_INDICATOR_TEXT_SIZE_HEIGHT;
+               color: 0 0 0 255; /*(Changeable UI) color_class: "T116";*/
+               rel1 {
+                  to: "indicator.top.pad";
+                  relative: 0.0 1.0;
+               }
+               rel2 {
+                  to: "indicator.bottom.pad";
+                  relative: 1.0 0.0;
+               }
+               text {
+                  min: 1 1;
+                  font: "Tizen:style=Bold"; size: "33"; text_class: "tizen"; /*(Changeable UI) text_class: "T116";*/
+               }
+            }
+            description { state: "visible" 0.0;
+               inherit: "default" 0.0;
+               visible: 1;
+            }
+         }
+      }
+      programs {
+         program { name: "popup,val,show";
+            signal: "elm,state,val,show";
+            source: "elm";
+            action:  STATE_SET "visible" 0.0;
+            target: "elm.indicator";
+            target: "bg.image";
+            target: "bg.effect.image";
+            target: "bg.stroke";
+         }
+         program { name: "popup,val,hide";
+            signal: "elm,state,val,hide";
+            source: "elm";
+            action:  STATE_SET "default" 0.0;
+            target: "elm.indicator";
+            target: "bg.image";
+            target: "bg.effect.image";
+            target: "bg.stroke";
+         }
+         program { name: "popup,show";
+            signal: "popup,show";
+            source: "elm";
+            action:  STATE_SET "visible" 0.0;
+            target: "elm.indicator";
+            target: "bg.image";
+            target: "bg.effect.image";
+            target: "bg.stroke";
+         }
+         program { name: "popup,hide";
+            signal: "popup,hide";
+            source: "elm";
+            action:  STATE_SET "default" 0.0;
+            target: "elm.indicator";
+            target: "bg.image";
+            target: "bg.effect.image";
+            target: "bg.stroke";
+            after: "popup,hide,done";
+         }
+         program { name: "popup,hide,done";
+            action: SIGNAL_EMIT "popup,hide,done" "elm";
+         }
+      }
+   }
+   group { name: "elm/slider/vertical/center_point";
+      inherit: "elm/slider/vertical/default";
+      parts {
+         part { name: "level2";
+            mouse_events: 0;
+            scale: 1;
+            clip_to: "clipper";
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               rel1 {
+                  to_y: "center_point";
+                  to_x: "base";
+                  relative: 0.0 0.5;
+               }
+               rel2 {
+                  to_y: "elm.dragable.slider";
+                  to_x: "base";
+                  relative: 1.0 0.5;
+               }
+            }
+            description { state: "inverted" 0.0;
+               inherit: "default" 0.0;
+               visible: 0;
+            }
+            description { state: "pressed" 0.0;
+               inherit: "default" 0.0;
+            }
+         }
+         part { name: "level";
+            mouse_events: 0;
+            scale: 1;
+            clip_to: "clipper";
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               visible: 0;
+               rel1 {
+                  to_y: "elm.dragable.slider";
+                  to_x: "base";
+                  relative: 0.0 0.5;
+               }
+               rel2 {
+                  to_y: "center_point";
+                  to_x: "base";
+                  relative: 1.0 0.5;
+               }
+               image.normal: "core_progress_bar_v.#";
+            }
+            description { state: "inverted" 0.0;
+               inherit: "default" 0.0;
+               visible: 1;
+            }
+            description { state: "pressed" 0.0;
+               inherit: "default" 0.0;
+               visible: 1;
+            }
+         }
+         part { name:"center_point";
+            scale: 1;
+            description { state: "default" 0.0;
+               min: SLIDER_VERTICAL_CENTER_POINT_SIZE_INC;
+               max: SLIDER_VERTICAL_CENTER_POINT_SIZE_INC;
+               image.normal: "core_slider_center_point_bg_v";
+               rel1.to: "base";
+               rel2.to: "base";
+               fixed: 1 0;
+               visible: 1;
+               color: 178 178 178 255; /*(Changeable UI) color_class: "W062L1";*/
+            }
+         }
+      }
+     programs {
+        program { name: "center_point_calc";
+           signal: "drag";
+           source: "elm.dragable.slider";
+           script {
+              drag_state();
+           }
+         }
+         program { name: "center_point_calc1";
+            signal: "drag,start";
+             source: "elm.dragable.slider";
+             script {
+                drag_state();
+             }
+          }
+          program { name: "center_point_calc2";
+             signal: "drag,set";
+              source: "elm.dragable.slider";
+              script {
+                  drag_state();
+              }
+          }
+          program { name: "center_point_calc3";
+             signal: "mouse,up,*";
+             source: "elm.swallow.bar";
+              script {
+                 drag_state();
+              }
+          }
+          program { name: "center_point_calc4";
+             signal: "mouse,move";
+              source: "elm.swallow.bar";
+              script {
+                 drag_state();
+              }
+          }
+       }
+   }

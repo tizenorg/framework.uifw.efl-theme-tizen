@@ -1,0 +1,902 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*
+ * vim:ts=3
+*/
+#include "genlist_macro.edc"
+
+group { name: "elm/genlist/item/default/default";
+   alias: "elm/list/item/default";
+   alias: "elm/list/item_odd/default";
+   alias: "elm/list/item_compress/default";
+   alias: "elm/list/item_compress_odd/default";
+
+   PROLOG_LIST
+   data.item: "texts" "elm.text";
+   data.item: "contents" "elm.swallow.icon elm.swallow.end elm.swallow.center_check";
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE, LIST_PADDING_RIGHT_SIZE,
+         LIST_1LINE_PADDING_TOP_SIZE, LIST_1LINE_PADDING_BOTTOM_SIZE
+      )
+      PART_LIST_BOTTOMLINE
+      PART(SWALLOW, "elm.swallow.icon",
+         DESC_L("elm.padding.left",)
+      )
+      PART(TEXT, "elm.text",
+         DESC_LRTB("elm.swallow.icon", "elm.swallow.end", "elm.padding.top", "elm.padding.bottom",
+            min: 0 0;
+            text {
+               min: 0 1;
+               font: "Tizen:style=Regular"; size: "40"; /*(Changeable UI) text_class: "T0211";*/
+               text_class: "tizen";
+               align: 0 0.5;
+            }
+            color: 249 249 249 255; /*(Changeable UI) color_class: "T0211";*/
+         )
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.font: "Tizen:style=Regular"; text.size: "40"; /*(Changeable UI) text_class: "T0211D";*/
+            text.text_class: "tizen";
+            color: 249 249 249 102; /*(Changeable UI) color_class: "T0211D";*/
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            text.font: "Tizen:style=Regular"; text.size: "40"; /*(Changeable UI) text_class: "T0211P";*/
+            text.text_class: "tizen";
+            color: 249 249 249 255; /*(Changeable UI) color_class: "T0211P";*/
+         }
+      )
+      PART(SWALLOW, "elm.swallow.end",
+         DESC_RTB("elm.padding.right", "elm.padding.top", "elm.padding.bottom",)
+      )
+      PART_CENTER_CHECK
+   }
+   PROGRAMS_LIST( target: "elm.text"; target: "elm.swallow.icon"; target: "elm.swallow.end"; )
+}
+
+group { name: "elm/genlist/item/groupindex/default";
+
+   PROLOG_LIST
+   data.item: "texts" "elm.text elm.text.1";
+   data.item: "contents" "elm.icon";
+
+   parts {
+      PART(RECT, "bg",
+         description { state: "default" 0.0;
+            color: 40 68 91 255; /*(Changeable UI) color_class: "B012";*/
+         }
+         description { state: "selected" 0.0;
+            color: 41 124 160 255; /*(Changeable UI) color_class: "B012P";*/
+         }
+      )
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE, LIST_PADDING_R_ICON_RIGHT_SIZE,
+         LIST_GROUPINDEX_PADDING_TOP_SIZE, LIST_GROUPINDEX_PADDING_BOTTOM_SIZE
+      )
+      PART(TEXTBLOCK, "elm.text",
+         DESC_LRTB("elm.padding.left", "elm.text.padding", "elm.padding.top", "elm.padding.bottom",
+            min: 0 LIST_GROUPINDEX_HEIGHT;
+            PARAM_TEXT("list_text_groupindex_normal",)
+         )
+      )
+      PART(SPACER, "elm.text.padding",
+         DESC_R("elm.text.1", min: 8 0; max: 8 -1; )
+      )
+      PART(TEXTBLOCK, "elm.text.1",
+         DESC_RTB("elm.icon.padding", "elm.padding.top", "elm.padding.bottom",
+            min: 0 LIST_GROUPINDEX_HEIGHT;
+            align: 1.0 0.5;
+            rel1 {
+               to: "bg";
+               relative: 0.5 0;
+            }
+            PARAM_TEXT("list_text_groupindex_sub_normal", max: 1 0;)
+         )
+      )
+      PART(SPACER, "elm.icon.padding",
+         DESC_R("elm.icon", min: 2 0; max: 2 -1;)
+      )
+      PART(SWALLOW, "elm.icon",
+         DESC_RTB("elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            min: 0 LIST_GROUPINDEX_HEIGHT;
+            fixed: 1 0;
+         )
+      )
+   }
+   programs{
+     PROGRAM_LIST_DEFAULT(
+         target: "bg";
+      )
+      PROGRAM_LIST_SELECT(
+         target: "bg";
+      )
+   }
+}
+
+group { name: "elm/genlist/item/title/default";
+
+   PROLOG_LIST
+   data.item: "texts" "elm.text";
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE, LIST_PADDING_RIGHT_SIZE,
+         LIST_TITLE_PADDING_TOP_SIZE, LIST_TITLE_PADDING_BOTTOM_SIZE
+      )
+      PART(RECT, "clipper",
+         DESC_LR("elm.padding.left", "elm.padding.right",
+         )
+      )
+      PART(TEXTBLOCK, "elm.text",
+         clip_to: "clipper";
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            min: 0 LIST_TEXT_TITLE_HEIGHT;
+            PARAM_TEXT("list_text_title_normal",)
+         )
+      )
+   }
+}
+
+group { name: "elm/genlist/item/1text/default";
+
+   PROLOG_LIST
+   data.item: "texts" "elm.text ";
+   data.item: "contents" "elm.swallow.center_check";
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE, LIST_PADDING_RIGHT_SIZE,
+         LIST_1LINE_PADDING_TOP_SIZE, LIST_1LINE_PADDING_BOTTOM_SIZE
+      )
+      PART_LIST_BOTTOMLINE
+      PART(TEXTBLOCK, "elm.text",
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            min: 0 0;
+            PARAM_TEXT("list_text_main_normal",)
+         ) DESCRIPIONS_TEXT("list_text_main_dim", "list_text_main_press")
+      )
+      PART_CENTER_CHECK
+   }
+   PROGRAMS_LIST( target: "elm.text"; )
+}
+
+group { name: "elm/genlist/item/1text/swipe/default";
+   inherit: "elm/genlist/item/1text/default";
+
+   SCRIPTS_LIST_SWIPE
+   IMAGES_LIST_SWIPE
+
+   data.item: "texts" "elm.text elm.text.swipe.left elm.text.swipe.right";
+   data.item: "contents" "elm.icon.swipe.left elm.icon.swipe.right";
+
+   parts {
+      PARTS_LIST_SWIPE
+   }
+   PROGRAMS_LIST_SWIPE
+}
+
+group { name: "elm/genlist/item/1text/swipe_left/default";
+   inherit: "elm/genlist/item/1text/swipe/default";
+
+   data.item: "texts" "elm.text elm.text.swipe.left";
+   data.item: "contents" "elm.icon.swipe.left";
+
+   parts {
+      PARTS_LIST_SWIPE_LEFT
+   }
+   PROGRAMS_LIST_SWIPE_LEFT
+}
+
+group { name: "elm/genlist/item/1text/swipe_right/default";
+   inherit: "elm/genlist/item/1text/swipe/default";
+
+   data.item: "texts" "elm.text elm.text.swipe.right";
+   data.item: "contents" "elm.icon.swipe.right";
+
+   parts {
+      PARTS_LIST_SWIPE_RIGHT
+   }
+   PROGRAMS_LIST_SWIPE_RIGHT
+}
+
+group { name: "elm/genlist/item/2text/default";
+
+   PROLOG_LIST
+   data.item: "texts" "elm.text elm.text.1 elm.text.noti";
+   data.item: "contents" "elm.swallow.colorbar elm.icon.noti elm.swallow.center_check";
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE, LIST_PADDING_RIGHT_SIZE,
+         LIST_2LINE_PADDING_TOP_SIZE, LIST_2LINE_PADDING_BOTTOM_SIZE
+      )
+      PART_LIST_BOTTOMLINE
+      PART(TEXTBLOCK, "elm.text",
+         DESC_LRTB("elm.padding.left", "elm.icon.noti", "elm.padding.top", "elm.text.1",
+            fixed: 1 0;
+            min: 0 0;
+            PARAM_TEXT("list_text_main_normal",)
+         ) DESCRIPIONS_TEXT("list_text_main_dim", "list_text_main_press")
+      )
+      PART(SWALLOW, "elm.icon.noti",
+         DESC_RTB("elm.padding.right", "elm.padding.top", "elm.text.1",
+            min: 0 LIST_NOTI_NUMBER_ICON_HEIGHT;
+         )
+      )
+      PART(TEXTBLOCK, "elm.text.noti",
+         mouse_events: 0;
+         DESC_TO("elm.icon.noti",
+            min: 0 LIST_NOTI_NUMBER_ICON_HEIGHT;
+            PARAM_TEXT("list_noti_style", min: 1 1;)
+         )
+      )
+      PART(TEXTBLOCK, "elm.text.1",
+         DESC_LRB("elm.padding.left", "elm.padding.right", "elm.padding.bottom",
+            fixed: 1 0;
+            min: 0 0;
+            PARAM_TEXT("list_text_sub_normal",)
+         ) DESCRIPIONS_TEXT("list_text_sub_dim", "list_text_sub_normal")
+      )
+      PART_CENTER_CHECK
+   }
+   PROGRAMS_LIST( target: "elm.text"; target: "elm.text.1";
+                 target: "elm.text.noti"; target: "elm.icon.noti";)
+}
+
+group { name: "elm/genlist/item/2text/swipe/default";
+   inherit: "elm/genlist/item/2text/default";
+
+   SCRIPTS_LIST_SWIPE
+   IMAGES_LIST_SWIPE
+
+   data.item: "texts" "elm.text elm.text.1 elm.text.noti elm.text.swipe.left elm.text.swipe.right";
+   data.item: "contents" "elm.swallow.colorbar elm.icon.noti elm.icon.swipe.left elm.icon.swipe.right";
+
+   parts {
+      PARTS_LIST_SWIPE
+   }
+   PROGRAMS_LIST_SWIPE
+}
+
+group { name: "elm/genlist/item/2text/swipe_left/default";
+   inherit: "elm/genlist/item/2text/swipe/default";
+
+   data.item: "texts" "elm.text elm.text.1 elm.text.noti elm.text.swipe.left";
+   data.item: "contents" "elm.swallow.colorbar elm.icon.noti elm.icon.swipe.left";
+
+   parts {
+      PARTS_LIST_SWIPE_LEFT
+   }
+   PROGRAMS_LIST_SWIPE_LEFT
+}
+
+group { name: "elm/genlist/item/2text/swipe_right/default";
+   inherit: "elm/genlist/item/2text/swipe/default";
+
+   data.item: "texts" "elm.text elm.text.1 elm.text.noti elm.text.swipe.right";
+   data.item: "contents" "elm.swallow.colorbar elm.icon.noti elm.icon.swipe.right";
+
+   parts {
+      PARTS_LIST_SWIPE_RIGHT
+   }
+   PROGRAMS_LIST_SWIPE_RIGHT
+}
+
+group { name: "elm/genlist/item/2text.1/default";
+   PROLOG_LIST
+   data.item: "texts" "elm.text elm.text.1";
+   data.item: "contents" "elm.swallow.colorbar elm.swallow.center_check";
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE, LIST_PADDING_RIGHT_SIZE,
+         LIST_2LINE_PADDING_TOP_SIZE, LIST_2LINE_PADDING_BOTTOM_SIZE
+      )
+      PART_LIST_BOTTOMLINE
+      PART(TEXTBLOCK, "elm.text.1",
+         DESC_LRT("elm.padding.left", "elm.padding.right", "elm.padding.top",
+            min: 0 0;
+            PARAM_TEXT("list_text_sub_normal",)
+         ) DESCRIPIONS_TEXT("list_text_sub_dim", "list_text_sub_press")
+      )
+      PART(TEXTBLOCK, "elm.text",
+         DESC_LRTB("elm.padding.left", "elm.padding.right","elm.text.1", "elm.padding.bottom",
+            min: 0 0;
+            PARAM_TEXT("list_text_main_normal",)
+         ) DESCRIPIONS_TEXT("list_text_main_dim", "list_text_main_press")
+      )
+      PART_CENTER_CHECK
+   }
+   PROGRAMS_LIST( target: "elm.text"; target: "elm.text.1"; )
+}
+
+group { name: "elm/genlist/item/2text.1/swipe/default";
+   inherit: "elm/genlist/item/2text.1/default";
+
+   SCRIPTS_LIST_SWIPE
+   IMAGES_LIST_SWIPE
+
+   data.item: "texts" "elm.text elm.text.1 elm.text.swipe.left elm.text.swipe.right";
+   data.item: "contents" "elm.icon.swipe.left elm.icon.swipe.right elm.swallow.colorbar";
+
+   parts {
+      PARTS_LIST_SWIPE
+   }
+   PROGRAMS_LIST_SWIPE
+}
+
+group { name: "elm/genlist/item/2text.1/swipe_left/default";
+   inherit: "elm/genlist/item/2text.1/swipe/default";
+
+   data.item: "texts" "elm.text elm.text.1 elm.text.swipe.left";
+   data.item: "contents" "elm.icon.swipe.left elm.swallow.colorbar";
+
+   parts {
+      PARTS_LIST_SWIPE_LEFT
+   }
+   PROGRAMS_LIST_SWIPE_LEFT
+}
+
+group { name: "elm/genlist/item/2text.1/swipe_right/default";
+   inherit: "elm/genlist/item/2text.1/swipe/default";
+
+   data.item: "texts" "elm.text elm.text.1 elm.text.swipe.right";
+   data.item: "contents" "elm.icon.swipe.right elm.swallow.colorbar";
+
+   parts {
+      PARTS_LIST_SWIPE_RIGHT
+   }
+   PROGRAMS_LIST_SWIPE_RIGHT
+}
+
+group { name: "elm/genlist/item/3text/default";
+
+   PROLOG_LIST
+   data.item: "texts" "elm.text elm.text.1 elm.text.2 elm.text.noti";
+   data.item: "contents" "elm.swallow.colorbar elm.icon.noti elm.swallow.center_check";
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE, LIST_PADDING_RIGHT_SIZE,
+         LIST_3LINE_PADDING_TOP_SIZE, LIST_3LINE_PADDING_BOTTOM_SIZE
+      )
+      PART_LIST_BOTTOMLINE
+      PART(TEXTBLOCK, "elm.text",
+         DESC_LRTB("elm.padding.left", "elm.icon.noti", "elm.padding.top", "elm.text.1",
+            fixed: 1 0;
+            min: 0 0;
+            PARAM_TEXT("list_text_main_normal",)
+         ) DESCRIPIONS_TEXT("list_text_main_dim", "list_text_main_press")
+      )
+      PART(SWALLOW, "elm.icon.noti",
+         DESC_RTB("elm.padding.right", "elm.padding.top", "elm.text.1",
+            min: 0 LIST_NOTI_NUMBER_ICON_HEIGHT;
+         )
+      )
+      PART(TEXTBLOCK, "elm.text.noti",
+         mouse_events: 0;
+         DESC_TO("elm.icon.noti",
+            min: 0 LIST_NOTI_NUMBER_ICON_HEIGHT;
+            PARAM_TEXT("list_noti_style", min: 1 1;)
+         )
+      )
+      PART(TEXTBLOCK, "elm.text.1",
+         DESC_LRB("elm.padding.left", "elm.padding.right", "elm.text.2",
+            fixed: 1 0;
+            min: 0 0;
+            PARAM_TEXT("list_text_sub_normal",)
+         ) DESCRIPIONS_TEXT("list_text_sub_dim", "list_text_sub_normal")
+      )
+      PART(TEXTBLOCK, "elm.text.2",
+         DESC_LRB("elm.padding.left", "elm.padding.right", "elm.padding.bottom",
+            fixed: 1 0;
+            min: 0 0;
+            PARAM_TEXT("list_text_sub_normal",)
+         ) DESCRIPIONS_TEXT("list_text_sub_dim", "list_text_sub_normal")
+      )
+      PART_CENTER_CHECK
+   }
+   PROGRAMS_LIST( target: "elm.text"; target: "elm.text.1";
+                 target: "elm.text.2"; target: "elm.text.noti"; target: "elm.icon.noti";)
+}
+
+group { name: "elm/genlist/item/1icon/default";
+
+   PROLOG_LIST
+   data.item: "contents" "elm.icon";
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE, LIST_PADDING_RIGHT_SIZE,
+         2, 2 // FIXME: arbitrary value to prevent overlap with bottom lines
+      )
+      PART_LIST_BOTTOMLINE
+      PART(SWALLOW, "elm.icon",
+         DESC_LRTB(
+            "elm.padding.left", "elm.padding.right",
+            "elm.padding.top", "elm.padding.bottom",
+            min: 0 ( LIST_1LINE_HEIGHT - (2 + 2));
+         )
+      )
+   }
+   PROGRAMS_LIST( target: "elm.icon"; )
+}
+
+group { name: "elm/genlist/item/1icon/with_no_line/default";
+   inherit: "elm/genlist/item/1icon/default";
+
+   parts {
+      PART_LIST_BOTTOMLINE_OFF
+   }
+}
+
+group { name: "elm/genlist/item/1icon/no_padding/default";
+   inherit: "elm/genlist/item/1icon/default";
+
+   parts {
+      PART_LIST_PADDINGS(0, 0, 0, 0)
+      part { name: "elm.icon";
+         description { state: "default" 0.0;
+            min: 0 LIST_1LINE_HEIGHT;
+         }
+      }
+   }
+}
+
+group { name: "elm/genlist/item/1icon/no_padding_line/default";
+   inherit: "elm/genlist/item/1icon/default";
+
+   parts {
+      PART_LIST_PADDINGS(0, 0, 0, 0)
+      PART_LIST_BOTTOMLINE_OFF
+      part { name: "elm.icon";
+         description { state: "default" 0.0;
+            min: 0 LIST_1LINE_HEIGHT;
+         }
+      }
+   }
+}
+
+group { name: "elm/genlist/item/1icon/no_line_transparent/default";
+   inherit: "elm/genlist/item/1icon/default";
+
+   parts {
+      part { name: "bg";
+         clip_to: "bg_clip";
+         type: RECT;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+      }
+      PART_LIST_PADDINGS(0, 0, 8, 8)
+      PART_LIST_BOTTOMLINE_OFF
+      part { name: "elm.icon";
+         description { state: "default" 0.0;
+            min: 0 LIST_1LINE_HEIGHT;
+         }
+      }
+   }
+}
+
+group { name: "elm/genlist/item/1text.1icon/default";
+
+   PROLOG_LIST
+   data.item: "texts" "elm.text";
+   data.item: "contents" "elm.icon elm.swallow.center_check";
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE, LIST_PADDING_RIGHT_SIZE,
+         LIST_1LINE_PADDING_TOP_SIZE, LIST_1LINE_PADDING_BOTTOM_SIZE
+      )
+      PART_LIST_BOTTOMLINE
+      PART(SWALLOW, "elm.icon",
+         DESC_L("elm.padding.left",
+           fixed: 1 1;
+         )
+      )
+      PART(SPACER, "elm.padding.icon.right",
+         DESC_L("elm.icon", min: LIST_PADDING_DEFAULT_SIZE 0; max: LIST_PADDING_DEFAULT_SIZE -1; )
+      )
+      PART(TEXTBLOCK, "elm.text",
+         DESC_LRTB("elm.padding.icon.right", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            PARAM_TEXT("list_text_main_normal",)
+         ) DESCRIPIONS_TEXT("list_text_main_dim", "list_text_main_press")
+      )
+      PART_CENTER_CHECK
+   }
+   PROGRAMS_LIST( target: "elm.text"; target: "elm.icon"; )
+}
+
+group { name: "elm/genlist/item/1text.1icon.1/default";
+
+   PROLOG_LIST
+   data.item: "texts" "elm.text";
+   data.item: "contents" "elm.icon elm.swallow.center_check";
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE, LIST_PADDING_R_ICON_RIGHT_SIZE,
+         LIST_1LINE_PADDING_TOP_SIZE, LIST_1LINE_PADDING_BOTTOM_SIZE
+      )
+      PART_LIST_BOTTOMLINE
+      PART(TEXTBLOCK, "elm.text",
+         DESC_LRTB("elm.padding.left", "elm.padding.icon.left", "elm.padding.top", "elm.padding.bottom",
+            PARAM_TEXT("list_text_main_normal",)
+         ) DESCRIPIONS_TEXT("list_text_main_dim", "list_text_main_press")
+      )
+      PART(SPACER, "elm.padding.icon.left",
+         DESC_R("elm.icon", min: LIST_PADDING_R_ICON_DEFAULT_SIZE 0; max: LIST_PADDING_R_ICON_DEFAULT_SIZE -1; )
+      )
+      PART(SWALLOW, "elm.icon", DESC_R("elm.padding.right", ) )
+      PART_CENTER_CHECK
+   }
+   PROGRAMS_LIST( target: "elm.text"; target: "elm.icon"; )
+}
+
+group { name: "elm/genlist/item/1text.1icon.divider/default";
+
+   PROLOG_LIST
+   data.item: "texts" "elm.text";
+   data.item: "contents" "elm.swallow.colorbar elm.icon elm.swallow.center_check";
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE, LIST_PADDING_R_ICON_RIGHT_SIZE,
+         LIST_1LINE_PADDING_TOP_SIZE, LIST_1LINE_PADDING_BOTTOM_SIZE
+      )
+      PART_LIST_BOTTOMLINE
+      PART(TEXTBLOCK, "elm.text",
+         DESC_LRTB("elm.padding.left", "elm.padding.divider.left", "elm.padding.top", "elm.padding.bottom",
+            PARAM_TEXT("list_text_main_normal",)
+         ) DESCRIPIONS_TEXT("list_text_main_dim", "list_text_main_press")
+      )
+      PART(SPACER, "elm.padding.divider.left",
+         DESC_R("elm.divider",
+            min: LIST_DIVIDER_PADDING_SIZE 0;  max: LIST_DIVIDER_PADDING_SIZE -1;
+         )
+      )
+      PART(SWALLOW, "elm.icon",
+         DESC_FROM_R(
+            min: BUTTON_DIVIDER_BTN_SIZE 0;
+            max: BUTTON_DIVIDER_BTN_SIZE -1;
+            rel1.to: "bg";
+            rel2.to: "bg";
+         )
+      )
+      PART(RECT, "elm.divider",
+         DESC_R("elm.icon",
+            align: 0 0.5;
+            min: 2 LIST_DIVIDER_HEIGHT;
+            max: 2 LIST_DIVIDER_HEIGHT;
+            color: 48 48 48 255; /*(Changeable UI) color_class: "B0221L1";*/
+         )
+      )
+      PART_CENTER_CHECK
+   }
+   PROGRAMS_LIST( target: "elm.text";
+      target: "elm.icon"; )
+}
+
+group { name: "elm/genlist/item/1text.1icon.divider/sweep/default";
+   inherit: "elm/genlist/item/1text.1icon.divider/default";
+
+   data.item: "texts" "elm.text elm.text.sweep";
+   data.item: "contents" "elm.icon elm.icon.sweep";
+   SCRIPTS_LIST_SWEEP
+
+   parts {
+      PARTS_LIST_SWEEP
+   }
+   programs {
+      PROGRAMS_LIST_SWEEP
+   }
+}
+
+group { name: "elm/genlist/item/2text.1icon/default";
+
+   PROLOG_LIST
+   data.item: "texts" "elm.text elm.text.1";
+   data.item: "contents" "elm.icon elm.swallow.center_check";
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE, LIST_PADDING_RIGHT_SIZE,
+         LIST_2LINE_PADDING_TOP_SIZE, LIST_2LINE_PADDING_BOTTOM_SIZE
+      )
+      PART_LIST_BOTTOMLINE
+
+      PART(SWALLOW, "elm.icon",
+         DESC_L("elm.padding.left",)
+      )
+      PART(SPACER, "elm.padding.icon.right",
+         DESC_L("elm.icon", min: LIST_PADDING_DEFAULT_SIZE 0; max: LIST_PADDING_DEFAULT_SIZE -1; )
+      )
+      PART(TEXTBLOCK, "elm.text",
+         DESC_LRTB("elm.padding.icon.right", "elm.padding.right", "elm.padding.top", "elm.text.1",
+            min: 0 0;
+            PARAM_TEXT("list_text_main_normal",)
+         ) DESCRIPIONS_TEXT("list_text_main_dim", "list_text_main_press")
+      )
+      PART(TEXTBLOCK, "elm.text.1",
+         DESC_LRB( "elm.padding.icon.right", "elm.padding.right", "elm.padding.bottom",
+            min: 0 0;
+            PARAM_TEXT("list_text_sub_normal",)
+         ) DESCRIPIONS_TEXT("list_text_sub_dim", "list_text_sub_press")
+      )
+      PART_CENTER_CHECK
+   }
+   PROGRAMS_LIST( target: "elm.text"; target: "elm.text.1";
+      target: "elm.icon"; )
+}
+
+group { name: "elm/genlist/item/2text.1icon/swipe/default";
+   inherit: "elm/genlist/item/2text.1icon/default";
+
+   SCRIPTS_LIST_SWIPE
+   IMAGES_LIST_SWIPE
+
+   data.item: "texts" "elm.text elm.text.1 elm.text.swipe.left elm.text.swipe.right";
+   data.item: "contents" "elm.icon elm.icon.swipe.left elm.icon.swipe.right";
+
+   parts {
+      PARTS_LIST_SWIPE
+   }
+   PROGRAMS_LIST_SWIPE
+}
+
+group { name: "elm/genlist/item/2text.1icon/swipe_left/default";
+   inherit: "elm/genlist/item/2text.1icon/swipe/default";
+
+   data.item: "texts" "elm.text elm.text.1 elm.text.swipe.left";
+   data.item: "contents" "elm.icon elm.icon.swipe.left";
+
+   parts {
+      PARTS_LIST_SWIPE_LEFT
+   }
+   PROGRAMS_LIST_SWIPE_LEFT
+}
+
+group { name: "elm/genlist/item/2text.1icon/swipe_right/default";
+   inherit: "elm/genlist/item/2text.1icon/swipe/default";
+
+   data.item: "texts" "elm.text elm.text.1 elm.text.swipe.right";
+   data.item: "contents" "elm.icon elm.icon.swipe.right";
+
+   parts {
+      PARTS_LIST_SWIPE_RIGHT
+   }
+   PROGRAMS_LIST_SWIPE_RIGHT
+}
+
+group { name: "elm/genlist/item/2text.1icon.1/default";
+
+   PROLOG_LIST
+   data.item: "texts" "elm.text elm.text.1";
+   data.item: "contents" "elm.swallow.colorbar elm.icon elm.swallow.center_check";
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE, LIST_PADDING_R_ICON_RIGHT_SIZE,
+         LIST_2LINE_PADDING_TOP_SIZE, LIST_2LINE_PADDING_BOTTOM_SIZE
+      )
+      PART_LIST_BOTTOMLINE
+      PART(TEXTBLOCK, "elm.text",
+         DESC_LRTB("elm.padding.left", "elm.padding.icon.left", "elm.padding.top", "elm.text.1",
+            min: 0 0;
+            fixed: 1 0;
+            PARAM_TEXT("list_text_main_normal",)
+         ) DESCRIPIONS_TEXT("list_text_main_dim", "list_text_main_press")
+      )
+      PART(TEXTBLOCK, "elm.text.1",
+         DESC_LRB("elm.padding.left", "elm.padding.icon.left", "elm.padding.bottom",
+            min: 0 0;
+            fixed: 1 0;
+            PARAM_TEXT("list_text_sub_normal",)
+         ) DESCRIPIONS_TEXT("list_text_sub_dim", "list_text_sub_press")
+      )
+      PART(SPACER, "elm.padding.icon.left",
+         DESC_R("elm.icon",
+            min: LIST_PADDING_R_ICON_DEFAULT_SIZE 0;  max: LIST_PADDING_R_ICON_DEFAULT_SIZE -1;
+         )
+      )
+      PART(SWALLOW, "elm.icon",
+         DESC_RTB("elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+         )
+      )
+      PART_CENTER_CHECK
+   }
+   PROGRAMS_LIST( target: "elm.text"; target: "elm.text.1";
+      target: "elm.icon"; )
+}
+
+group { name: "elm/genlist/item/2text.1icon.divider/default";
+
+   PROLOG_LIST
+   data.item: "texts" "elm.text elm.text.1";
+   data.item: "contents" "elm.swallow.colorbar elm.icon elm.swallow.center_check";
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE, LIST_PADDING_R_ICON_RIGHT_SIZE,
+         LIST_2LINE_PADDING_TOP_SIZE, LIST_2LINE_PADDING_BOTTOM_SIZE
+      )
+      PART_LIST_BOTTOMLINE
+      PART(TEXTBLOCK, "elm.text",
+         DESC_LRTB("elm.padding.left", "elm.padding.divider.left", "elm.padding.top", "elm.text.1",
+            min: 0 0;
+            PARAM_TEXT("list_text_main_normal",)
+         ) DESCRIPIONS_TEXT("list_text_main_dim", "list_text_main_press")
+      )
+      PART(TEXTBLOCK, "elm.text.1",
+         DESC_LRB("elm.padding.left", "elm.padding.divider.left", "elm.padding.bottom",
+            min: 0 0;
+            PARAM_TEXT("list_text_sub_normal",)
+         ) DESCRIPIONS_TEXT("list_text_sub_dim", "list_text_sub_press")
+      )
+      PART(SPACER, "elm.padding.divider.left",
+         DESC_R("elm.divider",
+            min: LIST_DIVIDER_PADDING_SIZE 0;  max: LIST_DIVIDER_PADDING_SIZE -1;
+         )
+      )
+      PART(SWALLOW, "elm.icon",
+         DESC_FROM_R(
+            min: BUTTON_DIVIDER_BTN_SIZE 0;
+            max: BUTTON_DIVIDER_BTN_SIZE -1;
+            rel1.to: "bg";
+            rel2.to: "bg";
+         )
+      )
+      PART(RECT, "elm.divider",
+         DESC_R("elm.icon",
+            align: 0 0.5;
+            min: 2 LIST_DIVIDER_HEIGHT;
+            max: 2 LIST_DIVIDER_HEIGHT;
+            color: 48 48 48 255; /*(Changeable UI) color_class: "B0221L1";*/
+         )
+      )
+      PART_CENTER_CHECK
+   }
+   PROGRAMS_LIST( target: "elm.text"; target: "elm.text.1";
+      target: "elm.icon"; )
+}
+
+group { name: "elm/genlist/item/multiline/2text/default";
+
+   PROLOG_LIST
+   data.item: "texts" "elm.text elm.text.1";
+   data.item: "contents" "elm.swallow.center_check";
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE, LIST_PADDING_RIGHT_SIZE,
+         LIST_2LINE_PADDING_TOP_SIZE, LIST_2LINE_PADDING_BOTTOM_SIZE
+      )
+      PART_LIST_BOTTOMLINE
+
+      PART(TEXTBLOCK, "elm.text",
+         DESC_LRT("elm.padding.left", "elm.padding.right", "elm.padding.top",
+            min: 0 0;
+            PARAM_TEXT("list_text_main_normal",)
+         ) DESCRIPIONS_TEXT("list_text_main_dim", "list_text_main_press")
+      )
+      PART(SPACER, "elm.padding.text1.bottom",
+         DESC_T("elm.text",
+            min: 0 4;  max: -1 4;
+         )
+       )
+      PART(TEXTBLOCK, "elm.text.1",
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.text1.bottom", "elm.padding.bottom",
+            min: 0 0;
+            PARAM_TEXT("list_text_sub_multiline_normal",)
+         )
+         DESCRIPIONS_TEXT("list_text_sub_multiline_dim", "list_text_sub_multiline_selected")
+      )
+      PART_CENTER_CHECK
+   }
+   PROGRAMS_LIST( target: "elm.text"; target: "elm.text.1"; )
+}
+
+group { name: "elm/genlist/item/multiline/1text/default";
+   alias: "elm/layout/multiline/1text/default";
+
+   PROLOG_LIST
+   data.item: "texts" "elm.text";
+   data.item: "contents" "elm.swallow.center_check";
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE, LIST_PADDING_RIGHT_SIZE,
+         LIST_PADDING_DEFAULT_SIZE, LIST_PADDING_DEFAULT_SIZE
+      )
+      PART_LIST_BOTTOMLINE
+      PART(TEXTBLOCK, "elm.text",
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            min: 0 LIST_MULTILINE_HEIGHT;
+            PARAM_TEXT("list_text_multiline",)
+         )
+      )
+      PART_CENTER_CHECK
+   }
+   PROGRAM_LIST_DEFAULT( target: "elm.text"; )
+   PROGRAM_LIST_BOTTOMLINE
+}
+
+group { name: "elm/genlist/item/multiline/1text.1/default";
+   alias: "elm/layout/multiline/1text.1/default";
+
+   PROLOG_LIST
+   data.item: "texts" "elm.text";
+   data.item: "contents" "elm.swallow.center_check";
+
+   parts {
+      PART_LIST_BG
+      PART_LIST_PADDINGS(
+         LIST_PADDING_LEFT_SIZE, LIST_PADDING_RIGHT_SIZE,
+         LIST_2LINE_PADDING_TOP_SIZE, LIST_2LINE_PADDING_BOTTOM_SIZE
+      )
+      PART_LIST_BOTTOMLINE
+      PART(TEXTBLOCK, "elm.text",
+         DESC_LRTB("elm.padding.left", "elm.padding.right", "elm.padding.top", "elm.padding.bottom",
+            min: 0 LIST_MULTILINE_2LINE_HEIGHT;
+            PARAM_TEXT("list_text_multiline_2line_normal",)
+         ) DESCRIPIONS_TEXT("list_text_multiline_2line_dim", "list_text_multiline_2line_normal")
+      )
+      PART_CENTER_CHECK
+   }
+   PROGRAMS_LIST( target: "elm.text"; )
+}
+
+group { name: "elm/genlist/item/hidden/default";
+   inherit: "elm/genlist/item/1icon/no_padding/default";
+
+   parts {
+      PART_LIST_PADDINGS(0, 0, 0, 0)
+      part { name: "elm.icon";
+         description { state: "default" 0.0;
+            min: 0 LIST_HIDDEN_HEIGHT;
+         }
+      }
+   }
+}

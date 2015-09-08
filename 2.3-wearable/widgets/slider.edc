@@ -1,0 +1,600 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+group { name: "elm/slider/horizontal/indicator/default";
+        alias: "elm/slider/horizontal/indicator/disabled";
+        alias: "elm/slider/horizontal/indicator/tap_to_drag";
+        alias: "elm/slider/horizontal/indicator/textstyle";
+        alias: "elm/slider/horizontal/indicator/numberstyle";
+      images {
+         image: "tw_scrubber_control_holo_dark_press.png" COMP;
+         image: "tw_scrubber_control_press_line.png" COMP;
+      }
+      parts {
+         part { name: "access";
+            type: RECT;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               color: 0 0 0 0;
+            }
+         }
+         part { name: "button_events";
+            type: RECT;
+            mouse_events: 1;
+            scale: 1;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               min: 2.5*SLIDER_IND_WIDTH 2*SLIDER_IND_HEIGHT;
+               color: 0 0 0 0;
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               visible: 0;
+            }
+         }
+         part { name: "button0";
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               min: SLIDER_IND_WIDTH SLIDER_IND_HEIGHT;
+               max: SLIDER_IND_MAX_WIDTH SLIDER_IND_MAX_HEIGHT;
+               image {
+                  normal: "tw_scrubber_control_holo_dark_press.png";
+               }
+               color: 249 249 249 255; /*(Changeable UI) color_class: "B065L1";*/
+            }
+            description { state: "pressed" 0.0;
+               inherit: "default" 0.0;
+               color: 249 249 249 255; /*(Changeable UI) color_class: "B065L1P";*/
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               color: 147 147 147 255; /*(Changeable UI) color_class: "B065L1D";*/
+            }
+         }
+         part { name: "button_effect";
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               min: SLIDER_IND_WIDTH SLIDER_IND_HEIGHT;
+               max: SLIDER_IND_MAX_WIDTH SLIDER_IND_MAX_HEIGHT;
+               image.normal: "tw_scrubber_control_press_line.png";
+               color: 249 249 249 0; /*(Changeable UI) color_class: "B141";*/
+               rel1.to: "button0";
+               rel2.to: "button0";
+            }
+         }
+      }
+      programs {
+         program { name: "slider_disable";
+            signal: "elm,state,disabled";
+            source: "elm";
+            action:  STATE_SET "disabled" 0.0;
+            target: "button0";
+            target: "button_events";
+         }
+         program { name: "slider_enable";
+            signal: "elm,state,enabled";
+            source: "elm";
+            action:  STATE_SET "default" 0.0;
+            target: "button0";
+            target: "button_events";
+         }
+         program { name: "mouse_down";
+            signal: "mouse,down,*";
+            source: "button_events";
+            action:  STATE_SET "pressed" 0.0;
+            target: "button0";
+         }
+         program { name: "mouse_up";
+            signal: "mouse,up,*";
+            source: "button_events";
+            action:  STATE_SET "default" 0.0;
+            target: "button0";
+         }
+      }
+   }
+
+   group { name: "elm/slider/horizontal/default";
+           alias: "elm/slider/horizontal/disabled";
+      data {
+         item: "access_highlight" on;
+      }
+      images {
+         image: "tw_timepicker_num_bg_new.#.png" COMP;
+         image: "tw_focused_effect.#png" COMP;
+      }
+      script {
+         public icon_show = 0;
+         public invert_on = 0;
+         public set_invert_on() {
+            set_state(PART:"level", "inverted", 0.0);
+            set_int(invert_on, 1);
+         }
+         public set_invert_off() {
+            set_state(PART:"level", "default", 0.0);
+            set_int(invert_on, 0);
+         }
+         public thumb_down() {
+            if(get_int(invert_on) == 0)
+               set_state(PART:"level", "pressed", 0.0);
+            }
+         public thumb_up() {
+            if(get_int(invert_on) == 0)
+               set_state(PART:"level", "default", 0.0);
+         }
+      }
+      parts {
+         part { name: "access";
+            type: RECT;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               color: 0 0 0 0;
+             }
+         }
+         part {
+            name: "bg";
+            type: SPACER;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               min: 0 SLIDER_BG_HEIGHT_INC;
+               max: -1 SLIDER_BG_HEIGHT_INC;
+            }
+         }
+         part {
+            name: "top_padding";
+            type: SPACER;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               min: 0 0;
+               max: 0 0;
+               rel1.to: "bg";
+               rel2 {
+                  relative: 1.0  0.0;
+                  to: "bg";
+               }
+               align: 0.5 1.0;
+               fixed: 1 1;
+            }
+            description { state: "visible";
+               inherit: "default" 0.0;
+               min: 0 SLIDER_POPUP_BOTTOM_PADDING_HEIGHT_INC;
+               max: -1 SLIDER_POPUP_BOTTOM_PADDING_HEIGHT_INC;
+            }
+         }
+         part { name: "popup_bg";
+            type: SPACER;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1.to: "top_padding";
+               rel2 {
+                  relative: 1.0 0.0;
+                  to: "top_padding";
+               }
+               min: SLIDER_POPUP_SIZE_INC;
+               max: SLIDER_POPUP_SIZE_INC;
+               fixed: 1 1;
+               align: 0.5 1.0;
+            }
+         }
+         part { name: "popup.image";
+            scale: 1;
+            description { state: "default" 0.0;
+               visible: 0;
+               fixed: 1 1;
+               rel1.to: "popup_bg";
+               rel2.to: "popup_bg";
+               image.normal: "tw_timepicker_num_bg_new.#.png";
+               color: 9 37 63 255; /*(Changeable UI) color_class: "W0811";*/
+            }
+            description { state: "visible" 0.0;
+               inherit: "default" 0.0;
+               visible: 1;
+            }
+            description { state: "pressed" 0.0;
+               inherit: "default" 0.0;
+               visible: 1;
+               color: 0 110 255 255; /*(Changeable UI) color_class: "W0812";*/
+            }
+         }
+         part { name: "elm.indicator";
+            type: TEXT;
+            scale: 1;
+            description { state: "default" 0.0;
+               visible: 0;
+               fixed: 1 1;
+               color: 249 249 249 255; /*(Changeable UI) color_class: "T051";*/
+               rel1.to: "popup.image";
+               rel2.to: "popup.image";
+               text {
+                  align: 0.5 0.5;
+                  min: 1 1;
+                  font: "Tizen:style=Bold"; size: "50"; /*(Changeable UI) text_class: "T051";*/
+                  text_class: "tizen";
+               }
+            }
+            description { state: "visible" 0.0;
+               inherit: "default" 0.0;
+               visible: 1;
+            }
+            description { state: "pressed" 0.0;
+               inherit: "default" 0.0;
+               color: 7 7 7 255; /*(Changeable UI) color_class: "T051P";*/
+               visible: 1;
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               color: 96 96 96 255; /*(Changeable UI) color_class: "T051D";*/
+               visible: 1;
+            }
+         }
+         part { name: "elm.swallow.icon";
+            type: SWALLOW;
+            clip_to: "icon_clipper";
+            scale: 1;
+            description { state: "default" 0.0;
+               visible: 0;
+               rel1 {
+                  relative: 0.0 0.0;
+                  to: "bg";
+               }
+               rel2 {
+                  relative: 0.0 1.0;
+                  to: "bg";
+               }
+               align: 0.0 0.5;
+            }
+            description { state: "visible" 0.0;
+               inherit: "default" 0.0;
+               visible: 1;
+            }
+         }
+         part {
+            name: "icon_padding";
+            type: SPACER;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               min: 0 0;
+               max: 0 0;
+               rel1 {
+                  relative: 1.0  0.0;
+                  to: "elm.swallow.icon";
+               }
+               rel2 {
+                  relative: 1.0  1.0;
+                  to: "elm.swallow.icon";
+               }
+               align: 0.0 0.5;
+               fixed: 1 1;
+            }
+            description { state: "visible";
+               inherit: "default" 0.0;
+               min: SLIDER_ICON_PADDING_SIZE_INC;
+               max: SLIDER_ICON_PADDING_SIZE_INC;
+            }
+         }
+         part {
+            name: "base";
+            type: RECT;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               rel1 {
+                  relative: 1.0 0.0;
+                  to_x: "icon_padding";
+                  to_y: "bg";
+               }
+               rel2.to: "bg";
+               min: 0 PROGRESSBAR_HEIGHT;
+               max: -1 PROGRESSBAR_HEIGHT;
+               fixed: 0 1;
+               color: 71 71 71 255; /*(Changeable UI) color_class: "B065L3";*/
+            }
+         }
+         part { name: "level";
+            type: RECT;
+            mouse_events: 0;
+            scale: 1;
+            clip_to: "clipper";
+            description { state: "default" 0.0;
+               fixed: 0 1;
+               rel1 {
+                  to_x: "base";
+                  relative: 0.0 0.0;
+               }
+               rel2 {
+                  to_x: "elm.dragable.slider";
+                  relative: 0.5 1.0;
+               }
+               min: 0 PROGRESSBAR_HEIGHT;
+               max: -1 PROGRESSBAR_HEIGHT;
+               fixed: 0 1;
+            }
+            description { state: "inverted" 0.0;
+               inherit: "default" 0.0;
+               visible: 0;
+            }
+            description { state: "pressed" 0.0;
+               inherit: "default" 0.0;
+            }
+         }
+         part { name: "rect_swallow";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               min: 0 0;
+               rel1 {
+                  to_x: "base";
+                  relative: 0.0 0.0;
+               }
+               rel2 {
+                  to_x: "base";
+                  relative: 0.0 1.0;
+               }
+               align: 0.0 0.5;
+            }
+         }
+         part { name: "drag_base";
+            type: RECT;
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               visible: 0;
+               rel1.to: "rect_swallow";
+               rel1.relative: 1.0 0.0;
+               rel1.offset: -18 0; // FIXME: slider image has transparent area
+               rel2.to: "elm.swallow.bar";
+               rel2.offset: -6 0;  // FIXME: slider image has transparent area
+            }
+            description { state: "pressed" 0.0;
+               inherit: "default" 0.0;
+               rel1.offset: -22 0;
+               rel2.offset: -1 0;
+            }
+         }
+         part { name: "elm.swallow.bar";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: 0 SLIDER_IND_MAX_HEIGHT;
+               max: -1 SLIDER_IND_MAX_HEIGHT;
+               align: 1.0 0.5;
+               fixed: 0 1;
+               rel1 {
+                  to_x: "base";
+                  relative: 0.0 0.0;
+                  offset: -22 0;
+               }
+               rel2 {
+                  to_x: "base";
+                  relative: 1.0 1.0;
+                  offset: 22 0;
+               }
+            }
+         }
+         part { name: "elm.dragable.slider";
+            type: GROUP;
+            source: "elm/slider/horizontal/indicator/default";
+            mouse_events: 1;
+            scale: 1;
+            dragable {
+               x: 1 1 0;
+               y: 0 0 0;
+               confine: "drag_base";
+            }
+            description { state: "default" 0.0;
+               min: SLIDER_IND_WIDTH SLIDER_IND_HEIGHT;
+               max: SLIDER_IND_WIDTH SLIDER_IND_HEIGHT;
+               fixed: 1 1;
+               color: 0 0 0 0;
+               rel1.to: "elm.swallow.bar";
+               rel2.to: "elm.swallow.bar";
+            }
+            description { state: "pressed" 0.0;
+               inherit: "default" 0.0;
+               min: SLIDER_IND_MAX_WIDTH SLIDER_IND_MAX_HEIGHT;
+               max: SLIDER_IND_MAX_WIDTH SLIDER_IND_MAX_HEIGHT;
+            }
+         }
+         part { name: "disabler";
+            type: RECT;
+            mouse_events: 1;
+            repeat_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               visible: 0;
+               color: 0 0 0 0;
+               rel1.to_x: "elm.swallow.bar";
+               rel2.to_x: "elm.swallow.bar";
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               visible: 1;
+            }
+         }
+         part { name: "clipper";
+            type: RECT;
+            description { state: "default" 0.0;
+               color: 0 110 255 255; /*(Changeable UI) color_class: "B065L2";*/
+            }
+            description { state: "disabled" 0.0;
+               color: 0 110 255 38; /*(Changeable UI) color_class: "B0651L2";*/
+            }
+         }
+         part { name: "icon_clipper";
+            scale: 1;
+            type: RECT;
+            description { state: "default" 0.0;
+               color: 249 249 249 255; /*(Changeable UI) color_class: "W173L1";*/
+            }
+         }
+         part { name: "access_image";
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1.to: "bg";
+               rel1.offset: -14 0;
+               rel2.to: "bg";
+               rel2.offset: 14 0;
+               visible: 0;
+               fill.smooth: 0;
+               image.normal: "tw_focused_effect.#.png";
+               color: 0 110 255 255; /*(Changeable UI) color_class: "W201";*/
+            }
+            description { state: "highlighted" 0.0;
+               inherit: "default" 0.0;
+               visible: 1;
+            }
+            description { state: "highlighted_icon_show" 0.0;
+               inherit: "highlighted" 0.0;
+               rel1.offset: 0 0;
+            }
+         }
+      }
+      programs {
+         program { name: "invert_on";
+            signal: "elm,state,inverted,on";
+            source: "elm";
+            script {
+               set_invert_on();
+            }
+         }
+         program { name: "invert_off";
+            signal: "elm,state,inverted,off";
+            source: "elm";
+            script {
+               set_invert_off();
+            }
+         }
+         program { name: "val_show";
+            signal: "mouse,down,*";
+            source: "elm.dragable.slider";
+            script {
+               thumb_down();
+            }
+            action: STATE_SET "pressed" 0.0;
+            transition: LINEAR 0.1;
+            target: "drag_base";
+            target: "elm.dragable.slider";
+         }
+         program { name: "val_hide";
+            signal: "mouse,up,*";
+            source: "elm.dragable.slider";
+            script {
+               thumb_up();
+            }
+            action: STATE_SET "default" 0.0;
+            transition: LINEAR 0.1;
+            target: "drag_base";
+            target: "elm.dragable.slider";
+         }
+         program { name: "button_expand";
+            signal: "mouse,down,*";
+            source: "elm.swallow.bar";
+            action: STATE_SET "pressed" 0.0;
+            transition: LINEAR 0.1;
+            target: "drag_base";
+            target: "elm.dragable.slider";
+         }
+         program { name: "button_reduce";
+            signal: "mouse,up,*";
+            source: "elm.swallow.bar";
+            action: STATE_SET "default" 0.0;
+            transition: LINEAR 0.1;
+            target: "drag_base";
+            target: "elm.dragable.slider";
+         }
+         program { name: "popup_val_show";
+            signal: "elm,state,val,show";
+            source: "elm";
+            action:  STATE_SET "visible" 0.0;
+            target: "top_padding";
+            target: "popup.image";
+            target: "elm.indicator";
+         }
+         program { name: "popup,show";
+            signal: "popup,show";
+            source: "elm";
+            action:  STATE_SET "visible" 0.0;
+            target: "top_padding";
+            target: "popup.image";
+            target: "elm.indicator";
+         }
+         program { name: "popup_hide";
+            signal: "popup,hide";
+            source: "elm";
+            action:  STATE_SET "default" 0.0;
+            target: "top_padding";
+            target: "popup.image";
+            target: "elm.indicator";
+         }
+         program { name: "icon_show";
+            signal: "elm,state,icon,visible";
+            source: "elm";
+            script {
+               set_int(icon_show, 1);
+               set_state(PART:"elm.swallow.icon", "visible", 0.0);
+               set_state(PART:"icon_padding", "visible", 0.0);
+            }
+         }
+         program { name: "slider_disable";
+            signal: "elm,state,disabled";
+            source: "elm";
+            action:  STATE_SET "disabled" 0.0;
+            target: "disabler";
+            target: "clipper";
+         }
+         program { name: "slider_enable";
+           signal: "elm,state,enabled";
+           source: "elm";
+           action:  STATE_SET "default" 0.0;
+           target: "disabler";
+           target: "clipper";
+         }
+         program { name: "action_highlight";
+            signal: "elm,action,access_highlight,show";
+            source: "elm";
+            script {
+               if (get_int(icon_show))
+                  set_state(PART:"access_image", "highlighted_icon_show", 0.0);
+               else
+                  set_state(PART:"access_image", "highlighted", 0.0);
+            }
+         }
+         program { name: "action_no_highlight";
+            signal: "elm,action,access_highlight,hide";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "access_image";
+         }
+      }
+   }

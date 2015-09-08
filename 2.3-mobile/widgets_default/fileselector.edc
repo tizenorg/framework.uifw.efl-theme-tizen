@@ -1,0 +1,555 @@
+group { name: "elm/entry/path/separator/default";
+   images.image: "whitetheme/fileselector_icon.png" COMP;
+   parts {
+      part { name: "icon";
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            image.normal: "whitetheme/fileselector_icon.png";
+            max: FILESELECTOR_SEPARATOR_SIZE;
+            aspect: 1.0 1.0;
+         }
+      }
+   }
+}
+
+group { name: "elm/fileselector/base/default";
+   data {
+      item: "path_separator" "<item relsize=16x16 vsize=full href=path/separator></item>";
+   }
+   images {
+      image: "whitetheme/shadow_title.png" COMP;
+      image: "whitetheme/shadow_bottom.png" COMP;
+      image: "whitetheme/file_selector_root_bg.png" COMP;
+   }
+   parts {
+      part { name: "base";
+         type: RECT;
+         scale: 1;
+         description {
+            color: GENLIST_LIST_BG_COLOR;
+         }
+      }
+      part { name: "elm.shadow.bg.top";
+         type: RECT;
+         scale: 1;
+         description {
+            min: 0 FILESELECTOR_DEFAULT_BG_TOP_HEIGHT;
+            fixed: 0 1;
+            align: 0.5 0;
+            rel2.relative: 1 0;
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "elm.bottom_buttons.bg";
+         type: RECT;
+         scale: 1;
+         description {
+            min: 0 FILESELECTOR_DEFAULT_BG_BOTTOM_HEIGHT;
+            fixed: 0 1;
+            align: 0.5 1;
+            rel1.relative: 0 1;
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "elm.padding.up.left-top";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: FILESELECTOR_DEFAULT_PADDING_TOP_BUTTON_LEFT_TOP;
+            fixed: 1 1;
+            align: 0 0;
+            rel2.relative: 0 0;
+         }
+      }
+      part { name: "elm.padding.home.left";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: FILESELECTOR_DEFAULT_PADDING_DEFAULT_SIZE 0;
+            fixed: 1 0;
+            align: 0 0;
+            rel1 {
+               to: "elm.swallow.up";
+               relative: 1 0;
+            }
+            rel2 {
+               to: "elm.swallow.up";
+               relative: 1 1;
+            }
+         }
+      }
+      part { name: "elm.swallow.home";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0 0;
+            fixed: 1 1;
+            rel1 {
+               to: "elm.padding.home.left";
+               relative: 1 0;
+            }
+            rel2 {
+               to: "elm.padding.home.left";
+               relative: 1 1;
+            }
+         }
+      }
+      part { name: "elm.swallow.up";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0 0;
+            fixed: 1 1;
+            rel1 {
+               to: "elm.padding.up.left-top";
+               relative: 1 1;
+            }
+            rel2 {
+               to: "elm.padding.up.left-top";
+               relative: 1 1;
+            }
+         }
+      }
+      part { name: "elm.spinner.clip";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "elm.swallow.spinner";
+            rel2.to: "elm.swallow.spinner";
+            color: FILESELECTOR_COLOR_TRANSPARENT;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            color: FILESELECTOR_COLOR_VISIBLE;
+         }
+      }
+      // ??
+      part { name: "elm.swallow.spinner";
+         type: SWALLOW;
+         scale: 1;
+         clip_to: "elm.spinner.clip";
+         description { state: "default" 0.0;
+            align: 1.0 0.0;
+            fixed: 1 1;
+            rel1.relative: 1.0 0.0;
+            rel2.relative: 1.0 0.0;
+         }
+      }
+      part { name: "elm.swallow.files";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 FILESELECTOR_FILES_LIST_SIZE;
+            align: 1.0 0.0;
+            rel1 {
+               to_y: "elm.shadow.bg.top";
+               relative: 0.0 1.0;
+            }
+            rel2 {
+               to_y: "elm.swallow.path";
+               relative: 1.0 0.0;
+            }
+         }
+      }
+      part { name: "elm.shadow.top";
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 FILESELECTOR_DEFAULT_SHADOW_HEIGHT;
+            fixed: 0 1;
+            align: 0.5 0;
+            rel1 {
+               to_y: "elm.shadow.bg.top";
+               relative: 0 1;
+            }
+            rel2 {
+               to_y: "elm.shadow.bg.top";
+               relative: 1 1;
+            }
+            image {
+               normal: "whitetheme/shadow_title.png";
+               border: FILESELECTOR_DEFAULT_SHADOW_BORDER;
+               border_scale: 1;
+            }
+         }
+      }
+      part { name: "elm.padding.path.bg.bottom";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0.5 1;
+            fixed: 0 1;
+            min: 0 FILESELECTOR_DEFAULT_PADDING_PATH_BG_BOTTOM;
+            rel1.to_y: "elm.swallow.filename";
+            rel2 {
+               to_y: "elm.swallow.filename";
+               relative: 1 0;
+            }
+         }
+      }
+      part { name: "elm.path.bg";
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0 1;
+            fixed: 0 1;
+            min: 0 FILESELECTOR_DEFAULT_PADDING_PATH_BG_HEIGHT;
+            rel1 {
+               to: "elm.padding.path.bg.bottom";
+               relative: 0 0;
+            }
+            rel2 {
+               to: "elm.padding.path.bg.bottom";
+               relative: 1 0;
+            }
+            image {
+               normal: "whitetheme/file_selector_root_bg.png";
+               border: FILESELECTOR_DEFAULT_PADDING_PATH_BG_BORDER;
+               border_scale: 1;
+            }
+         }
+      }
+      // bottom bg
+      part { name: "elm.bg.bottom";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0 0;
+            rel1 {
+               to: "elm.path.bg";
+               relative: 0 1;
+            }
+            color: GENLIST_LIST_BG_COLOR;
+         }
+      }
+      part { name: "elm.padding.path.left-top";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0.0 0.0;
+            fixed: 1 1;
+            min: FILESELECTOR_DEFAULT_PADDING_PATH_LEFT_TOP;
+            rel1.to: "elm.path.bg";
+            rel2 {
+               to: "elm.path.bg";
+               relative: 0.0 0.0;
+            }
+         }
+      }
+      part { name: "elm.padding.path.right-bottom";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 1 1;
+            fixed: 1 1;
+            min: FILESELECTOR_DEFAULT_PADDING_PATH_RIGHT_BOTTOM;
+            rel1 {
+               to: "elm.path.bg";
+               relative: 1 1;
+            }
+            rel2 {
+               to: "elm.path.bg";
+               relative: 1 1;
+            }
+         }
+      }
+      part { name: "elm.swallow.path";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0.0 0.5;
+            fixed: 1 1;
+            rel1 {
+               to: "elm.padding.path.left-top";
+               relative: 1 1;
+            }
+            rel2 {
+               to: "elm.padding.path.right-bottom";
+               relative: 0 0;
+            }
+         }
+      }
+      part { 
+         name: "elm.shadow.bottom";
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 FILESELECTOR_DEFAULT_SHADOW_HEIGHT;
+            fixed: 0 1;
+            align: 0 1;
+            rel1 {
+               to_y: "elm.path.bg";
+               relative: 0 0;
+            }
+            rel2 {
+               to_y: "elm.path.bg";
+               relative: 1 0;
+            }
+            image {
+               normal: "whitetheme/shadow_bottom.png";
+               border: FILESELECTOR_DEFAULT_SHADOW_BORDER;
+               border_scale: 1;
+            }
+         }
+      }
+      part { name: "elm.padding.filename.left";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0 0;
+            fixed: 1 1;
+            min: FILESELECTOR_DEFAULT_PADDING_FILENAME_LEFT 0;
+            rel2.relative: 0 1;
+         }
+      }
+      part { name: "elm.padding.filename.bottom-right";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 1 1;
+            fixed: 1 1;
+            min: FILESELECTOR_DEFAULT_PADDING_FILENAME_RIGHT
+               FILESELECTOR_DEFAULT_PADDING_FILENAME_BOTTOM;
+            rel1 { to_x: "elm.path.bg";
+               to_y: "elm.swallow.ok";
+               relative: 1 0;
+            }
+            rel2 { to_x: "elm.path.bg";
+               to_y: "elm.swallow.ok";
+               relative: 1 0;
+            }
+         }
+      }
+      part { name: "elm.swallow.filename";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 1 1;
+            fixed: 1 1;
+            rel1 {
+               to_x: "elm.padding.filename.left";
+               to_y: "elm.padding.filename.bottom-right";
+               relative: 1 0;
+            }
+            rel2 {
+               to: "elm.padding.filename.bottom-right";
+               relative: 0 0;
+            }
+         }
+      }
+      part { name: "elm.padding.bottom_buttons.right-bottom";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 1 1;
+            fixed: 1 1;
+            min: FILESELECTOR_DEFAULT_PADDING_BOTTOM_BUTTON_RIGHT_BOTTOM;
+            rel1 {
+               to: "elm.bottom_buttons.bg";
+               relative: 1 1;
+            }
+            rel2.to: "elm.bottom_buttons.bg"; 
+         }
+      }
+      part { name: "elm.padding.cancel.right";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 1 0.5;
+            fixed: 1 0;
+            min: FILESELECTOR_DEFAULT_PADDING_DEFAULT_SIZE 0;
+            rel1.to: "elm.swallow.ok";
+            rel2 {
+               to: "elm.swallow.ok";
+               relative: 0 1;
+            } 
+         }
+      }    
+      part { name: "elm.swallow.cancel";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 1 0.5;
+            fixed: 1 1;
+            min: FILESELECTOR_DEFAULT_BOTTOM_BUTTON_SIZE;
+            rel1 {
+               to: "elm.padding.cancel.right";
+               relative: 0.0 0.0;
+            }
+            rel2 {
+               to: "elm.padding.cancel.right";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.swallow.ok";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 1 1;
+            fixed: 1 1;
+            min: FILESELECTOR_DEFAULT_BOTTOM_BUTTON_SIZE;
+            rel1 {
+               to: "elm.padding.bottom_buttons.right-bottom";
+               relative: 0 0;
+            }
+            rel2 {
+               to: "elm.padding.bottom_buttons.right-bottom";
+               relative: 0 0;
+            }
+         }
+      }
+   }
+   programs {
+      program { name: "spinner_show";
+         signal: "elm,action,spinner,show";
+         source: "elm";
+         action: STATE_SET "visible" 0.0;
+         transition: LINEAR 0.2;
+         target: "elm.spinner.clip";
+      }
+      program { name: "spinner_hide";
+         signal: "elm,action,spinner,hide";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         transition: LINEAR 0.2 CURRENT;
+         target: "elm.spinner.clip";
+      }
+      program { name: "save_on";
+         signal: "elm,state,save,on";
+         source: "elm";
+      }
+      program { name: "save_off";
+         signal: "elm,state,save,off";
+         source: "elm";
+      }
+   }
+}
+
+group { name: "elm/fileselector_entry/base/default";
+   images {
+      image: "whitetheme/file_selector_entry.png" COMP;
+   }
+   parts {
+      part { name: "elm.padding.button.bottom";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0.5 1;
+            fixed: 0 1;
+            min: 0 FILESELECTOR_ENTRY_PADDING_SIZE_DEFAULT;
+            rel1.relative: 1 1;
+         }
+      }
+      part { name: "elm.swallow.button";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 1.0 1.0;
+            fixed: 1 1;
+            rel1 {
+               to: "elm.padding.button.bottom";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "elm.padding.button.bottom";
+               relative: 1.0 0.0;
+            }
+         }
+      }
+      part { name: "elm.padding.bg.left";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0 0.5;
+            fixed: 1 0;
+            min: FILESELECTOR_ENTRY_PADDING_SIZE_DEFAULT 0;
+            rel2.relative: 0 1;
+         }
+      }
+      part { name: "elm.padding.bg.right";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 1 0.5;
+            fixed: 1 1;
+            min: FILESELECTOR_ENTRY_PADDING_SIZE_DEFAULT 0;
+            rel1 { 
+               to: "elm.swallow.button";
+               relative: 0 0;
+            }
+            rel2 { 
+               to: "elm.swallow.button";
+               relative: 0 1;
+            }
+         }
+      }
+      part { name: "elm.swallow.entry.bg";
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0 0.5;
+            fixed: 1 1;
+            image {
+               normal:"whitetheme/file_selector_entry.png";
+               border: 15 15 15 15;
+               border_scale: 1;
+            }
+            rel1 { 
+               to_x: "elm.padding.bg.left";
+               to_y: "elm.padding.bg.right";
+               relative: 1 0;
+            }
+            rel2 { 
+               to: "elm.padding.bg.right";
+               relative: 0 1;
+            }
+         }
+      }
+      part { name: "elm.padding.entry.left";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0 0.5;
+            fixed: 1 0;
+            min: FILESELECTOR_ENTRY_PADDING_SIZE_DEFAULT 0;
+            rel1.to: "elm.swallow.entry.bg";
+            rel2 {
+               to:"elm.swallow.entry.bg";
+               relative: 0 1;
+            }
+         }
+      }
+      part { name: "elm.padding.entry.right";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 1 0.5;
+            fixed: 1 1;
+            min: FILESELECTOR_ENTRY_PADDING_SIZE_DEFAULT 0;
+            rel1 { 
+               to: "elm.swallow.entry.bg";
+               relative: 1 0;
+            }
+            rel2 { 
+               to: "elm.swallow.entry.bg";
+               relative: 1 1;
+            }
+         }
+      }
+      part { name: "elm.swallow.entry";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0 0.5;
+            fixed: 1 1;
+            rel1 { 
+               to_x: "elm.padding.entry.left";
+               to_y: "elm.padding.entry.right";
+               relative: 1 0;
+            }
+            rel2 { 
+               to: "elm.padding.entry.right";
+               relative: 0 1;
+            }
+         }
+      }
+   }
+}
+

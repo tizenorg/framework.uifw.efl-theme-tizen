@@ -1,0 +1,1618 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*
+ * vim:ts=3
+*/
+#define OVERSCROLL_EFFECT_IMAGES\
+      image: "bouncing_top_edge.png" COMP;\
+      image: "bouncing_top_glow.png" COMP;\
+      image: "bouncing_bottom_edge.png" COMP;\
+      image: "bouncing_bottom_glow.png" COMP;\
+      image: "bouncing_left_edge.png" COMP;\
+      image: "bouncing_left_glow.png" COMP;\
+      image: "bouncing_right_edge.png" COMP;\
+      image: "bouncing_right_glow.png" COMP;
+
+group { name: "elm/scroller/base/default";
+   alias: "elm/gengrid/base/no_effect";
+
+   data {
+      item: "focus_highlight" "on";
+   }
+
+   script {
+      public sbvis_v, sbvis_h, sbalways_v, sbalways_h, sbvis_timer;
+      public sh_v, sh_h;
+      public top_down_x = 0, top_down_y = 0
+      public top_move_x = 0, top_move_y = 0
+      public top_diff = 0, top_prev_diff = 0
+      public effect_top_down = 0, effect_top_start = 0, effect_top_reset = 0, effect_top_anim = 0;
+      public effect_top_end = 0, effect_top_move = 0, effect_top_max = 0;
+      public bottom_down_x = 0, bottom_down_y = 0
+      public bottom_move_x = 0, bottom_move_y = 0
+      public bottom_diff = 0, bottom_prev_diff = 0
+      public effect_bottom_down = 0, effect_bottom_start = 0, effect_bottom_reset = 0, effect_bottom_anim = 0;
+      public effect_bottom_end = 0, effect_bottom_move = 0, effect_bottom_max = 0;
+      public left_down_x = 0, left_down_y = 0
+      public left_move_x = 0, left_move_y = 0
+      public left_diff = 0, left_prev_diff = 0
+      public effect_left_down = 0, effect_left_start = 0, effect_left_reset = 0, effect_left_anim = 0;
+      public effect_left_end = 0, effect_left_move = 0, effect_left_max = 0;
+      public right_down_x = 0, right_down_y = 0
+      public right_move_x = 0, right_move_y = 0
+      public right_diff = 0, right_prev_diff = 0
+      public effect_right_down = 0, effect_right_start = 0, effect_right_reset = 0, effect_right_anim = 0;
+      public effect_right_end = 0, effect_right_move = 0, effect_right_max = 0;
+      public timer0(val) {
+         new v;
+         v = get_int(sbvis_v);
+         if (v) {
+            v = get_int(sbalways_v);
+            if (!v) {
+               emit("do-hide-vbar", "");
+               set_int(sbvis_v, 0);
+            }
+         }
+         v = get_int(sbvis_h);
+         if (v) {
+            v = get_int(sbalways_h);
+            if (!v) {
+               emit("do-hide-hbar", "");
+               set_int(sbvis_h, 0);
+            }
+         }
+         set_int(sbvis_timer, 0);
+         return 0;
+      }
+   }
+   parts {
+      part { name: "bg";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.offset: 0 0;
+            rel2.offset: -1 -1;
+            color: 255 255 255 0;
+         }
+      }
+      part { name: "clipper";
+         type: RECT;
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            rel1.offset: 0 0;
+            rel2.offset: -1 -1;
+         }
+      }
+      part { name: "elm.swallow.content";
+         clip_to: "clipper";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            rel1.offset: 0 0;
+            rel2.offset: -1 -1;
+         }
+      }
+      part { name: "shadow_top";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "shadow_bottom";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "shadow_left";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "shadow_right";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+
+      part { name: "sb_vbar_clip_master";
+         type: RECT;
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+         description { state: "hidden" 0.0;
+            visible: 0;
+            color: 255 255 255 0;
+         }
+      }
+      part { name: "sb_vbar_clip";
+         clip_to: "sb_vbar_clip_master";
+         type: RECT;
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+         description { state: "hidden" 0.0;
+            visible: 0;
+            color: 255 255 255 0;
+         }
+      }
+      part { name: "sb_vbar_right_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: SCROLLER_VBAR_PADDING_RIGHT_SIZE 0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "elm.swallow.content";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "elm.swallow.content";
+            }
+            fixed: 1 0;
+            align: 1.0 0.0;
+         }
+      }
+      part { name: "sb_vbar_top_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 SCROLLER_VBAR_PADDING_TOP_SIZE;
+            max: 0 SCROLLER_VBAR_PADDING_TOP_SIZE;
+            rel2 {
+               relative: 0.0 0.0;
+               to: "sb_vbar_right_padding";
+            }
+            fixed: 1 1;
+            align: 1.0 0.0;
+         }
+      }
+      part { name: "sb_vbar_bottom_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 SCROLLER_VBAR_PADDING_BOTTOM_SIZE;
+            max: 0 SCROLLER_VBAR_PADDING_BOTTOM_SIZE;
+            rel2 {
+               relative: 0.0 1.0;
+               to: "sb_vbar_right_padding";
+            }
+            fixed: 1 1;
+            align: 1.0 1.0;
+         }
+      }
+      part { name: "sb_vbar_left_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: SCROLLER_VBAR_PADDING_LEFT_SIZE 0;
+            rel1 {
+               relative: 0.0 0.0;
+               to: "sb_vbar";
+            }
+            rel2 {
+               relative: 0.0 1.0;
+               to: "sb_vbar";
+            }
+            fixed: 1 0;
+            align: 1.0 0.0;
+         }
+      }
+      part { name: "sb_vbar";
+         type: RECT;
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            visible: 0;
+            min: SCROLLER_VBAR_MIN_SIZE;
+            align: 1.0 0.0;
+            rel1 {
+               relative: 0.0 1.0;
+               to: "sb_vbar_top_padding";
+            }
+            rel2 {
+               relative: 1.0 0.0;
+               to: "sb_vbar_bottom_padding";
+            }
+         }
+      }
+      part { name: "elm.dragable.vbar";
+         type: RECT;
+         clip_to: "sb_vbar_clip";
+         mouse_events: 0;
+         scale: 1;
+         dragable {
+            x: 0 0 0;
+            y: 1 1 0;
+            confine: "sb_vbar";
+         }
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: SCROLLER_VBAR_MIN_SIZE;
+            max: SCROLLER_VBAR_MAX_SIZE;
+            rel1 {
+               relative: 0.5  0.5;
+               to: "sb_vbar";
+            }
+            rel2 {
+               relative: 0.5  0.5;
+               to: "sb_vbar";
+            }
+            color: 102 102 102 255; /*(Changeable UI) color_class: "B071";*/
+         }
+      }
+      part { name: "sb_hbar_clip_master";
+         type: RECT;
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+         description { state: "hidden" 0.0;
+            visible: 0;
+            color: 255 255 255 0;
+         }
+      }
+      part { name: "sb_hbar_clip";
+         clip_to: "sb_hbar_clip_master";
+         type: RECT;
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+         description { state: "hidden" 0.0;
+            visible: 0;
+            color: 255 255 255 0;
+         }
+      }
+      part { name: "sb_hbar_bottom_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 SCROLLER_HBAR_PADDING_BOTTOM_SIZE;
+            rel1 {
+               relative: 0.0 1.0;
+               to: "elm.swallow.content";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "elm.swallow.content";
+            }
+            fixed: 1 1;
+            align: 0.0 1.0;
+         }
+      }
+      part { name: "sb_hbar_left_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: SCROLLER_HBAR_PADDING_LEFT_SIZE 0;
+            max: SCROLLER_HBAR_PADDING_LEFT_SIZE 0;
+            rel2 {
+               relative: 0.0 0.0;
+               to: "sb_hbar_bottom_padding";
+            }
+            fixed: 1 1;
+            align: 0.0 1.0;
+         }
+      }
+      part { name: "sb_hbar_right_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: SCROLLER_HBAR_PADDING_RIGHT_SIZE 0;
+            max: SCROLLER_HBAR_PADDING_RIGHT_SIZE 0;
+            rel2 {
+               relative: 1.0 0.0;
+               to: "sb_hbar_bottom_padding";
+            }
+            fixed: 1 1;
+            align: 1.0 1.0;
+         }
+      }
+      part { name: "sb_hbar_top_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 SCROLLER_HBAR_PADDING_TOP_SIZE;
+            rel1 {
+               relative: 0.0 0.0;
+               to: "sb_hbar";
+            }
+            rel2 {
+               relative: 1.0 0.0;
+               to: "sb_hbar";
+            }
+            fixed: 0 1;
+            align: 0.0 1.0;
+         }
+      }
+      part { name: "sb_hbar";
+         type: RECT;
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            visible: 0;
+            min: SCROLLER_HBAR_MIN_SIZE;
+            align: 0.0 1.0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "sb_hbar_left_padding";
+            }
+            rel2 {
+               relative: 0.0 1.0;
+               to: "sb_hbar_right_padding";
+            }
+         }
+      }
+      part { name: "elm.dragable.hbar";
+         type: RECT;
+         clip_to: "sb_hbar_clip";
+         mouse_events: 0;
+         scale: 1;
+         dragable {
+            x: 1 1 0;
+            y: 0 0 0;
+            confine: "sb_hbar";
+         }
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: SCROLLER_HBAR_MIN_SIZE;
+            max: SCROLLER_HBAR_MAX_SIZE;
+            rel1 {
+               relative: 0.5  0.5;
+               to: "sb_hbar";
+            }
+            rel2 {
+               relative: 0.5  0.5;
+               to: "sb_hbar";
+            }
+            color: 102 102 102 255; /*(Changeable UI) color_class: "B071";*/
+         }
+      }
+      part { name: "disabler";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "clipper";
+            rel2.to: "clipper";
+            color: 0 0 0 0;
+            visible: 0;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            color: 128 128 128 128;
+         }
+      }
+   }
+   programs {
+      program { name: "load";
+         signal: "load";
+         source: "";
+         script {
+            set_state(PART:"sb_hbar_clip", "hidden", 0.0);
+            set_state(PART:"sb_vbar_clip", "hidden", 0.0);
+            set_int(sbvis_h, 0);
+            set_int(sbvis_v, 0);
+            set_int(sbalways_v, 0);
+            set_int(sbalways_h, 0);
+            set_int(sbvis_timer, 0);
+            emit("reload", "elm");
+         }
+      }
+
+      program { name: "vbar_show";
+         signal: "elm,action,show,vbar";
+         source: "elm";
+         action:  STATE_SET "default" 0.0;
+         target: "sb_vbar_clip_master";
+      }
+      program { name: "vbar_hide";
+         signal: "elm,action,hide,vbar";
+         source: "elm";
+         action:  STATE_SET "hidden" 0.0;
+         target: "sb_vbar_clip_master";
+      }
+      program { name: "vbar_show_always";
+         signal: "elm,action,show_always,vbar";
+         source: "elm";
+         script {
+            new v;
+            v = get_int(sbalways_v);
+            if (!v) {
+               set_int(sbalways_v, 1);
+               v = get_int(sbvis_v);
+               if (!v) {
+                  emit("do-show-vbar", "");
+                  set_int(sbvis_v, 1);
+               }
+            }
+         }
+      }
+      program { name: "vbar_show_notalways";
+         signal: "elm,action,show_notalways,vbar";
+         source: "elm";
+         script {
+            new v;
+            v = get_int(sbalways_v);
+            if (v) {
+               set_int(sbalways_v, 0);
+               v = get_int(sbvis_v);
+               if (!v) {
+                  emit("do-hide-vbar", "");
+                  set_int(sbvis_v, 0);
+               }
+            }
+         }
+      }
+      program { name: "sb_vbar_show";
+         signal: "do-show-vbar";
+         source: "";
+         action:  STATE_SET "default" 0.0;
+         target: "sb_vbar_clip";
+      }
+      program { name: "sb_vbar_hide";
+         signal: "do-hide-vbar";
+         source: "";
+         action:  STATE_SET "hidden" 0.0;
+         transition: LINEAR 0.2;
+         target: "sb_vbar_clip";
+      }
+
+      program { name: "hbar_show";
+         signal: "elm,action,show,hbar";
+         source: "elm";
+         action:  STATE_SET "default" 0.0;
+         target: "sb_hbar_clip_master";
+      }
+      program { name: "hbar_hide";
+         signal: "elm,action,hide,hbar";
+         source: "elm";
+         action:  STATE_SET "hidden" 0.0;
+         target: "sb_hbar_clip_master";
+      }
+      program { name: "hbar_show_always";
+         signal: "elm,action,show_always,hbar";
+         source: "elm";
+         script {
+            new v;
+            v = get_int(sbalways_h);
+            if (!v) {
+               set_int(sbalways_h, 1);
+               v = get_int(sbvis_h);
+               if (!v) {
+                  emit("do-show-hbar", "");
+                  set_int(sbvis_h, 1);
+               }
+            }
+         }
+      }
+      program { name: "hbar_show_notalways";
+         signal: "elm,action,show_notalways,hbar";
+         source: "elm";
+         script {
+            new v;
+            v = get_int(sbalways_h);
+            if (v) {
+               set_int(sbalways_h, 0);
+               v = get_int(sbvis_h);
+               if (!v) {
+                  emit("do-hide-hbar", "");
+                  set_int(sbvis_h, 0);
+               }
+            }
+         }
+      }
+      program { name: "sb_hbar_show";
+         signal: "do-show-hbar";
+         source: "";
+         action:  STATE_SET "default" 0.0;
+         target: "sb_hbar_clip";
+      }
+      program { name: "sb_hbar_hide";
+         signal: "do-hide-hbar";
+         source: "";
+         action:  STATE_SET "hidden" 0.0;
+         transition: LINEAR 0.2;
+         target: "sb_hbar_clip";
+      }
+
+      program { name: "scroll";
+         signal: "elm,action,scroll";
+         source: "elm";
+         script {
+            new v;
+            v = get_int(sbvis_v);
+            v |= get_int(sbalways_v);
+            if (!v) {
+               emit("do-show-vbar", "");
+               set_int(sbvis_v, 1);
+            }
+            v = get_int(sbvis_h);
+            v |= get_int(sbalways_h);
+            if (!v) {
+               emit("do-show-hbar", "");
+               set_int(sbvis_h, 1);
+            }
+            v = get_int(sbvis_timer);
+            if (v > 0.0) cancel_timer(v);
+            v = timer(0.2, "timer0", 0);
+            set_int(sbvis_timer, v);
+         }
+      }
+      program { name: "disable";
+         signal: "elm,state,disabled";
+         source: "elm";
+         action: STATE_SET "disabled" 0.0;
+         target: "disabler";
+      }
+      program { name: "enable";
+         signal: "elm,state,enabled";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "disabler";
+      }
+      program { name: "show";
+         signal: "show";
+         source: "";
+         script {
+            new v;
+            emit("do-show-vbar", "");
+            set_int(sbvis_v, 1);
+            v = get_int(sbalways_v);
+            if (!v) {
+              v = get_int(sbvis_timer);
+              if (v > 0.0) cancel_timer(v);
+              v = timer(1.0, "timer0", 0);
+              set_int(sbvis_timer, v);
+            }
+            emit("do-show-hbar", "");
+            set_int(sbvis_h, 1);
+            v = get_int(sbalways_h);
+            if (!v) {
+              v = get_int(sbvis_timer);
+              if (v > 0.0) cancel_timer(v);
+              v = timer(1.0, "timer0", 0);
+              set_int(sbvis_timer, v);
+            }
+         }
+      }
+   }
+}
+
+group { name: "elm/scroller/base/effect";
+   alias: "elm/scroller/base/list_effect";
+   alias: "elm/gengrid/base/default";
+   inherit: "elm/scroller/base/default";
+
+   images {
+      OVERSCROLL_EFFECT_IMAGES
+   }
+
+   parts {
+      part { name: "shadow_top";
+         clip_to: "clipper";
+         type: IMAGE;
+         scale: 1;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            min: 0 END_EFFECT_HORIZONTAL_EDGE_SIZE;
+            max: -1 END_EFFECT_HORIZONTAL_EDGE_SIZE;
+            fixed: 0 1;
+            align: 0.5 1.0;
+            rel1.relative: 0.0 0.0;
+            rel2.relative: 1.0 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            rel1.offset: 0 0;
+            rel2.offset: -1 -1;
+            image {
+               normal: "bouncing_top_edge.png";
+            }
+            color: 0 110 255 255; /*(Changeable UI) color_class: "B019";*/
+         }
+         description { state: "start" 0.0;
+            inherit: "default" 0.0;
+            rel1.offset: 0 END_EFFECT_HORIZONTAL_EDGE_SIZE;
+            rel2.offset: -1 END_EFFECT_HORIZONTAL_EDGE_SIZE-1;
+         }
+      }
+      part { name: "shadow_top_glow";
+         clip_to: "clipper";
+         type: IMAGE;
+         scale: 1;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            min: 0 END_EFFECT_GLOW_MAX_SIZE;
+            max: -1 END_EFFECT_GLOW_MAX_SIZE;
+            fixed: 0 1;
+            align: 0.5 1.0;
+            rel1.relative: 0.0 0.0;
+            rel2.relative: 1.0 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            rel1.offset: 0 0;
+            rel2.offset: -1 -1;
+            image {
+               normal: "bouncing_top_glow.png";
+            }
+            color: 0 110 255 178; /*(Changeable UI) color_class: "B018E";*/
+         }
+         description { state: "start" 0.0;
+            inherit: "default" 0.0;
+            rel1.offset: 0 END_EFFECT_GLOW_MIN_SIZE;
+            rel2.offset: -1 END_EFFECT_GLOW_MIN_SIZE-1;
+         }
+      }
+      part { name: "shadow_bottom";
+         clip_to: "clipper";
+         type: IMAGE;
+         scale: 1;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            min: 0 END_EFFECT_HORIZONTAL_EDGE_SIZE;
+            max: -1 END_EFFECT_HORIZONTAL_EDGE_SIZE;
+            fixed: 0 1;
+            align: 0.5 0.0;
+            rel1.relative: 0.0 1.0;
+            rel2.relative: 1.0 1.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            rel1.offset: 0 0;
+            rel2.offset: -1 -1;
+            image {
+               normal: "bouncing_bottom_edge.png";
+            }
+            color: 0 110 255 255; /*(Changeable UI) color_class: "B019";*/
+         }
+         description { state: "start" 0.0;
+            inherit: "default" 0.0;
+            rel1.offset: 0 -END_EFFECT_HORIZONTAL_EDGE_SIZE;
+            rel2.offset: -1 -END_EFFECT_HORIZONTAL_EDGE_SIZE+1;
+         }
+      }
+      part { name: "shadow_bottom_glow";
+         clip_to: "clipper";
+         type: IMAGE;
+         scale: 1;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            min: 0 END_EFFECT_GLOW_MAX_SIZE;
+            max: -1 END_EFFECT_GLOW_MAX_SIZE;
+            fixed: 0 1;
+            align: 0.5 0.0;
+            rel1.relative: 0.0 1.0;
+            rel2.relative: 1.0 1.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            rel1.offset: 0 0;
+            rel2.offset: -1 -2;
+            image {
+               normal: "bouncing_bottom_glow.png";
+            }
+            color: 0 110 255 178; /*(Changeable UI) color_class: "B018E";*/
+         }
+         description { state: "start" 0.0;
+            inherit: "default" 0.0;
+            rel1.offset: 0 -END_EFFECT_GLOW_MIN_SIZE;
+            rel2.offset: -1 -END_EFFECT_GLOW_MIN_SIZE+1;
+         }
+      }
+      part { name: "shadow_left";
+         clip_to: "clipper";
+         type: IMAGE;
+         scale: 1;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            min: END_EFFECT_VERTICAL_EDGE_SIZE 0;
+            max: END_EFFECT_VERTICAL_EDGE_SIZE -1;
+            fixed: 1 0;
+            align: 1.0 0.5;
+            rel1.relative: 0.0 0.0;
+            rel2.relative: 0.0 1.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            rel1.offset: 0 0;
+            rel2.offset: -1 -1;
+            image {
+               normal: "bouncing_left_edge.png";
+            }
+            color: 0 110 255 255; /*(Changeable UI) color_class: "B019";*/
+         }
+         description { state: "start" 0.0;
+            inherit: "default" 0.0;
+            rel1.offset: END_EFFECT_VERTICAL_EDGE_SIZE 0;
+            rel2.offset: END_EFFECT_VERTICAL_EDGE_SIZE-1 -1;
+         }
+      }
+      part { name: "shadow_left_glow";
+         clip_to: "clipper";
+         type: IMAGE;
+         scale: 1;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            min: END_EFFECT_GLOW_MAX_SIZE 0;
+            max: END_EFFECT_GLOW_MAX_SIZE -1;
+            fixed: 1 1;
+            align: 1.0 0.5;
+            rel1.relative: 0.0 0.0;
+            rel2.relative: 0.0 1.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            rel1.offset: 0 0;
+            rel2.offset: -1 -1;
+            image {
+               normal: "bouncing_left_glow.png";
+            }
+            color: 0 110 255 178; /*(Changeable UI) color_class: "B018E";*/
+         }
+         description { state: "start" 0.0;
+            inherit: "default" 0.0;
+            rel1.offset: END_EFFECT_GLOW_MIN_SIZE 0;
+            rel2.offset: END_EFFECT_GLOW_MIN_SIZE-1 -1;
+         }
+      }
+      part { name: "shadow_right";
+         clip_to: "clipper";
+         type: IMAGE;
+         scale: 1;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            min: END_EFFECT_VERTICAL_EDGE_SIZE 0;
+            max: END_EFFECT_VERTICAL_EDGE_SIZE -1;
+            fixed: 1 0;
+            align: 0.0 0.5;
+            rel1.relative: 1.0 0.0;
+            rel2.relative: 1.0 1.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            rel1.offset: 0 0;
+            rel2.offset: -1 -1;
+            image {
+               normal: "bouncing_right_edge.png";
+            }
+            color: 0 110 255 255; /*(Changeable UI) color_class: "B019";*/
+         }
+         description { state: "start" 0.0;
+            inherit: "default" 0.0;
+            rel1.offset: -END_EFFECT_VERTICAL_EDGE_SIZE 0;
+            rel2.offset: END_EFFECT_VERTICAL_EDGE_SIZE-1 -1;
+         }
+      }
+      part { name: "shadow_right_glow";
+         clip_to: "clipper";
+         type: IMAGE;
+         scale: 1;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            min: END_EFFECT_GLOW_MAX_SIZE 0;
+            max: END_EFFECT_GLOW_MAX_SIZE -1;
+            fixed: 1 0;
+            align: 0.0 0.5;
+            rel1.relative: 1.0 0.0;
+            rel2.relative: 1.0 1.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            rel1.offset: 0 0;
+            rel2.offset: -1 -1;
+            image {
+               normal: "bouncing_right_glow.png";
+            }
+            color: 0 110 255 255; /*(Changeable UI) color_class: "B019";*/
+         }
+         description { state: "start" 0.0;
+            inherit: "default" 0.0;
+            rel1.offset: -END_EFFECT_GLOW_MIN_SIZE 0;
+            rel2.offset: -END_EFFECT_GLOW_MIN_SIZE+1 -1;
+         }
+      }
+   }
+   programs {
+      program { name: "load";
+         script {
+            set_state(PART:"sb_hbar_clip", "hidden", 0.0);
+            set_state(PART:"sb_vbar_clip", "hidden", 0.0);
+            set_int(sbvis_h, 0);
+            set_int(sbvis_v, 0);
+            set_int(sbalways_v, 0);
+            set_int(sbalways_h, 0);
+            set_int(sbvis_timer, 0);
+            set_int(sh_v, 0);
+            emit("reload", "elm");
+         }
+      }
+      program { name: "scroll";
+         signal: "elm,action,scroll";
+         source: "elm";
+         script {
+            new v;
+            v = get_int(sbvis_v);
+            v |= get_int(sbalways_v);
+            if (!v) {
+               emit("do-show-vbar", "");
+               set_int(sbvis_v, 1);
+            }
+            v = get_int(sbvis_h);
+            v |= get_int(sbalways_h);
+            if (!v) {
+               emit("do-show-hbar", "");
+               set_int(sbvis_h, 1);
+            }
+            v = get_int(sbvis_timer);
+            if (v > 0.0) cancel_timer(v);
+            v = timer(0.2, "timer0", 0);
+            set_int(sbvis_timer, v);
+         }
+      }
+      program { name: "edge_top_mouse_down";
+         signal: "elm,state,mouse,down";
+         source: "elm";
+         script {
+            set_int(effect_top_down, 1);
+         }
+      }
+      /* Effect Hide */
+      program { name: "edge_top_mouse_up";
+         signal: "elm,state,mouse,up";
+         source: "elm";
+         script {
+            set_int(effect_top_down, 0);
+            if (get_int(effect_top_start))
+              {
+                 set_int(effect_top_reset, 0);
+                 if (!get_int(effect_top_anim))
+                   {
+                      if (!get_int(effect_top_end))
+                        {
+                           set_int(effect_top_end, 1);
+                           run_program(PROGRAM:"edge_top_end");
+                        }
+                   }
+              }
+         }
+      }
+      program { name: "edge_top_scroll";
+         signal: "elm,action,scroll";
+         source: "elm";
+         script {
+            if (get_int(effect_top_start))
+            {
+               set_state(PART:"shadow_top", "default", 0.0);
+               set_state(PART:"shadow_top_glow", "default", 0.0);
+               set_int(effect_top_reset, 0);
+               run_program(PROGRAM:"edge_top_init");
+            }
+         }
+      }
+      program { name: "edge_top_end";
+         action: STATE_SET "default" 0.0;
+         target: "shadow_top";
+         transition: SINUSOIDAL 0.1;
+         after: "edge_top_glow_end";
+      }
+      program { name: "edge_top_glow_end";
+         action: STATE_SET "default" 0.0;
+         target: "shadow_top_glow";
+         transition: SINUSOIDAL 0.3;
+         after: "edge_top_init";
+      }
+      program { name: "edge_top_init";
+         script {
+            set_int(effect_top_move, 0);
+            if (!get_int(effect_top_reset))
+              set_int(effect_top_start, 0);
+            set_int(effect_top_max, 0);
+            set_int(top_prev_diff, 0);
+            set_int(effect_top_end, 0);
+         }
+      }
+      /* Effect Show */
+      program { name: "edge_top";
+         signal: "elm,edge,top";
+         source: "elm";
+         script {
+             if (!get_int(effect_top_start))
+               {
+                  set_int(effect_top_start, 1);
+                  set_int(effect_top_anim, 1);
+                  run_program(PROGRAM:"edge_top_start");
+               }
+         }
+      }
+      program { name: "edge_top_start";
+         action: STATE_SET "start" 0.0;
+         target: "shadow_top";
+         target: "shadow_top_glow";
+         transition: SINUSOIDAL 0.2;
+         after: "edge_top_after";
+      }
+      program { name: "edge_top_after";
+         script {
+            new xx, yy;
+            get_mouse(xx, yy);
+            set_int(top_down_y, yy);
+            set_int(effect_top_anim, 0);
+            /* mouse down */
+            if (get_int(effect_top_down))
+              {
+                 set_int(effect_top_move, 1);
+              }
+            /* mouse up */
+            else
+              {
+                 set_int(effect_top_reset, 0);
+                 if (!get_int(effect_top_end))
+                   {
+                      set_int(effect_top_end, 1);
+                      run_program(PROGRAM:"edge_top_end");
+                   }
+              }
+         }
+      }
+      program { name: "edge_top_mouse_move";
+         signal: "elm,state,mouse,move";
+         source: "elm";
+         script {
+            if (get_int(effect_top_move))
+              {
+                 new xx, yy;
+                 new Float:fx1, Float:fx2;
+                 get_mouse(xx, yy);
+                 set_int(top_move_y, yy);
+                 set_int(top_diff, (get_int(top_move_y) - get_int(top_down_y)));
+                 if (get_int(top_diff) < get_int(top_prev_diff))
+                   {
+                      set_int(top_prev_diff, 0);
+                      set_int(effect_top_move, 0);
+                      set_int(effect_top_reset, 1);
+                      if (!get_int(effect_top_end))
+                        {
+                           set_int(effect_top_end, 1);
+                           run_program(PROGRAM:"edge_top_end");
+                        }
+                   }
+                 else
+                   {
+                      if (!get_int(effect_top_end))
+                        {
+                          if (get_int(top_diff) <= 90 && !get_int(effect_top_max))
+                            {
+                               fx1 = fx2 = sin(get_int(top_diff), DEGREES);
+                               fx1 = fx1 * END_EFFECT_GLOW_MOVE_CORRECTION_VALUE + END_EFFECT_GLOW_MIN_SIZE;
+                               fx2 = END_EFFECT_HORIZONTAL_EDGE_SIZE;
+                            }
+                          else
+                            {
+                               set_int(effect_top_max, 1);
+                               fx1 = END_EFFECT_GLOW_MAX_SIZE;
+                               fx2 = END_EFFECT_HORIZONTAL_EDGE_SIZE;
+                            }
+                          custom_state(PART:"shadow_top_glow", "default", 0.0);
+                          set_state_val(PART:"shadow_top_glow", STATE_REL1_OFFSET, 0, round(fx1));
+                          set_state_val(PART:"shadow_top_glow", STATE_REL2_OFFSET, -1, round(fx1) - 1);
+                          set_state(PART:"shadow_top_glow", "custom", 0.0);
+
+                          custom_state(PART:"shadow_top", "default", 0.0);
+                          set_state_val(PART:"shadow_top", STATE_REL1_OFFSET, 0, round(fx2));
+                          set_state_val(PART:"shadow_top", STATE_REL2_OFFSET, -1, round(fx2) - 1);
+                          set_state(PART:"shadow_top", "custom", 0.0);
+
+                          set_int(top_prev_diff, get_int(top_diff));
+                        }
+                   }
+             }
+         }
+      }
+      program { name: "edge_bottom_mouse_down";
+         signal: "elm,state,mouse,down";
+         source: "elm";
+         script {
+            set_int(effect_bottom_down, 1);
+         }
+      }
+      /* Effect Hide */
+      program { name: "edge_bottom_mouse_up";
+         signal: "elm,state,mouse,up";
+         source: "elm";
+         script {
+            set_int(effect_bottom_down, 0);
+            if (get_int(effect_bottom_start))
+              {
+                 set_int(effect_bottom_reset, 0);
+                 if (!get_int(effect_bottom_anim))
+                   {
+                      if (!get_int(effect_bottom_end))
+                        {
+                           set_int(effect_bottom_end, 1);
+                           run_program(PROGRAM:"edge_bottom_end");
+                        }
+                   }
+              }
+         }
+      }
+      program { name: "edge_bottom_scroll";
+         signal: "elm,action,scroll";
+         source: "elm";
+         script {
+            if (get_int(effect_bottom_start))
+            {
+               set_state(PART:"shadow_bottom", "default", 0.0);
+               set_state(PART:"shadow_bottom_glow", "default", 0.0);
+               set_int(effect_bottom_reset, 0);
+               run_program(PROGRAM:"edge_bottom_init");
+            }
+         }
+      }
+      program { name: "edge_bottom_end";
+         action: STATE_SET "default" 0.0;
+         target: "shadow_bottom";
+         transition: SINUSOIDAL 0.1;
+         after: "edge_bottom_glow_end";
+      }
+      program { name: "edge_bottom_glow_end";
+         action: STATE_SET "default" 0.0;
+         target: "shadow_bottom_glow";
+         transition: SINUSOIDAL 0.3;
+         after: "edge_bottom_init";
+      }
+      program { name: "edge_bottom_init";
+         script {
+            set_int(effect_bottom_move, 0);
+            if (!get_int(effect_bottom_reset))
+              set_int(effect_bottom_start, 0);
+            set_int(effect_bottom_max, 0);
+            set_int(bottom_prev_diff, 0);
+            set_int(effect_bottom_end, 0);
+         }
+      }
+      /* Effect Show */
+      program { name: "edge_bottom";
+         signal: "elm,edge,bottom";
+         source: "elm";
+         script {
+             if (!get_int(effect_bottom_start))
+               {
+                  set_int(effect_bottom_start, 1);
+                  set_int(effect_bottom_anim, 1);
+                  run_program(PROGRAM:"edge_bottom_start");
+               }
+         }
+      }
+      program { name: "edge_bottom_start";
+         action: STATE_SET "start" 0.0;
+         target: "shadow_bottom";
+         target: "shadow_bottom_glow";
+         transition: SINUSOIDAL 0.2;
+         after: "edge_bottom_after";
+      }
+      program { name: "edge_bottom_after";
+         script {
+            new xx, yy;
+            get_mouse(xx, yy);
+            set_int(effect_bottom_anim, 0);
+            set_int(bottom_down_y, yy);
+            /* mouse down */
+            if (get_int(effect_bottom_down))
+              {
+                 set_int(effect_bottom_move, 1);
+              }
+            /* mouse up */
+            else
+              {
+                 set_int(effect_bottom_reset, 0);
+                 if (!get_int(effect_bottom_end))
+                   {
+                      set_int(effect_bottom_end, 1);
+                      run_program(PROGRAM:"edge_bottom_end");
+                   }
+              }
+         }
+      }
+      program { name: "edge_bottom_mouse_move";
+         signal: "elm,state,mouse,move";
+         source: "elm";
+         script {
+            if (get_int(effect_bottom_move))
+              {
+                 new xx, yy;
+                 new Float:fx1, Float:fx2;
+                 get_mouse(xx, yy);
+                 set_int(bottom_move_y, yy);
+                 set_int(bottom_diff, (get_int(bottom_down_y) - get_int(bottom_move_y)));
+                 if (get_int(bottom_diff) < get_int(bottom_prev_diff))
+                   {
+                      set_int(bottom_prev_diff, 0);
+                      set_int(effect_bottom_move, 0);
+                      set_int(effect_bottom_reset, 1);
+                      if (!get_int(effect_bottom_end))
+                        {
+                           set_int(effect_bottom_end, 1);
+                           run_program(PROGRAM:"edge_bottom_end");
+                        }
+                   }
+                 else
+                   {
+                      if (!get_int(effect_bottom_end))
+                        {
+                           if (get_int(bottom_diff) <= 90 && !get_int(effect_bottom_max))
+                             {
+                                fx1 = fx2 =  sin(get_int(bottom_diff), DEGREES);
+                                fx1 = fx1 * END_EFFECT_GLOW_MOVE_CORRECTION_VALUE + END_EFFECT_GLOW_MIN_SIZE;
+                                fx2 = END_EFFECT_HORIZONTAL_EDGE_SIZE;
+                             }
+                           else
+                             {
+                                set_int(effect_bottom_max, 1);
+                                fx1 = END_EFFECT_GLOW_MAX_SIZE;
+                                fx2 = END_EFFECT_HORIZONTAL_EDGE_SIZE;
+                             }
+                           custom_state(PART:"shadow_bottom_glow", "default", 0.0);
+                           set_state_val(PART:"shadow_bottom_glow", STATE_REL1_OFFSET, 0, round(fx1) * -1);
+                           set_state_val(PART:"shadow_bottom_glow", STATE_REL2_OFFSET, -1, (round(fx1) - 1) * -1);
+                           set_state(PART:"shadow_bottom_glow", "custom", 0.0);
+
+                           custom_state(PART:"shadow_bottom", "default", 0.0);
+                           set_state_val(PART:"shadow_bottom", STATE_REL1_OFFSET, 0, round(fx2) * -1);
+                           set_state_val(PART:"shadow_bottom", STATE_REL2_OFFSET, -1, (round(fx2) - 1) * -1);
+                           set_state(PART:"shadow_bottom", "custom", 0.0);
+
+                           set_int(bottom_prev_diff, get_int(bottom_diff));
+                        }
+                   }
+             }
+         }
+      }
+      program { name: "edge_left_mouse_down";
+         signal: "elm,state,mouse,down";
+         source: "elm";
+         script {
+            set_int(effect_left_down, 1);
+         }
+      }
+      /* Effect Hide */
+      program { name: "edge_left_mouse_up";
+         signal: "elm,state,mouse,up";
+         source: "elm";
+         script {
+            set_int(effect_left_down, 0);
+            if (get_int(effect_left_start))
+              {
+                 set_int(effect_left_reset, 0);
+                 if (!get_int(effect_left_anim))
+                   {
+                      if (!get_int(effect_left_end))
+                        {
+                           set_int(effect_left_end, 1);
+                           run_program(PROGRAM:"edge_left_end");
+                        }
+                   }
+              }
+         }
+      }
+      program { name: "edge_left_scroll";
+         signal: "elm,action,scroll";
+         source: "elm";
+         script {
+            if (get_int(effect_left_start))
+            {
+               set_state(PART:"shadow_left", "default", 0.0);
+               set_state(PART:"shadow_left_glow", "default", 0.0);
+               set_int(effect_left_reset, 0);
+               run_program(PROGRAM:"edge_left_init");
+            }
+         }
+      }
+      program { name: "edge_left_end";
+         action: STATE_SET "default" 0.0;
+         target: "shadow_left";
+         transition: SINUSOIDAL 0.1;
+         after: "edge_left_glow_end";
+      }
+      program { name: "edge_left_glow_end";
+         action: STATE_SET "default" 0.0;
+         target: "shadow_left_glow";
+         transition: SINUSOIDAL 0.3;
+         after: "edge_left_init";
+      }
+      program { name: "edge_left_init";
+         script {
+            set_int(effect_left_move, 0);
+            if (!get_int(effect_left_reset))
+              set_int(effect_left_start, 0);
+            set_int(effect_left_max, 0);
+            set_int(left_prev_diff, 0);
+            set_int(effect_left_end, 0);
+         }
+      }
+      /* Effect Show */
+      program { name: "edge_left";
+         signal: "elm,edge,left";
+         source: "elm";
+         script {
+             if (!get_int(effect_left_start))
+               {
+                  set_int(effect_left_start, 1);
+                  set_int(effect_left_anim, 1);
+                  run_program(PROGRAM:"edge_left_start");
+               }
+         }
+      }
+      program { name: "edge_left_start";
+         action: STATE_SET "start" 0.0;
+         target: "shadow_left";
+         target: "shadow_left_glow";
+         transition: SINUSOIDAL 0.2;
+         after: "edge_left_after";
+      }
+      program { name: "edge_left_after";
+         script {
+            new xx, yy;
+            get_mouse(xx, yy);
+            set_int(left_down_x, xx);
+            set_int(effect_left_anim, 0);
+            /* mouse down */
+            if (get_int(effect_left_down))
+              {
+                 set_int(effect_left_move, 1);
+              }
+            /* mouse up */
+            else
+              {
+                 set_int(effect_left_reset, 0);
+                 if (!get_int(effect_left_end))
+                   {
+                      set_int(effect_left_end, 1);
+                      run_program(PROGRAM:"edge_left_end");
+                   }
+              }
+         }
+      }
+      program { name: "edge_left_mouse_move";
+         signal: "elm,state,mouse,move";
+         source: "elm";
+         script {
+            if (get_int(effect_left_move))
+              {
+                 new xx, yy;
+                 new Float:fx1, Float:fx2;
+                 get_mouse(xx, yy);
+                 set_int(left_move_x, xx);
+                 set_int(left_diff, (get_int(left_move_x) - get_int(left_down_x)));
+                 if (get_int(left_diff) < get_int(left_prev_diff))
+                   {
+                      set_int(left_prev_diff, 0);
+                      set_int(effect_left_move, 0);
+                      set_int(effect_left_reset, 1);
+                      if (!get_int(effect_left_end))
+                        {
+                           set_int(effect_left_end, 1);
+                           run_program(PROGRAM:"edge_left_end");
+                        }
+                   }
+                 else
+                   {
+                      if (!get_int(effect_left_end))
+                        {
+                           if (get_int(left_diff) <= 90 && !get_int(effect_left_max))
+                             {
+                                fx1 = sin(get_int(left_diff), DEGREES);
+                                fx1 = fx1 * END_EFFECT_GLOW_MOVE_CORRECTION_VALUE + END_EFFECT_GLOW_MIN_SIZE;
+                                fx2 = END_EFFECT_VERTICAL_EDGE_SIZE;
+                             }
+                           else
+                             {
+                                set_int(effect_left_max, 1);
+                                fx1 = END_EFFECT_GLOW_MAX_SIZE;
+                                fx2 = END_EFFECT_VERTICAL_EDGE_SIZE;
+                             }
+                           custom_state(PART:"shadow_left_glow", "default", 0.0);
+                           set_state_val(PART:"shadow_left_glow", STATE_REL1_OFFSET, round(fx1), 0);
+                           set_state_val(PART:"shadow_left_glow", STATE_REL2_OFFSET, round(fx1) - 1, -1);
+                           set_state(PART:"shadow_left_glow", "custom", 0.0);
+
+                           custom_state(PART:"shadow_left", "default", 0.0);
+                           set_state_val(PART:"shadow_left", STATE_REL1_OFFSET, round(fx2), 0);
+                           set_state_val(PART:"shadow_left", STATE_REL2_OFFSET, round(fx2) - 1, -1);
+                           set_state(PART:"shadow_left", "custom", 0.0);
+
+                           set_int(left_prev_diff, get_int(left_diff));
+                        }
+                   }
+             }
+         }
+      }
+      program { name: "edge_right_mouse_down";
+         signal: "elm,state,mouse,down";
+         source: "elm";
+         script {
+            set_int(effect_right_down, 1);
+         }
+      }
+      /* Effect Hide */
+      program { name: "edge_right_mouse_up";
+         signal: "elm,state,mouse,up";
+         source: "elm";
+         script {
+            set_int(effect_right_down, 0);
+            if (get_int(effect_right_start))
+              {
+                 set_int(effect_right_reset, 0);
+                 if (!get_int(effect_right_anim))
+                   {
+                      if (!get_int(effect_right_end))
+                        {
+                           set_int(effect_right_end, 1);
+                           run_program(PROGRAM:"edge_right_end");
+                        }
+                   }
+              }
+         }
+      }
+      program { name: "edge_right_scroll";
+         signal: "elm,action,scroll";
+         source: "elm";
+         script {
+            if (get_int(effect_right_start))
+            {
+               set_state(PART:"shadow_right", "default", 0.0);
+               set_state(PART:"shadow_right_glow", "default", 0.0);
+               set_int(effect_right_reset, 0);
+               run_program(PROGRAM:"edge_right_init");
+            }
+         }
+      }
+      program { name: "edge_right_end";
+         action: STATE_SET "default" 0.0;
+         target: "shadow_right";
+         transition: SINUSOIDAL 0.1;
+         after: "edge_right_glow_end";
+      }
+      program { name: "edge_right_glow_end";
+         action: STATE_SET "default" 0.0;
+         target: "shadow_right_glow";
+         transition: SINUSOIDAL 0.3;
+         after: "edge_right_init";
+      }
+      program { name: "edge_right_init";
+         script {
+            set_int(effect_right_move, 0);
+            if (!get_int(effect_right_reset))
+              set_int(effect_right_start, 0);
+            set_int(effect_right_max, 0);
+            set_int(right_prev_diff, 0);
+            set_int(effect_right_end, 0);
+         }
+      }
+      /* Effect Show */
+      program { name: "edge_right";
+         signal: "elm,edge,right";
+         source: "elm";
+         script {
+             if (!get_int(effect_right_start))
+               {
+                  set_int(effect_right_start, 1);
+                  set_int(effect_right_anim, 1);
+                  run_program(PROGRAM:"edge_right_start");
+               }
+         }
+      }
+      program { name: "edge_right_start";
+         action: STATE_SET "start" 0.0;
+         target: "shadow_right";
+         target: "shadow_right_glow";
+         transition: SINUSOIDAL 0.2;
+         after: "edge_right_after";
+      }
+      program { name: "edge_right_after";
+         script {
+            new xx, yy;
+            get_mouse(xx, yy);
+            set_int(right_down_x, xx);
+            set_int(effect_right_anim, 0);
+            /* mouse down */
+            if (get_int(effect_right_down))
+              {
+                 set_int(effect_right_move, 1);
+              }
+            /* mouse up */
+            else
+              {
+                 set_int(effect_right_reset, 0);
+                 if (!get_int(effect_right_end))
+                   {
+                      set_int(effect_right_end, 1);
+                      run_program(PROGRAM:"edge_right_end");
+                   }
+              }
+         }
+      }
+      program { name: "edge_right_mouse_move";
+         signal: "elm,state,mouse,move";
+         source: "elm";
+         script {
+            if (get_int(effect_right_move))
+              {
+                 new xx, yy;
+                 new Float:fx1, Float:fx2;
+                 get_mouse(xx, yy);
+                 set_int(right_move_x, xx);
+                 set_int(right_diff, (get_int(right_down_x) - get_int(right_move_x)));
+                 if (get_int(right_diff) < get_int(right_prev_diff))
+                   {
+                      set_int(right_prev_diff, 0);
+                      set_int(effect_right_move, 0);
+                      set_int(effect_right_reset, 1);
+                      if (!get_int(effect_right_end))
+                        {
+                           set_int(effect_right_end, 1);
+                           run_program(PROGRAM:"edge_right_end");
+                        }
+                   }
+                 else
+                   {
+                      if (!get_int(effect_right_end))
+                        {
+                           if (get_int(right_diff) <= 90 && !get_int(effect_right_max))
+                             {
+                                fx1 = sin(get_int(right_diff), DEGREES);
+                                fx1 = fx1 * END_EFFECT_GLOW_MOVE_CORRECTION_VALUE + END_EFFECT_GLOW_MIN_SIZE;
+                                fx2 = END_EFFECT_VERTICAL_EDGE_SIZE;
+                             }
+                           else
+                             {
+                                set_int(effect_right_max, 1);
+                                fx1 = END_EFFECT_GLOW_MAX_SIZE;
+                                fx2 = END_EFFECT_VERTICAL_EDGE_SIZE;
+                             }
+                           custom_state(PART:"shadow_right_glow", "default", 0.0);
+                           set_state_val(PART:"shadow_right_glow", STATE_REL1_OFFSET, round(fx1) * -1, 0);
+                           set_state_val(PART:"shadow_right_glow", STATE_REL2_OFFSET, (round(fx1) - 1) * -1, -1);
+                           set_state(PART:"shadow_right_glow", "custom", 0.0);
+
+                           custom_state(PART:"shadow_right", "default", 0.0);
+                           set_state_val(PART:"shadow_right", STATE_REL1_OFFSET, round(fx2) * -1, 0);
+                           set_state_val(PART:"shadow_right", STATE_REL2_OFFSET, (round(fx2) - 1) * -1, -1);
+                           set_state(PART:"shadow_right", "custom", 0.0);
+
+                           set_int(right_prev_diff, get_int(right_diff));
+                        }
+                   }
+             }
+         }
+      }
+   }
+}
+
+group { name: "elm/scroller/contents/default";
+   parts {
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "elm.swallow.content_r";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            align: 0.0 0.0;
+            rel1 {
+                relative: 1.0 0.0;
+                to: "elm.swallow.content";
+            }
+            rel2 {
+                relative: 1.0 1.0;
+                to: "elm.swallow.content";
+            }
+         }
+      }
+      part { name: "elm.swallow.content_b";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            fixed: 0 1;
+            align: 0.0 0.0;
+            rel1 {
+                relative: 0.0 1.0;
+                to: "elm.swallow.content";
+            }
+            rel2 {
+                relative: 1.0 1.0;
+                to: "elm.swallow.content";
+            }
+         }
+      }
+      part { name: "elm.swallow.content_rb";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            align: 0.0 0.0;
+            rel1 {
+                relative: 1.0 1.0;
+                to: "elm.swallow.content";
+            }
+            rel2 {
+                relative: 1.0 1.0;
+                to: "elm.swallow.content";
+            }
+         }
+      }
+   }
+}
+
+group { name: "elm/genlist/base/no_effect";
+   alias: "elm/list/base/no_effect";
+   inherit: "elm/scroller/base/default";
+
+   parts {
+      part { name: "bg";
+         description { state: "default" 0.0;
+            color: 255 255 255 255;
+            color: 0 19 35 255; /*(Changeable UI) color_class: "B011";*/
+         }
+      }
+   }
+}
+
+group { name: "elm/genlist/base/default";
+   alias: "elm/list/base/default";
+   inherit: "elm/scroller/base/effect";
+
+   parts {
+      part { name: "bg";
+         description { state: "default" 0.0;
+            color: 255 255 255 255;
+            color: 0 19 35 255; /*(Changeable UI) color_class: "B011";*/
+         }
+      }
+   }
+}
+
+
+group { name: "elm/genlist/base/transparent";
+   alias: "elm/genlist/base/popup";
+   alias: "elm/list/base/transparent";
+   alias: "elm/list/base/popup";
+   inherit: "elm/genlist/base/default";
+
+   parts {
+      part { name: "bg";
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+      }
+   }
+}

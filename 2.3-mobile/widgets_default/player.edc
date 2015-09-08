@@ -1,0 +1,379 @@
+#define BSZ 64
+
+group {
+   name: "elm/player/base/default";
+   parts {
+      part { name: "elm.padding.left-top"; 
+         type: SPACER; 
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: PLAYER_PADDING_DEFAULT_INC PLAYER_PADDING_DEFAULT_INC;
+            align: 0 0;
+            rel2.relative: 0 0;
+         }
+      }    
+      part { name: "elm.padding.left-bottom"; 
+         type: SPACER;  
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: PLAYER_PADDING_DEFAULT_INC PLAYER_PADDING_DEFAULT_INC;
+            align: 0 1;
+            rel1.relative: 0 1;
+            rel2.relative: 0 1;
+         }
+      }
+      part { name: "elm.padding.right-top"; 
+         type: SPACER;  
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: PLAYER_PADDING_DEFAULT_INC PLAYER_PADDING_DEFAULT_INC;
+            align: 1 0;
+            rel1.relative: 1 0;
+            rel2.relative: 1 0;
+         }
+      }  
+      part { name: "elm.padding.right-bottom"; 
+         type: SPACER;  
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: PLAYER_PADDING_DEFAULT_INC PLAYER_PADDING_DEFAULT_INC;
+            align: 1 1;
+            rel1.relative: 1 1;
+         }
+      }
+      part { name: "media_player/slider"; 
+         type: SWALLOW;  
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 0 1;
+            align: 0.5 0.0;
+            rel1 {
+               to: "elm.padding.left-top";
+               relative: 1 1;
+            }
+            rel2 {
+               to: "elm.padding.right-top";
+               relative: 0 1;
+            }
+         }
+      }
+      part { name: "elm.padding.rewind.left-top"; 
+         type: SPACER;  
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: PLAYER_PADDING_DEFAULT_INC PLAYER_PADDING_DEFAULT_INC;
+            align: 0 0;
+            rel1 {
+               to_x: "elm.padding.left-top";
+               to_y: "media_player/slider";
+               relative: 1 1;
+            }
+            rel2 {
+               to_x: "elm.padding.left-top";
+               to_y: "media_player/slider";
+               relative: 1 1;
+            }
+         }
+      }
+      part { name: "media_player/rewind"; 
+         type: SWALLOW;  
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: PLAYER_BUTTON_WIDTH PLAYER_BUTTON_HEIGHT;
+            align: 0.0 1.0;
+            rel1 {
+               to: "elm.padding.rewind.left-top";
+               relative: 0 1;
+            }
+            rel2 {
+               to: "elm.padding.left-bottom";
+               relative: 1 0;
+            }
+         }
+      }
+      part { name: "elm.padding.rewind.right"; 
+         type: SPACER;  
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: PLAYER_PADDING_DEFAULT_INC 0;
+            align: 0 0;
+            rel1 {
+               to: "media_player/rewind";
+               relative: 1 0;
+            }
+            rel2 {
+               to: "media_player/rewind";
+               relative: 1 1;
+            }
+         }
+      }
+      part { name: "media_player/prev"; 
+         type: SWALLOW;  
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: PLAYER_BUTTON_WIDTH PLAYER_BUTTON_HEIGHT;
+            align: 0.0 1.0;
+            rel1 { 
+               to_x: "elm.padding.rewind.right";
+               to_y: "media_player/rewind";
+               relative: 1.0 0.0;
+            }
+            rel2 { 
+               to_x: "elm.padding.rewind.right";
+               to_y: "media_player/rewind";
+               relative: 1.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.padding.prev.right"; 
+         type: SPACER;  
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: PLAYER_PADDING_DEFAULT_INC 0;
+            align: 0 0;
+            rel1 {
+               to: "media_player/prev";
+               relative: 1 0;
+            }
+            rel2 {
+               to: "media_player/prev";
+               relative: 1 1;
+            }
+         }
+      }
+      part { name: "media_player/play";
+         type: SWALLOW; 
+         scale: 1; 
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: PLAYER_BUTTON_WIDTH PLAYER_BUTTON_HEIGHT;
+            align: 0.0 1.0;
+            rel1 { 
+               to_x: "elm.padding.prev.right";
+               to_y: "media_player/prev";
+               relative: 1.0 0.0;
+            }
+            rel2 { 
+               to_x: "elm.padding.prev.right";
+               to_y: "media_player/prev";
+               relative: 1.0 1.0;
+            }
+         }
+         description { state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+      part { name: "media_player/pause"; 
+         type: SWALLOW; 
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "media_player/play";
+            rel2.to: "media_player/play";
+         }
+         description { state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+      part { name: "elm.padding.play.right"; 
+         type: SPACER;  
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: PLAYER_PADDING_DEFAULT_INC 0;
+            align: 0 0;
+            rel1 {
+               to: "media_player/play";
+               relative: 1 0;
+            }
+            rel2 {
+               to: "media_player/play";
+               relative: 1 1;
+            }
+         }
+      }
+      part { name: "media_player/info"; 
+         type: SWALLOW;  
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: PLAYER_BUTTON_WIDTH PLAYER_BUTTON_HEIGHT;
+            align: 0.0 1.0;
+            rel1 { 
+               to_x: "elm.padding.play.right";
+               to_y: "media_player/play";
+               relative: 1.0 0.0;
+            }
+            rel2 { 
+               to_x: "elm.padding.play.right";
+               to_y: "media_player/play";
+               relative: 1.0 1.0;
+            }
+         }
+         description { state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+      part { name: "elm.padding.info.right"; 
+         type: SPACER;  
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: PLAYER_PADDING_DEFAULT_INC 0;
+            align: 0 0;
+            rel1 {
+               to: "media_player/info";
+               relative: 1 0;
+            }
+            rel2 {
+               to: "media_player/info";
+               relative: 1 1;
+            }
+         }
+      }
+      part { name: "media_player/stop"; 
+         type: SWALLOW;  
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: PLAYER_BUTTON_WIDTH PLAYER_BUTTON_HEIGHT;
+            align: 0.0 1.0;
+            rel1 { 
+               to_x: "elm.padding.info.right";
+               to_y: "media_player/info";
+               relative: 1.0 0.0;
+            }
+            rel2 { 
+               to_x: "elm.padding.info.right";
+               to_y: "media_player/info";
+               relative: 1.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.padding.stop.right"; 
+         type: SPACER;  
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: PLAYER_PADDING_DEFAULT_INC 0;
+            align: 0 0;
+            rel1 {
+               to: "media_player/stop";
+               relative: 1 0;
+            }
+            rel2 {
+               to: "media_player/stop";
+               relative: 1 1;
+            }
+         }
+      }
+      part { name: "media_player/next";
+         type: SWALLOW;  
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: PLAYER_BUTTON_WIDTH PLAYER_BUTTON_HEIGHT;
+            align: 0.0 1.0;
+            rel1 { 
+               to_x: "elm.padding.stop.right";
+               to_y: "media_player/stop";
+               relative: 1.0 0.0;
+            }
+            rel2 { 
+               to_x: "elm.padding.stop.right";
+               to_y: "media_player/stop";
+               relative: 1.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.padding.next.right"; 
+         type: SPACER;  
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: PLAYER_PADDING_DEFAULT_INC 0;
+            align: 0 0;
+            rel1 {
+               to: "media_player/next";
+               relative: 1 0;
+            }
+            rel2 {
+               to: "media_player/next";
+               relative: 1 1;
+            }
+         }
+      }
+      
+      part { name: "media_player/forward"; 
+         type: SWALLOW;  
+         scale: 1;
+         description { state: "default" 0.0;
+            min: PLAYER_BUTTON_WIDTH PLAYER_BUTTON_HEIGHT;
+            align: 0 1.0;
+            fixed: 0 1;
+            rel1 { 
+               to_x: "elm.padding.next.right";
+               to_y: "media_player/next";
+               relative: 1.0 0.0;
+            }
+            rel2 { 
+               to: "elm.padding.right-bottom";
+               relative: 0 0;
+            }
+         }
+      }
+   }
+   programs {
+      program {
+         signal: "show";
+         source: "";
+         after: "pause/0";
+      }
+      program {
+         signal: "elm,player,play";
+         source: "elm";
+         after: "play/0";
+      }
+      program {
+         signal: "elm,player,pause";
+         source: "elm";
+         after: "pause/0";
+      }
+      program {
+         name: "play/0";
+         action: STATE_SET "hidden" 0.0;
+         target: "media_player/play";
+         after: "play/1";
+      }
+      program {
+         name: "play/1";
+         action: STATE_SET "default" 0.0;
+         target: "media_player/pause";
+      }
+      program {
+         name: "pause/0";
+         action: STATE_SET "hidden" 0.0;
+         target: "media_player/pause";
+         after: "pause/1";
+      }
+      program {
+         name: "pause/1";
+         action: STATE_SET "default" 0.0;
+         target: "media_player/play";
+      }
+   }
+}
+
+

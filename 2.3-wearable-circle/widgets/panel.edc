@@ -1,0 +1,1909 @@
+/*
+ * Copyright (c) 2013 Samsung Electronics Co., Ltd. All rights reserved.
+ *
+ * Licensed under the Flora License, Version 1.1 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://floralicense.org/license/
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+group { name: "elm/scroller/panel/default";
+   data {
+      item: "handler_size" "24";
+   }
+   parts {
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+         }
+      }
+   }
+}
+
+group { name: "elm/scroller/panel/fastscroll";
+   data {
+      item: "handler_size" "180";
+      item: "timer_duration" "0.01";
+   }
+   parts {
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+         }
+      }
+   }
+}
+
+group { name: "elm/scroller/panel/left/default";
+   alias: "elm/scroller/panel/left/fastscroll";
+   parts {
+      part { name: "panel_area";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel2.relative: 0.0 1.0;
+            align: 0.0 0.5;
+            fixed: 1 1;
+            visible: 0;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part { name: "event_area";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "panel_area";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "panel_area";
+            }
+            align: 0.0 0.5;
+            fixed: 1 1;
+            visible: 0;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part { name: "access.outline";
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            rel1.to: "panel_area";
+            rel2.to: "panel_area";
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "bg";
+         type: RECT;
+         description { state: "default" 0.0;
+            rel1.to: "panel_area";
+            rel2.to: "panel_area";
+            color: 0 0 0 0;
+            visible: 0;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1.to: "panel_area";
+            rel2.to: "panel_area";
+            visible: 0;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+   }
+   programs {
+      program { name: "active";
+         signal: "elm,state,content,visible";
+         source: "elm";
+         action: STATE_SET "visible" 0.0;
+         target: "panel_area";
+         target: "event_area";
+         target: "bg";
+         target: "elm.swallow.content";
+      }
+      program { name: "inactive";
+         signal: "elm,state,content,hidden";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "panel_area";
+         target: "event_area";
+         target: "bg";
+         target: "elm.swallow.content";
+      }
+   }
+}
+
+group { name: "elm/scroller/panel/right/default";
+   images {
+      image: "b_more_option.png" COMP;
+      image: "b_more_option_ef.png" COMP;
+      image: "b_more_option_bg.png" COMP;
+   }
+   parts {
+      part { name: "event_area";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel2.relative: 0.0 1.0;
+            align: 0.0 0.5;
+            fixed: 1 1;
+            visible: 0;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part { name: "panel_area";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1 {
+               relative: 1.0 0.0;
+               to: "event_area";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "event_area";
+            }
+            align: 0.0 0.5;
+            fixed: 1 1;
+            visible: 0;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part { name: "access.outline";
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            rel1.to: "panel_area";
+            rel2.to: "panel_area";
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "bg";
+         description { state: "default" 0.0;
+            rel1.to: "panel_area";
+            rel1.offset: -1 -1;
+            rel2.to: "panel_area";
+            rel2.offset: 0 0;
+            color: 7 7 7 204;
+            image.normal: "b_more_option_bg.png";
+            visible: 0;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1.to: "panel_area";
+            rel2.to: "panel_area";
+            visible: 0;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part { name: "padding.indicator";
+         type: SPACER;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_PADDING_SIZE_INC 0;
+            max: PANEL_RIGHT_PADDING_SIZE_INC -1;
+            fixed: 1 0;
+            rel1.to: "elm.swallow.content";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "elm.swallow.content";
+            rel2.relative: 0.0 1.0;
+            align: 1.0 0.5;
+        }
+      }
+      part { name: "indicator";
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_IMAGE_SIZE_INC;
+            max: PANEL_RIGHT_IMAGE_SIZE_INC;
+            fixed: 1 0;
+            image.normal: "b_more_option.png";
+            color: 249 249 249 204;
+            rel1.to: "padding.indicator";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "padding.indicator";
+            rel2.relative: 0.0 1.0;
+            align: 1.0 0.5;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 249 249 249 51;
+         }
+         description { state: "hide" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+      part { name: "indicator_ef";
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_IMAGE_SIZE_INC;
+            max: PANEL_RIGHT_IMAGE_SIZE_INC;
+            fixed: 1 0;
+            image.normal: "b_more_option_ef.png";
+            color: 7 7 7 0;
+            rel1.to: "indicator";
+            rel2.to: "indicator";
+         }
+         description { state: "hide" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+   }
+   programs {
+      program { name: "active";
+         signal: "elm,state,content,visible";
+         source: "elm";
+         action: STATE_SET "visible" 0.0;
+         target: "panel_area";
+         target: "event_area";
+         target: "bg";
+         target: "elm.swallow.content";
+         after: "indicator_hide";
+      }
+      program { name: "inactive";
+         signal: "elm,state,content,hidden";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "panel_area";
+         target: "event_area";
+         target: "bg";
+         target: "elm.swallow.content";
+         after: "indicator_show";
+      }
+      program { name: "indicator_hide";
+         action: STATE_SET "hide" 0.0;
+         target: "indicator";
+         target: "indicator_ef";
+      }
+      program { name: "indicator_show";
+         action: STATE_SET "default" 0.0;
+         target: "indicator";
+         target: "indicator_ef";
+      }
+      program { name: "disable";
+         signal: "elm,state,disabled";
+         source: "elm";
+         action: STATE_SET "disabled" 0.0;
+         target: "indicator";
+      }
+      program { name: "enable";
+         signal: "elm,state,enabled";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "indicator";
+      }
+   }
+}
+
+group { name: "elm/scroller/panel/top/default";
+   parts {
+      part { name: "panel_area";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel2.relative: 1.0 0.0;
+            align: 0.5 0.0;
+            fixed: 1 1;
+            visible: 0;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part { name: "event_area";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1 {
+               relative: 0.0 1.0;
+               to: "panel_area";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "panel_area";
+            }
+            align: 0.5 0.0;
+            fixed: 1 1;
+            visible: 0;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part { name: "access.outline";
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            rel1.to: "panel_area";
+            rel2.to: "panel_area";
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "bg";
+         type: RECT;
+         description { state: "default" 0.0;
+            rel1.to: "panel_area";
+            rel2.to: "panel_area";
+            color: 0 0 0 0;
+            visible: 0;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1.to: "panel_area";
+            rel2.to: "panel_area";
+            visible: 0;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+   }
+   programs {
+      program { name: "active";
+         signal: "elm,state,content,visible";
+         source: "elm";
+         action: STATE_SET "visible" 0.0;
+         target: "panel_area";
+         target: "event_area";
+         target: "bg";
+         target: "elm.swallow.content";
+      }
+      program { name: "inactive";
+         signal: "elm,state,content,hidden";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "panel_area";
+         target: "event_area";
+         target: "bg";
+         target: "elm.swallow.content";
+      }
+   }
+}
+
+group { name: "elm/scroller/panel/bottom/default";
+   parts {
+      part { name: "event_area";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel2.relative: 1.0 0.0;
+            align: 0.5 0.0;
+            fixed: 1 1;
+            visible: 0;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part { name: "panel_area";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1 {
+               relative: 0.0 1.0;
+               to: "event_area";
+            }
+            rel2 {
+               relative: 1.0 1.0;
+               to: "event_area";
+            }
+            align: 0.5 0.0;
+            fixed: 1 1;
+            visible: 0;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part { name: "access.outline";
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            rel1.to: "panel_area";
+            rel2.to: "panel_area";
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "bg";
+         type: RECT;
+         description { state: "default" 0.0;
+            rel1.to: "panel_area";
+            rel2.to: "panel_area";
+            color: 0 0 0 0;
+            visible: 0;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1.to: "panel_area";
+            rel2.to: "panel_area";
+            visible: 0;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+   }
+   programs {
+      program { name: "active";
+         signal: "elm,state,content,visible";
+         source: "elm";
+         action: STATE_SET "visible" 0.0;
+         target: "panel_area";
+         target: "event_area";
+         target: "bg";
+         target: "elm.swallow.content";
+      }
+      program { name: "inactive";
+         signal: "elm,state,content,hidden";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "panel_area";
+         target: "event_area";
+         target: "bg";
+         target: "elm.swallow.content";
+      }
+   }
+}
+
+group { name: "elm/panel/top/circle/default";
+   alias: "elm/panel/top/default";
+   images {
+      image: "b_more_option_bg.png" COMP;
+      image: "b_ic_press_full_circle_bg.png" COMP;
+   }
+   script {
+      public mouse_down = 0;
+      public mouse_click = 0;
+      public multi_down = 0;
+      public click_cnt = 0;
+      public event_down = 0;
+      public cue_hide = 0;
+      public timer0(val) {
+        if(val == 1)
+           run_program(PROGRAM:"change_opacity");
+        else if(val == 2)
+           run_program(PROGRAM:"change_opacity2");
+      }
+   }
+   data.item: "focus_highlight" "off";
+   parts {
+      part { name: "bg";
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_LAYOUT_SIZE_INC;
+            max: PANEL_LAYOUT_SIZE_INC;
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "cue.padding";
+         type: SPACER;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 0.0;
+            align: 0.5 0.0;
+            min: 0 PANEL_RIGHT_PADDING_SIZE_INC;
+            max: -1 PANEL_RIGHT_PADDING_SIZE_INC;
+            fixed: 0 1;
+         }
+      }
+      part { name: "cue";
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_IMAGE_SIZE_INC;
+            max: PANEL_RIGHT_IMAGE_SIZE_INC;
+            fixed: 0 1;
+            image.normal: "b_more_option.png";
+            color: 250 250 250 255;
+            rel1.to: "cue.padding";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "cue.padding";
+            rel2.relative: 1.0 0.0;
+            align: 0.5 0.0;
+            map {
+               on: 1;
+               perspective_on: 1;
+               rotation {
+                  x: 0.0;
+                  y: 0.0;
+                  z: 90.0;
+               }
+            }
+         }
+         description { state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 204 204 204 255;
+         }
+      }
+      part { name: "cue_ef";
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_IMAGE_SIZE_INC;
+            max: PANEL_RIGHT_IMAGE_SIZE_INC;
+            fixed: 1 1;
+            image.normal: "b_more_option_ef.png";
+            color: 8 8 8 255;
+            rel1.to: "cue";
+            rel2.to: "cue";
+            map {
+               on: 1;
+               perspective_on: 1;
+               rotation {
+                  x: 0.0;
+                  y: 0.0;
+                  z: 90.0;
+               }
+            }
+         }
+         description { state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+      part { name: "effect_bg";
+         scale: 1;
+         clip_to: "effect_bg_clip";
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            max: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 0.0;
+            align: 0.5 0.5;
+            fixed: 0 1;
+            image.normal: "b_ic_press_full_circle_bg.png";
+            color: 250 250 250 26;
+            map.on: 1;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 250 250 250 26;
+            map {
+               zoom.x: 0.8;
+               zoom.y: 0.8;
+            }
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "start_persp" 0.0;
+            inherit: "default" 0.0;
+            color: 250 250 250 26;
+            map {
+               zoom.x: 1.0;
+               zoom.y: 1.0;
+            }
+         }
+      }
+      part { name: "effect_bg_clip";
+         scale: 1;
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            max: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 0.0;
+            align: 0.5 0.5;
+            fixed: 0 1;
+            color: 255 255 255 0;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+         }
+      }
+      part { name: "effect_bg2";
+         scale: 1;
+         clip_to: "effect_bg_clip2";
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            max: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 0.0;
+            align: 0.5 0.5;
+            fixed: 0 1;
+            image.normal: "b_ic_press_full_circle_bg.png";
+            color: 0 0 0 0;
+            map.on: 1;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 250 250 250 26;
+            map {
+               zoom.x: 0.8;
+               zoom.y: 0.8;
+            }
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "start_persp" 0.0;
+            inherit: "default" 0.0;
+            color: 250 250 250 26;
+            map {
+               zoom.x: 1.0;
+               zoom.y: 1.0;
+            }
+         }
+      }
+      part { name: "effect_bg_clip2";
+         scale: 1;
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            max: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 0.0;
+            align: 0.5 0.5;
+            fixed: 0 1;
+            color: 255 255 255 0;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+         }
+      }
+      part { name: "cue.event";
+         type: RECT;
+         repeat_events: 0;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_EVENT_AREA_SIZE_INC;
+            max: PANEL_RIGHT_EVENT_AREA_SIZE_INC;
+            fixed: 0 1;
+            color: 0 0 0 0;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 0.0;
+            align: 0.5 0.0;
+         }
+         description { state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+      part { name: "cue.release.event";
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_RELEASE_EVENT_AREA_SIZE_INC;
+            max: PANEL_RIGHT_RELEASE_EVENT_AREA_SIZE_INC;
+            fixed: 0 1;
+            color: 0 0 0 0;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 0.0;
+            align: 0.5 0.0;
+         }
+         description { state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+      part { name: "base";
+         repeat_events: 0;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel1.offset: -1 -1;
+            rel2.to: "bg";
+            rel2.offset: 0 0;
+            visible: 0;
+            fixed: 1 1;
+            image.normal: "b_more_option_bg.png";
+            color: 8 8 8 204;
+            map {
+               on: 1;
+               zoom {
+                  x: 1.35;
+                  y: 1.35;
+               }
+               color[0]: 0 0 0 0;
+               color[1]: 0 0 0 0;
+               color[2]: 0 0 0 0;
+               color[3]: 0 0 0 0;
+            }
+         }
+         description { state: "show" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            map {
+               zoom {
+                  x: 1.0;
+                  y: 1.0;
+               }
+               color[0]: 255 255 255 255;
+               color[1]: 255 255 255 255;
+               color[2]: 255 255 255 255;
+               color[3]: 255 255 255 255;
+            }
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            visible: 0;
+            fixed: 1 1;
+            map {
+               on: 1;
+               zoom {
+                  x: 1.35;
+                  y: 1.35;
+               }
+               color[0]: 0 0 0 0;
+               color[1]: 0 0 0 0;
+               color[2]: 0 0 0 0;
+               color[3]: 0 0 0 0;
+            }
+         }
+         description { state: "show" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            map {
+               zoom {
+                  x: 1.0;
+                  y: 1.0;
+               }
+               color[0]: 255 255 255 255;
+               color[1]: 255 255 255 255;
+               color[2]: 255 255 255 255;
+               color[3]: 255 255 255 255;
+            }
+         }
+      }
+   }
+   programs {
+      program { name: "pressed";
+         signal: "mouse,down,1*";
+         source: "cue.event";
+         script {
+            if ((get_int(multi_down) == 0) && (get_int(mouse_down) == 0))
+            {
+               set_int(mouse_down, 1);
+               set_int(event_down, 1);
+               run_program(PROGRAM:"button_press1");
+            }
+         }
+      }
+      program { name: "button_press1";
+         script {
+            new st[31];
+            new Float:vl;
+            get_state(PART:"effect_bg", st, 30, vl);
+            if (strcmp(st, "disabled")) {
+               emit("elm,action,press", "");
+               run_program(PROGRAM:"haptic");
+               if(get_int(click_cnt) == 0) {
+                  set_state(PART:"effect_bg", "pressed", 0.0);
+                  set_state(PART:"effect_bg_clip", "pressed", 0.0);
+                  run_program(PROGRAM:"start_persp");
+                  timer(0.3, "timer0", 1);
+               }
+               else if(get_int(click_cnt) == 1) {
+                  set_state(PART:"effect_bg2", "pressed", 0.0);
+                  set_state(PART:"effect_bg_clip2", "pressed", 0.0);
+                  run_program(PROGRAM:"start_persp2");
+                  timer(0.3, "timer0", 2);
+               }
+            }
+         }
+      }
+      program { name: "unpressed";
+         signal: "mouse,up,1";
+         source: "cue.event";
+         script {
+            if (get_int(mouse_down) == 1) {
+               set_int(mouse_down, 0);
+               run_program(PROGRAM:"button_unpress1");
+            }
+         }
+      }
+      program { name: "button_unpress1";
+         script {
+            new st[31];
+            new Float:vl;
+            get_state(PART:"effect_bg", st, 30, vl);
+            if (strcmp(st, "disabled")) {
+            if(get_int(click_cnt) == 0)
+               set_int(click_cnt, 1);
+            else
+               set_int(click_cnt, 0);
+            }
+         }
+      }
+      program { name: "release.event_clicked";
+         signal: "mouse,clicked,*";
+         source: "cue.release.event";
+         script {
+            if (get_int(event_down) == 1) {
+               set_int(event_down, 0);
+               run_program(PROGRAM:"panel_toggle");
+            }
+         }
+      }
+      program { name: "panel_toggle";
+         action: SIGNAL_EMIT "elm,action,panel,toggle" "elm";
+      }
+      program {
+         name: "haptic";
+         action: RUN_PLUGIN "haptic_tap";
+      }
+      program { name: "disable";
+         signal: "elm,state,disabled";
+         source: "elm";
+         script {
+            if (get_int(cue_hide) == 0)
+               set_state(PART:"cue", "disabled", 0.0);
+            set_state(PART:"effect_bg", "disabled", 0.0);
+            set_state(PART:"cue.event", "hidden", 0.0);
+            set_state(PART:"cue.release.event", "hidden", 0.0);
+         }
+      }
+      program { name: "enable";
+         signal: "elm,state,enabled";
+         source: "elm";
+         script {
+            if (get_int(cue_hide) == 1) {
+               set_state(PART:"cue", "hidden", 0.0);
+               set_state(PART:"cue.event", "hidden", 0.0);
+               set_state(PART:"cue.release.event", "hidden", 0.0);
+            }
+            else {
+               set_state(PART:"cue", "default", 0.0);
+               set_state(PART:"cue.event", "default", 0.0);
+               set_state(PART:"cue.release.event", "default", 0.0);
+            }
+            set_state(PART:"effect_bg", "default", 0.0);
+         }
+      }
+      program { name: "multi_down";
+         signal: "elm,action,multi,down";
+         source: "elm";
+         script {
+            set_int(multi_down, 1);
+         }
+      }
+      program { name: "multi_up";
+         signal: "elm,action,multi,up";
+         source: "elm";
+         script {
+            set_int(multi_down, 0);
+         }
+      }
+      program { name: "start_persp";
+         action: STATE_SET "start_persp" 0.0;
+         transition: CUBIC_BEZIER 0.5 0.45 0.03 0.41 1.0;
+         target: "effect_bg";
+      }
+      program { name: "change_opacity";
+         action: STATE_SET "default" 0.0;
+         transition: CUBIC_BEZIER 0.5 0.45 0.03 0.41 1.0;
+         target: "effect_bg_clip";
+      }
+      program { name: "start_persp2";
+         action: STATE_SET "start_persp" 0.0;
+         transition: CUBIC_BEZIER 0.5 0.45 0.03 0.41 1.0;
+         target: "effect_bg2";
+      }
+      program { name: "change_opacity2";
+         action: STATE_SET "default" 0.0;
+         transition: CUBIC_BEZIER 0.5 0.45 0.03 0.41 1.0;
+         target: "effect_bg_clip2";
+      }
+      program {
+         signal: "elm,action,show";
+         source: "elm";
+         action: STATE_SET "show" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.25 0.46 0.45 1.0;
+         target: "elm.swallow.content";
+         target: "base";
+         after: "active,finished";
+      }
+      program {
+         signal: "elm,action,hide";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.25 0.46 0.45 1.0;
+         target: "elm.swallow.content";
+         target: "base";
+         after: "inactive,finished";
+      }
+      program { name: "active,finished";
+         action: SIGNAL_EMIT "elm,state,active,finished" "elm";
+      }
+      program { name: "inactive,finished";
+         action: SIGNAL_EMIT "elm,state,inactive,finished" "elm";
+      }
+   }
+}
+
+group { name: "elm/panel/bottom/circle/default";
+   alias: "elm/panel/bottom/default";
+   inherit: "elm/panel/top/circle/default";
+   parts {
+      part { name: "cue.padding";
+         type: SPACER;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel1.relative: 0.0 1.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 1.0;
+            align: 0.5 1.0;
+            min: PANEL_RIGHT_PADDING_SIZE_INC 0;
+            max: PANEL_RIGHT_PADDING_SIZE_INC -1;
+            fixed: 0 1;
+         }
+      }
+      part { name: "cue";
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_IMAGE_SIZE_INC;
+            max: PANEL_RIGHT_IMAGE_SIZE_INC;
+            fixed: 0 1;
+            image.normal: "b_more_option.png";
+            color: 250 250 250 255;
+            rel1.to: "cue.padding";
+            rel1.relative: 0.0 1.0;
+            rel2.to: "cue.padding";
+            rel2.relative: 1.0 1.0;
+            align: 0.5 1.0;
+            map {
+               on: 1;
+               perspective_on: 1;
+               rotation {
+                  x: 0.0;
+                  y: 0.0;
+                  z: 90.0;
+               }
+            }
+         }
+         description { state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 204 204 204 255;
+         }
+      }
+      part { name: "cue_ef";
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_IMAGE_SIZE_INC;
+            max: PANEL_RIGHT_IMAGE_SIZE_INC;
+            fixed: 1 1;
+            image.normal: "b_more_option_ef.png";
+            color: 8 8 8 255;
+            rel1.to: "cue";
+            rel2.to: "cue";
+            map {
+               on: 1;
+               perspective_on: 1;
+               rotation {
+                  x: 0.0;
+                  y: 0.0;
+                  z: 90.0;
+               }
+            }
+         }
+         description { state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+      part { name: "effect_bg";
+         scale: 1;
+         clip_to: "effect_bg_clip";
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            max: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            rel1.to: "bg";
+            rel1.relative: 0.0 1.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 1.0;
+            align: 0.5 0.5;
+            fixed: 0 1;
+            image.normal: "b_ic_press_full_circle_bg.png";
+            color: 250 250 250 26;
+            map.on: 1;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 250 250 250 26;
+            map {
+               zoom.x: 0.8;
+               zoom.y: 0.8;
+            }
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "start_persp" 0.0;
+            inherit: "default" 0.0;
+            color: 250 250 250 26;
+            map {
+               zoom.x: 1.0;
+               zoom.y: 1.0;
+            }
+         }
+      }
+      part { name: "effect_bg_clip";
+         scale: 1;
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            max: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            rel1.to: "bg";
+            rel1.relative: 0.0 1.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 1.0;
+            align: 0.5 0.5;
+            fixed: 0 1;
+            color: 255 255 255 0;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+         }
+      }
+      part { name: "effect_bg2";
+         scale: 1;
+         clip_to: "effect_bg_clip2";
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            max: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            rel1.to: "bg";
+            rel1.relative: 0.0 1.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 1.0;
+            align: 0.5 0.5;
+            fixed: 0 1;
+            image.normal: "b_ic_press_full_circle_bg.png";
+            color: 0 0 0 0;
+            map.on: 1;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 250 250 250 26;
+            map {
+               zoom.x: 0.8;
+               zoom.y: 0.8;
+            }
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "start_persp" 0.0;
+            inherit: "default" 0.0;
+            color: 250 250 250 26;
+            map {
+               zoom.x: 1.0;
+               zoom.y: 1.0;
+            }
+         }
+      }
+      part { name: "effect_bg_clip2";
+         scale: 1;
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            max: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            rel1.to: "bg";
+            rel1.relative: 0.0 1.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 1.0;
+            align: 0.5 0.5;
+            fixed: 0 1;
+            color: 255 255 255 0;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+         }
+      }
+      part { name: "cue.event";
+         type: RECT;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_EVENT_AREA_SIZE_INC;
+            max: PANEL_RIGHT_EVENT_AREA_SIZE_INC;
+            fixed: 1 0;
+            color: 0 0 0 0;
+            rel1.to: "bg";
+            rel1.relative: 0.0 1.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 1.0;
+            align: 0.5 1.0;
+         }
+         description { state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+      part { name: "cue.release.event";
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_RELEASE_EVENT_AREA_SIZE_INC;
+            max: PANEL_RIGHT_RELEASE_EVENT_AREA_SIZE_INC;
+            fixed: 1 0;
+            color: 0 0 0 0;
+            rel1.to: "bg";
+            rel1.relative: 0.0 1.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 1.0;
+            align: 0.5 1.0;
+         }
+         description { state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+   }
+}
+
+group { name: "elm/panel/right/circle/default";
+   alias: "elm/panel/right/default";
+   images {
+      image: "b_more_option_bg.png" COMP;
+      image: "b_ic_press_full_circle_bg.png" COMP;
+   }
+   script {
+      public mouse_down = 0;
+      public mouse_click = 0;
+      public multi_down = 0;
+      public click_cnt = 0;
+      public event_down = 0;
+      public cue_hide = 0;
+      public timer0(val) {
+        if(val == 1)
+           run_program(PROGRAM:"change_opacity");
+        else if(val == 2)
+           run_program(PROGRAM:"change_opacity2");
+      }
+   }
+   parts {
+      part { name: "bg";
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_LAYOUT_SIZE_INC;
+            max: PANEL_LAYOUT_SIZE_INC;
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "cue.padding";
+         type: SPACER;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel1.relative: 1.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 1.0;
+            align: 1.0 0.5;
+            min: PANEL_RIGHT_PADDING_SIZE_INC 0;
+            max: PANEL_RIGHT_PADDING_SIZE_INC -1;
+            fixed: 1 0;
+         }
+      }
+      part { name: "cue";
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_IMAGE_SIZE_INC;
+            max: PANEL_RIGHT_IMAGE_SIZE_INC;
+            fixed: 1 0;
+            image.normal: "b_more_option.png";
+            color: 250 250 250 255;
+            rel1.to: "cue.padding";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "cue.padding";
+            rel2.relative: 0.0 1.0;
+            align: 1.0 0.5;
+         }
+         description { state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 204 204 204 255;
+         }
+      }
+      part { name: "cue_ef";
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_IMAGE_SIZE_INC;
+            max: PANEL_RIGHT_IMAGE_SIZE_INC;
+            fixed: 1 1;
+            image.normal: "b_more_option_ef.png";
+            color: 8 8 8 255;
+            rel1.to: "cue";
+            rel2.to: "cue";
+         }
+         description { state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+      part { name: "effect_bg";
+         scale: 1;
+         clip_to: "effect_bg_clip";
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            max: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            rel1.to: "bg";
+            rel1.relative: 1.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 1.0;
+            align: 0.5 0.5;
+            fixed: 1 0;
+            image.normal: "b_ic_press_full_circle_bg.png";
+            color: 250 250 250 26;
+            map.on: 1;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 250 250 250 26;
+            map {
+               zoom.x: 0.8;
+               zoom.y: 0.8;
+            }
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "start_persp" 0.0;
+            inherit: "default" 0.0;
+            color: 250 250 250 26;
+            map {
+               zoom.x: 1.0;
+               zoom.y: 1.0;
+            }
+         }
+      }
+      part { name: "effect_bg_clip";
+         scale: 1;
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            max: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            rel1.to: "bg";
+            rel1.relative: 1.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 1.0;
+            align: 0.5 0.5;
+            fixed: 1 0;
+            color: 255 255 255 0;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+         }
+      }
+      part { name: "effect_bg2";
+         scale: 1;
+         clip_to: "effect_bg_clip2";
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            max: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            rel1.to: "bg";
+            rel1.relative: 1.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 1.0;
+            align: 0.5 0.5;
+            fixed: 1 0;
+            image.normal: "b_ic_press_full_circle_bg.png";
+            color: 0 0 0 0;
+            map.on: 1;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 250 250 250 26;
+            map {
+               zoom.x: 0.8;
+               zoom.y: 0.8;
+            }
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "start_persp" 0.0;
+            inherit: "default" 0.0;
+            color: 250 250 250 26;
+            map {
+               zoom.x: 1.0;
+               zoom.y: 1.0;
+            }
+         }
+      }
+      part { name: "effect_bg_clip2";
+         scale: 1;
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            max: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            rel1.to: "bg";
+            rel1.relative: 1.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 1.0;
+            align: 0.5 0.5;
+            fixed: 1 0;
+            color: 255 255 255 0;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+         }
+      }
+      part { name: "cue.event";
+         type: RECT;
+         repeat_events: 0;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_EVENT_AREA_SIZE_INC;
+            max: PANEL_RIGHT_EVENT_AREA_SIZE_INC;
+            fixed: 1 0;
+            color: 0 0 0 0;
+            rel1.to: "bg";
+            rel1.relative: 1.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 1.0;
+            align: 1.0 0.5;
+         }
+         description { state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+      part { name: "cue.release.event";
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_RELEASE_EVENT_AREA_SIZE_INC;
+            max: PANEL_RIGHT_RELEASE_EVENT_AREA_SIZE_INC;
+            fixed: 1 0;
+            color: 0 0 0 0;
+            rel1.to: "bg";
+            rel1.relative: 1.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 1.0;
+            align: 1.0 0.5;
+         }
+         description { state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+      part { name: "base";
+         repeat_events: 0;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel1.offset: -1 -1;
+            rel2.to: "bg";
+            rel2.offset: 0 0;
+            visible: 0;
+            fixed: 1 1;
+            image.normal: "b_more_option_bg.png";
+            color: 8 8 8 204;
+            map {
+               on: 1;
+               zoom {
+                  x: 1.35;
+                  y: 1.35;
+               }
+               color[0]: 0 0 0 0;
+               color[1]: 0 0 0 0;
+               color[2]: 0 0 0 0;
+               color[3]: 0 0 0 0;
+            }
+         }
+         description { state: "show" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            map {
+               zoom {
+                  x: 1.0;
+                  y: 1.0;
+               }
+               color[0]: 255 255 255 255;
+               color[1]: 255 255 255 255;
+               color[2]: 255 255 255 255;
+               color[3]: 255 255 255 255;
+            }
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            visible: 0;
+            fixed: 1 1;
+            map {
+               on: 1;
+               zoom {
+                  x: 1.35;
+                  y: 1.35;
+               }
+               color[0]: 0 0 0 0;
+               color[1]: 0 0 0 0;
+               color[2]: 0 0 0 0;
+               color[3]: 0 0 0 0;
+            }
+         }
+         description { state: "show" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            map {
+               zoom {
+                  x: 1.0;
+                  y: 1.0;
+               }
+               color[0]: 255 255 255 255;
+               color[1]: 255 255 255 255;
+               color[2]: 255 255 255 255;
+               color[3]: 255 255 255 255;
+            }
+         }
+      }
+   }
+   programs {
+      program { name: "pressed";
+         signal: "mouse,down,1*";
+         source: "cue.event";
+         script {
+            if ((get_int(multi_down) == 0) && (get_int(mouse_down) == 0))
+            {
+               set_int(mouse_down, 1);
+               set_int(event_down, 1);
+               run_program(PROGRAM:"button_press1");
+            }
+         }
+      }
+      program { name: "button_press1";
+         script {
+            new st[31];
+            new Float:vl;
+            get_state(PART:"effect_bg", st, 30, vl);
+            if (strcmp(st, "disabled")) {
+               emit("elm,action,press", "");
+               run_program(PROGRAM:"haptic");
+               if(get_int(click_cnt) == 0) {
+                  set_state(PART:"effect_bg", "pressed", 0.0);
+                  set_state(PART:"effect_bg_clip", "pressed", 0.0);
+                  run_program(PROGRAM:"start_persp");
+                  timer(0.3, "timer0", 1);
+               }
+               else if(get_int(click_cnt) == 1) {
+                  set_state(PART:"effect_bg2", "pressed", 0.0);
+                  set_state(PART:"effect_bg_clip2", "pressed", 0.0);
+                  run_program(PROGRAM:"start_persp2");
+                  timer(0.3, "timer0", 2);
+               }
+            }
+         }
+      }
+      program { name: "unpressed";
+         signal: "mouse,up,1";
+         source: "cue.event";
+         script {
+            if (get_int(mouse_down) == 1) {
+               set_int(mouse_down, 0);
+               run_program(PROGRAM:"button_unpress1");
+            }
+         }
+      }
+      program { name: "button_unpress1";
+         script {
+            new st[31];
+            new Float:vl;
+            get_state(PART:"effect_bg", st, 30, vl);
+            if (strcmp(st, "disabled")) {
+            if(get_int(click_cnt) == 0)
+               set_int(click_cnt, 1);
+            else
+               set_int(click_cnt, 0);
+            }
+         }
+      }
+      program { name: "release.event_clicked";
+         signal: "mouse,clicked,*";
+         source: "cue.release.event";
+         script {
+            if (get_int(event_down) == 1) {
+               set_int(event_down, 0);
+               run_program(PROGRAM:"panel_toggle");
+            }
+         }
+      }
+      program { name: "panel_toggle";
+         action: SIGNAL_EMIT "elm,action,panel,toggle" "elm";
+      }
+      program {
+         name: "haptic";
+         action: RUN_PLUGIN "haptic_tap";
+      }
+      program { name: "disable";
+         signal: "elm,state,disabled";
+         source: "elm";
+         script {
+            if (get_int(cue_hide) == 0)
+               set_state(PART:"cue", "disabled", 0.0);
+            set_state(PART:"effect_bg", "disabled", 0.0);
+            set_state(PART:"cue.event", "hidden", 0.0);
+            set_state(PART:"cue.release.event", "hidden", 0.0);
+         }
+      }
+      program { name: "enable";
+         signal: "elm,state,enabled";
+         source: "elm";
+         script {
+            if (get_int(cue_hide) == 1) {
+               set_state(PART:"cue", "hidden", 0.0);
+               set_state(PART:"cue.event", "hidden", 0.0);
+               set_state(PART:"cue.release.event", "hidden", 0.0);
+            }
+            else {
+               set_state(PART:"cue", "default", 0.0);
+               set_state(PART:"cue.event", "default", 0.0);
+               set_state(PART:"cue.release.event", "default", 0.0);
+            }
+            set_state(PART:"effect_bg", "default", 0.0);
+         }
+      }
+      program { name: "multi_down";
+         signal: "elm,action,multi,down";
+         source: "elm";
+         script {
+            set_int(multi_down, 1);
+         }
+      }
+      program { name: "multi_up";
+         signal: "elm,action,multi,up";
+         source: "elm";
+         script {
+            set_int(multi_down, 0);
+         }
+      }
+      program { name: "start_persp";
+         action: STATE_SET "start_persp" 0.0;
+         transition: CUBIC_BEZIER 0.5 0.45 0.03 0.41 1.0;
+         target: "effect_bg";
+      }
+      program { name: "change_opacity";
+         action: STATE_SET "default" 0.0;
+         transition: CUBIC_BEZIER 0.5 0.45 0.03 0.41 1.0;
+         target: "effect_bg_clip";
+      }
+      program { name: "start_persp2";
+         action: STATE_SET "start_persp" 0.0;
+         transition: CUBIC_BEZIER 0.5 0.45 0.03 0.41 1.0;
+         target: "effect_bg2";
+      }
+      program { name: "change_opacity2";
+         action: STATE_SET "default" 0.0;
+         transition: CUBIC_BEZIER 0.5 0.45 0.03 0.41 1.0;
+         target: "effect_bg_clip2";
+      }
+      program {
+         signal: "elm,action,show";
+         source: "elm";
+         action: STATE_SET "show" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.25 0.46 0.45 1.0;
+         target: "elm.swallow.content";
+         target: "base";
+         after: "active,finished";
+      }
+      program {
+         signal: "elm,action,hide";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         transition: CUBIC_BEZIER 0.35 0.25 0.46 0.45 1.0;
+         target: "elm.swallow.content";
+         target: "base";
+         after: "inactive,finished";
+      }
+      program { name: "active,finished";
+         action: SIGNAL_EMIT "elm,state,active,finished" "elm";
+      }
+      program { name: "inactive,finished";
+         action: SIGNAL_EMIT "elm,state,inactive,finished" "elm";
+      }
+   }
+}
+
+group { name: "elm/panel/left/circle/default";
+   alias: "elm/panel/left/default";
+   inherit: "elm/panel/right/circle/default";
+   parts {
+      part { name: "cue.padding";
+         type: SPACER;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 0.0 1.0;
+            align: 0.0 0.5;
+            min: PANEL_RIGHT_PADDING_SIZE_INC 0;
+            max: PANEL_RIGHT_PADDING_SIZE_INC -1;
+            fixed: 1 0;
+         }
+      }
+      part { name: "cue";
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_IMAGE_SIZE_INC;
+            max: PANEL_RIGHT_IMAGE_SIZE_INC;
+            fixed: 1 0;
+            image.normal: "b_more_option.png";
+            color: 250 250 250 255;
+            rel1.to: "cue.padding";
+            rel1.relative: 1.0 0.0;
+            rel2.to: "cue.padding";
+            rel2.relative: 1.0 1.0;
+            align: 0.0 0.5;
+         }
+         description { state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            color: 204 204 204 255;
+         }
+      }
+      part { name: "cue_ef";
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_IMAGE_SIZE_INC;
+            max: PANEL_RIGHT_IMAGE_SIZE_INC;
+            fixed: 1 1;
+            image.normal: "b_more_option_ef.png";
+            color: 8 8 8 255;
+            rel1.to: "cue";
+            rel2.to: "cue";
+         }
+         description { state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+      part { name: "effect_bg";
+         scale: 1;
+         clip_to: "effect_bg_clip";
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            max: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 0.0 1.0;
+            align: 0.5 0.5;
+            fixed: 1 0;
+            image.normal: "b_ic_press_full_circle_bg.png";
+            color: 250 250 250 26;
+            map.on: 1;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 250 250 250 26;
+            map {
+               zoom.x: 0.8;
+               zoom.y: 0.8;
+            }
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "start_persp" 0.0;
+            inherit: "default" 0.0;
+            color: 250 250 250 26;
+            map {
+               zoom.x: 1.0;
+               zoom.y: 1.0;
+            }
+         }
+      }
+      part { name: "effect_bg_clip";
+         scale: 1;
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            max: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 0.0 1.0;
+            align: 0.5 0.5;
+            fixed: 1 0;
+            color: 255 255 255 0;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+         }
+      }
+      part { name: "effect_bg2";
+         scale: 1;
+         clip_to: "effect_bg_clip2";
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            max: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 0.0 1.0;
+            align: 0.5 0.5;
+            fixed: 1 0;
+            image.normal: "b_ic_press_full_circle_bg.png";
+            color: 0 0 0 0;
+            map.on: 1;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 250 250 250 26;
+            map {
+               zoom.x: 0.8;
+               zoom.y: 0.8;
+            }
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "start_persp" 0.0;
+            inherit: "default" 0.0;
+            color: 250 250 250 26;
+            map {
+               zoom.x: 1.0;
+               zoom.y: 1.0;
+            }
+         }
+      }
+      part { name: "effect_bg_clip2";
+         scale: 1;
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            max: PANEL_RIGHT_CUE_EFFECT_SIZE_INC;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 0.0 1.0;
+            align: 0.5 0.5;
+            fixed: 1 0;
+            color: 255 255 255 0;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+         }
+      }
+      part { name: "cue.event";
+         type: RECT;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_EVENT_AREA_SIZE_INC;
+            max: PANEL_RIGHT_EVENT_AREA_SIZE_INC;
+            fixed: 1 0;
+            color: 0 0 0 0;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 0.0 1.0;
+            align: 0.0 0.5;
+         }
+         description { state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+      part { name: "cue.release.event";
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: PANEL_RIGHT_RELEASE_EVENT_AREA_SIZE_INC;
+            max: PANEL_RIGHT_RELEASE_EVENT_AREA_SIZE_INC;
+            fixed: 1 0;
+            color: 0 0 0 0;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 0.0 1.0;
+            align: 0.0 0.5;
+         }
+         description { state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+   }
+}

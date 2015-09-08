@@ -1,0 +1,190 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved 
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+///////////////////////////////////////////////////////////////////////////////////////
+//
+// diskselector
+//
+///////////////////////////////////////////////////////////////////////////////////////
+group { name: "elm/diskselector/base/default";
+   alias: "elm/diskselector/base/datetime/default";
+   alias: "elm/diskselector/base/timepicker";
+
+   parts {
+      part { name: "bg";
+         type: RECT;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+         }
+      }
+   }
+}
+
+group { name: "elm/diskselector/item/default";
+   alias: "elm/diskselector/item/datetime/default";
+   alias: "elm/diskselector/item/timepicker";
+
+   data {
+      item: "len_threshold" "14";
+      item: "min_height"  DISKSELECTOR_DF_DATA_MIN_HEIGHT_INC;
+   }
+
+   parts {
+     part {
+        name: "elm.text";
+        type: TEXT;
+        mouse_events: 0;
+        scale: 1;
+        description {
+           state: "default" 0.0;
+           min: DISKSELECTOR_DF_ITEM_MIN_SIZE_INC;
+           fixed: 1 1;
+           align: 0 0;
+           color: DISKSELECTOR_DF_FONT_COLOR_INC;
+           visible: 1;
+           text {
+              font: "Tizen:style=Medium";
+              size: DISKSELECTOR_DF_FONT_SIZE_INC;
+              min: 1 1;
+              text_class: "tizen";
+           }
+        }
+        description {
+           state: "selected" 0.0;
+           min: DISKSELECTOR_DF_ITEM_MIN_SIZE_INC;
+           fixed: 1 1;
+           align: 0 0;
+           color: 255 255 255 255;
+           visible: 1;
+           text {
+              font: "Tizen:style=Medium";
+              size: DISKSELECTOR_DF_FONT_SIZE_INC;
+              min: 1 1;
+              text_class: "tizen";
+           }
+        }
+        description { state: "show" 0.0;
+           inherit: "default" 0.0;
+           visible: 1;
+        }
+        description { state: "default_small" 0.0;
+           inherit: "default" 0.0;
+           visible: 1;
+           text.size: 10;
+        }
+        description { state: "left_side" 0.0;
+           inherit: "default" 0.0;
+           visible: 1;
+        }
+        description { state: "right_side" 0.0;
+           inherit: "default" 0.0;
+           visible: 1;
+        }
+        description { state: "mouse_down" 0.0;
+           inherit: "default" 0.0;
+           color: DISKSELECTOR_DF_FONT_MOUSE_DOWN_COLOR_INC;
+           visible: 1;
+        }
+        description { state: "selected_mouse_down" 0.0;
+           inherit: "default" 0.0;
+           color: DISKSELECTOR_DF_FONT_MOUSE_DOWN_COLOR_INC;
+           visible: 1;
+        }
+     }
+
+     part {
+        name: "over1";
+        type: RECT;
+        mouse_events: 1;
+        repeat_events: 1;
+        description {
+           state: "default" 0.0;
+           color: 0 0 0 0;
+        }
+     }
+   }
+
+   programs {
+      program {
+         name: "elm,state,selected";
+         signal: "elm,state,selected";
+         source: "elm";
+         action: STATE_SET "selected" 0.0;
+         target: "elm.text";
+      }
+      program {
+         name: "elm,state,default";
+         signal: "elm,state,default";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "elm.text";
+      }
+      program {
+         name: "item_click";
+         signal: "mouse,clicked,1";
+         source: "over1";
+         action: SIGNAL_EMIT "elm,action,click" "";
+      }
+      program {
+         name: "item_mouse_down";
+         signal: "mouse,down,1";
+         source: "over1";
+         script {
+            new st[30];
+            new Float:vl;
+            get_state(PART:"elm.text", st, 30, vl)
+            if (!strncmp(st, "selected", 8)) {
+               set_state(PART:"elm.text", "selected_mouse_down", 0.0);
+            } else {
+               set_state(PART:"elm.text", "mouse_down", 0.0);
+            }
+         }
+      }
+      program {
+         name: "item_mouse_up";
+         signal: "mouse,up,1";
+         source: "over1";
+         script {
+            new st[30];
+            new Float:vl;
+            get_state(PART:"elm.text", st, 30, vl)
+            if (!strncmp(st, "mouse_down", 10)) {
+               set_state(PART:"elm.text", "default", 0.0);
+            } else if (!strncmp(st, "selected_mouse_down", 19)) {
+               set_state(PART:"elm.text", "selected", 0.0);
+            }
+         }
+      }
+   }
+}

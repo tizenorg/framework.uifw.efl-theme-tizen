@@ -1,0 +1,2428 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+   /*************************************************/
+   /* elm_layout -> fundamental template style      */
+   /*************************************************/
+   group { name: "elm/layout/application/default";
+      parts {
+         part { name: "elm.swallow.bg";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+            }
+         }
+         part { name: "elm.swallow.content";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+            }
+         }
+      }
+   }
+
+
+   /************************************************************/
+   /* elm_layout -> fundamental template style with fastscroll */
+   /************************************************************/
+   group { name: "elm/layout/application/fastscroll";
+      parts {
+         part { name: "elm.swallow.bg";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+            }
+         }
+         part {
+            name: "bg";
+            type: RECT;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               color: 0 0 0 0;
+            }
+         }
+         part {
+            name: "right.padding";
+            type: SPACER;
+            scale: 1;
+            description { state: "default" 0.0;
+               fixed: 1 0;
+               align: 1.0 0.5;
+               rel1.relative: 1 0;
+               min: INDEX_SCROLL_HANDLE_ITEM_WIDTH 0;
+            }
+         }
+         part {
+            name: "elm.swallow.content";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel2 {
+                  to_x: "right.padding";
+                  relative: 0.0 1.0;
+               }
+            }
+            description { state: "hide" 0.0;
+               rel2.to: "bg";
+               rel2.relative: 1.0 1.0;
+            }
+         }
+         part {
+            name: "elm.swallow.fastscroll";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0; }
+            description { state: "hide" 0.0;
+               visible: 0;
+            }
+         }
+      }
+      programs {
+         program {
+            name: "hide";
+            signal: "elm,state,fastscroll,hide";
+            source: "";
+            action: STATE_SET "hide" 0.0;
+            target: "elm.swallow.content";
+            target: "elm.swallow.fastscroll";
+         }
+         program {
+            name: "show";
+            signal: "elm,state,fastscroll,show";
+            source: "";
+            action: STATE_SET "default" 0.0;
+            target: "elm.swallow.content";
+            target: "elm.swallow.fastscroll";
+         }
+      }
+   }
+
+   group { name: "elm/layout/nocontents/default";
+      parts {
+         part {
+            name: "bg";
+            type: RECT;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               color: 0 0 0 0;
+            }
+         }
+         part {
+            name: "left_padding";
+            type: SPACER;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               min: NOITEM_LR_PADDING_SIZE 0;
+               max: NOITEM_LR_PADDING_SIZE -1;
+               fixed: 1 1;
+               align: 0.0 0.0;
+               rel1 {
+                  to: "bg";
+                  relative: 0.0 0.0;
+               }
+               rel2 {
+                  to: "bg";
+                  relative: 0.0 0.0;
+               }
+            }
+         }
+         part {
+            name: "right_padding";
+            type: SPACER;
+            scale: 1;
+            description {
+               state: "default" 0.0;
+               min: NOITEM_LR_PADDING_SIZE 0;
+               max: NOITEM_LR_PADDING_SIZE -1;
+               fixed: 1 1;
+               align: 1.0 0.0;
+               rel1 {
+                  to: "bg";
+                  relative: 1.0 0.0;
+               }
+               rel2 {
+                  to: "bg";
+                  relative: 1.0 0.0;
+               }
+            }
+         }
+         part { name: "fake_padding";
+            type: SPACER;
+            scale: 1;
+            description { state: "default" 0.0;
+                min: 0 (NOITEM_IMAGE_SIZE+NOITEM_IMAGE_PADDING_HEIGHT);
+                max: -1 (NOITEM_IMAGE_SIZE+NOITEM_IMAGE_PADDING_HEIGHT);
+                rel2.relative: 1.0 0.0;
+                fixed: 0 1;
+                align: 0.5 0.0;
+            }
+         }
+         part { name: "elm.swallow.icon";
+            type: SWALLOW;
+            scale: 1;
+            clip_to: "icon_clip";
+            description { state: "default" 0.0;
+               min: NOITEM_IMAGE_SIZE NOITEM_IMAGE_SIZE;
+               max: NOITEM_IMAGE_SIZE NOITEM_IMAGE_SIZE;
+               rel1.to: "image_bottom_padding";
+               rel2 {
+                  to: "image_bottom_padding";
+                  relative: 1.0 0.0;
+               }
+               fixed: 0 1;
+               align: 0.5 1.0;
+            }
+         }
+         part { name: "icon_clip";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1.to: "elm.swallow.icon";
+               rel2.to: "elm.swallow.icon";
+               color: 255 255 255 153;
+            }
+         }
+         part { name: "image_bottom_padding";
+            type: SPACER;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: 0 NOITEM_IMAGE_PADDING_HEIGHT;
+               max: -1 NOITEM_IMAGE_PADDING_HEIGHT;
+               rel1.to: "elm.text";
+               rel2 {
+                  to: "elm.text";
+                  relative: 1.0 0.0;
+               }
+               fixed: 0 1;
+               align: 0.5 1.0;
+            }
+         }
+         part { name: "elm.text";
+            type: TEXTBLOCK;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               rel1 {
+                  to_x: "left_padding";
+                  relative: 1.0 0.5;
+               }
+               rel2 {
+                  to_x: "right_padding";
+                  relative: 0.0 0.5;
+               }
+               text {
+                  style: "nocontent_style";
+                  min: 0 1;
+                  max: 0 1;
+               }
+            }
+            description { state: "image_visible" 0.0;
+               inherit: "default" 0.0;
+               rel1 {
+                  to_x: "left_padding";
+                  to_y: "fake_padding";
+                  relative: 1.0 1.0;
+               }
+               rel2 {
+                  to_x: "right_padding";
+                  to_y: "bg";
+                  relative: 0.0 1.0;
+               }
+            }
+         }
+         part { name: "elm.swallow.content";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+            }
+         }
+      }
+      programs {
+         program { name: "image_hidden";
+            signal: "elm,state,icon,hidden";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "elm.text";
+         }
+         program { name: "image_visible";
+            signal: "elm,state,icon,visible";
+            source: "elm";
+            action: STATE_SET "image_visible" 0.0;
+            target: "elm.text";
+         }
+      }
+   }
+
+group { name: "elm/layout/nocontents_button/default";
+   inherit: "elm/layout/nocontents/default";
+   parts {
+      part { name: "elm.swallow.bg";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part {
+         name: "left_padding";
+         type: SPACER;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            min: NOITEM_LR_PADDING_SIZE 0;
+            max: NOITEM_LR_PADDING_SIZE -1;
+            fixed: 1 1;
+            align: 0.0 0.0;
+         }
+      }
+      part {
+         name: "right_padding";
+         type: SPACER;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            min: NOITEM_LR_PADDING_SIZE 0;
+            max: NOITEM_LR_PADDING_SIZE -1;
+            fixed: 1 1;
+            align: 1.0 0.0;
+         }
+      }
+      part { name: "fake_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+             min: 0 (NOITEM_IMAGE_SIZE+NOITEM_IMAGE_PADDING_HEIGHT);
+             max: -1 (NOITEM_IMAGE_SIZE+NOITEM_IMAGE_PADDING_HEIGHT);
+             rel2.relative: 1.0 0.0;
+             fixed: 0 1;
+             align: 0.5 0.0;
+         }
+      }
+      part { name: "elm.swallow.icon";
+         type: SWALLOW;
+         scale: 1;
+         clip_to: "icon_clip";
+         description { state: "default" 0.0;
+            min: NOITEM_IMAGE_SIZE NOITEM_IMAGE_SIZE;
+            max: NOITEM_IMAGE_SIZE NOITEM_IMAGE_SIZE;
+            rel1.to: "image_bottom_padding";
+            rel2 {
+               to: "image_bottom_padding";
+               relative: 1.0 0.0;
+            }
+            fixed: 0 1;
+            align: 0.5 1.0;
+         }
+      }
+      part { name: "icon_clip";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "elm.swallow.icon";
+            rel2.to: "elm.swallow.icon";
+            color: 255 255 255 153;
+         }
+      }
+      part { name: "image_bottom_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 NOITEM_IMAGE_PADDING_HEIGHT;
+            max: -1 NOITEM_IMAGE_PADDING_HEIGHT;
+            rel1.to: "elm.text";
+            rel2 {
+               to: "elm.text";
+               relative: 1.0 0.0;
+            }
+            fixed: 0 1;
+            align: 0.5 1.0;
+         }
+      }
+      part { name: "elm.text";
+         type: TEXTBLOCK;
+         description { state: "default" 0.0;
+            rel1 {
+               to_x: "left_padding";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "right_padding";
+               to_y: "elm.icon";
+               relative: 0.0 0.0;
+            }
+            text {
+               style: "nocontent_style";
+               min: 0 1;
+               max: 0 1;
+            }
+         }
+         description { state: "image_visible" 0.0;
+            inherit: "default" 0.0;
+            rel1 {
+               to_x: "left_padding";
+               to_y: "fake_padding";
+               relative: 1.0 1.0;
+            }
+            rel2 {
+               to_x: "right_padding";
+               to_y: "elm.icon";
+               relative: 0.0 0.0;
+            }
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel2 {
+               to_y: "elm.icon";
+               relative: 1 0;
+            }
+         }
+      }
+      part { name: "elm.icon";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 0 1;
+            align: 0.5 1.0;
+            rel1.relative: 0.0 1.0;
+         }
+      }
+   }
+   programs {
+      program { name: "image_hidden";
+         signal: "elm,state,icon,hidden";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "elm.text";
+      }
+      program { name: "image_visible";
+         signal: "elm,state,icon,visible";
+         source: "elm";
+         action: STATE_SET "image_visible" 0.0;
+         target: "elm.text";
+      }
+   }
+}
+
+group { name: "elm/layout/button_controller/default";
+   parts {
+      part {
+         name: "bg";
+         type: RECT;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "lt_padding";
+        type: SPACER;
+        scale: 1;
+        description { state: "default" 0.0;
+            min: BUTTON_CONTROLLER_PADDING_LT_SIZE;
+            max: BUTTON_CONTROLLER_PADDING_LT_SIZE;
+            fixed: 1 1;
+            align: 0.0 0.0;
+            rel2.relative: 0.0 0.0;
+         }
+      }
+      part { name: "rb_padding";
+        type: SPACER;
+        scale: 1;
+        description { state: "default" 0.0;
+            min: BUTTON_CONTROLLER_PADDING_RB_SIZE;
+            max: BUTTON_CONTROLLER_PADDING_RB_SIZE;
+            fixed: 1 1;
+            align: 1.0 1.0;
+            rel1.relative: 1.0 1.0;
+         }
+      }
+      part { name: "elm.icon.center";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: BUTTON_CONTROLLER_ICON_CENTER_SIZE;
+            max: BUTTON_CONTROLLER_ICON_CENTER_SIZE;
+            fixed: 1 1;
+         }
+      }
+      part { name: "elm.icon";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: BUTTON_CONTROLLER_ICON_SIZE;
+            max: BUTTON_CONTROLLER_ICON_SIZE;
+            fixed: 1 1;
+         }
+      }
+      part { name: "elm.icon.left";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: BUTTON_CONTROLLER_ICON_SIZE;
+            max: BUTTON_CONTROLLER_ICON_SIZE;
+            fixed: 1 1;
+            align: 0.5 0.5;
+            rel1 {
+               to_x: "lt_padding";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "elm.icon.center";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.icon.right";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: BUTTON_CONTROLLER_ICON_SIZE;
+            max: BUTTON_CONTROLLER_ICON_SIZE;
+            fixed: 1 1;
+            align: 0.5 0.5;
+            rel1 {
+               to_x: "elm.icon.center";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "rb_padding";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.icon.top";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: BUTTON_CONTROLLER_ICON_SIZE;
+            max: BUTTON_CONTROLLER_ICON_SIZE;
+            fixed: 1 1;
+            align: 0.5 0.5;
+            rel1 {
+               to_y: "lt_padding";
+               relative: 0.0 1.0;
+            }
+            rel2 {
+               to_y: "elm.icon.center";
+               relative: 1.0 0.0;
+            }
+         }
+      }
+      part { name: "elm.icon.bottom";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: BUTTON_CONTROLLER_ICON_SIZE;
+            max: BUTTON_CONTROLLER_ICON_SIZE;
+            fixed: 1 1;
+            align: 0.5 0.5;
+            rel1 {
+               to_y: "elm.icon.center";
+               relative: 1.0 1.0;
+            }
+            rel2 {
+               to_y: "rb_padding";
+               relative: 0.0 0.0;
+            }
+         }
+      }
+   }
+}
+
+group { name: "elm/layout/full_toggle/default";
+   styles{
+      style { name: "full_toggle_style";
+         base: "font=Tizen:style=Regular font_size="38" align=center color=""#FFFFFF"" wrap=mixed ellipsis=1.0 text_class=tizen";
+         tag:  "br" "\n";
+         tag:  "hilight" "+ font_weight=Bold";
+         tag:  "b" "+ font_weight=Bold";
+         tag:  "tab" "\t";
+      }
+   }
+   parts {
+      part {
+         name: "bg";
+         type: RECT;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "top_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 0;
+            max: -1 0;
+            fixed: 0 1;
+            align: 0.5 0.0;
+            rel2.relative: 1.0 0.0;
+         }
+      }
+      part { name: "bottom_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 58;
+            max: -1 58;
+            fixed: 0 1;
+            align: 0.5 1.0;
+            rel1.relative: 0.0 1.0;
+         }
+      }
+      part { name: "left_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 30 0;
+            max: 30 -1;
+            fixed: 1 0;
+            align: 0.0 0.5;
+            rel2.relative: 0.0 1.0;
+         }
+      }
+      part { name: "right_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 30 0;
+            max: 30 -1;
+            fixed: 1 0;
+            align: 1.0 0.5;
+            rel1.relative: 1.0 0.0;
+         }
+      }
+      part { name: "elm.text";
+         type: TEXTBLOCK;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 260 0;
+            max: 260 -1;
+            fixed: 1 0;
+            rel1 {
+               to_x: "left_padding";
+               to_y: "top_padding";
+               relative: 1.0 1.0;
+            }
+            rel2 {
+               to_x: "right_padding";
+               to_y: "elm.icon";
+               relative: 0.0 0.0;
+            }
+            text {
+               style: "full_toggle_style";
+               min: 0 1;
+            }
+         }
+      }
+      part { name: "elm.icon";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 168 74;
+            max: 168 74;
+            fixed: 1 1;
+            align: 0.5 1.0;
+            rel1 {
+               to_y: "bottom_padding";
+               relative: 0.0 0.0;
+            }
+            rel2 {
+               to_y: "bottom_padding";
+               relative: 1.0 0.0;
+            }
+         }
+      }
+   }
+}
+
+group { name: "elm/layout/body_thumbnail/default";
+   parts {
+      part { name: "bg";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: BODY_THUMBNAIL_LAYOUT_SIZE;
+            max: BODY_THUMBNAIL_LAYOUT_SIZE;
+            color: 0 19 35 255; /*(Changeable UI) color_class: "W131";*/
+         }
+      }
+      part { name: "top_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0.5 0.0;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 0.0;
+            min: 0 BODY_THUMBNAIL_PADDING_TOP_SIZE;
+            max: -1 BODY_THUMBNAIL_PADDING_TOP_SIZE;
+         }
+      }
+      part { name: "left_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: BODY_THUMBNAIL_PADDING_LEFT_SIZE 0;
+            max: BODY_THUMBNAIL_PADDING_LEFT_SIZE -1;
+            fixed: 1 0;
+            align: 0.0 0.5;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 0.0 1.0;
+         }
+      }
+      part { name: "right_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: BODY_THUMBNAIL_PADDING_RIGHT_SIZE 0;
+            max: BODY_THUMBNAIL_PADDING_RIGHT_SIZE -1;
+            fixed: 1 0;
+            align: 1.0 0.5;
+            rel1.to: "bg";
+            rel1.relative: 1.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 1.0;
+         }
+      }
+      part { name: "elm.icon";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1 {
+               to_x: "left_padding";
+               to_y: "top_padding";
+               relative: 1.0 1.0;
+            }
+            rel2 {
+               to_x: "right_padding";
+               to_y: "top_padding";
+               relative: 0.0 1.0;
+            }
+            align: 0.5 0.0;
+            min: BODY_THUMBNAIL_SIZE;
+            max: BODY_THUMBNAIL_SIZE;
+            fixed: 1 1;
+         }
+      }
+      part { name: "left_line";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            align: 0.0 0.5;
+            min: BODY_THUMBNAIL_LINE_SIZE 0;
+            max: BODY_THUMBNAIL_LINE_SIZE -1;
+            color: 0 110 255 255; /*(Changeable UI) color_class: "W132";*/
+            rel1.to: "elm.icon";
+            rel2.to: "elm.icon";
+            rel2.relative: 0.0 1.0;
+         }
+         description { state: "unfocus" 0.0;
+            inherit: "default" 0.0;
+            color: 0 110 255 51; /*(Changeable UI) color_class: "W132D";*/
+         }
+      }
+      part { name: "right_line";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            align: 1.0 0.5;
+            min: BODY_THUMBNAIL_LINE_SIZE 0;
+            max: BODY_THUMBNAIL_LINE_SIZE -1;
+            color: 0 110 255 255; /*(Changeable UI) color_class: "W132";*/
+            rel1.to: "elm.icon";
+            rel1.relative: 1.0 0.0;
+            rel2.to: "elm.icon";
+         }
+         description { state: "unfocus" 0.0;
+            inherit: "default" 0.0;
+            color: 0 110 255 51; /*(Changeable UI) color_class: "W132D";*/
+         }
+      }
+      part { name: "top_line";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 0 1;
+            align: 0.5 0.0;
+            min: 0 BODY_THUMBNAIL_LINE_SIZE;
+            max: -1 BODY_THUMBNAIL_LINE_SIZE;
+            color: 0 110 255 255; /*(Changeable UI) color_class: "W132";*/
+            rel1.to: "left_line";
+            rel1.relative: 1.0 0.0;
+            rel2.to: "right_line";
+            rel2.relative: 0.0 0.0;
+         }
+         description { state: "unfocus" 0.0;
+            inherit: "default" 0.0;
+            color: 0 110 255 51; /*(Changeable UI) color_class: "W132D";*/
+         }
+      }
+      part { name: "bottom_line";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 0 1;
+            align: 0.5 1.0;
+            min: 0 BODY_THUMBNAIL_LINE_SIZE;
+            max: -1 BODY_THUMBNAIL_LINE_SIZE;
+            color: 0 110 255 255; /*(Changeable UI) color_class: "W132";*/
+            rel1.to: "left_line";
+            rel1.relative: 1.0 1.0;
+            rel2.to: "right_line";
+            rel2.relative: 0.0 1.0;
+         }
+         description { state: "unfocus" 0.0;
+            inherit: "default" 0.0;
+            color: 0 110 255 51; /*(Changeable UI) color_class: "W132D";*/
+         }
+      }
+      part { name: "center_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0.5 0.0;
+            min: 0 BODY_THUMBNAIL_PADDING_CENTER_SIZE;
+            max: -1 BODY_THUMBNAIL_PADDING_CENTER_SIZE;
+            rel1.to: "bottom_line";
+            rel1.relative: 0.0 1.0;
+            rel2.to: "bottom_line";
+            rel2.relative: 1.0 1.0;
+         }
+      }
+      part { name: "elm.text";
+         type: TEXTBLOCK;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 BODY_THUMBNAIL_1LINE_TEXT_HEIGHT;
+            max: -1 BODY_THUMBNAIL_1LINE_TEXT_HEIGHT;
+            align: 0.5 0.0;
+            rel1 {
+               to_x: "bg";
+               to_y: "center_padding";
+               relative: 0.0 1.0;
+            }
+            rel2 {
+               to_x: "bg";
+               to_y: "center_padding";
+               relative: 1.0 1.0;
+            }
+            text {
+               style: "body_thumbnail_1line_style";
+               min: 0 1;
+            }
+         }
+      }
+   }
+   programs {
+      program {
+         name: "focus";
+         signal: "elm,state,thumbnail,focus";
+         source: "*";
+         action: STATE_SET "default" 0.0;
+         target: "left_line";
+         target: "right_line";
+         target: "top_line";
+         target: "bottom_line";
+      }
+      program {
+         name: "unfocus";
+         signal: "elm,state,thumbnail,unfocus";
+         source: "*";
+         action: STATE_SET "unfocus" 0.0;
+         target: "left_line";
+         target: "right_line";
+         target: "top_line";
+         target: "bottom_line";
+      }
+   }
+}
+
+   /*************************************************/
+   /* elm_layout -> searchbar style                 */
+   /*************************************************/
+   group { name: "elm/layout/application/searchbar_base";
+      parts {
+         part { name: "elm.swallow.bg";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+            }
+         }
+         part { name: "searchbar";
+            type: SWALLOW;
+            mouse_events: 1;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: 0 SEARCHBAR_H_INC;
+               fixed: 0 1;
+               align: 0.0 1.0;
+               rel2 {
+                  relative: 1.0 0.0;
+               }
+            }
+            description { state: "visible" 0.0;
+               inherit: "default" 0.0;
+               align: 0.0 0.0;
+            }
+         }
+         part { name: "elm.swallow.content";
+            type: SWALLOW;
+            mouse_events: 1;
+            scale: 1;
+            description { state: "default" 0.0;
+               align: 0.0 0.0;
+               rel1 {
+                  relative: 0.0 1.0;
+                  to: "searchbar";
+               }
+            }
+         }
+      }
+      programs {
+         program { name: "show_searchbar";
+            signal: "elm,state,show,searchbar";
+            source: "elm";
+            action: STATE_SET "visible" 0.0;
+            target: "searchbar";
+         }
+         program { name: "show_searchbar_with_animation";
+            signal: "elm,state,show,searchbar,animation";
+            source: "elm";
+            action: STATE_SET "visible" 0.0;
+            transition: DECELERATE 0.3;
+            target: "searchbar";
+         }
+         program { name: "hide_searchbar";
+            signal: "elm,state,hide,searchbar";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "searchbar";
+         }
+         program { name: "hide_searchbar_with_animation";
+            signal: "elm,state,hide,searchbar,animation";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            transition: ACCELERATE 0.3;
+            target: "searchbar";
+         }
+      }
+   }
+
+group { name: "elm/layout/searchbar/default";
+   script {
+      public multi_down = 0;
+   }
+   parts {
+      part { name: "bg";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            visible: 1;
+            color: 51 51 51 255; /*(Changeable UI) color_class: "B081";*/
+         }
+      }
+      part { name: "inputfield_base";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 SEARCHBAR_BASE_HEIGHT_INC;
+            align: 0.0 0.0;
+         }
+      }
+      part { name: "top_left_padding";
+         type: SPACER;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            min: SEARCHBAR_LEFT_PADDING_INC SEARCHBAR_TOP_PADDING_INC;
+            fixed: 1 1;
+            align: 0.0 0.0;
+            rel1 { relative: 0.0 0.0; to: "inputfield_base"; }
+            rel2 { relative: 0.0 0.0; to: "inputfield_base"; }
+         }
+      }
+      part { name: "bottom_right_padding";
+         type: SPACER;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            min: SEARCHBAR_RIGHT_PADDING_INC SEARCHBAR_BOTTOM_PADDING_INC;
+            fixed: 1 1;
+            align: 1.0 1.0;
+            rel1 { relative: 1.0 1.0; to: "inputfield_base"; }
+            rel2 { relative: 1.0 1.0; to: "inputfield_base"; }
+         }
+      }
+      part { name: "inputfield_rect";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: SEARCHBAR_WIDTH_INC SEARCHBAR_HEIGHT_INC;
+            align: 0.0 0.5;
+            rel1 { relative: 1.0 1.0; to: "top_left_padding"; }
+            rel2 { relative: 0.0 0.0; to: "bottom_right_padding"; }
+            color: 0 0 0 0;
+         }
+      }
+      part {
+         name: "elm.swallow.content";
+         type: SWALLOW;
+         scale: 1;
+         ignore_flags: ON_HOLD;
+         description { state: "default" 0.0;
+            min: SEARCHBAR_WIDTH_INC SEARCHBAR_HEIGHT_INC;
+            rel1 {
+               relative : 0.0 0.0;
+               to: "inputfield_rect";
+            }
+            rel2 {
+               relative : 1.0 1.0;
+               to: "inputfield_rect";
+            }
+            align: 0.0 0.5;
+         }
+      }
+   }
+   programs {
+     program {
+         name: "bg_clicked";
+         signal: "mouse,clicked,1";
+         source: "inputfield_rect";
+         script {
+            if (get_int(multi_down) == 0)
+               emit("elm,bg,clicked", "elm");
+         }
+      }
+      program {
+         name: "sound_play";
+         signal: "mouse,clicked,1";
+         source: "elm.text";
+         script {
+            if (get_int(multi_down) == 0)
+               run_program(PROGRAM:"play_sample");
+         }
+      }
+      program {
+         name: "play_sample";
+         action: RUN_PLUGIN "touch_sound";
+      }
+      program {
+         name: "multi_down";
+         signal: "elm,action,multi,down";
+         source: "elm";
+         script {
+            set_int(multi_down, 1);
+         }
+      }
+      program {
+         name: "multi_up";
+         signal: "elm,action,multi,up";
+         source: "elm";
+         script {
+            set_int(multi_down, 0);
+         }
+      }
+   }
+}
+
+group { name: "elm/layout/searchbar/cancel_button";
+   script {
+      public multi_down = 0;
+   }
+   parts {
+      part { name: "bg";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            visible: 1;
+            color: 51 51 51 255; /*(Changeable UI) color_class: "B081";*/
+         }
+      }
+      part { name: "inputfield_base";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 SEARCHBAR_BASE_HEIGHT_INC;
+            align: 0.0 0.0;
+         }
+      }
+     part { name: "top_padding_rect";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 SEARCHBAR_TOP_PADDING_INC;
+            fixed: 0 1;
+            align: 0 0;
+            rel1.to: "inputfield_base";
+            rel2.to: "inputfield_base";
+            rel2.relative: 1.0 0.0;
+         }
+      }
+      part { name: "bottom_padding_rect";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 SEARCHBAR_BOTTOM_PADDING_INC;
+            fixed: 0 1;
+            align: 0 1;
+            rel1.to: "inputfield_base";
+            rel1.relative: 0.0 1.0;
+            rel2.to: "inputfield_base";
+         }
+      }
+      part { name: "base_bg";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 SEARCHBAR_HEIGHT_INC;
+            align: 0 0.5;
+            fixed: 0 1;
+            rel1 {
+               relative: 0.0 1.0;
+               to: "top_padding_rect";
+            }
+            rel2 {
+               relative: 1.0 0.0;
+               to: "bottom_padding_rect";
+            }
+         }
+      }
+      part { name: "left_padding_rect";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: SEARCHBAR_LEFT_PADDING_INC 0;
+            fixed: 1 0;
+            align: 0 0;
+            rel1.to: "inputfield_base";
+            rel2.to: "inputfield_base";
+            rel2.relative: 0.0 1.0;
+         }
+      }
+      part { name: "right_padding_rect";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: SEARCHBAR_RIGHT_PADDING_INC 0;
+            fixed: 1 0;
+            align: 1.0 0.0;
+            rel1.to: "inputfield_base";
+            rel1.relative: 1.0 0.0;
+            rel2.to: "inputfield_base";
+         }
+      }
+      part { name: "inputfield_rect";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0.0 0.5;
+            min: SEARCHBAR_WIDTH_INC SEARCHBAR_HEIGHT_INC;
+            rel1 {
+               relative: 1.0 0.0;
+               to_x: "left_padding_rect";
+               to_y: "base_bg";
+            }
+            rel2 {
+               relative: 0.0 1.0;
+               to_x: "right_btn_padding_rect";
+               to_y: "base_bg";
+            }
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "right_btn_padding_rect";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 0;
+            fixed: 1 0;
+            align: 1.0 0.0;
+            rel1.relative: 0.0 0.0;
+            rel1.to: "right_padding_rect";
+            rel2.relative: 0.0 1.0;
+            rel2.to: "right_padding_rect";
+         }
+         description { state: "in" 0.0;
+            inherit: "default" 0.0;
+            min: SEARCHBAR_CANCEL_BUTTON_LEFT_PADDING_INC 0;
+            rel1.to: "button_cancel";
+            rel2.to: "button_cancel";
+         }
+      }
+      part { name: "button_cancel";
+         type: SWALLOW;
+         mouse_events: 1;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: SEARCHBAR_CANCEL_BUTTON_W_INC 0;
+            align: 1.0 0.5;
+            state: "default" 0.0;
+            rel1 {
+               relative: 0.0 1.0;
+               to_x: "right_padding_rect";
+               to_y: "top_padding_rect";
+            }
+            rel2 {
+               relative: 0.0 0.0;
+               to_x: "right_padding_rect";
+               to_y: "bottom_padding_rect";
+            }
+         }
+      }
+      part {
+         name: "elm.swallow.content";
+         type: SWALLOW;
+         scale: 1;
+         ignore_flags: ON_HOLD;
+         description { state: "default" 0.0;
+            min: SEARCHBAR_WIDTH_INC SEARCHBAR_HEIGHT_INC;
+            rel1 {
+               relative : 0.0 0.0;
+               to: "inputfield_rect";
+            }
+            rel2 {
+               relative : 1.0 1.0;
+               to: "inputfield_rect";
+            }
+            align: 0.0 0.5;
+         }
+      }
+   }
+   programs {
+      program {
+         name: "sound_play";
+         signal: "mouse,clicked,1";
+         source: "elm.text";
+         script {
+            if (get_int(multi_down) == 0)
+               run_program(PROGRAM:"play_sample");
+         }
+      }
+      program {
+         name: "play_sample";
+         action: RUN_PLUGIN "touch_sound";
+      }
+     program {
+         name: "bg_clicked";
+         signal: "mouse,clicked,1";
+         source: "inputfield_rect";
+         script {
+            if (get_int(multi_down) == 0)
+               emit("elm,bg,clicked", "elm");
+         }
+      }
+      program {
+         name: "multi_down";
+         signal: "elm,action,multi,down";
+         source: "elm";
+         script {
+            set_int(multi_down, 1);
+         }
+      }
+      program {
+         name: "multi_up";
+         signal: "elm,action,multi,up";
+         source: "elm";
+         script {
+            set_int(multi_down, 0);
+         }
+      }
+      program { name: "cancel_in";
+         signal: "cancel,in";
+         source: "";
+         action: STATE_SET "in" 0.0;
+         target: "right_btn_padding_rect";
+         transition: LINEAR 0.3;
+      }
+      program { name: "cancel_out";
+         signal: "cancel,out";
+         source: "";
+         action: STATE_SET "default" 0.0;
+         target: "right_btn_padding_rect";
+         transition: LINEAR 0.3;
+      }
+      program { name: "cancel_show";
+         signal: "cancel,show";
+         source: "";
+         action: STATE_SET "in" 0.0;
+         target: "right_btn_padding_rect";
+      }
+      program { name: "cancel_hide";
+         signal: "cancel,hide";
+         source: "";
+         action: STATE_SET "default" 0.0;
+         target: "right_btn_padding_rect";
+      }
+   }
+}
+
+group { name: "elm/layout/select_mode/default";
+   parts {
+      part { name: "base";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "icon_lt_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel2.relative: 0.0 0.0;
+            align: 0.0 0.0;
+            min: 3 4;
+            fixed: 1 1;
+         }
+      }
+      part { name: "elm.swallow.icon";
+         type: SWALLOW;
+         clip_to: "clipper";
+         scale: 1;
+         description { state: "default" 0.0;
+            visible: 0;
+            fixed: 1 1;
+            align: 0 0;
+            min: 0 SELECT_MODE_LAYOUT_BUTTON_HEIGHT_INC;
+            rel1.to: "icon_lt_padding";
+            rel1.relative: 1.0 1.0;
+            rel2.to: "icon_lt_padding";
+            rel2.relative: 1.0 1.0;
+         }
+         description { state: "select_mode" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part { name: "clipper";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            color: 255 255 255 0;
+            rel1.to: "elm.swallow.icon";
+            rel2.to: "elm.swallow.icon";
+         }
+         description { state: "select_mode" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+      }
+   }
+   programs {
+      program { name: "show_button";
+         signal: "select_mode,button,show";
+         source: "";
+         action: STATE_SET "select_mode" 0.0;
+         transition: CUBIC_BEZIER 0.3 0.33 0 0.5 1.1;
+         target: "elm.swallow.icon";
+         target: "clipper";
+      }
+      program { name: "hide_button";
+         signal: "select_mode,button,hide";
+         source: "";
+         action: STATE_SET "default" 0.0;
+         target: "elm.swallow.icon";
+         target: "clipper";
+      }
+   }
+}
+
+group { name: "elm/layout/popup/content/circle";
+   alias: "elm/layout/popup/content/circle/buttons1";
+   alias: "elm/layout/popup/content/circle/buttons2";
+
+   parts {
+      part { name: "bg";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: POPUP_BASE_DEFAULT_WIDTH 0;
+         }
+      }
+      part { name: "top.left.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: POPUP_LEFT_RIGHT_PADDING_WIDTH 0;
+            rel1.to: "bg";
+            rel2 {
+               to: "bg";
+               relative: 0.0 0.0;
+            }
+            align: 0.0 0.0;
+            fixed: 1 1;
+         }
+      }
+      part { name: "bottom.right.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: POPUP_LEFT_RIGHT_PADDING_WIDTH 0;
+            rel1 {
+               to: "bg";
+               relative: 1.0 1.0;
+            }
+            rel2.to: "bg";
+            align: 1.0 1.0;
+            fixed: 1 1;
+         }
+      }
+      part { name: "elm.text.title";
+         type: TEXTBLOCK;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1 {
+               to: "top.left.padding";
+               relative: 1.0 1.0;
+            }
+            rel2 {
+               to_x: "bottom.right.padding";
+               to_y: "top.left.padding";
+               relative: 0.0 1.0;
+            }
+            align: 0.5 0.0;
+            fixed: 0 1;
+            text {
+               style: "popup_title_style";
+               min: 0 1;
+            }
+         }
+      }
+      part { name: "title.bottom.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 POPUP_TITLE_BOTTOM_PADDING_HEIGHT;
+            rel1 {
+               to: "elm.text.title";
+               relative: 0.0 1.0;
+            }
+            rel2.to: "elm.text.title";
+            align: 0.5 0.0;
+            fixed: 0 1;
+         }
+      }
+      part { name: "elm.text";
+         type: TEXTBLOCK;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1 {
+               to: "title.bottom.padding";
+               relative: 0.0 1.0;
+            }
+            rel2 {
+               to: "bottom.right.padding";
+               relative: 0.0 0.0;
+            }
+            text {
+               align: 0 0;
+               style: "popup_body_default_font_style";
+               min: 0 1;
+            }
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1 {
+               to: "title.bottom.padding";
+               relative: 0.0 1.0;
+            }
+            rel2 {
+               to: "bottom.right.padding";
+               relative: 0.0 0.0;
+            }
+         }
+      }
+   }
+}
+
+group { name: "elm/layout/bottom_button/default";
+   parts {
+      part { name: "elm.swallow.button";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1.relative: 0.0 1.0;
+            rel2.relative: 1.0 1.0;
+            align: 0.5 1.0;
+            min: 0 BUTTON_HEIGHT;
+            max: -1 BUTTON_HEIGHT;
+            fixed: 0 1;
+         }
+      }
+   }
+}
+
+///////////////////////////////////////////////////////////////
+// For supporting efl-ext APIs. ///////////////////////////////
+///////////////////////////////////////////////////////////////
+group { name: "elm/layout/circle/surface";
+   parts {
+      part { name: "base";
+         type: SPACER;
+         scale: 1;
+         description { state: "default";
+            min: CIRCLE_SURFACE_BASE_MIN_SIZE;
+         }
+      }
+      part { name: "elm.swallow.circle";
+         type: SWALLOW;
+         description { state: "default";
+            visible: 1;
+         }
+      }
+   }
+}
+
+group { name: "elm/layout/drawer/panel";
+   parts {
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "elm.swallow.bg";
+         type: SWALLOW;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "elm.swallow.left";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "elm.swallow.right";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+   }
+}
+
+group { name: "elm/layout/action_button/default";
+   alias: "elm/layout/action_button/multiline";
+   parts {
+      part { name: "bg";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ACTION_BUTTON_LAYOUT_WIDTH_INC ACTION_BUTTON_LAYOUT_HEIGHT_INC;
+            max: ACTION_BUTTON_LAYOUT_WIDTH_INC ACTION_BUTTON_LAYOUT_HEIGHT_INC;
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "top_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 ACTION_BUTTON_LAYOUT_TOP_PADDING_HEIGHT_INC;
+            max: -1 ACTION_BUTTON_LAYOUT_TOP_PADDING_HEIGHT_INC;
+            rel2.relative: 1.0 0.0;
+            fixed: 0 1;
+            align: 0.5 0.0;
+         }
+      }
+      part { name: "bottom_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 ACTION_BUTTON_LAYOUT_BOTTOM_PADDING_HEIGHT_INC;
+            max: -1 ACTION_BUTTON_LAYOUT_BOTTOM_PADDING_HEIGHT_INC;
+            rel1.to: "bg";
+            rel1.relative: 0.0 1.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 1.0;
+            fixed: 0 1;
+            align: 0.0 1.0;
+         }
+      }
+      part { name: "sub_text_top_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 ACTION_BUTTON_LAYOUT_SUB_TEXT_TOP_PADDING_HEIGHT_INC;
+            max: -1 ACTION_BUTTON_LAYOUT_SUB_TEXT_TOP_PADDING_HEIGHT_INC;
+            rel2.relative: 1.0 0.0;
+            fixed: 0 1;
+            align: 0.5 0.0;
+         }
+      }
+      part { name: "elm.text.sub";
+         type: TEXT;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ACTION_BUTTON_LAYOUT_SUB_TEXT_WIDTH_INC ACTION_BUTTON_LAYOUT_SUB_TEXT_HEIGHT_INC;
+            max: ACTION_BUTTON_LAYOUT_SUB_TEXT_WIDTH_INC ACTION_BUTTON_LAYOUT_SUB_TEXT_HEIGHT_INC;
+            rel1 {
+               to: "sub_text_top_padding";
+               relative: 0.0 1.0;
+            }
+            rel2.to: "sub_text_top_padding";
+            fixed: 0 1;
+            align: 0.5 0.0;
+            color: 249 249 249 255;
+            text {
+               text_class: "T014";
+               min: 0 1;
+            }
+         }
+      }
+      part { name: "action_btn";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ACTION_BUTTON_LAYOUT_BUTTON_WIDTH_INC ACTION_BUTTON_LAYOUT_BUTTON_HEIGHT_INC;
+            max: ACTION_BUTTON_LAYOUT_BUTTON_WIDTH_INC ACTION_BUTTON_LAYOUT_BUTTON_HEIGHT_INC;
+            rel1 {
+               to: "top_padding";
+               relative: 0.0 1.0;
+            }
+            rel2.to: "top_padding";
+            align: 0.5 0.0;
+            fixed: 0 1;
+         }
+      }
+      part { name: "text_left_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ACTION_BUTTON_LAYOUT_MAIN_TEXT_LR_PADDING_WIDTH_INC 0;
+            max: ACTION_BUTTON_LAYOUT_MAIN_TEXT_LR_PADDING_WIDTH_INC -1;
+            rel2.relative: 0.0 1.0;
+            fixed: 1 0;
+            align: 0.0 0.5;
+         }
+      }
+      part { name: "text_right_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ACTION_BUTTON_LAYOUT_MAIN_TEXT_LR_PADDING_WIDTH_INC 0;
+            max: ACTION_BUTTON_LAYOUT_MAIN_TEXT_LR_PADDING_WIDTH_INC -1;
+            rel1.relative: 1.0 0.0;
+            fixed: 1 0;
+            align: 1.0 0.5;
+         }
+      }
+      part { name: "elm.text";
+         type: TEXTBLOCK;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ACTION_BUTTON_LAYOUT_MAIN_TEXT_WIDTH_INC ACTION_BUTTON_LAYOUT_MULTILINE_TEXT_HEIGHT_MAX_INC;
+            max: ACTION_BUTTON_LAYOUT_MAIN_TEXT_WIDTH_INC ACTION_BUTTON_LAYOUT_MULTILINE_TEXT_HEIGHT_MAX_INC;
+            color: 0 148 255 255;
+            rel1 {
+               to_x: "text_left_padding";
+               to_y: "bottom_padding";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "text_right_padding";
+               to_y: "bottom_padding";
+               relative: 0.0 0.0;
+            }
+            fixed: 0 1;
+            align: 0.0 1.0;
+            text {
+               style: "action_button_layout_main_text";
+               min: 0 1;
+            }
+         }
+      }
+      part { name: "event_rect";
+         type: RECT;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            rel1.to: "action_btn";
+            rel2.to: "action_btn";
+            color: 0 0 0 0;
+         }
+      }
+   }
+   programs {
+      program { name: "event_rect_clicked";
+         signal: "mouse,clicked,1";
+         source: "event_rect";
+         action: SIGNAL_EMIT "elm,layout,clicked" "elm";
+      }
+   }
+}
+
+
+group {
+   name: "elm/layout/more_option/index";
+   parts {
+      part {
+         name: "bg";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 360 360;
+            max: -1 360;
+            color: 0 0 0 0;
+         }
+      }
+      part {
+         name: "scroller";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+         }
+      }
+      part {
+         name: "controller";
+         type: SWALLOW;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            align: 0.5 0.0;
+            min: 360 40;
+            max: 360 40;
+            fixed: 0 1;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 0.0;
+         }
+      }
+   }
+}
+
+#define ROTARY_SELECTOR_PART_MAP_ROTATE(index, param_x, param_y, param_z) \
+description { \
+   state: "map_rotate" index; \
+   inherit: "default"; \
+   map { \
+      rotation { \
+         x: param_x; \
+         y: param_y; \
+         z: param_z; \
+      } \
+   } \
+}
+
+#define ROTARY_SELECTOR_ROTATE_PROGRAM(program_name, signal_name, index) \
+program { \
+   name: program_name; \
+   signal: signal_name; \
+   source: "eext"; \
+   action: STATE_SET "map_rotate" index; \
+   transition: CUBIC_BEZIER 0.2 0.33 0.0 0.3 1.0; \
+   target: "selector"; \
+}
+
+group {
+   name: "elm/layout/rotary_selector/default";
+   script {
+      public page_changed = 0;
+      public message(Msg_Type:type, id, ...) {
+         if (type == MSG_FLOAT_SET) {
+            new Float:changed;
+            changed = getfarg(2);
+            set_float(page_changed, changed);
+         }
+      }
+   }
+   images {
+      image: "w_selector_cover_dim.png" COMP;
+   }
+   parts {
+      part {
+         name: "bg";
+         type: IMAGE;
+         scale: 1;
+         description { state: "default" 0.0;
+            image.normal : "w_selector_cover_dim.png";
+            min: ROTARY_SELECTOR_WIDTH_INC ROTARY_SELECTOR_HEIGHT_INC;
+            max: ROTARY_SELECTOR_WIDTH_INC ROTARY_SELECTOR_HEIGHT_INC;
+            color: 8 8 8 179;
+         }
+      }
+      part { name: "selector";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ROTARY_SELECTOR_SELECTOR_WIDTH_INC ROTARY_SELECTOR_SELECTOR_HEIGHT_INC;
+            max: ROTARY_SELECTOR_SELECTOR_WIDTH_INC ROTARY_SELECTOR_SELECTOR_HEIGHT_INC;
+            map {
+               on: 1;
+               perspective_on: 1;
+            }
+         }
+         ROTARY_SELECTOR_PART_MAP_ROTATE(0.0, 0.0, 0.0, 30.0)
+         ROTARY_SELECTOR_PART_MAP_ROTATE(0.01, 0.0, 0.0, 60.0)
+         ROTARY_SELECTOR_PART_MAP_ROTATE(0.02, 0.0, 0.0, 90.0)
+         ROTARY_SELECTOR_PART_MAP_ROTATE(0.03, 0.0, 0.0, 120.0)
+         ROTARY_SELECTOR_PART_MAP_ROTATE(0.04, 0.0, 0.0, 150.0)
+         ROTARY_SELECTOR_PART_MAP_ROTATE(0.05, 0.0, 0.0, 180.0)
+         ROTARY_SELECTOR_PART_MAP_ROTATE(0.06, 0.0, 0.0, 210.0)
+         ROTARY_SELECTOR_PART_MAP_ROTATE(0.07, 0.0, 0.0, 240.0)
+         ROTARY_SELECTOR_PART_MAP_ROTATE(0.08, 0.0, 0.0, 270.0)
+         ROTARY_SELECTOR_PART_MAP_ROTATE(0.09, 0.0, 0.0, 300.0)
+         ROTARY_SELECTOR_PART_MAP_ROTATE(0.10, 0.0, 0.0, 330.0)
+         ROTARY_SELECTOR_PART_MAP_ROTATE(0.11, 0.0, 0.0, 390.0)
+         ROTARY_SELECTOR_PART_MAP_ROTATE(0.12, 0.0, 0.0, -30.0)
+      }
+      part { name: "event";
+         type: RECT;
+         scale: 1;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+            min: ROTARY_SELECTOR_SELECTOR_WIDTH_INC ROTARY_SELECTOR_SELECTOR_HEIGHT_INC;
+            max: ROTARY_SELECTOR_SELECTOR_WIDTH_INC ROTARY_SELECTOR_SELECTOR_HEIGHT_INC;
+         }
+      }
+      part { name: "content";
+         type: SWALLOW;
+         scale: 1;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: ROTARY_SELECTOR_SELECTOR_WIDTH_INC ROTARY_SELECTOR_SELECTOR_HEIGHT_INC;
+            max: ROTARY_SELECTOR_SELECTOR_WIDTH_INC ROTARY_SELECTOR_SELECTOR_HEIGHT_INC;
+            rel1.to: "selector";
+            rel2.to: "selector";
+         }
+      }
+   }
+   programs {
+      ROTARY_SELECTOR_ROTATE_PROGRAM("rotate_0", "eext,rotate,0", 0.0)
+      ROTARY_SELECTOR_ROTATE_PROGRAM("rotate_30", "eext,rotate,30", 0.01)
+      ROTARY_SELECTOR_ROTATE_PROGRAM("rotate_60", "eext,rotate,60", 0.02)
+      ROTARY_SELECTOR_ROTATE_PROGRAM("rotate_90", "eext,rotate,90", 0.03)
+      ROTARY_SELECTOR_ROTATE_PROGRAM("rotate_120", "eext,rotate,120", 0.04)
+      ROTARY_SELECTOR_ROTATE_PROGRAM("rotate_150", "eext,rotate,150", 0.05)
+      ROTARY_SELECTOR_ROTATE_PROGRAM("rotate_180", "eext,rotate,180", 0.06)
+      ROTARY_SELECTOR_ROTATE_PROGRAM("rotate_210", "eext,rotate,210", 0.07)
+      ROTARY_SELECTOR_ROTATE_PROGRAM("rotate_240", "eext,rotate,240", 0.08)
+      ROTARY_SELECTOR_ROTATE_PROGRAM("rotate_270", "eext,rotate,270", 0.09)
+      ROTARY_SELECTOR_ROTATE_PROGRAM("rotate_300", "eext,rotate,300", 0.1)
+
+      program { name: "rotate_360";
+         signal: "eext,rotate,360";
+         source: "eext";
+         script {
+            if (get_float(page_changed) == 1){
+               set_float(page_changed, 0);
+               run_program(PROGRAM:"_rotate_360");
+            }
+         }
+      }
+      program {
+         name: "_rotate_360";
+         action: STATE_SET "map_rotate" 0.11;
+         transition: CUBIC_BEZIER 0.2 0.33 0.0 0.3 1.0;
+         target: "selector";
+         after: "_rotate_0";
+      }
+      program {
+         name: "_rotate_0";
+         action: STATE_SET "map_rotate" 0.0;
+         target: "selector";
+      }
+      program { name: "rotate_reverse_60";
+         signal: "eext,rotate,-60";
+         source: "eext";
+         script {
+            if (get_float(page_changed) == 1){
+               set_float(page_changed, 0);
+               run_program(PROGRAM:"_rotate_reverse_60");
+            }
+         }
+      }
+      program {
+         name: "_rotate_reverse_60";
+         action: STATE_SET "map_rotate" 0.12;
+         transition: CUBIC_BEZIER 0.2 0.33 0.0 0.3 1.0;
+         target: "selector";
+         after: "_rotate_300";
+      }
+      program {
+         name: "_rotate_300";
+         action: STATE_SET "map_rotate" 0.1;
+         target: "selector";
+      }
+      program {
+         name: "disabled";
+         signal: "elm,state,disabled";
+         source: "elm";
+         after: "disabled_signal";
+      }
+      program {
+         name: "disabled_signal";
+         action: SIGNAL_EMIT "elm,layout,disabled" "elm";
+      }
+      program {
+         name: "enable";
+         signal: "elm,state,enabled";
+         source: "elm";
+         after: "enabled_signal";
+      }
+      program {
+         name: "enabled_signal";
+         action: SIGNAL_EMIT "elm,layout,enabled" "elm";
+      }
+      program { name: "touch_snd";
+         signal: "mouse,clicked,1";
+         source: "event";
+         script {
+            emit("eext,clicked", "");
+         }
+      }
+      program { name: "pressed_snd";
+         signal: "mouse,down,*";
+         source: "event";
+         script {
+            emit("eext,pressed", "");
+         }
+      }
+   }
+}
+
+group {
+   name: "elm/layout/rotary_selector/selector/default";
+   parts {
+      part { name: "event";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+            min: ROTARY_SELECTOR_SELECTOR_WIDTH_INC ROTARY_SELECTOR_SELECTOR_HEIGHT_INC;
+            max: ROTARY_SELECTOR_SELECTOR_WIDTH_INC ROTARY_SELECTOR_SELECTOR_HEIGHT_INC;
+         }
+      }
+      part { name: "selector,bg_image";
+         type: SWALLOW;
+         scale: 1;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            min: ROTARY_SELECTOR_SELECTOR_WIDTH_INC ROTARY_SELECTOR_SELECTOR_HEIGHT_INC;
+            max: ROTARY_SELECTOR_SELECTOR_WIDTH_INC ROTARY_SELECTOR_SELECTOR_HEIGHT_INC;
+         }
+      }
+   }
+}
+
+group {
+   name: "elm/layout/rotary_selector/selector/selector_bg";
+   images {
+      image: "b_rotary_selector_center_pointer.png" COMP;
+   }
+   parts {
+      part {
+         name: "center_bg_image";
+         type: IMAGE;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            image.normal: "b_rotary_selector_center_pointer.png";
+            min: ROTARY_SELECTOR_SELECTOR_WIDTH_INC ROTARY_SELECTOR_SELECTOR_HEIGHT_INC;
+            max: ROTARY_SELECTOR_SELECTOR_WIDTH_INC ROTARY_SELECTOR_SELECTOR_HEIGHT_INC;
+            color: 0 149 255 255;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 0 149 255 102;
+
+         }
+      }
+      part { name: "event";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+            rel1.to: "center_bg_image";
+            rel2.to: "center_bg_image";
+         }
+      }
+   }
+   program {
+      name: "pressed";
+      signal: "mouse,down,*";
+      source: "event";
+      action: STATE_SET "pressed" 0.0;
+      target: "center_bg_image";
+   }
+   program {
+      name: "unpressed";
+      signal: "mouse,up,*";
+      source: "event";
+      action: STATE_SET "default" 0.0;
+      target: "center_bg_image";
+   }
+}
+
+group {
+   name: "elm/layout/rotary_selector/content/default";
+   parts {
+      part { name: "bg";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ROTARY_SELECTOR_SELECTOR_WIDTH_INC ROTARY_SELECTOR_SELECTOR_HEIGHT_INC;
+            max: ROTARY_SELECTOR_SELECTOR_WIDTH_INC ROTARY_SELECTOR_SELECTOR_HEIGHT_INC;
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "top_padding";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+            min: 0 ROTARY_SELECTOR_CONTENT_TOP_PADDING_HEIGHT_INC;
+            max: -1 ROTARY_SELECTOR_CONTENT_TOP_PADDING_HEIGHT_INC;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 0.0;
+            fixed: 0 1;
+            align: 0.0 0.0;
+            visible : 0;
+         }
+         description { state: "text1_icon_show" 0.0;
+            inherit: "default" 0.0;
+            visible : 1;
+         }
+         description { state: "custom_content_show" 0.0;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 0.0 0.0;
+         }
+      }
+      part {
+         name: "selector,icon";
+         type: SWALLOW;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            align: 0.5 0.5;
+            min: ROTARY_SELECTOR_CONTENT_FULL_ICON_SIZE_INC;
+            max: ROTARY_SELECTOR_CONTENT_FULL_ICON_SIZE_INC;
+            fixed: 1 1;
+         }
+         description {
+            state: "text1_icon_show" 0.0;
+            align: 0.5 0.0;
+            rel1.to: "top_padding";
+            rel1.relative: 0.0 1.0;
+            rel2.to: "top_padding";
+            rel2.relative: 1.0 1.0;
+            min: ROTARY_SELECTOR_CONTENT_SMALL_ICON_SIZE_INC;
+            max: ROTARY_SELECTOR_CONTENT_SMALL_ICON_SIZE_INC;
+            fixed: 1 1;
+         }
+         description { state: "custom_content_show" 0.0;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 0.0 0.0;
+         }
+      }
+      part { name: "middle_padding";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+            min: 0 ROTARY_SELECTOR_CONTENT_MIDDLE_PADDING_HEIGHT_INC;
+            max: -1 ROTARY_SELECTOR_CONTENT_MIDDLE_PADDING_HEIGHT_INC;
+            rel1.to: "selector,icon";
+            rel1.relative: 0.0 1.0;
+            rel2.to: "selector,icon";
+            rel2.relative: 1.0 1.0;
+            fixed: 0 1;
+            align: 0.0 0.5;
+            visible : 0;
+         }
+         description { state: "text1_icon_show" 0.0;
+            inherit: "default" 0.0;
+            visible : 1;
+         }
+         description { state: "custom_content_show" 0.0;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 0.0 0.0;
+         }
+      }
+      part { name: "bottom_padding";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+            min: 0 ROTARY_SELECTOR_CONTENT_BOTTOM_PADDING_HEIGHT_INC;
+            max: -1 ROTARY_SELECTOR_CONTENT_BOTTOM_PADDING_HEIGHT_INC;
+            rel1.to: "bg";
+            rel1.relative: 0.0 1.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 1.0;
+            fixed: 0 1;
+            align: 0.0 1.0;
+            visible : 0;
+         }
+         description { state: "text1_text2_show" 0.0;
+            inherit: "default" 0.0;
+            visible : 1;
+         }
+         description { state: "custom_content_show" 0.0;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 0.0 0.0;
+         }
+      }
+      part { name: "selector,main_text";
+         type: TEXTBLOCK;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ROTARY_SELECTOR_CONTENT_TEXT_WIDTH_INC ROTARY_SELECTOR_CONTENT_TEXT1_HEIGHT_INC;
+            max: ROTARY_SELECTOR_CONTENT_TEXT_WIDTH_INC ROTARY_SELECTOR_CONTENT_TEXT1_HEIGHT_INC;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 1.0;
+            fixed: 0 1;
+            align: 0.5 0.5;
+            text {
+               style: "rotary_selector_text1";
+               min: 0 1;
+            }
+         }
+         description { state: "text1_text2_show" 0.0;
+            inherit: "default" 0.0;
+            rel1 {
+               to_x: "bg";
+               to_y: "selector,sub_text";
+               relative: 0.0 0.0;
+            }
+            rel2 {
+               to_x: "bg";
+               to_y: "selector,sub_text";
+               relative: 1.0 0.0;
+            }
+            align: 0.5 1.0;
+         }
+         description { state: "text1_icon_show" 0.0;
+            inherit: "default" 0.0;
+            min: ROTARY_SELECTOR_CONTENT_TEXT_WIDTH_INC 37;
+            max: ROTARY_SELECTOR_CONTENT_TEXT_WIDTH_INC 37;
+            rel1 {
+               to_x: "bg";
+               to_y: "middle_padding";
+               relative: 0.0 1.0;
+            }
+            rel2 {
+               to_x: "bg";
+               to_y: "middle_padding";
+               relative: 1.0 1.0;
+            }
+            align: 0.5 0.0;
+         }
+         description { state: "custom_content_show" 0.0;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 0.0 0.0;
+         }
+      }
+      part { name: "selector,sub_text";
+         type: TEXTBLOCK;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ROTARY_SELECTOR_CONTENT_TEXT_WIDTH_INC ROTARY_SELECTOR_CONTENT_TEXT2_HEIGHT_INC;
+            max: ROTARY_SELECTOR_CONTENT_TEXT_WIDTH_INC ROTARY_SELECTOR_CONTENT_TEXT2_HEIGHT_INC;
+            rel1 {
+               to_y: "bottom_padding";
+               relative: 0.0 0.0;
+            }
+            rel2 {
+               to_y: "bottom_padding";
+               relative: 1.0 0.0;
+            }
+            fixed: 0 1;
+            align: 0.5 1.0;
+            text {
+               style: "rotary_selector_text2";
+               min: 0 1;
+            }
+         }
+         description { state: "custom_content_show" 0.0;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 0.0 0.0;
+         }
+      }
+      part { name: "custom_content";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 0.0 0.0;
+         }
+         description { state: "custom_content_show" 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+         }
+	  }
+   }
+   program {
+      signal: "text1,text2,show";
+      source: "eext";
+      action: STATE_SET "text1_text2_show" 0.0;
+      target: "selector,main_text";
+      target: "bottom_padding";
+   }
+   program {
+      signal: "text1,icon,show";
+      source: "eext";
+      action: STATE_SET "text1_icon_show" 0.0;
+      target: "top_padding";
+      target: "selector,icon";
+      target: "middle_padding";
+      target: "selector,main_text";
+   }
+   program {
+      signal: "content,default";
+      source: "eext";
+      action: STATE_SET "default" 0.0;
+      target: "top_padding";
+      target: "selector,icon";
+      target: "middle_padding";
+      target: "bottom_padding";
+      target: "selector,main_text";
+      target: "selector,sub_text";
+      target: "custom_content";
+   }
+   program {
+      signal: "custom_content,show";
+      source: "eext";
+      action: STATE_SET "custom_content_show" 0.0;
+      target: "top_padding";
+      target: "selector,icon";
+      target: "middle_padding";
+      target: "bottom_padding";
+      target: "selector,main_text";
+      target: "selector,sub_text";
+      target: "custom_content";
+   }
+}
+
+group { name: "elm/layout/rotary_selector/item/bg_image";
+   images {
+      image: "b_rotary_selector_icon_bg.png" COMP;
+   }
+   parts {
+      part { name: "item,bg_image";
+         scale: 1;
+         description { state: "default" 0.0;
+            image.normal: "b_rotary_selector_icon_bg.png";
+          }
+       }
+   }
+}
+
+group {
+   name: "elm/layout/rotary_selector/selector/more_option";
+   images {
+      image: "b_rotary_selector_center_bg.png" COMP;
+      image: "b_rotary_selector_center_pointer.png" COMP;
+   }
+   parts {
+      part {
+         name: "center_bg_image";
+         type: IMAGE;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            image.normal : "b_rotary_selector_center_pointer.png";
+            min: ROTARY_SELECTOR_SELECTOR_WIDTH_INC ROTARY_SELECTOR_SELECTOR_HEIGHT_INC;
+            max: ROTARY_SELECTOR_SELECTOR_WIDTH_INC ROTARY_SELECTOR_SELECTOR_HEIGHT_INC;
+            color: 0 149 255 255;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            color: 0 149 255 102;
+         }
+      }
+      part { name: "event";
+         type: IMAGE;
+         scale: 1;
+         description { state: "default" 0.0;
+            image.normal : "b_rotary_selector_center_bg.png";
+            color: 0 0 0 0;
+            rel1.to: "center_bg_image";
+            rel2.to: "center_bg_image";
+         }
+      }
+   }
+   program {
+      name: "pressed";
+      signal: "mouse,down,*";
+      source: "event";
+      action: STATE_SET "pressed" 0.0;
+      target: "center_bg_image";
+   }
+   program {
+      name: "unpressed";
+      signal: "mouse,up,*";
+      source: "event";
+      action: STATE_SET "default" 0.0;
+      target: "center_bg_image";
+   }
+}
+
+group {
+   name: "elm/layout/rotary_selector/content/more_option";
+   parts {
+      part { name: "bg";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ROTARY_SELECTOR_SELECTOR_WIDTH_INC ROTARY_SELECTOR_SELECTOR_HEIGHT_INC;
+            max: ROTARY_SELECTOR_SELECTOR_WIDTH_INC ROTARY_SELECTOR_SELECTOR_HEIGHT_INC;
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "bottom_padding";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+            min: 0 ROTARY_SELECTOR_CONTENT_BOTTOM_PADDING_HEIGHT_INC;
+            max: -1 ROTARY_SELECTOR_CONTENT_BOTTOM_PADDING_HEIGHT_INC;
+            rel1.to: "bg";
+            rel1.relative: 0.0 1.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 1.0;
+            fixed: 0 1;
+            align: 0.0 1.0;
+            visible : 0;
+         }
+         description { state: "text1_text2_show" 0.0;
+            inherit: "default" 0.0;
+            visible : 1;
+         }
+      }
+      part { name: "selector,main_text";
+         type: TEXTBLOCK;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ROTARY_SELECTOR_CONTENT_TEXT_WIDTH_INC ROTARY_SELECTOR_CONTENT_TEXT1_HEIGHT_INC;
+            max: ROTARY_SELECTOR_CONTENT_TEXT_WIDTH_INC ROTARY_SELECTOR_CONTENT_TEXT1_HEIGHT_INC;
+            rel1.to: "bg";
+            rel1.relative: 0.0 0.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 1.0;
+            fixed: 0 1;
+            align: 0.5 0.5;
+            text {
+               style: "more_option_text1";
+               min: 0 1;
+            }
+         }
+         description { state: "text1_text2_show" 0.0;
+            inherit: "default" 0.0;
+            rel1 {
+               to_x: "bg";
+               to_y: "selector,sub_text";
+               relative: 0.0 0.0;
+            }
+            rel2 {
+               to_x: "bg";
+               to_y: "selector,sub_text";
+               relative: 1.0 0.0;
+            }
+            align: 0.5 1.0;
+         }
+      }
+      part { name: "selector,sub_text";
+         type: TEXTBLOCK;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: ROTARY_SELECTOR_CONTENT_TEXT_WIDTH_INC ROTARY_SELECTOR_CONTENT_TEXT2_HEIGHT_INC;
+            max: ROTARY_SELECTOR_CONTENT_TEXT_WIDTH_INC ROTARY_SELECTOR_CONTENT_TEXT2_HEIGHT_INC;
+            rel1 {
+               to_y: "bottom_padding";
+               relative: 0.0 0.0;
+            }
+            rel2 {
+               to_y: "bottom_padding";
+               relative: 1.0 0.0;
+            }
+            fixed: 0 1;
+            align: 0.5 1.0;
+            text {
+               style: "more_option_text2";
+               min: 0 1;
+            }
+         }
+      }
+   }
+   program {
+      signal: "text1,text2,show";
+      source: "eext";
+      action: STATE_SET "text1_text2_show" 0.0;
+      target: "selector,main_text";
+      target: "bottom_padding";
+   }
+   program {
+      signal: "content,default";
+      source: "eext";
+      action: STATE_SET "default" 0.0;
+      target: "selector,main_text";
+      target: "selector,sub_text";
+      target: "bottom_padding";
+   }
+}
+
