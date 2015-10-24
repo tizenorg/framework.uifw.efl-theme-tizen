@@ -1,0 +1,136 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#include "genlist_macro.edc"
+
+group { name: "elm/list/item/default";
+   alias: "elm/list/item_odd/default";
+   alias: "elm/list/item_compress/default";
+   alias: "elm/list/item_compress_odd/default";
+
+   parts {
+      LIST_PART_BG
+      PART(SWALLOW, "elm.swallow.pad",
+         DSC_FROM_L("default" 0.0, );
+         mouse_events: 0;
+      )
+      PART(SPACER, "elm.padding.top",
+         DSC_FROM_T("default" 0.0,
+            min: 0 LIST_PADDING_TOP_SIZE;
+            max: -1 LIST_PADDING_TOP_SIZE;
+         )
+      )
+      PART(SPACER, "elm.padding.bottom",
+         DSC_FROM_B("default" 0.0,
+            min: 0 LIST_PADDING_BOTTOM_SIZE;
+            max: -1 LIST_PADDING_BOTTOM_SIZE;
+         )
+      )
+      PART(SWALLOW, "elm.swallow.icon",
+         DSC_L("default" 0.0,
+            "elm.swallow.pad",
+         )
+      )
+      PART(SWALLOW, "elm.swallow.end",
+         DSC_FROM_R("default" 0.0, )
+      )
+      PART(SPACER, "elm.padding.center.left",
+         DSC_L("default" 0.0,
+            "elm.swallow.icon",
+            min: LIST_PADDING_CENTER_LEFT_SIZE -0;
+            max: LIST_PADDING_CENTER_LEFT_SIZE -1;
+         )
+      )
+      PART(SPACER, "elm.padding.center.right",
+         DSC_R("default" 0.0,
+            "elm.swallow.end",
+            min: LIST_PADDING_CENTER_RIGHT_SIZE 0;
+            max: LIST_PADDING_CENTER_RIGHT_SIZE -1;
+         )
+      )
+      PART(TEXTBLOCK, "elm.text",
+         DSC_LRTB("default" 0.0,
+            "elm.padding.center.left", "elm.padding.center.right", "elm.padding.top", "elm.padding.bottom",
+            min: 0 LIST_TEXT_MAIN_HEIGHT;
+            text.min: 0 1;
+            text.style: "list_text_main";
+            fixed: 1 0;;
+         )
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_press";
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            text.style: "list_text_main_dim";
+         }
+      )
+      PART(RECT, "elm.bottomline",
+         DSC_FROM_B("default" 0.0,
+            min: 0 LIST_BOTTOMLINE_HEIGHT;
+            max: -1  LIST_BOTTOMLINE_HEIGHT;
+            color: 230 230 230 255;
+         )
+      )
+      part { name: "event";
+         type: RECT;
+         scale:1;
+         repeat_events:1;
+         description { state: "default" 0.0;
+            color : 0 0 0 0;
+         }
+      }
+   }
+   programs {
+      LIST_PROGRAM_DEFAULT(
+         target: "elm.text";
+         target: "bg";
+      )
+      LIST_PROGRAM_DISABLED(
+         target: "elm.text";
+         target: "bg";
+      )
+      LIST_PROGRAM_SELECT(
+         target: "elm.text";
+         target: "bg";
+      )
+      LIST_PROGRAM_REORDER(
+         target: "elm.text";
+         target: "bg";
+      )
+      program { name: "play_sound";
+         signal: "mouse,clicked,1";
+         source: "event";
+         script {
+            run_program(PROGRAM:"touch_sound");
+         }
+      }
+      program { name: "touch_sound";
+         action: RUN_PLUGIN "touch_sound";
+      }
+   }
+}
+

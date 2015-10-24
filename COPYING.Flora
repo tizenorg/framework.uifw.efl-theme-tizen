@@ -2,12 +2,11 @@ Copyright notice for Flora-licensed files:
 
 The following files are copyrighted by Samsung Electronics Co., Ltd
 and licensed under Flora License, Version 1.1
-- 2.3-wearable-circle/widgets/button.edc
-- 2.3-wearable-circle/widgets/layout.edc
-- 2.3-wearable-circle/widgets/panel.edc
-- 2.3-wearable-circle/widgets/popup.edc
-- 2.3-wearable-circle/widgets/popup_default.edc
-
+- wearable-circle/widgets/button.edc
+- wearable-circle/widgets/layout.edc
+- wearable-circle/widgets/panel.edc
+- wearable-circle/widgets/popup.edc
+- wearable-circle/widgets/popup_default.edc
 
 Copyright (C) 2013 Samsung Electronics Co., Ltd All rights reserved.
 

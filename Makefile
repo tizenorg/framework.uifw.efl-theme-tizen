@@ -1,8 +1,5 @@
 #TARGET will be got from spec
-#2.2 is redwood
-#2.3-mobile is redwood lite
-#2.3-wearable is B3
-#TARGET = 2.2 2.3-mobile 2.3-wearable
+#TARGET = mobile wearable
 
 all:
 	for t in $(TARGET); do \

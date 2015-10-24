@@ -1,0 +1,1230 @@
+group { name: "elm/layout/application/titlebar";
+   images {
+      image: "whitetheme/shadow_title.png" COMP;
+   }
+   parts {
+      part { name: "base";
+         type:RECT;
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 LAYOUT_TITLE_SIZE_INC;
+            max: LAYOUT_MAX_WIDTH_INC LAYOUT_TITLE_SIZE_INC;
+            align: 0.5 0.0;
+            color: LAYOUT_BG_COLOR_INC;
+         }
+      }
+      part { name: "elm.padding.title.shadow.left";
+         type: SPACER;
+         scale:1 ;
+         description { state: "default" 0.0;
+            align: 0 0;
+            min: 0 LAYOUT_TITLE_SHADOW_HEIGHT_INC;
+            fixed: 0 1;
+            rel1 {
+               to: "base";
+               relative: 0 1;
+            } 
+            rel2 {
+               to: "base";
+               relative: 0 1;
+            }
+         }
+      }
+      part { name: "elm.padding.title.shadow.right";
+         type: SPACER;
+         scale:1 ;
+         description { state: "default" 0.0;
+            align: 1 0;
+            min: 0 LAYOUT_TITLE_SHADOW_HEIGHT_INC;
+            fixed: 0 1;
+            rel1 {
+               to: "base";
+               relative: 1 1;
+            } 
+            rel2 {
+               to: "base";
+               relative: 1 1;
+            }
+         }
+      }
+      part { name: "elm.title.shadow";
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            image.normal: "whitetheme/shadow_title.png";
+            rel1 {
+               to: "elm.padding.title.shadow.left";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "elm.padding.title.shadow.right";
+               relative: 1.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            visible: 1;
+            rel1 {
+               to: "elm.padding.title.shadow.left";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.swallow.icon.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: LAYOUT_TITLE_ICON_LEFT_PADDING_INC 0;
+            fixed: 1 1;
+            align: 0.0 1.0;
+            rel1 {
+               to: "base";
+               relative: 0.0 0.0;
+            }
+            rel2 {
+               to: "base";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.swallow.icon";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            visible: 0;
+            fixed: 1 1;
+            min: LAYOUT_TITLE_ICON_SIZE_INC;
+            align: 0.0 0.0;
+            rel1 {
+               to: "elm.swallow.icon.padding";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "base";
+               relative: 0.0 1.0;
+            }
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part { name: "elm.padding.swallow.end";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: LAYOUT_TITLE_ICON_RIGHT_PADDING_INC 0;
+            fixed: 1 1;
+            align: 1.0 1.0;
+            rel1 {
+               to: "base";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "base";
+               relative: 1.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.swallow.end";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            visible: 0;
+            fixed: 1 1;
+            min: LAYOUT_TITLE_ICON_SIZE_INC;
+            align: 1.0 0.0;
+            rel1 {
+               to: "base";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "elm.padding.swallow.end";
+               relative: 0.0 1.0;
+            }
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part { name: "elm.text";
+         type: TEXT;
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            color: LAYOUT_TITLE_FONT_COLOR_INC;
+            rel1 {
+               to_x: "elm.swallow.icon";
+               to_y: "base";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "elm.swallow.end";
+               to_y: "base";
+               relative: 0.0 1.0;
+            }
+            text {
+               font: "SLP:style=Medium";
+               size: LAYOUT_TITLE_FONT_SIZE_INC;
+               min: 0 0;
+               align: 0.5 0.5;
+               text_class: "title_bar";
+            }
+         }
+      }
+   }
+   programs {
+      program { name: "show_icon";
+         signal: "elm,state,icon,visible";
+         source: "elm";
+         action: STATE_SET "visible" 0.0;
+         target: "elm.swallow.icon";
+      }
+      program { name: "hide_icon";
+         signal: "elm,state,icon,hidden";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "elm.swallow.icon";
+      }
+      program { name: "show_end";
+         signal: "elm,state,end,visible";
+         source: "elm";
+         action: STATE_SET "visible" 0.0;
+         target: "elm.swallow.end";
+      }
+      program { name: "hide_end";
+         signal: "elm,state,end,hidden";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         target: "elm.swallow.end";
+      }
+   }
+}
+
+/* application with toolbar and main content area */
+group { name: "elm/layout/application/toolbar-content";
+   parts {
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1 { to_y: "elm.external.toolbar";
+               relative: 0.0 1.0;
+               offset: -1 1;
+            }
+         }
+      }
+      part { name: "elm.external.toolbar.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 LAYOUT_TOOLBAR_SIZE_INC;
+            fixed: 1 1;
+            align: 1.0 0.0;
+            rel1 {
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               relative: 1.0 0.0;
+            }
+         }
+      }
+      part { name: "elm.external.toolbar";
+         type: EXTERNAL;
+         source: "elm/toolbar";
+         description { state: "default" 0.0;
+            align: 0.5 0.0;
+            fixed: 0 1;
+            rel2 {
+               to: "elm.external.toolbar.padding";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+   }
+}
+
+/* application with toolbar and main content area with a back button and title area */
+group { name: "elm/layout/application/toolbar-content-back";
+   images {
+      image: "whitetheme/shadow_title.png" COMP;
+   }
+   parts {
+      part { name: "elm.external.toolbar.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 LAYOUT_TOOLBAR_SIZE_INC;
+            fixed: 1 1;
+            align: 1.0 0.0;
+            rel1 {
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               relative: 1.0 0.0;
+            }
+         }
+      }
+      part { name: "elm.external.toolbar";
+         type: EXTERNAL;
+         source: "elm/toolbar";
+         description { state: "default" 0.0;
+            fixed: 0 1;
+            align: 0.5 0.0;
+            rel2 {
+               to: "elm.external.toolbar.padding";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+      part { name: "base";
+         type:RECT;
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 LAYOUT_TITLE_SIZE_INC;
+            max: LAYOUT_MAX_WIDTH_INC LAYOUT_TITLE_SIZE_INC;
+            align: 0.0 0.0;
+            color: LAYOUT_BG_COLOR_INC;
+            fixed: 1 1;
+            rel1 {
+               to: "elm.external.toolbar";
+               relative: 0.0 1.0;
+            }
+            rel2 {
+               to: "elm.external.toolbar";
+               relative: 1.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.padding.title.shadow.left";
+         type: SPACER;
+         scale:1 ;
+         description { state: "default" 0.0;
+            align: 0 0;
+            min: 0 LAYOUT_TITLE_SHADOW_HEIGHT_INC;
+            fixed: 0 1;
+            rel1 {
+               to: "base";
+               relative: 0 1;
+            } 
+            rel2 {
+               to: "base";
+               relative: 0 1;
+            }
+         }
+      }
+      part { name: "elm.padding.title.shadow.right";
+         type: SPACER;
+         scale:1 ;
+         description { state: "default" 0.0;
+            align: 1 0;
+            min: 0 LAYOUT_TITLE_SHADOW_HEIGHT_INC;
+            fixed: 0 1;
+            rel1 {
+               to: "base";
+               relative: 1 1;
+            } 
+            rel2 {
+               to: "base";
+               relative: 1 1;
+            }
+         }
+      }
+      part { name: "elm.title.shadow";
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            image.normal: "whitetheme/shadow_title.png";
+            rel1 {
+               to: "elm.padding.title.shadow.left";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "elm.padding.title.shadow.right";
+               relative: 1.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1 {
+               to: "elm.padding.title.shadow.left";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.padding.back";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: LAYOUT_TITLE_ICON_LEFT_PADDING_INC LAYOUT_TITLE_ICON_HEIGHT_INC;
+            max : LAYOUT_TITLE_ICON_LEFT_PADDING_INC LAYOUT_TITLE_ICON_HEIGHT_INC;
+            fixed: 1 1;
+            align: 0.0 0.5;
+            rel1 {
+               to: "base";
+               relative: 0.0 0.5;
+            }
+            rel2 {
+               to: "base";
+               relative: 0.0 0.5;
+            }
+         }
+      }
+      part { name: "back";
+         type: EXTERNAL;
+         source: "elm/button";
+//         clip_to: "back_clipper";
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            align: 0.0 0.0;
+            rel1 {
+               to: "elm.padding.back";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "elm.padding.back";
+               relative: 1.0 1.0;
+            }
+            params.string: "label" "Back";
+         }
+      }
+      part { name: "elm.padding.swallow.end";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: LAYOUT_TITLE_ICON_RIGHT_PADDING_INC 0;
+            fixed: 1 1;
+            align: 1.0 1.0;
+            rel1 {
+               to: "base";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "base";
+               relative: 1.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.swallow.end";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            align: 1.0 0.0;
+            min: LAYOUT_TITLE_ICON_SIZE_INC;
+            rel1 {
+               to: "base";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "elm.padding.swallow.end";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.text.title";
+         type: TEXT;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            color: LAYOUT_TITLE_FONT_COLOR_INC;
+            rel1 {
+               to_y: "base";
+               to_x: "back";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_y: "base";
+               to_x: "elm.swallow.end";
+               relative: 0.0 1.0;
+            }
+            text {
+               font: "SLP:style=Medium";
+               size: LAYOUT_TITLE_FONT_SIZE_INC;
+            }
+         }
+      }
+      programs {
+         program {
+            signal: "clicked";
+            source: "back";
+            action: SIGNAL_EMIT "elm,action,back" "";
+         }
+/*         program {
+            signal: "elm,back,hide";
+            source: "elm";
+            action: STATE_SET "hidden" 0.0;
+            target: "back_clipper";
+         }
+         program {
+            signal: "elm,back,show";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "back_clipper";
+         }
+         program {
+            signal: "elm,title,hide";
+            source: "elm";
+            action: STATE_SET "hidden" 0.0;
+            transition: LINEAR 0.1;
+            target: "title_clipper";
+         }
+         program {
+            signal: "elm,title,show";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "title_clipper";
+         }*/
+      }
+   }
+}
+
+/* application with toolbar and main content area with a back and next buttons and title area */
+group { name: "elm/layout/application/toolbar-content-back-next";
+   images {
+      image: "whitetheme/shadow_title.png" COMP;
+   }
+   parts {
+      part { name: "elm.external.toolbar.padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 LAYOUT_TOOLBAR_SIZE_INC;
+            fixed: 1 1;
+            align: 1.0 0.0;
+            rel1 {
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               relative: 1.0 0.0;
+            }
+         }
+      }
+      part { name: "elm.external.toolbar";
+         type: EXTERNAL;
+         scale: 1;
+         source: "elm/toolbar";
+         description { state: "default" 0.0;
+            fixed: 0 1;
+            align: 0.5 0.0;
+            rel2 {
+               to: "elm.external.toolbar.padding";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+      part { name: "base";
+         type:RECT;
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 LAYOUT_TITLE_SIZE_INC;
+            max: LAYOUT_MAX_WIDTH_INC LAYOUT_TITLE_SIZE_INC;
+            align: 0.0 0.0;
+            color: LAYOUT_BG_COLOR_INC;
+            fixed: 1 1;
+            rel1 {
+               to: "elm.external.toolbar";
+               relative: 0.0 1.0;
+            }
+            rel2 {
+               to: "elm.external.toolbar";
+               relative: 1.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.padding.title.shadow.left";
+         type: SPACER;
+         scale:1 ;
+         description { state: "default" 0.0;
+            align: 0 0;
+            min: 0 LAYOUT_TITLE_SHADOW_HEIGHT_INC;
+            fixed: 0 1;
+            rel1 {
+               to: "base";
+               relative: 0 1;
+            } 
+            rel2 {
+               to: "base";
+               relative: 0 1;
+            }
+         }
+      }
+      part { name: "elm.padding.title.shadow.right";
+         type: SPACER;
+         scale:1 ;
+         description { state: "default" 0.0;
+            align: 1 0;
+            min: 0 LAYOUT_TITLE_SHADOW_HEIGHT_INC;
+            fixed: 0 1;
+            rel1 {
+               to: "base";
+               relative: 1 1;
+            } 
+            rel2 {
+               to: "base";
+               relative: 1 1;
+            }
+         }
+      }
+      part { name: "elm.title.shadow";
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            image.normal: "whitetheme/shadow_title.png";
+            rel1 {
+               to: "elm.padding.title.shadow.left";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "elm.padding.title.shadow.right";
+               relative: 1.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1 {
+               to: "elm.padding.title.shadow.left";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.padding.back";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: LAYOUT_TITLE_ICON_LEFT_PADDING_INC LAYOUT_TITLE_ICON_HEIGHT_INC;
+            max : LAYOUT_TITLE_ICON_LEFT_PADDING_INC LAYOUT_TITLE_ICON_HEIGHT_INC;
+            fixed: 1 1;
+            align: 0.0 0.5;
+            rel1 {
+               to: "base";
+               relative: 0.0 0.5;
+            }
+            rel2 {
+               to: "base";
+               relative: 0.0 0.5;
+            }
+         }
+      }
+      part { name: "back";
+         type: EXTERNAL;
+         scale: 1;
+         source: "elm/button";
+         description { state: "default" 0.0;
+            align: 0.0 0.0;
+            fixed: 1 1;
+            rel1 {
+               to: "elm.padding.back";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "elm.padding.back";
+               relative: 1.0 1.0;
+            }
+            params.string: "label" "Back";
+         }
+      }
+      part { name: "elm.padding.next";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align : 1 0.5;
+            fixed: 1 1;
+            min: LAYOUT_TITLE_ICON_RIGHT_PADDING_INC LAYOUT_TITLE_ICON_HEIGHT_INC;
+            max : LAYOUT_TITLE_ICON_RIGHT_PADDING_INC LAYOUT_TITLE_ICON_HEIGHT_INC;
+            rel1 {
+               to: "base";
+               relative: 1.0 0.5;
+            }
+            rel2 {
+               to: "base";
+               relative: 1.0 0.5;
+            }
+         }
+      }
+      part { name: "next";
+         type: EXTERNAL;
+         source: "elm/button";
+//         clip_to: "next_clipper";
+         description { state: "default" 0.0;
+            align: 1.0 0.0;
+            fixed: 1 1;
+            rel1 {
+               to: "elm.padding.next";
+               relative: 0.0 0.0;
+            }
+            rel2 {
+               to: "elm.padding.next";
+               relative: 0.0 1.0;
+            }
+            params.string: "label" "Next";
+         }
+      }
+      part { name: "elm.text.title";
+         type: TEXT;
+         scale: 1;
+//         clip_to: "title_clipper";
+         description { state: "default" 0.0;
+            color: LAYOUT_TITLE_FONT_COLOR_INC;
+            rel1 {
+               to_y: "base";
+               to_x: "back";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_y: "base";
+               to_x: "next";
+               relative: 0.0 1.0;
+            }
+            text {
+               font: "SLP:style=Medium";
+               size: LAYOUT_TITLE_FONT_SIZE_INC;
+            }
+         }
+      }
+      programs {
+         program {
+            signal: "clicked";
+            source: "back";
+            action: SIGNAL_EMIT "elm,action,back" "";
+         }
+/*         program {
+            signal: "elm,title,hide";
+            source: "elm";
+            action: STATE_SET "hidden" 0.0;
+            transition: LINEAR 0.1;
+            target: "title_clipper";
+         }
+         program {
+            signal: "elm,title,show";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "title_clipper";
+         }
+         program {
+            signal: "elm,back,hide";
+            source: "elm";
+            action: STATE_SET "hidden" 0.0;
+            target: "back_clipper";
+         }
+         program {
+            signal: "elm,back,show";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "back_clipper";
+         }*/
+         program {
+            signal: "clicked";
+            source: "next";
+            action: SIGNAL_EMIT "elm,action,next" "";
+         }
+/*         program {
+            signal: "elm,next,hide";
+            source: "elm";
+            action: STATE_SET "hidden" 0.0;
+            target: "next_clipper";
+         }
+         program {
+            signal: "elm,next,show";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "next_clipper";
+         }*/
+      }
+   }
+}
+/* application with a main content area with a back button and title area */
+group { name: "elm/layout/application/content-back";
+   images {
+      image: "whitetheme/shadow_title.png" COMP;
+   }
+   parts {
+      part { name: "base";
+         type:RECT;
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 LAYOUT_TITLE_SIZE_INC;
+            max: LAYOUT_MAX_WIDTH_INC LAYOUT_TITLE_SIZE_INC;
+            align: 0.5 0.0;
+            color: LAYOUT_BG_COLOR_INC;
+         }
+      }
+      part { name: "elm.padding.title.shadow.left";
+         type: SPACER;
+         scale:1 ;
+         description { state: "default" 0.0;
+            align: 0 0;
+            min: 0 LAYOUT_TITLE_SHADOW_HEIGHT_INC;
+            fixed: 0 1;
+            rel1 {
+               to: "base";
+               relative: 0 1;
+            } 
+            rel2 {
+               to: "base";
+               relative: 0 1;
+            }
+         }
+      }
+      part { name: "elm.padding.title.shadow.right";
+         type: SPACER;
+         scale:1 ;
+         description { state: "default" 0.0;
+            align: 1 0;
+            min: 0 LAYOUT_TITLE_SHADOW_HEIGHT_INC;
+            fixed: 0 1;
+            rel1 {
+               to: "base";
+               relative: 1 1;
+            } 
+            rel2 {
+               to: "base";
+               relative: 1 1;
+            }
+         }
+      }
+      part { name: "elm.title.shadow";
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            image.normal: "whitetheme/shadow_title.png";
+            rel1 {
+               to: "elm.padding.title.shadow.left";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "elm.padding.title.shadow.right";
+               relative: 1.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1 {
+               to: "elm.padding.title.shadow.left";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.padding.back";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: LAYOUT_TITLE_ICON_LEFT_PADDING_INC LAYOUT_TITLE_ICON_HEIGHT_INC;
+            max : LAYOUT_TITLE_ICON_LEFT_PADDING_INC LAYOUT_TITLE_ICON_HEIGHT_INC;
+            fixed: 1 1;
+            align: 0.0 0.5;
+            rel1 {
+               to: "base";
+               relative: 0.0 0.5;
+            }
+            rel2 {
+               to: "base";
+               relative: 0.0 0.5;
+            }
+         }
+      }
+      part { name: "back";
+         type: EXTERNAL;
+         scale: 1;
+         source: "elm/button";
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            align: 0.0 0.0;
+            rel1 {
+               to: "elm.padding.back";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "elm.padding.back";
+               relative: 1.0 1.0;
+            }
+            params.string: "label" "Back";
+         }
+      }
+      part { name: "elm.padding.swallow.end";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: LAYOUT_TITLE_ICON_RIGHT_PADDING_INC 0;
+            fixed: 1 1;
+            align: 1.0 1.0;
+            rel1 {
+               to: "base";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "base";
+               relative: 1.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.swallow.end";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            align: 1.0 0.0;
+            min: LAYOUT_TITLE_ICON_SIZE_INC;
+            rel1 {
+               to: "base";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "elm.padding.swallow.end";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.text.title";
+         type: TEXT;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            color: LAYOUT_TITLE_FONT_COLOR_INC;
+            rel1 {
+               to_x: "back";
+               to_y: "base";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "elm.swallow.end";
+               to_y: "base";
+               relative: 0.0 1.0;
+            }
+            text {
+               font: "SLP:style=Medium";
+               size: LAYOUT_TITLE_FONT_SIZE_INC;
+               min: 0 0;
+               align: 0.5 0.5;
+               text_class: "title_bar";
+            }
+         }
+      }
+      programs {
+         program {
+            signal: "clicked";
+            source: "back";
+            action: SIGNAL_EMIT "elm,action,back" "";
+         }
+         program {
+            signal: "elm,back,hide";
+            source: "elm";
+            action: STATE_SET "hidden" 0.0;
+            target: "back";
+         }
+         program {
+            signal: "elm,back,show";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "back";
+         }
+         program {
+            signal: "elm,title,hide";
+            source: "elm";
+            action: STATE_SET "hidden" 0.0;
+            transition: LINEAR 0.1;
+            target: "elm.text.title";
+         }
+         program {
+            signal: "elm,title,show";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "elm.text.title";
+         }
+      }
+   }
+}
+
+/* application with a main content area with a back and next buttons and title area */
+group { name: "elm/layout/application/content-back-next";
+   images {
+      image: "whitetheme/shadow_title.png" COMP;
+   }
+   parts {
+      part { name: "base";
+         type:RECT;
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 LAYOUT_TITLE_SIZE_INC;
+            max: LAYOUT_MAX_WIDTH_INC LAYOUT_TITLE_SIZE_INC;
+            align: 0.5 0.0;
+            color: LAYOUT_BG_COLOR_INC;
+         }
+      }
+      part { name: "elm.padding.title.shadow.left";
+         type: SPACER;
+         scale:1 ;
+         description { state: "default" 0.0;
+            align: 0 0;
+            min: 0 LAYOUT_TITLE_SHADOW_HEIGHT_INC;
+            fixed: 0 1;
+            rel1 {
+               to: "base";
+               relative: 0 1;
+            } 
+            rel2 {
+               to: "base";
+               relative: 0 1;
+            }
+         }
+      }
+      part { name: "elm.padding.title.shadow.right";
+         type: SPACER;
+         scale:1 ;
+         description { state: "default" 0.0;
+            align: 1 0;
+            min: 0 LAYOUT_TITLE_SHADOW_HEIGHT_INC;
+            fixed: 0 1;
+            rel1 {
+               to: "base";
+               relative: 1 1;
+            } 
+            rel2 {
+               to: "base";
+               relative: 1 1;
+            }
+         }
+      }
+      part { name: "elm.title.shadow";
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            image.normal: "whitetheme/shadow_title.png";
+            rel1 {
+               to: "elm.padding.title.shadow.left";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "elm.padding.title.shadow.right";
+               relative: 1.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1 {
+               to: "elm.padding.title.shadow.left";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.padding.back";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: LAYOUT_TITLE_ICON_LEFT_PADDING_INC LAYOUT_TITLE_ICON_HEIGHT_INC;
+            max : LAYOUT_TITLE_ICON_LEFT_PADDING_INC LAYOUT_TITLE_ICON_HEIGHT_INC;
+            fixed: 1 1;
+            align: 0.0 0.5;
+            rel1 {
+               to: "base";
+               relative: 0.0 0.5;
+            }
+            rel2 {
+               to: "base";
+               relative: 0.0 0.5;
+            }
+         }
+      }
+      part { name: "back";
+         type: EXTERNAL;
+         scale: 1;
+         source: "elm/button";
+         description { state: "default" 0.0;
+            align: 0.0 0.0;
+            fixed: 1 1;
+            rel1 {
+               to: "elm.padding.back";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "elm.padding.back";
+               relative: 1.0 1.0;
+            }
+            params.string: "label" "Back";
+         }
+      }
+      part { name: "elm.padding.next";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align : 1 0.5;
+            fixed: 1 1;
+            min: LAYOUT_TITLE_ICON_RIGHT_PADDING_INC LAYOUT_TITLE_ICON_HEIGHT_INC;
+            max : LAYOUT_TITLE_ICON_RIGHT_PADDING_INC LAYOUT_TITLE_ICON_HEIGHT_INC;
+            rel1 {
+               to: "base";
+               relative: 1.0 0.5;
+            }
+            rel2 {
+               to: "base";
+               relative: 1.0 0.5;
+            }
+         }
+      }
+      part { name: "next";
+         type: EXTERNAL;
+         source: "elm/button";
+//         clip_to: "next_clipper";
+         description { state: "default" 0.0;
+            align: 1.0 0.0;
+            fixed: 1 1;
+            rel1 {
+               to: "elm.padding.next";
+               relative: 0.0 0.0;
+            }
+            rel2 {
+               to: "elm.padding.next";
+               relative: 0.0 1.0;
+            }
+            params.string: "label" "Next";
+         }
+      }
+      part { name: "elm.text.title";
+         type: TEXT;
+         scale: 1;
+//         clip_to: "title_clipper";
+         description { state: "default" 0.0;
+            color: LAYOUT_TITLE_FONT_COLOR_INC;
+            rel1 {
+               to_x: "back";
+               relative: 1.0 0.0;
+            }
+            rel2 { to_y: "back";
+               to_x: "next";
+               relative: 0.0 1.0;
+            }
+            text {
+               font: "SLP:style=Medium";
+               size: LAYOUT_TITLE_FONT_SIZE_INC;
+            }
+         }
+      }
+      programs {
+         program {
+            signal: "clicked";
+            source: "back";
+            action: SIGNAL_EMIT "elm,action,back" "";
+         }
+/*         program {
+            signal: "elm,title,hide";
+            source: "elm";
+            action: STATE_SET "hidden" 0.0;
+            transition: LINEAR 0.1;
+            target: "title_clipper";
+         }
+         program {
+            signal: "elm,title,show";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "title_clipper";
+         }
+         program {
+            signal: "elm,back,hide";
+            source: "elm";
+            action: STATE_SET "hidden" 0.0;
+            target: "back_clipper";
+         }
+         program {
+            signal: "elm,back,show";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "back_clipper";
+         }*/
+         program {
+            signal: "clicked";
+            source: "next";
+            action: SIGNAL_EMIT "elm,action,next" "";
+         }
+/*         program {
+            signal: "elm,next,hide";
+            source: "elm";
+            action: STATE_SET "hidden" 0.0;
+            target: "next_clipper";
+         }
+         program {
+            signal: "elm,next,show";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "next_clipper";
+         }*/
+      }
+   }
+}
+
+/* application with toolbar and main content area as a vertical box */
+group { name: "elm/layout/application/toolbar-vbox";
+   parts {
+      part { name: "elm.box.content";
+         type: BOX;
+         description { state: "default" 0.0;
+            rel1 { to_y: "elm.external.toolbar";
+               relative: 0.0 1.0;
+               offset: -1 1;
+            }
+            box.layout: "vertical";
+         }
+      }
+      part { name: "elm.external.toolbar";
+         type: EXTERNAL;
+         source: "elm/toolbar";
+         description { state: "default" 0.0;
+            align: 0.5 0.0;
+            fixed: 0 1;
+            min: 0 LAYOUT_TOOLBAR_SIZE_INC;
+            rel2 {
+               relative: 1.0 0.0;
+            }
+         }
+      }
+   }
+}
+
+/* application with toolbar and main content area as a table */
+group { name: "elm/layout/application/toolbar-table";
+   parts {
+      part { name: "elm.table.content";
+         type: TABLE;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1 { to_y: "elm.external.toolbar";
+               relative: 0.0 1.0;
+               offset: -1 1;
+            }
+         }
+      }
+      part { name: "elm.external.toolbar";
+         type: EXTERNAL;
+         source: "elm/toolbar";
+         description { state: "default" 0.0;
+            align: 0.5 0.0;
+            fixed: 0 1;
+            min: 0 LAYOUT_TOOLBAR_SIZE_INC;
+            rel2 {
+               relative: 1.0 0.0;
+            }
+         }
+      }
+   }
+}
+

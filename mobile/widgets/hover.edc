@@ -1,0 +1,504 @@
+group { name: "elm/hover/base/hoversel_vertical/default";
+   alias: "elm/hover/base/hoversel_vertical/entry";
+   data.item: "max_size" "528";
+   images {
+      set {
+         name: "core_dropdown_label_bg.#";
+         image {
+            image: SMALL"images/User_Input_Elements/core_dropdown_label_bg.#.png" COMP;
+         }
+         image {
+            image: MEDIUM"images/User_Input_Elements/core_dropdown_label_bg.#.png" COMP;
+         }
+      }
+      set {
+         name: "core_dropdown_label_bg_stroke.#.png";
+         image {
+            image: SMALL"images/Old/core_dropdown_label_bg_stroke.#.png" COMP;
+         }
+         image {
+            image: MEDIUM"images/Old/core_dropdown_label_bg_stroke.#.png" COMP;
+         }
+      }
+   }
+   script {
+      public visible = 0;
+      public right = 0;
+   }
+   parts {
+      part { name: "elm.swallow.offset";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0.0 0.0;
+            rel1.relative: 0.0 0.0;
+            rel2.relative: 0.0 0.0;
+         }
+      }
+      part { name: "elm.swallow.size";
+         type: SWALLOW;
+         scale: 1;
+         repeat_events: 1;
+         description { state: "default" 0.0;
+            align: 0.0 0.0;
+            rel1 {
+               to: "elm.swallow.offset";
+               relative: 1.0 1.0;
+            }
+            rel2 {
+               to: "elm.swallow.offset";
+               relative: 1.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.padding.bg-top.left-top";
+         type: SPACER;
+         scale: 1;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            align: 1 1;
+            fixed: 1 1;
+            min: HOVER_HOVERSEL_VERTICAL_PADDING_SIZE_DEFAULT HOVER_HOVERSEL_VERTICAL_PADDING_SIZE_DEFAULT;
+            rel1.to: "elm.swallow.slot.top";
+            rel2 {
+               to: "elm.swallow.slot.top";
+               relative: 0 0;
+            }
+         }
+      }
+      part { name: "elm.padding.bg-top.right-bottom";
+         type: SPACER;
+         scale: 1;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            align: 0 0;
+            fixed: 1 1;
+            min: HOVER_HOVERSEL_VERTICAL_PADDING_SIZE_DEFAULT HOVER_HOVERSEL_VERTICAL_PADDING_SIZE_DEFAULT;
+            rel1 {
+               to_x: "elm.swallow.slot.top";
+               to_y: "elm.swallow.slot.bottom";
+               relative: 1 0;
+            }
+            rel2 {
+               to_x: "elm.swallow.slot.top";
+               to_y: "elm.swallow.slot.bottom";
+            }
+         }
+      }
+      part { name: "elm.padding.bg-bottom.left-top";
+         type: SPACER;
+         scale: 1;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            align: 1 1;
+            fixed: 1 1;
+            min: HOVER_HOVERSEL_VERTICAL_PADDING_SIZE_DEFAULT HOVER_HOVERSEL_VERTICAL_PADDING_SIZE_DEFAULT;
+            rel1 {
+               to_x: "elm.swallow.slot.bottom";
+               to_y: "elm.swallow.slot.top";
+            }
+            rel2 {
+               to_x: "elm.swallow.slot.bottom";
+               to_y: "elm.swallow.slot.top";
+               relative: 0 1;
+            }
+         }
+      }
+      part { name: "elm.padding.bg-bottom.right-bottom";
+         type: SPACER;
+         scale: 1;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            align: 0 0;
+            fixed: 1 1;
+            min: HOVER_HOVERSEL_VERTICAL_PADDING_SIZE_DEFAULT HOVER_HOVERSEL_VERTICAL_PADDING_SIZE_DEFAULT;
+            rel1 {
+               to: "elm.swallow.slot.bottom";
+               relative: 1 1;
+            }
+            rel2.to: "elm.swallow.slot.bottom";
+         }
+      }
+      part { name: "button_image";
+         type: RECT;
+         mouse_events: 1;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1 {
+               to: "elm.padding.bg-top.left-top";
+               relative: 0 0;
+            }
+            rel2 {
+               to: "elm.padding.bg-top.right-bottom";
+               relative: 1 1;
+            }
+            color: 0 0 0 0;
+         }
+         description { state: "bottom" 0.0;
+            rel1 {
+               to: "elm.padding.bg-bottom.left-top";
+               relative: 0 0;
+            }
+            rel2 {
+               to: "elm.padding.bg-bottom.right-bottom";
+               relative: 1 1;
+            }
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "base";
+         type: RECT;
+         mouse_events: 1;
+         scale: 1;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "clipper";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            color: 255 255 255 0;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            color: 255 255 255 255;
+         }
+      }
+      part { name: "top_bg";
+         type: IMAGE;
+         clip_to: "top_clipper";
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "top_clipper";
+            rel2.to: "top_clipper";
+            image.normal: "core_dropdown_label_bg.#";
+            color: 250 250 250 255;
+            visible: 0;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part { name: "top_clipper";
+         type: RECT;
+         clip_to: "clipper";
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "elm.swallow.slot.top";
+            rel2 {
+               to_x: "elm.swallow.slot.top";
+               to_y: "elm.swallow.slot.middle";
+               relative: 1.0 0.0;
+            }
+         }
+      }
+      part { name: "top_border";
+         type: IMAGE;
+         clip_to: "top_clipper";
+         scale: 1;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            rel1.to: "top_clipper";
+            rel2.to: "top_clipper";
+            image.normal: "core_dropdown_label_bg_stroke.#.png";
+            color: 61 185 204 255;
+            visible: 0;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part { name: "elm.swallow.slot.top";
+         type: SWALLOW;
+         clip_to: "top_clipper";
+         scale: 1;
+         description { state: "default" 0.0;
+            visible: 1;
+            align: 0.0 0.66;
+            rel1 {
+               to: "elm.swallow.slot.middle";
+               relative: 0.0 0.0;
+               offset: 0 -1;
+            }
+            rel2 {
+               to: "elm.swallow.slot.middle";
+               relative: 1.0 0.0;
+               offset: -1 -1;
+            }
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            align: 0.0 1.0;
+         }
+         description { state: "right" 0.0;
+            inherit: "default" 0.0;
+            align: 1.0 0.66;
+         }
+         description { state: "right_visible" 0.0;
+            inherit: "default" 0.0;
+            align: 1.0 1.0;
+         }
+      }
+      part { name: "bottom_bg";
+         type: IMAGE;
+         clip_to: "bottom_clipper";
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "bottom_clipper";
+            rel2.to: "bottom_clipper";
+            image.normal: "core_dropdown_label_bg.#";
+            color: 250 250 250 255;
+            visible: 0;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part { name: "bottom_clipper";
+         type: RECT;
+         clip_to: "clipper";
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1 {
+               to_x: "elm.swallow.slot.bottom";
+               to_y: "elm.swallow.slot.middle";
+               relative: 0.0 1.0;
+               offset: 0 -2;
+            }
+            rel2.to: "elm.swallow.slot.bottom";
+         }
+      }
+      part { name: "bottom_border";
+         type: IMAGE;
+         clip_to: "bottom_clipper";
+         scale: 1;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            rel1.to: "bottom_clipper";
+            rel2.to: "bottom_clipper";
+            image.normal: "core_dropdown_label_bg_stroke.#.png";
+            color: 61 185 204 255;
+            visible: 0;
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+      part { name: "elm.swallow.slot.bottom";
+         type: SWALLOW;
+         clip_to: "bottom_clipper";
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0.0 0.34;
+            rel1 {
+               to: "elm.swallow.slot.middle";
+               relative: 0.0 1.0;
+               offset: 0 -2;
+            }
+            rel2 {
+               to: "elm.swallow.slot.middle";
+               relative: 1.0 1.0;
+               offset: -1 -2;
+            }
+
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            align: 0.0 0.0;
+         }
+         description { state: "right" 0.0;
+            inherit: "default" 0.0;
+            align: 1.0 0.34;
+         }
+         description { state: "right_visible" 0.0;
+            inherit: "default" 0.0;
+            align: 1.0 0.0;
+         }
+      }
+      part { name: "over1";
+         type: RECT;
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "button_image";
+            rel2.to: "button_image";
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "elm.swallow.slot.middle";
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1.to: "elm.swallow.size";
+            rel2.to: "elm.swallow.size";
+         }
+      }
+   }
+   programs {
+      program { name: "end";
+         signal: "mouse,up,1";
+         source: "base";
+         action: SIGNAL_EMIT "elm,action,dismiss" "elm";
+      }
+      program { name: "show";
+         signal: "elm,action,show";
+         source: "elm";
+         action: STATE_SET "visible" 0.0;
+         transition: GLIDE_EASE_OUT(0.25);
+         target: "clipper";
+      }
+      program { name: "hide";
+         signal: "elm,action,hide";
+         source: "elm";
+         action: STATE_SET "default" 0.0;
+         transition: GLIDE_EASE_OUT(0.25);
+         target: "clipper";
+         after: "hidefinished";
+      }
+      program { name: "topshow";
+         signal: "elm,action,slot,top,show";
+         source: "elm";
+         script {
+            set_state(PART:"top_bg", "visible", 0.0);
+            set_state(PART:"top_border", "visible", 0.0);
+            set_state(PART:"button_image", "default", 0.0);
+            run_program(PROGRAM:"topshow2");
+         }
+      }
+      program { name: "topshow2";
+         script {
+            if (get_int(right) == 0) {
+               run_program(PROGRAM:"topshow_default");
+            }
+            else {
+               run_program(PROGRAM:"topshow_right");
+            }
+            set_int(visible, 1);
+         }
+      }
+      program { name: "topshow_default";
+         action: STATE_SET "visible" 0.0;
+         target: "elm.swallow.slot.top";
+         transition: GLIDE_EASE_OUT(0.25);
+      }
+      program { name: "topshow_right";
+         action: STATE_SET "right_visible" 0.0;
+         target: "elm.swallow.slot.top";
+         transition: GLIDE_EASE_OUT(0.25);
+      }
+      program { name: "tophide";
+         signal: "elm,action,slot,top,hide";
+         source: "elm";
+         script {
+            if (get_int(right) == 0) {
+               run_program(PROGRAM:"tophide_default");
+            }
+            else {
+               run_program(PROGRAM:"tophide_right");
+            }
+            set_int(visible, 0);
+         }
+      }
+      program { name: "tophide_default";
+         action: STATE_SET "default" 0.0;
+         target: "elm.swallow.slot.top";
+         transition: GLIDE_EASE_OUT(0.25);
+      }
+      program { name: "tophide_right";
+         action: STATE_SET "right" 0.0;
+         target: "elm.swallow.slot.top";
+         transition: GLIDE_EASE_OUT(0.25);
+      }
+      program { name: "bottomshow";
+         signal: "elm,action,slot,bottom,show";
+         source: "elm";
+         script {
+            set_state(PART:"bottom_bg", "visible", 0.0);
+            set_state(PART:"bottom_border", "visible", 0.0);
+            set_state(PART:"button_image", "bottom", 0.0);
+            run_program(PROGRAM:"bottomshow2");
+         }
+      }
+      program { name: "bottomshow2";
+         script {
+            if (get_int(right) == 0) {
+               run_program(PROGRAM:"bottomshow_default");
+            }
+            else {
+               run_program(PROGRAM:"bottomshow_right");
+            }
+            set_int(visible, 1);
+         }
+      }
+      program { name: "bottomshow_default";
+         action: STATE_SET "visible" 0.0;
+         target: "elm.swallow.slot.bottom";
+         transition: GLIDE_EASE_OUT(0.25);
+      }
+      program { name: "bottomshow_right";
+         action: STATE_SET "right_visible" 0.0;
+         target: "elm.swallow.slot.bottom";
+         transition: GLIDE_EASE_OUT(0.25);
+      }
+      program { name: "bottomhide";
+         signal: "elm,action,slot,bottom,hide";
+         source: "elm";
+         script {
+            if (get_int(right) == 0) {
+               run_program(PROGRAM:"bottomhide_default");
+            }
+            else {
+               run_program(PROGRAM:"bottomhide_right");
+            }
+            set_int(visible, 0);
+         }
+      }
+      program { name: "bottomhide_default";
+         action: STATE_SET "default" 0.0;
+         target: "elm.swallow.slot.bottom";
+         transition: GLIDE_EASE_OUT(0.25);
+      }
+      program { name: "bottomhide_right";
+         action: STATE_SET "right" 0.0;
+         target: "elm.swallow.slot.bottom";
+         transition: GLIDE_EASE_OUT(0.25);
+      }
+      program { name: "hidefinished";
+         action: SIGNAL_EMIT "elm,action,hide,finished" "elm";
+      }
+      program { name: "align_right";
+         signal: "elm,state,align,right";
+         source: "elm";
+         script {
+            set_int(right, 1);
+            if (get_int(visible) == 0) {
+               set_state(PART:"elm.swallow.slot.top", "right", 0.0);
+               set_state(PART:"elm.swallow.slot.bottom", "right", 0.0);
+            }
+            else {
+               set_state(PART:"elm.swallow.slot.top", "right_visible", 0.0);
+               set_state(PART:"elm.swallow.slot.bottom", "right_visible", 0.0);
+            }
+         }
+      }
+      program { name: "align_default";
+         signal: "elm,state,align,default";
+         source: "elm";
+         script {
+            set_int(right, 0);
+            if (get_int(visible) == 0) {
+               set_state(PART:"elm.swallow.slot.top", "default", 0.0);
+               set_state(PART:"elm.swallow.slot.bottom", "default", 0.0);
+            }
+            else {
+               set_state(PART:"elm.swallow.slot.top", "visible", 0.0);
+               set_state(PART:"elm.swallow.slot.bottom", "visible", 0.0);
+            }
+         }
+      }
+   }
+}

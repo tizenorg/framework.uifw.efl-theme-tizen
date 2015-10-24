@@ -1,11 +1,11 @@
 Name:          efl-theme-tizen
 Summary:       Tizen theme files
-Version:       1.1.58
+Version:       1.2.34
 Release:       1
 Group:         TO_BE/FILLED_IN
 License:       BSD 2-Clause and Flora-1.1
 Source0:       %{name}-%{version}.tar.gz
-BuildRequires: model-build-features
+#BuildRequires: sec-product-features
 BuildRequires: edje-bin
 %define _unpackaged_files_terminate_build 0
 
@@ -18,30 +18,51 @@ Tizen heme for EFL
 %build
 export CFLAGS+=" --fPIC"
 export LDFLAGS+=" -Wl,--hash-style=both -Wl,--as-needed -Wl,--rpath=/usr/lib"
+export TIZEN_VER=2.4
 
-%if "%{?model_build_feature_formfactor}" == "circle"
-    export TARGET=2.3-wearable-circle
-%else
-	%if "%{?tizen_profile_name}" == "wearable"
-        export TARGET=2.3-wearable
+
+%if "%{?tizen_profile_name}" == "wearable"
+    %if "%{?model_build_feature_formfactor}" == "circle"
+     export TARGET=wearable-circle
     %else
-        export TARGET=2.3-mobile
-        export SIZE=WVGA
+     export TARGET=wearable
     %endif
+    export SIZE=HVGA
+%else
+ %if "%{?tizen_profile_name}" == "mobile"
+    export TARGET=mobile
+    export SIZE=HD
+ %else
+   %if "%{?tizen_profile_name}" == "tv"
+    #FIXME: JUST FIX Build ERROR. HAVE TO CHANGE TV-PROFILE.
+    export TARGET=tv
+    export SIZE=UHD
+    %endif
+ %endif
 %endif
 
 make
 
 %install
-%if "%{?model_build_feature_formfactor}" == "circle"
-    export TARGET=2.3-wearable-circle
-%else
-	%if "%{?tizen_profile_name}" == "wearable"
-        export TARGET=2.3-wearable
+export TIZEN_VER=2.4
+
+%if "%{?tizen_profile_name}" == "wearable"
+    %if "%{?model_build_feature_formfactor}" == "circle"
+     export TARGET=wearable-circle
     %else
-        export TARGET=2.3-mobile
-        export SIZE=WVGA
+     export TARGET=wearable
     %endif
+    export SIZE=HVGA
+%else
+ %if "%{?tizen_profile_name}" == "mobile"
+    export TARGET=mobile
+    export SIZE=HD
+ %else
+   %if "%{?tizen_profile_name}" == "tv"
+    export TARGET=tv
+    export SIZE=UHD
+    %endif
+ %endif
 %endif
 
 make install prefix=%{_prefix} DESTDIR=%{buildroot}

@@ -1,0 +1,637 @@
+/*
+ * Copyright (c) 2015 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+group { name: "elm/check/base/default";
+   alias: "elm/check/base/popup";
+   data.item: "vector_ux" "default";
+   script {
+      public check_state;
+      public disabled;
+      public text;
+      public animate = 0;
+   }
+   parts {
+      part { name: "base";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: CHECK_DEFAULT_SIZE;
+         }
+      }
+
+      //bg shape
+      part { name: "tizen_vg_shape_bg";
+         type: SWALLOW;
+         clip_to: "tizen_vg_shape_bg_clipper";
+         scale: 1;
+         description { state: "default" 0.0;
+            min: CHECK_DEFAULT_SIZE;
+            rel1.relative: 0 0.5;
+            rel2.relative: 0 0.5;
+            align: 0 0.5;
+            fixed: 1 1;
+         }
+      }
+
+      part { name: "tizen_vg_shape_bg_clipper";
+         type: RECT;
+         description { state: "default" 0.0;
+            color: 249 249 249 77;
+         }
+         description { state: "off" 0.0;
+            color: 249 249 249 52;
+         }
+         description { state: "disabled_on" 0.0;
+            color: 61 184 204 77;
+         }
+         description { state: "disabled_off" 0.0;
+            color: 61 184 204 52;
+         }
+      }
+
+      //Outline + Rectangle Fill
+      part { name: "tizen_vg_shape";
+         type: SWALLOW;
+         clip_to: "tizen_vg_shape_clipper";
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "tizen_vg_shape_bg";
+            rel2.to: "tizen_vg_shape_bg";
+         }
+      }
+
+      part { name: "tizen_vg_shape_clipper";
+         type: RECT;
+         description { state: "default" 0.0;
+            color: 61 184 204 255;
+         }
+         description { state: "disabled" 0.0;
+            color: 61 184 204 77;
+         }
+      }
+      //Check Line
+      part { name: "tizen_vg_shape2";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "tizen_vg_shape";
+            rel2.to: "tizen_vg_shape";
+         }
+      }
+      part { name: "padding_before_text";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0.0 0.5;
+            min: 0 0;
+            rel1 {
+               to: "tizen_vg_shape";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "tizen_vg_shape";
+               relative: 1.0 1.0;
+            }
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            min: CHECK_PAD_BEFORE_TEXT_INC;
+            fixed: 1 1;
+         }
+      }
+      part { name: "elm.text";
+         type: TEXTBLOCK;
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            visible: 0;
+            fixed: 0 1;
+            rel1 {
+               relative: 1.0 0.5;
+               to_x : "padding_before_text";
+            }
+            rel2 {
+               relative: 1.0 0.5;
+            }
+            align: 0.0 0.5;
+            text {
+               style: "check_default";
+               min: 0 0;
+            }
+         }
+         description { state: "visible" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            text.min: 0 1;
+         }
+         description { state: "disabled" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            text {
+               style: "check_default_dim";
+               min: 0 1;
+            }
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+            text {
+               style: "check_default_press";
+               min: 0 1;
+            }
+         }
+      }
+      part { name: "event";
+         type: RECT;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+      }
+   }
+   programs {
+      program { name: "click";
+         signal: "mouse,clicked,1";
+         source: "event";
+         script {
+            if (get_int(disabled) == 0) {
+               emit("elm,action,check,toggle", "");
+               run_program(PROGRAM:"touch_sound");
+            }
+         }
+      }
+      program { name: "touch_sound";
+         action: RUN_PLUGIN "touch_sound";
+      }
+      program { name: "check_on_activate";
+         signal: "elm,activate,check,on";
+         source: "elm";
+         script {
+            set_int(animate, 1);
+         }
+      }
+      program { name: "check_off_activate";
+         signal: "elm,activate,check,off";
+         source: "elm";
+         script {
+            set_int(animate, 1);
+         }
+      }
+      program { name: "check_on";
+         signal: "elm,state,check,on";
+         source: "elm";
+         script {
+            if (get_int(animate) == 0) {
+               emit("elm,check,state,toggle", "tizen_vg");
+            } else {
+               emit("elm,check,action,toggle", "tizen_vg");
+            }
+            set_state(PART:"tizen_vg_shape_bg_clipper", "default", 0.0);
+            set_int(animate, 0);
+            set_int(check_state, 1);
+         }
+      }
+      program { name: "check_off";
+         signal: "elm,state,check,off";
+         source: "elm";
+         script {
+            if (get_int(animate) == 0) {
+               emit("elm,check,state,toggle", "tizen_vg");
+            } else {
+               emit("elm,check,action,toggle", "tizen_vg");
+            }
+            set_state(PART:"tizen_vg_shape_bg_clipper", "off", 0.0);
+            set_int(animate, 0);
+            set_int(check_state, 0);
+         }
+      }
+      program { name: "disabled";
+         signal: "elm,state,disabled";
+         source: "elm";
+         script {
+            set_int(disabled, 1);
+            set_state(PART:"tizen_vg_shape_clipper", "disabled", 0.0);
+            if (get_int(check_state) == 0) {
+              set_state(PART:"tizen_vg_shape_bg_clipper", "disabled_off", 0.0);
+            } else {
+              set_state(PART:"tizen_vg_shape_bg_clipper", "disabled_on", 0.0);
+            }
+            if (get_int(text) == 1) {
+              set_state(PART:"elm.text", "disabled", 0.0);
+            }
+         }
+      }
+      program { name: "enable";
+         signal: "elm,state,enabled";
+         source: "elm";
+         script {
+            set_int(disabled, 0);
+            set_state(PART:"tizen_vg_shape_clipper", "default", 0.0);
+            if (get_int(check_state) == 0) {
+              set_state(PART:"tizen_vg_shape_bg_clipper", "off", 0.0);
+            } else {
+              set_state(PART:"tizen_vg_shape_bg_clipper", "default", 0.0);
+            }
+            if (get_int(text) == 1) {
+              set_state(PART:"elm.text", "visible", 0.0);
+            }
+         }
+      }
+      program { name: "text_show";
+         signal: "elm,state,text,visible";
+         source: "elm";
+         script {
+            set_int(text, 1);
+            set_state(PART:"padding_before_text", "visible", 0.0);
+            if (get_int(disabled) == 1) {
+              set_state(PART:"elm.text", "disabled", 0.0);
+            }else {
+              set_state(PART:"elm.text", "visible", 0.0);
+            }
+         }
+      }
+      program { name: "text_hide";
+         signal: "elm,state,text,hidden";
+         source: "elm";
+         script {
+            set_int(text, 0);
+            set_state(PART:"padding_before_text", "default", 0.0);
+            set_state(PART:"elm.text", "default", 0.0);
+         }
+      }
+      program { name: "pressed";
+         signal: "mouse,down,1";
+         source: "event";
+         script {
+            if (get_int(disabled) == 1) return;
+            if (get_int(text) == 1) {
+              set_state(PART:"elm.text", "pressed", 0.0);
+            }
+         }
+      }
+      program { name: "unpressed";
+         signal: "mouse,up,1";
+         source: "event";
+         script {
+            if (get_int(disabled) == 1) return;
+            if (get_int(text) == 1) {
+              set_state(PART:"elm.text", "visible", 0.0);
+            }
+         }
+      }
+      program { name: "pass_event_enable";
+         signal: "elm,event,pass,enabled";
+         source: "elm";
+         script {
+            set_mouse_events(PART:"event", 0);
+         }
+      }
+      program { name: "pass_event_disable";
+         signal: "elm,event,pass,disabled";
+         source:"elm";
+         script {
+            set_mouse_events(PART:"event", 1);
+         }
+      }
+      program { name: "repeat_event_enable";
+         signal: "elm,event,repeat,enabled";
+         source: "elm";
+         script {
+            set_repeat_events(PART:"event", 1);
+         }
+      }
+      program { name: "repeat_event_disable";
+         signal: "elm,event,repeat,disabled";
+         source:"elm";
+         script {
+            set_repeat_events(PART:"event", 0);
+         }
+      }
+      program { name: "finished_animation";
+         signal: "elm,action,animation,finished";
+         source: "elm";
+         action: SIGNAL_EMIT "animation,finished" "";
+      }
+   }
+}
+
+group { name: "elm/check/base/favorite";
+   inherit: "elm/check/base/default";
+   data.item: "vector_ux" "favorite";
+   parts {
+      part { name: "base";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: CHECK_FAVORITE_SIZE;
+         }
+      }
+      //Outline Star
+      part { name: "tizen_vg_shape";
+         type: SWALLOW;
+         scale: 1;
+         clip_to: "tizen_vg_shape_clipper";
+         description { state: "default" 0.0;
+            min: CHECK_FAVORITE_SIZE;
+            rel1.relative: 0 0.5;
+            rel2.relative: 0 0.5;
+            align: 0 0.5;
+            fixed: 1 1;
+         }
+      }
+      part { name: "tizen_vg_shape_clipper";
+         type: RECT;
+         description { state: "default" 0.0;
+            color: 245 171 0 255;
+         }
+         description { state: "disabled" 0.0;
+            color: 0 0 0 26;
+         }
+      }
+      //Inner Star Body
+      part { name: "tizen_vg_shape2";
+         clip_to: "tizen_vg_shape_clipper2";
+         scale: 1;
+         type: SWALLOW;
+         description { state: "default" 0.0;
+            rel1.to: "tizen_vg_shape";
+            rel2.to: "tizen_vg_shape";
+         }
+      }
+      part { name: "tizen_vg_shape_clipper2";
+         type: RECT;
+         description { state: "default" 0.0;
+            color: 250 250 250 51;
+         }
+         description { state: "on" 0.0;
+            color: 245 171 0 255;
+         }
+         description { state: "disabled" 0.0;
+            color: 0 0 0 26;
+         }
+      }
+  }
+   programs {
+      program { name: "toggle_on_effect";
+         action: STATE_SET "on" 0.0;
+         target: "tizen_vg_shape_clipper2";
+         transition: DECELERATE 0.5;
+      }
+      program { name: "check_on";
+         signal: "elm,state,check,on";
+         source: "elm";
+         script {
+            if (get_int(animate) == 0) {
+               emit("elm,check,state,toggle", "tizen_vg");
+               if (!get_int(disabled)) {
+                  set_state(PART:"tizen_vg_shape_clipper2", "on", 0.0);
+               }
+            } else {
+               emit("elm,check,action,toggle", "tizen_vg");
+               if (!get_int(disabled)) {
+                  run_program(PROGRAM:"toggle_on_effect");
+               }
+            }
+            set_int(animate, 0);
+            set_int(check_state, 1);
+         }
+      }
+      program { name: "toggle_off_effect";
+         action: STATE_SET "default" 0.0;
+         target: "tizen_vg_shape_clipper2";
+         transition: DECELERATE 0.3;
+      }
+      program { name: "check_off";
+         signal: "elm,state,check,off";
+         source: "elm";
+         script {
+            if (get_int(animate) == 0) {
+               emit("elm,check,state,toggle", "tizen_vg");
+               if (!get_int(disabled)) {
+                  set_state(PART:"tizen_vg_shape_clipper2", "default", 0.0);
+               }
+            } else {
+               emit("elm,check,action,toggle", "tizen_vg");
+               if (!get_int(disabled)) {
+                  run_program(PROGRAM:"toggle_off_effect");
+               }
+            }
+            set_int(animate, 0);
+            set_int(check_state, 0);
+         }
+      }
+      program { name: "disabled";
+         signal: "elm,state,disabled";
+         source: "elm";
+         script {
+            set_int(disabled, 1);
+            set_state(PART:"tizen_vg_shape_clipper", "disabled", 0.0);
+            set_state(PART:"tizen_vg_shape_clipper2", "disabled", 0.0);
+            if (get_int(text) == 1) {
+              set_state(PART:"elm.text", "disabled", 0.0);
+            }
+         }
+      }
+      program { name: "enable";
+         signal: "elm,state,enabled";
+         source: "elm";
+         script {
+            set_int(disabled, 0);
+            set_state(PART:"tizen_vg_shape_clipper", "default", 0.0);
+            if (get_int(check_state) == 0) {
+              set_state(PART:"tizen_vg_shape_clipper2", "default", 0.0);
+            } else {
+              set_state(PART:"tizen_vg_shape_clipper2", "on", 0.0);
+            }
+            if (get_int(text) == 1) {
+              set_state(PART:"elm.text", "visible", 0.0);
+            }
+         }
+      }
+      program { name: "finished_animation";
+         signal: "elm,action,animation,finished";
+         source: "elm";
+         action: SIGNAL_EMIT "animation,finished" "";
+      }
+   }
+}
+
+group { name: "elm/check/base/on&off";
+   inherit: "elm/check/base/default";
+   data.item: "vector_ux" "on&off";
+   parts {
+      part { name: "base";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: CHECK_ONOFF_SIZE;
+         }
+      }
+      //Circle BG
+      part { name: "tizen_vg_shape";
+         type: SWALLOW;
+         scale: 1;
+         clip_to: "tizen_vg_shape_clipper";
+         description { state: "default" 0.0;
+            min: CHECK_ONOFF_SIZE;
+            rel1.relative: 0 0.5;
+            rel2.relative: 0 0.5;
+            align: 0 0.5;
+            fixed: 1 1;
+         }
+      }
+      part { name: "tizen_vg_shape_clipper";
+         type: RECT;
+         description { state: "default" 0.0;
+            color: 0 0 0 102;
+         }
+         description { state: "on" 0.0;
+           color: 0 0 0 102;
+         }
+         description { state: "disabled" 0.0;
+            color: 0 0 0 40;
+         }
+      }
+      //Overlapped Circle
+      part { name: "tizen_vg_shape2";
+         type: SWALLOW;
+         clip_to: "tizen_vg_shape_clipper2";
+         description { state: "default" 0.0;
+            rel1.to: "tizen_vg_shape";
+            rel2.to: "tizen_vg_shape";
+         }
+      }
+      part { name: "tizen_vg_shape_clipper2";
+         type: RECT;
+         description { state: "default" 0.0;
+            color: 89 175 58 0;
+         }
+         description { state: "on" 0.0;
+            color: 89 175 58 255;
+         }
+         description { state: "disabled" 0.0;
+            visible: 0;
+         }
+      }
+      //Line <-> Circle
+      part { name: "tizen_vg_shape3";
+         type: SWALLOW;
+         scale: 1;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            rel1.to: "tizen_vg_shape";
+            rel2.to: "tizen_vg_shape";
+            min: CHECK_ONOFF_ICON_SIZE;
+            fixed: 1 1;
+            align: 0.5 0.5;
+            rel1.relative: 0.5 0.5;
+            rel2.relative: 0.5 0.5;
+         }
+      }
+   }
+   programs {
+      program { name: "toggle_on_effect";
+         action: STATE_SET "on" 0.0;
+         target: "tizen_vg_shape_clipper2";
+         transition: DECELERATE 0.45;
+      }
+      program { name: "check_on";
+         signal: "elm,state,check,on";
+         source: "elm";
+         script {
+            if (get_int(animate) == 0) {
+               emit("elm,check,state,toggle", "tizen_vg");
+               if (!get_int(disabled)) {
+                  set_state(PART:"tizen_vg_shape_clipper2", "on", 0.0);
+               }
+            } else {
+               emit("elm,check,action,toggle", "tizen_vg");
+               if (!get_int(disabled)) {
+                  run_program(PROGRAM:"toggle_on_effect");
+               }
+            }
+            set_int(animate, 0);
+            set_int(check_state, 1);
+         }
+      }
+      program { name: "toggle_off_effect";
+         action: STATE_SET "default" 0.0;
+         target: "tizen_vg_shape_clipper2";
+         transition: DECELERATE 0.45;
+      }
+      program { name: "check_off";
+         signal: "elm,state,check,off";
+         source: "elm";
+         script {
+            if (get_int(animate) == 0) {
+               emit("elm,check,state,toggle", "tizen_vg");
+               if (!get_int(disabled)) {
+                  set_state(PART:"tizen_vg_shape_clipper2", "default", 0.0);
+               }
+            } else {
+               emit("elm,check,action,toggle", "tizen_vg");
+               if (!get_int(disabled)) {
+                  run_program(PROGRAM:"toggle_off_effect");
+               }
+            }
+            set_int(animate, 0);
+            set_int(check_state, 0);
+         }
+      }
+      program { name: "disabled";
+         signal: "elm,state,disabled";
+         source: "elm";
+         script {
+            set_int(disabled, 1);
+            set_state(PART:"tizen_vg_shape_clipper", "disabled", 0.0);
+            set_state(PART:"tizen_vg_shape_clipper2", "disabled", 0.0);
+            if (get_int(text) == 1) {
+              set_state(PART:"elm.text", "disabled", 0.0);
+            }
+         }
+      }
+      program { name: "enable";
+         signal: "elm,state,enabled";
+         source: "elm";
+         script {
+            set_int(disabled, 0);
+            if (get_int(check_state) == 0) {
+               set_state(PART:"tizen_vg_shape_clipper", "default", 0.0);
+               set_state(PART:"tizen_vg_shape_clipper2", "default", 0.0);
+            } else {
+               set_state(PART:"tizen_vg_shape_clipper", "on", 0.0);
+               set_state(PART:"tizen_vg_shape_clipper2", "on", 0.0);
+            }
+            if (get_int(text) == 1) {
+              set_state(PART:"elm.text", "visible", 0.0);
+            }
+         }
+      }
+      program { name: "finished_animation";
+         signal: "elm,action,animation,finished";
+         source: "elm";
+         action: SIGNAL_EMIT "animation,finished" "";
+      }
+   }
+}

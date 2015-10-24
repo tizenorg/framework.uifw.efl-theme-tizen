@@ -1,0 +1,140 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * PROPRIETARY/CONFIDENTIAL
+ *
+ * This software is the confidential and proprietary information of SAMSUNG
+ * ELECTRONICS ("Confidential Information"). You agree and acknowledge that this
+ * software is owned by Samsung and you shall not disclose such Confidential
+ * Information and shall use it only in accordance with the terms of the license
+ * agreement you entered into with SAMSUNG ELECTRONICS. SAMSUNG make no
+ * representations or warranties about the suitability of the software, either
+ * express or implied, including but not limited to the implied warranties of
+ * merchantability, fitness for a particular purpose, or non-infringement.
+ * SAMSUNG shall not be liable for any damages suffered by licensee arising out
+ * of or releated to this software.
+ *
+ */
+
+// LICENSE NOTE:
+// This file (and only this one) is licenses under public-domain. The reason
+// is that this is meant to serve as a template for making your own themes and
+// Elementary's LGPL license is not intended to follow. The images used do come
+// under LGPL, but this file specifically for the structure of your theme is
+// public-domain. This means you can take, use, re-license and otherwise
+// have zero restrictions on using this file as a base for your theme.
+
+// theme configuration file for each theme (tizen, tizen-black, ...)
+#include "default/inc/tmp-inc.edc"
+#include "default/inc/tizen-default-inc.edc"
+
+#define INDICATOR_H		27
+#define CONTROLBAR_LARGE_H		78
+#define CONTROLBAR_SMALL_H		65
+#define CONTROLBAR_W			78
+#define SOFTKEY_H		72
+#define SEGMENT_H		50
+#define PART_RECT(NAME, REFER_PART, COLOR) \
+   part { name: NAME; \
+      type: RECT; \
+      description { state: "default" 0.0; \
+         rel1.to: REFER_PART; \
+         rel2.to: REFER_PART; \
+         color: COLOR; \
+      } \
+   }
+
+externals {
+   external: "elm";
+}
+
+// BUILD_FIX: Add version to edc as 110.
+data.item: "version" "110";
+//
+
+collections {
+    base_scale: 2.4;
+
+#include "widgets_default/map.edc"
+//#include "widgets_default/multisense_ui.edc"
+#include "widgets_default/panes.edc"
+#include "widgets_default/photocam.edc"
+#include "widgets_default/segmentedcontrol.edc"
+
+#include "widgets_default/actionslider.edc"
+#include "widgets_default/bubble.edc"
+#include "widgets_default/clock.edc"
+#include "widgets_default/entry.edc"
+#include "widgets_default/fileselector.edc"
+#include "widgets_default/panel.edc"
+#include "widgets_default/check.edc"
+#include "widgets_default/genlist.edc"
+#include "widgets_default/hover.edc"
+#include "widgets_default/button.edc"
+#include "widgets_default/ews.edc"
+#include "widgets_default/layout.edc"
+#include "widgets_default/spinner.edc"
+#include "widgets_default/progressbar.edc"
+#include "widgets_default/menu.edc"
+#include "widgets_default/frame.edc"
+#include "widgets_default/border.edc"
+#include "widgets_default/toolbar.edc"
+
+#include "widgets_default/index.edc"
+#include "widgets_default/gengrid.edc"
+#include "widgets_default/tooltip.edc"
+#include "widgets_default/separator.edc"
+#include "widgets_default/colorselector.edc"
+#include "widgets_default/list.edc"
+#include "widgets_default/thumb.edc"
+#include "widgets_default/photo.edc"
+#include "widgets_default/pointer.edc"
+#include "widgets_default/player.edc"
+#include "widgets_default/focus_highlight.edc"
+#include "widgets_default/a11y_highlight.edc"
+#include "widgets_default/flipselector.edc"
+#include "widgets_default/slider.edc"
+#include "widgets_default/win.edc"
+#include "widgets_default/naviframe.edc"
+#include "widgets_default/icon.edc"
+#include "widgets_default/notify.edc"
+/*
+sounds{
+        sound : "drag-start.wav" 0 100;
+        sound :"drag-accept.wav" 0 100;
+        sound :"button-pressed.wav" 0 100;
+	sound :"Waterdrop.wav" 0 100;
+}
+
+haptics{
+    haptic {
+      name:"1_haptic" ;
+      magnitude: 8000 ;
+      duration: 120 ;
+      attack_level: 123 ;
+      attack_time: 122 ;
+      fade_level: 16 ;
+     fade_time: 12 ;
+     type: MAGSWEEP ;
+     pattern:"01,00,01,00,0A,00,14,00,00,00,20,01,00,00,7F,00,00,E1,00,00,4D,00,61,00,67,00,53,00,77,00,65,00,65,00,70,00,00,00" ;
+   }
+   haptic{
+        name: "2_haptic" ;
+        magnitude: 10000 ;
+        duration: 12 ;
+        attack_level: 123 ;
+        attack_time: 120 ;
+        fade_level: 16 ;
+        fade_time: 12 ;
+        type: MAGSWEEP ;
+        pattern: "01,00,03,00,38,00,42,00,00,00,19,00,21,00,F1,E0,01,E2,00,00,F1, E0, 02, E2, 01,1D,F1,E0,01,E2,03,BA,F1,E0,02,E2,04,E0,FF,20,17,00,00,7F,D1,2F,81,30,00,00,F4,01,00,00,00,20,1F,00,00,40,01,96,41,00,00,00,12,00,24,00,54,00,69,00,6D,00,65,00,6C,00,69,00,6E,00,65,00,00,00,50,00,65,00,72,00,69,00,6F,00,64,00,69,00,63,00,00,00,50,00,65,00,72,00,69,00,6F,00,64,00,69,00,63,00,20,00,23,00,31,00,00,00" ;
+   }
+}
+*/
+   color_classes {
+      color_class {
+         name: "transparent";
+         color: 0 0 0 0;
+      }
+}
+

@@ -1,0 +1,1139 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+group { name: "elm/layout/application/default";
+   parts {
+      part { name: "elm.swallow.bg";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0; }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0; }
+      }
+      part { name: "elm.swallow.floatingbutton";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 FLOATINGBUTTON_HEIGHT_INC;
+            fixed: 0 1;
+            align: 0.5 1.0;
+            rel1 { to: "elm.padding.bottom"; relative: 0.0 0.0; }
+            rel2 { to: "elm.padding.bottom"; relative: 1.0 0.0; }
+         }
+      }
+      part { name: "elm.padding.bottom";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 FLOATINGBUTTON_BOTTOM_PADDING_INC;
+            fixed: 0 1;
+            align: 0.5 1.0;
+            rel1.relative: 0.0 1.0;
+            rel2.relative: 1.0 1.0;
+         }
+      }
+   }
+}
+
+group { name: "elm/layout/drawer/panel";
+   parts {
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "elm.swallow.bg";
+         type: SWALLOW;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "elm.swallow.left";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+      part { name: "elm.swallow.right";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+         }
+      }
+   }
+}
+
+group {
+   name: "elm/layout/nocontents/default";
+   parts {
+      part { name: "bg";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            color: 250 250 250 255;
+         }
+      }
+      part { name: "text_bg";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 NO_CONTENT_BOTTOM_PADDING_HEIGHT_INC;
+            max: -1 NO_CONTENT_TEXT_BG_MAX_HEIGHT_INC;
+            fixed: 0 1;
+            align: 0.5 0.5;
+            rel1.to: "bg";
+            rel2.to: "bg";
+         }
+      }
+      part { name: "left_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: NO_CONTENT_LEFT_RIGHT_PADDING_WIDTH_INC 0;
+            fixed: 1 0;
+            align: 0.0 0.0;
+            rel1.to: "text_bg";
+            rel2.to: "text_bg";
+            rel2.relative: 0.0 1.0;
+         }
+      }
+      part{ name: "right_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: NO_CONTENT_LEFT_RIGHT_PADDING_WIDTH_INC 0;
+            fixed: 1 0;
+            align: 1.0 0.0;
+            rel1 {
+               to: "text_bg";
+               relative: 1.0 0.0;
+            }
+            rel2.to: "text_bg";
+         }
+      }
+      part { name: "elm.text";
+         type: TEXTBLOCK;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            color: 0 0 0 255;
+            rel1 {
+               to_x: "left_padding";
+               to_y: "text_bg";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "right_padding";
+               to_y: "text_bg";
+               relative: 0.0 1.0;
+            }
+            text {
+               style: "empty_state_1";
+               min: 0 1;
+               max: 0 1;
+            }
+         }
+         description { state: "help_text_set" 0.0;
+            inherit: "default" 0.0;
+            fixed: 1 1;
+            align: 0.0 1.0;
+            rel1 {
+               to: "padding_after_text";
+               relative: 0.0 0.0 ;
+            }
+            rel2 {
+               to: "padding_after_text";
+               relative: 1.0 0.0;
+            }
+         }
+      }
+      part { name: "padding_after_text";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0.0 1.0;
+            min: 0 NO_CONTENT_TEXT_PADDING_HEIGHT_INC;
+            fixed: 1 1;
+            rel1.to:"elm.help.text";
+            rel2 {
+               relative: 1.0 0.0;
+               to: "elm.help.text";
+            }
+         }
+      }
+      part { name: "help_text_top_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 (NO_CONTENT_TITLE_TEXT_HEIGHT_INC + NO_CONTENT_TEXT_PADDING_HEIGHT_INC);
+            fixed: 0 1;
+            align: 0.5 0.0;
+            rel1.to: "text_bg";
+            rel2 {
+               to: "text_bg";
+               relative: 1.0 0.0;
+            }
+         }
+      }
+      part { name: "help_text_bg";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 0 1;
+            rel1 {
+               to: "help_text_top_padding";
+               relative: 0.0 1.0;
+            }
+            rel2.to: "text_bg";
+         }
+      }
+      part { name: "elm.help.text";
+         type: TEXTBLOCK;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            color: 0 0 0 255;
+            rel1 {
+               relative: 1.0 0.0;
+               to_x:"left_padding";
+               to_y:"help_text_bg";
+            }
+            rel2 {
+               relative: 0.0 1.0;
+               to_x:"right_padding";
+               to_y:"help_text_bg";
+            }
+            text {
+               style: "empty_state_2";
+               align: 0.0 0.5;
+               min: 0 1;
+               max: 0 1;
+            }
+         }
+      }
+   }
+   programs {
+      program { name: "align_center";
+         signal: "align.center";
+         source: "elm";
+         script {
+            new buf[1024];
+            get_text(PART:"elm.help.text", buf, 1024);
+            if (strlen(buf) > 0)
+              set_state(PART:"elm.text", "help_text_set", 0.0);
+            else
+              set_state(PART:"elm.text", "default", 0.0);
+         }
+      }
+   }
+}
+
+group { name: "elm/layout/application/fastscroll";
+   parts {
+      part {
+         name: "bg";
+         type: RECT;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            color: 0 0 0 0;
+         }
+      }
+      part {
+         name: "right.padding";
+         type: SPACER;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            rel1.relative: 1.0 0.0;
+            align: 1.0 0.5;
+            min: INDEX_ITEM_WIDTH_INC 0;
+            fixed: 1 0;
+         }
+      }
+      part {
+         name: "elm.swallow.content";
+         type: SWALLOW;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            rel2 {
+               to: "right.padding";
+               relative: 0.0 1.0;
+            }
+         }
+         description {
+            state: "fastscroll_hide" 0.0;
+            rel2.to: "bg";
+            rel2.relative: 1.0 1.0;
+         }
+      }
+      part {
+         name: "elm.swallow.fastscroll";
+         type: SWALLOW;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+         }
+         description {
+            state: "fastscroll_hide" 0.0;
+            visible: 0;
+         }
+      }
+   }
+   programs {
+      program {
+         name: "fastscroll_hide";
+         signal: "elm,state,fastscroll,hide";
+         source: "";
+         action: STATE_SET "fastscroll_hide" 0.0;
+         target: "elm.swallow.content";
+         target: "elm.swallow.fastscroll";
+      }
+      program {
+         name: "fastscroll_show";
+         signal: "elm,state,fastscroll,show";
+         source: "";
+         action: STATE_SET "default" 0.0;
+         target: "elm.swallow.content";
+         target: "elm.swallow.fastscroll";
+      }
+   }
+}
+
+   /*************************************************/
+   /* elm_layout -> searchbar style                 */
+   /*************************************************/
+   group { name: "elm/layout/application/searchbar_base";
+      parts {
+         part { name: "elm.swallow.bg";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+            }
+         }
+         part { name: "searchbar";
+            type: SWALLOW;
+            mouse_events: 1;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: 0 SEARCHBAR_H_INC;
+               fixed: 0 1;
+               align: 0.5 0.0;
+               rel2 {
+                  relative: 1.0 0.0;
+               }
+            }
+            description { state: "visible" 0.0;
+               inherit: "default" 0.0;
+               align: 0.0 0.0;
+            }
+         }
+         part { name: "elm.swallow.content";
+            type: SWALLOW;
+            mouse_events: 1;
+            scale: 1;
+            description { state: "default" 0.0;
+               align: 0.0 0.0;
+               rel1 {
+                  relative: 0.0 1.0;
+                  to: "searchbar";
+               }
+            }
+         }
+      }
+      programs {
+         program { name: "show_searchbar";
+            signal: "elm,state,show,searchbar";
+            source: "elm";
+            action: STATE_SET "visible" 0.0;
+            target: "searchbar";
+         }
+         program { name: "show_searchbar_with_animation";
+            signal: "elm,state,show,searchbar,animation";
+            source: "elm";
+            action: STATE_SET "visible" 0.0;
+            transition: DECELERATE 0.3;
+            target: "searchbar";
+         }
+         program { name: "hide_searchbar";
+            signal: "elm,state,hide,searchbar";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "searchbar";
+         }
+         program { name: "hide_searchbar_with_animation";
+            signal: "elm,state,hide,searchbar,animation";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            transition: ACCELERATE 0.3;
+            target: "searchbar";
+         }
+      }
+   }
+
+group { name: "elm/layout/searchbar/default";
+   script {
+      public multi_down = 0;
+   }
+   parts {
+      part { name: "bg";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            color: 244 244 242 255; /*(Changeable UI) color_class: "B0215";*/
+         }
+      }
+      part { name: "inputfield_base";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 SEARCHBAR_BASE_HEIGHT_INC;
+            align: 0.0 0.0;
+         }
+      }
+      part { name: "top_left_padding";
+         type: SPACER;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            min: SEARCHBAR_LEFT_PADDING_INC SEARCHBAR_TOP_PADDING_INC;
+            fixed: 1 1;
+            align: 0.0 0.0;
+            rel1 { relative: 0.0 0.0; to: "inputfield_base"; }
+            rel2 { relative: 0.0 0.0; to: "inputfield_base"; }
+         }
+      }
+      part { name: "bottom_right_padding";
+         type: SPACER;
+         scale: 1;
+         description {
+            state: "default" 0.0;
+            min: SEARCHBAR_RIGHT_PADDING_INC SEARCHBAR_BOTTOM_PADDING_INC;
+            fixed: 1 1;
+            align: 1.0 1.0;
+            rel1 { relative: 1.0 1.0; to: "inputfield_base"; }
+            rel2 { relative: 1.0 1.0; to: "inputfield_base"; }
+         }
+      }
+      part { name: "inputfield_rect";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: SEARCHBAR_WIDTH_INC SEARCHBAR_HEIGHT_INC;
+            align: 0.0 0.5;
+            rel1 { relative: 1.0 1.0; to: "top_left_padding"; }
+            rel2 { relative: 0.0 0.0; to: "bottom_right_padding"; }
+            color: 0 0 0 0;
+         }
+      }
+      part {
+         name: "elm.swallow.content";
+         type: SWALLOW;
+         scale: 1;
+         ignore_flags: ON_HOLD;
+         description { state: "default" 0.0;
+            min: SEARCHBAR_WIDTH_INC SEARCHBAR_HEIGHT_INC;
+            rel1 {
+               relative : 0.0 0.0;
+               to: "inputfield_rect";
+            }
+            rel2 {
+               relative : 1.0 1.0;
+               to: "inputfield_rect";
+            }
+            align: 0.0 0.5;
+         }
+      }
+   }
+   programs {
+     program {
+         name: "bg_clicked";
+         signal: "mouse,clicked,1";
+         source: "inputfield_rect";
+         script {
+            if (get_int(multi_down) == 0)
+               emit("elm,bg,clicked", "elm");
+         }
+      }
+      program {
+         name: "sound_play";
+         signal: "mouse,clicked,1";
+         source: "elm.text";
+         script {
+            if (get_int(multi_down) == 0)
+               run_program(PROGRAM:"play_sample");
+         }
+      }
+      program {
+         name: "play_sample";
+         action: RUN_PLUGIN "touch_sound";
+      }
+      program {
+         name: "multi_down";
+         signal: "elm,action,multi,down";
+         source: "elm";
+         script {
+            set_int(multi_down, 1);
+         }
+      }
+      program {
+         name: "multi_up";
+         signal: "elm,action,multi,up";
+         source: "elm";
+         script {
+            set_int(multi_down, 0);
+         }
+      }
+   }
+}
+
+group { name: "elm/layout/searchbar/cancel_button";
+   script {
+      public multi_down = 0;
+   }
+   parts {
+      part { name: "bg";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            color: 244 244 242 255; /*(Changeable UI) color_class: "B0215";*/
+         }
+      }
+      part { name: "inputfield_base";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 SEARCHBAR_BASE_HEIGHT_INC;
+            align: 0.0 0.0;
+         }
+      }
+     part { name: "top_padding_rect";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 SEARCHBAR_TOP_PADDING_INC;
+            fixed: 0 1;
+            align: 0 0;
+            rel1.to: "inputfield_base";
+            rel2.to: "inputfield_base";
+            rel2.relative: 1.0 0.0;
+         }
+      }
+      part { name: "bottom_padding_rect";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 SEARCHBAR_BOTTOM_PADDING_INC;
+            fixed: 0 1;
+            align: 0 1;
+            rel1.to: "inputfield_base";
+            rel1.relative: 0.0 1.0;
+            rel2.to: "inputfield_base";
+         }
+      }
+      part { name: "base_bg";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 SEARCHBAR_HEIGHT_INC;
+            align: 0 0.5;
+            fixed: 0 1;
+            rel1 {
+               relative: 0.0 1.0;
+               to: "top_padding_rect";
+            }
+            rel2 {
+               relative: 1.0 0.0;
+               to: "bottom_padding_rect";
+            }
+         }
+      }
+      part { name: "left_padding_rect";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: SEARCHBAR_LEFT_PADDING_INC 0;
+            fixed: 1 0;
+            align: 0 0;
+            rel1.to: "inputfield_base";
+            rel2.to: "inputfield_base";
+            rel2.relative: 0.0 1.0;
+         }
+      }
+      part { name: "right_padding_rect";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: SEARCHBAR_RIGHT_PADDING_INC 0;
+            fixed: 1 0;
+            align: 1.0 0.0;
+            rel1.to: "inputfield_base";
+            rel1.relative: 1.0 0.0;
+            rel2.to: "inputfield_base";
+         }
+      }
+      part { name: "inputfield_rect";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: 0.0 0.5;
+            min: SEARCHBAR_WIDTH_INC SEARCHBAR_HEIGHT_INC;
+            rel1 {
+               relative: 1.0 0.0;
+               to_x: "left_padding_rect";
+               to_y: "base_bg";
+            }
+            rel2 {
+               relative: 0.0 1.0;
+               to_x: "right_btn_padding_rect";
+               to_y: "base_bg";
+            }
+            color: 0 0 0 0;
+         }
+      }
+      part { name: "right_btn_padding_rect";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 0;
+            fixed: 1 0;
+            align: 1.0 0.0;
+            rel1.relative: 0.0 0.0;
+            rel1.to: "right_padding_rect";
+            rel2.relative: 0.0 1.0;
+            rel2.to: "right_padding_rect";
+         }
+         description { state: "in" 0.0;
+            inherit: "default" 0.0;
+            min: SEARCHBAR_CANCEL_BUTTON_LEFT_PADDING_INC 0;
+            rel1.to: "button_cancel";
+            rel2.to: "button_cancel";
+         }
+      }
+      part { name: "button_cancel";
+         type: SWALLOW;
+         mouse_events: 1;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 1;
+            min: SEARCHBAR_CANCEL_BUTTON_W_INC 0;
+            align: 1.0 0.5;
+            state: "default" 0.0;
+            rel1 {
+               relative: 0.0 1.0;
+               to_x: "right_padding_rect";
+               to_y: "top_padding_rect";
+            }
+            rel2 {
+               relative: 0.0 0.0;
+               to_x: "right_padding_rect";
+               to_y: "bottom_padding_rect";
+            }
+         }
+      }
+      part {
+         name: "elm.swallow.content";
+         type: SWALLOW;
+         scale: 1;
+         ignore_flags: ON_HOLD;
+         description { state: "default" 0.0;
+            min: SEARCHBAR_WIDTH_INC SEARCHBAR_HEIGHT_INC;
+            rel1 {
+               relative : 0.0 0.0;
+               to: "inputfield_rect";
+            }
+            rel2 {
+               relative : 1.0 1.0;
+               to: "inputfield_rect";
+            }
+            align: 0.0 0.5;
+         }
+      }
+   }
+   programs {
+      program {
+         name: "sound_play";
+         signal: "mouse,clicked,1";
+         source: "elm.text";
+         script {
+            if (get_int(multi_down) == 0)
+               run_program(PROGRAM:"play_sample");
+         }
+      }
+      program {
+         name: "play_sample";
+         action: RUN_PLUGIN "touch_sound";
+      }
+     program {
+         name: "bg_clicked";
+         signal: "mouse,clicked,1";
+         source: "inputfield_rect";
+         script {
+            if (get_int(multi_down) == 0)
+               emit("elm,bg,clicked", "elm");
+         }
+      }
+      program {
+         name: "multi_down";
+         signal: "elm,action,multi,down";
+         source: "elm";
+         script {
+            set_int(multi_down, 1);
+         }
+      }
+      program {
+         name: "multi_up";
+         signal: "elm,action,multi,up";
+         source: "elm";
+         script {
+            set_int(multi_down, 0);
+         }
+      }
+      program { name: "cancel_in";
+         signal: "cancel,in";
+         source: "";
+         action: STATE_SET "in" 0.0;
+         target: "right_btn_padding_rect";
+         transition: LINEAR 0.3;
+      }
+      program { name: "cancel_out";
+         signal: "cancel,out";
+         source: "";
+         action: STATE_SET "default" 0.0;
+         target: "right_btn_padding_rect";
+         transition: LINEAR 0.3;
+      }
+      program { name: "cancel_show";
+         signal: "cancel,show";
+         source: "";
+         action: STATE_SET "in" 0.0;
+         target: "right_btn_padding_rect";
+      }
+      program { name: "cancel_hide";
+         signal: "cancel,hide";
+         source: "";
+         action: STATE_SET "default" 0.0;
+         target: "right_btn_padding_rect";
+      }
+   }
+}
+
+group { name: "elm/layout/editfield/singleline";
+   parts {
+      part { name: "bg";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 EDITFIELD_BASE_HEIGHT_INC;
+         }
+      }
+     part { name: "top_left_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: EDITFIELD_TOP_LEFT_PADDING_MIN_INC;
+            fixed: 1 1;
+            align: 0.0 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            rel2.relative: 0.0 0.0;
+         }
+      }
+      part { name: "bottom_right_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: EDITFIELD_BOTTOM_RIGHT_PADDING_MIN_INC;
+            fixed: 1 1;
+            align: 1.0 1.0;
+            rel1.to: "bg";
+            rel1.relative: 1.0 1.0;
+            rel2.to: "bg";
+         }
+      }
+      part { name: "line_left_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: EDITFIELD_LINE_LEFT_PADDING_MIN_INC;
+            fixed: 1 0;
+            align: 0.0 0.5;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            rel2.relative: 0.0 1.0;
+         }
+      }
+      part { name: "line_right_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: EDITFIELD_LINE_RIGHT_PADDING_MIN_INC;
+            fixed: 1 0;
+            align: 1.0 0.5;
+            rel1.to: "bg";
+            rel1.relative: 1.0 0.0;
+            rel2.to: "bg";
+         }
+      }
+      part { name: "line_bottom_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: EDITFIELD_LINE_BOTTOM_PADDING_MIN_INC;
+            fixed: 0 1;
+            align: 0.5 1.0;
+            rel1.to: "bg";
+            rel1.relative: 0.0 1.0;
+            rel2.to: "bg";
+         }
+      }
+      part { name: "line_rect";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: EDITFIELD_LINE_RECT_MIN_INC;
+            fixed: 1 1;
+            align: 0.5 1.0;
+            rel1 {
+               to_x: "line_left_padding";
+               to_y: "line_bottom_padding";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to_x: "line_right_padding";
+               to_y: "line_bottom_padding";
+               relative: 0.0 0.0;
+            }
+            color: 128 128 128 166;
+         }
+         description { state: "focused" 0.0;
+            inherit: "default" 0.0;
+            color: 61 184 204 255;
+         }
+      }
+      part { name: "button_field_right_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: EDITFIELD_BUTTON_FIELD_RIGHT_PADDING_MIN_INC;
+            fixed: 1 0;
+            align: 1.0 0.5;
+            rel1 {
+               to: "bg";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "bg";
+               relative: 1.0 1.0;
+            }
+         }
+      }
+      part { name: "button_field";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: EDITFIELD_BUTTON_FIELD_MIN_INC;
+            fixed: 1 1;
+            align: 1.0 0.5;
+            rel1 {
+               to_x: "button_field_right_padding";
+               to_y: "bg";
+               relative: 0.0 0.5;
+            }
+            rel2 {
+               to_x: "button_field_right_padding";
+               to_y: "bg";
+               relative: 0.0 0.5;
+            }
+         }
+      }
+      part { name: "button_field_left_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: EDITFIELD_BUTTON_FIELD_LEFT_PADDING_MIN_INC;
+            fixed: 1 0;
+            align: 1.0 0.5;
+            rel1 {
+               to_x: "button_field";
+               to_y: "bg";
+               relative: 0.0 0.0;
+            }
+            rel2 {
+               to_x: "button_field";
+               to_y: "bg";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+      part { name: "entry_field_left_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: EDITFIELD_ENTRY_FIELD_LEFT_PADDING_MIN_INC;
+            align: 0.0 0.5;
+            rel1 {
+               to: "top_left_padding";
+               relative: 1.0 1.0;
+            }
+            rel2 {
+               to_x: "top_left_padding";
+               to_y: "bottom_right_padding";
+               relative: 1.0 0.0;
+            }
+         }
+      }
+      part { name: "entry_field_right_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            min: EDITFIELD_ENTRY_FIELD_RIGHT_PADDING_MIN_INC;
+            align: 1.0 0.5;
+            rel1 {
+               to_x: "bottom_right_padding";
+               to_y: "top_left_padding";
+               relative: 0.0 1.0;
+            }
+            rel2 {
+               to: "bottom_right_padding";
+               relative: 0.0 0.0;
+            }
+         }
+      }
+      part { name: "entry_field";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: EDITFIELD_ENTRY_FIELD_MIN_INC;
+            rel1 {
+               to: "entry_field_left_padding";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "entry_field_right_padding";
+               relative: 0.0 1.0;
+            }
+         }
+         description { state: "show_button" 0.0;
+            inherit: "default" 0.0;
+            rel2 {
+               to_x: "button_field_left_padding";
+               to_y: "entry_field_right_padding";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+      part { name: "elm.swallow.content";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            align: EDITFIELD_ENTRY_SWALLOW_ALIGN;
+            rel1.to: "entry_field";
+            rel2.to: "entry_field";
+         }
+      }
+      part { name: "elm.swallow.button";
+         type: SWALLOW;
+         scale: 1;
+         description { state: "default" 0.0;
+            fixed: 1 0;
+            rel1.to: "button_field";
+            rel2.to: "button_field";
+            visible: 0;
+         }
+         description { state: "show_button" 0.0;
+            inherit: "default" 0.0;
+            visible: 1;
+         }
+      }
+   }
+   programs {
+      program { name: "focused";
+         signal: "elm,state,focused";
+         source: "";
+         action: STATE_SET "focused" 0.0;
+         target: "line_rect";
+      }
+      program { name: "unfocused";
+         signal: "elm,state,unfocused";
+         source: "";
+         action: STATE_SET "default" 0.0;
+         target: "line_rect";
+      }
+      program { name: "show_button";
+         signal: "elm,action,show,button";
+         source: "";
+         action: STATE_SET "show_button" 0.0;
+         target: "entry_field";
+         target: "elm.swallow.button";
+      }
+      program { name: "hide_button";
+         signal: "elm,action,hide,button";
+         source: "";
+         action: STATE_SET "default" 0.0;
+         target: "entry_field";
+         target: "elm.swallow.button";
+      }
+   }
+}
+
+group { name: "elm/layout/searchfield/singleline";
+   inherit: "elm/layout/editfield/singleline";
+   parts {
+      part { name: "bg";
+         type: RECT;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: 0 EDITFIELD_BASE_HEIGHT_INC;
+            color: 249 249 249 255;
+         }
+      }
+   }
+}
+
+group { name: "elm/layout/editfield/multiline";
+   inherit: "elm/layout/editfield/singleline";
+   parts {
+      part { name: "top_left_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: EDITFIELD_MULTILINE_TOP_LEFT_PADDING_MIN_INC;
+            fixed: 1 1;
+            align: 0.0 0.0;
+            rel1.to: "bg";
+            rel2.to: "bg";
+            rel2.relative: 0.0 0.0;
+         }
+      }
+      part { name: "bottom_right_padding";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: EDITFIELD_MULTILINE_BOTTOM_RIGHT_PADDING_MIN_INC;
+            fixed: 1 1;
+            align: 1.0 1.0;
+            rel1.to: "bg";
+            rel1.relative: 1.0 1.0;
+            rel2.to: "bg";
+         }
+      }
+   }
+}
+
+group { name: "elm/layout/badge/default";
+   images {
+      image: "core_icon_badge_container.#.png" COMP;
+   }
+   parts {
+      part { name: "base";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: BADGE_LAYOUT_SIZE_MIN_INC;
+         }
+      }
+      part { name: "bg";
+         scale: 1;
+         description { state: "default" 0.0;
+            rel1.to: "left.padding.text";
+            rel2.to: "right.padding.text";
+            color: 252 116 58 255;
+            image.normal: "core_icon_badge_container.#.png";
+         }
+         description { state: "toolbar_badge" 0.0;
+            inherit: "default" 0.0;
+            color: 0 0 0 38;
+         }
+      }
+      part { name: "right.padding.text";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: BADGE_LAYOUT_LEFT_RIGHT_PADDING_INC;
+            fixed: 1 1;
+            align: 1.0 0.5;
+            rel1.relative: 1.0 0.0;
+            rel2.relative: 1.0 1.0;
+         }
+      }
+      part { name: "elm.text";
+         type: TEXT;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: BADGE_LAYOUT_TEXT_MIN_SIZE_INC;
+            fixed: 1 0;
+            align: 1.0 0.5;
+            rel1 {
+               to: "right.padding.text";
+               relative: 0.0 0.0;
+            }
+            rel2 {
+               to: "right.padding.text";
+               relative: 0.0 1.0;
+            }
+            color: 255 255 255 255;
+            text {
+               font: "Tizen:style=Regular"; size: "32";
+               text_class: "tizen";
+               min: 1 0;
+            }
+         }
+      }
+      part { name: "left.padding.text";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            min: BADGE_LAYOUT_LEFT_RIGHT_PADDING_INC;
+            fixed: 1 1;
+            align: 1.0 0.5;
+            rel1 {
+               to: "elm.text";
+               relative: 0.0 0.0;
+            }
+            rel2 {
+               to: "elm.text";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+   }
+   programs {
+      program { name: "toolbar_badge";
+         source: "elm";
+         signal: "elm,state,badge,toolbar";
+         action: STATE_SET "toolbar_badge" 0.0;
+         target: "bg";
+      }
+   }
+}

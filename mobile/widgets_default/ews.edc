@@ -1,0 +1,423 @@
+group { name: "elm/ews/background/default";
+   parts {
+      part { name: "base";
+         type: RECT;
+         mouse_events:  0;
+         description { state: "default" 0.0;
+            color: 68 68 68 255;
+         }
+      }
+   }
+}
+
+
+images {
+   image: "whitetheme/icon_close_small.png" COMP;
+   image: "whitetheme/icon_arrow_up_right.png" COMP;
+   image: "whitetheme/icon_arrow_down_left.png" COMP;
+   image: "whitetheme/icon_close_small_press.png" COMP;
+   image: "whitetheme/icon_arrow_up_right_press.png" COMP;
+   image: "whitetheme/icon_arrow_down_left_press.png" COMP;
+   image: "whitetheme/shadow_title.png" COMP;
+   image: "whitetheme/ews_bg_shadow.png" COMP;
+}
+
+group { name: "elm/ews/decoration/borderless";
+   parts {
+      part { name: "shadow";
+         mouse_events:  0;
+         scale: 1;
+         description { state: "default" 0.0;
+            image {
+               normal: "whitetheme/ews_bg_shadow.png";
+               border: EWS_SHADOW_BG_BORDER_INC;
+               middle: 0;
+            }
+            rel1 {
+               to: "base";
+            }
+            rel2 {
+               to: "base";
+            }
+         }
+         description { state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+      programs {
+         program { signal: "elm,state,alpha,on";
+            source: "elm";
+            action: STATE_SET "hidden" 0.0;
+            target: "shadow";
+         }
+         program { signal: "elm,state,alpha,off";
+            source: "elm";
+            action: STATE_SET "visible" 0.0;
+            target: "shadow";
+         }
+      }
+
+      part { name: "base";
+         type: RECT;
+         mouse_events: 0;
+         description { state: "default" 0.0;
+            color: 0 0 0 255;
+         }
+      }
+   }
+}
+
+
+group { name: "elm/ews/decoration/default";
+   parts {
+      part { name: "shadow";
+         mouse_events:  0;
+         scale: 1;
+         description { state: "default" 0.0;
+            image {
+               normal: "whitetheme/ews_bg_shadow.png";
+               border: EWS_SHADOW_BG_BORDER_INC;
+               border_scale: 1;
+            }
+         }
+         description { state: "hidden" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+      part { name: "elm.padding.base.left";
+         type: SPACER;
+         scale:1 ;
+         description { state: "default" 0.0;
+            align: 0 0;
+            min: EWS_SHADOW_BG_SIZE_INC;
+            fixed: 1 1;
+            rel1 {
+               relative: 0 0;
+            } 
+            rel2 {
+               relative: 0 0;
+            }
+         }
+      }
+      part { name: "elm.padding.base.right";
+         type: SPACER;
+         scale:1 ;
+         description { state: "default" 0.0;
+            align: 1 1;
+            min: EWS_SHADOW_BG_SIZE_INC;
+            fixed: 1 1;
+            rel1 {
+               relative: 1 1;
+            } 
+            rel2 {
+               relative: 1 1;
+            }
+         }
+      }
+
+      part { name: "elm.padding.title";
+         type: SPACER;
+         scale:1 ;
+         description { state: "default" 0.0;
+            align: 0 0;
+            min: EWS_PADDING_WIDTH_INC EWS_TITLE_HEIGHT_INC;
+            fixed: 1 1;
+            rel1 {
+               to: "base";
+               relative: 0 0;
+            } 
+            rel2 {
+               to: "base";
+               relative: 0 0;
+            }
+         }
+      }
+      part { name: "base";
+         type: RECT;
+         mouse_events: 0;
+         scale:1;
+         description { state: "default" 0.0;
+            color: EWS_BG_COLOR_INC;
+            rel1 {
+               to: "elm.padding.base.left";
+               relative: 1 1;
+            }
+            rel2 {
+               to: "elm.padding.base.right";
+               relative: 0 0;
+            }
+         }
+      }
+      part { name: "base-text";
+         type: RECT;
+         mouse_events: 1;
+         scale: 1;
+         description { state: "default" 0.0;
+            color: EWS_BG_COLOR_INC;
+            rel1 {
+               to: "elm.padding.title";
+               relative: 1 0;
+            }
+            rel2 {
+               to_y: "elm.padding.title";
+               to_x: "restore";
+               relative: 0 1;
+            }
+         }
+      }
+      part { name: "elm.text.title";
+         type: TEXT;
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            color: EWS_TITLE_FONT_COLOR_INC;
+            rel1 {
+               to: "base-text";
+            }
+            rel2 {
+               to: "base-text";
+            }
+            text {
+               font: "SLP:style=Bold";
+               size: EWS_TITLE_FONT_SIZE_INC;
+               align: 0.0 0.5;
+            }
+         }
+      }
+      part { name: "elm.padding.restore";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align : 1 0;
+            min: EWS_ICON_PADDING_WIDTH_INC 0;
+            fixed: 1 1;
+            rel1 {
+               to: "maximize";
+               relative: 0.0 0.0;
+            }
+            rel2 {
+               to: "maximize";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+      part { name: "restore";
+         mouse_events: 1;
+         scale: 1;
+         description { state: "default" 0.0;
+            image.normal: "whitetheme/icon_arrow_down_left.png";
+            min: EWS_ICON_SIZE_INC;
+            max: EWS_ICON_SIZE_INC;
+            align : 1 0.0;
+            fixed: 1 1;
+            rel1 {
+               to: "elm.padding.restore";
+               relative: 0.0 0.0;
+            }
+            rel2 {
+               to: "elm.padding.restore";
+               relative: 0.0 1.0;
+            }
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "whitetheme/icon_arrow_down_left_press.png";
+         }
+      }
+      part { name: "elm.padding.maximize";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align : 1 0;
+            min: EWS_ICON_PADDING_WIDTH_INC 0;
+            fixed: 1 1;
+            rel1 {
+               to: "close";
+               relative: 0.0 0.0;
+            }
+            rel2 {
+               to: "close";
+               relative: 0.0 1.0;
+            }
+         }
+      }
+      part { name: "maximize";
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            image.normal: "whitetheme/icon_arrow_up_right.png";
+            min: EWS_ICON_SIZE_INC;
+            max: EWS_ICON_SIZE_INC;
+            align : 1 0.0;
+            fixed: 1 1;
+            rel1 {
+               to: "elm.padding.maximize";
+               relative: 0.0 0.0;
+            }
+            rel2 {
+               to: "elm.padding.maximize";
+               relative: 0.0 1.0;
+            }
+         }
+         description { state: "maximized" 0.0;
+            inherit: "default" 0.0;
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "whitetheme/icon_arrow_up_right_press.png";
+         }
+      }
+      part { name: "maximize-eventarea";
+         type: RECT;
+         mouse_events: 1;
+         description { state: "default" 0.0;
+            color: 0 0 0 0;
+            rel1.to: "maximize";
+            rel2.to: "maximize";
+         }
+         description { state: "maximized" 0.0;
+            inherit: "default" 0.0;
+            visible: 0;
+         }
+      }
+      part { name: "elm.padding.close";
+         type: SPACER;
+         scale: 1;
+         description { state: "default" 0.0;
+            align : 1 0;
+            min: EWS_PADDING_WIDTH_INC EWS_TITLE_HEIGHT_INC;
+            fixed: 1 1;
+            rel1 {
+               to: "base";
+               relative: 1.0 0.0;
+            }
+            rel2 {
+               to: "base";
+               relative: 1.0 0.0;
+            }
+         }
+      }
+      part { name: "close";
+         mouse_events: 1;
+         scale: 1;
+         description { state: "default" 0.0;
+            image.normal: "whitetheme/icon_close_small.png";
+            min: EWS_ICON_SIZE_INC;
+            max: EWS_ICON_SIZE_INC;
+            align : 1 0.5;
+            fixed: 1 1;
+            rel1 {
+               to: "elm.padding.close";
+               relative: 0.0 0.5;
+            }
+            rel2 {
+               to: "elm.padding.close";
+               relative: 0.0 0.5;
+            }
+         }
+         description { state: "pressed" 0.0;
+            inherit: "default" 0.0;
+            image.normal: "whitetheme/icon_close_small_press.png";
+            
+         }
+      }
+      part { name: "elm.title.shadow";
+         mouse_events: 0;
+         scale: 1;
+         description { state: "default" 0.0;
+            image {
+               normal: "whitetheme/shadow_title.png";
+            }
+            min: 0 EWS_TITLE_SHADOW_HEIGHT_INC;
+            align: 0 0;
+            fixed: 1 1;
+            rel1 {
+               to_x: "base";
+               to_y: "elm.padding.title";
+               relative: 0 1;
+            }
+            rel2 {
+               to_x: "base";
+               to_y: "elm.padding.title";
+               relative: 1 1;
+            }
+         }
+      }
+      programs {
+         program { signal: "mouse,clicked,1";
+            source: "close";
+            action: SIGNAL_EMIT "elm,action,close" "elm";
+         }
+         program { signal: "mouse,down,1";
+            source: "close";
+            action: STATE_SET "pressed" 0.0;
+            target: "close";
+         }
+         program { signal: "mouse,up,1";
+            source: "close";
+            action: STATE_SET "default" 0.0;
+            target: "close";
+         }
+         program { signal: "mouse,clicked,1";
+            source: "maximize-eventarea";
+            action: SIGNAL_EMIT "elm,action,maximize" "elm";
+         }
+         program { signal: "mouse,down,1";
+            source: "maximize-eventarea";
+            action: STATE_SET "pressed" 0.0;
+            target: "maximize";
+         }
+         program { signal: "mouse,up,1";
+            source: "maximize-eventarea";
+            action: STATE_SET "default" 0.0;
+            target: "maximize";
+         }
+         program { signal: "mouse,clicked,1";
+            source: "restore";
+            action: SIGNAL_EMIT "elm,action,restore" "elm";
+         }
+         program { signal: "mouse,down,1";
+            source: "restore";
+            action: STATE_SET "pressed" 0.0;
+            target: "restore";
+         }
+         program { signal: "mouse,up,1";
+            source: "restore";
+            action: STATE_SET "default" 0.0;
+            target: "restore";
+         }
+         program { signal: "elm,state,maximized,on";
+            source: "elm";
+            action: STATE_SET "maximized" 0.0;
+            target: "maximize-eventarea";
+            target: "maximize";
+         }
+         program { signal: "elm,state,maximized,off";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "maximize-eventarea";
+            target: "maximize";
+         }
+         program { signal: "mouse,down,1";
+            source: "base-text";
+            action: SIGNAL_EMIT "elm,action,move,start" "elm";
+         }
+         program { signal: "mouse,up,1";
+            source: "base-text";
+            action: SIGNAL_EMIT "elm,action,move,stop" "elm";
+         }
+         program { signal: "elm,state,alpha,on";
+            source: "elm";
+            action: STATE_SET "hidden" 0.0;
+            target: "shadow";
+         }
+         program { signal: "elm,state,alpha,off";
+            source: "elm";
+            action: STATE_SET "visible" 0.0;
+            target: "shadow";
+         }
+      }
+   }
+}

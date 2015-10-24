@@ -1,0 +1,1095 @@
+/*
+ * Copyright (c) 2015 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+//****************************************************************************//
+// This file defines the width, height (not color!) for each widgets
+// We can define different INC file by Resolution (HD, qHD, WVGA, HVGA)
+//
+// ************* Naming Rule ************ //
+// {WIDGET}_{GROUP}_{PART}_{STATE}_{TYPE}
+//   WIDGET: NAVIFRAME, LIST, DATETIME, POPUP, etc.
+//   GROUP:  INDEX
+//   PART:   TEXT, ICON, BG, PADDING, DIVIDER, ICON, etc.
+//   STATE:  LEFT, RIGHT, TOP, BOTTOM, MIN, MAX,
+//   TYPE:   HEIGHT, WIDTH, SIZE
+// e.g. LIST_PADDING_LEFT_HEIGHT
+//****************************************************************************//
+
+#define BASE_SCALE_INC 1.7
+#define SMALL "UHD/"
+#define MEDIUM "UHD/"
+#define DEFAULT_IMAGE "UHD/"
+
+//****************************************************************************//
+// Colorselector
+//****************************************************************************//
+#define COLORSELECTOR_PALETTE_COLORPLANE_HEIGHT_INC 178
+#define COLORSELECTOR_PALETTE_COLORPLANE_WIDTH_INC 540
+#define COLORSELECTOR_PORTRAIT_HOR_PAD_COLORPLANE_INC "5"
+#define COLORSELECTOR_PORTRAIT_VER_PAD_COLORPLANE_INC "6"
+#define COLORSELECTOR_PALETTE_COLORBG_MIN_COLORPLANE_INC 68 68
+#define COLORPLANE_MIN_HEIGHT_INC 80
+#define COLORSELECTOR_TOPBOTTOM_PAD_COLORPLANE_INC 18
+
+//****************************************************************************//
+// Naviframe
+//****************************************************************************//
+#define NAVIFRAME_TITLE_HEIGHT_INC 82
+#define NAVIFRAME_SUBTITLE_HEIGHT_INC 30
+#define NAVIFRAME_TITLE_TOP_PADDING_HEIGHT_INC 3
+#define NAVIFRAME_SUBTITLE_BOTTOM_PADDING_HEIGHT_INC 3
+#define NAVIFRAME_TABBAR_HEIGHT_INC 82
+#define NAVIFRAME_TABBAR_TITLE_HEIGHT_INC 52
+#define NAVIFRAME_NAVIGATIONBAR_HEIGHT_INC 52
+#define NAVIFRAME_NAVIGATIONBAR_TOP_DIVIDER_HEIGHT_INC 2
+#define NAVIFRAME_TABBAR2_HEIGHT_INC 108
+#define NAVIFRAME_TABBAR_TOP_DIVIDER_HEIGHT_INC 0
+#define NAVIFRAME_TITLE_LEFT_PADDING_WIDTH_INC 0
+#define NAVIFRAME_TITLE_FUNC_BTN_SIZE_INC 131 82
+#define NAVIFRAME_BADGE_ICON_LEFT_PADDING_WIDTH_INC 15
+#define NAVIFRAME_BADGE_TEXT_LEFT_PADDING_WIDTH_INC 15
+#define NAVIFRAME_BADGE_HEIGHT_INC 32
+#define NAVIFRAME_BADGE2_PADDING_WIDTH_INC (NAVIFRAME_BADGE_ICON_LEFT_PADDING_WIDTH_INC + NAVIFRAME_BADGE_TEXT_LEFT_PADDING_WIDTH_INC + NAVIFRAME_BADGE_TEXT_LEFT_PADDING_WIDTH_INC)
+#define NAVIFRAME_DRAWERS_WIDTH_INC 55
+#define NAVIFRAME_TOOLBAR_HEIGHT_INC 108
+#define NAVIFRAME_TOOLBAR_COLOR_INC 245 245 245 255
+
+#define BUTTON_NAVIFRAME_TITLE_BUTTON_SIZE_INC 46 46
+#define BUTTON_NAVIFRAME_TITLE_BUTTON_BG_SIZE_INC 46 46
+#define BUTTON_NAVIFRAME_TITLE_BUTTON_IMAGE_SIZE_INC 46 46
+#define BUTTON_NAVIFRAME_DRAWERS_WIDTH_INC 55
+#define BUTTON_NAVIFRAME_DRAWERS_IMAGE_SIZE_INC 55 72
+#define BUTTON_NAVIFRAME_BACK_BUTTON_SIZE_INC 60 60
+
+#define BUTTON_NAVIFRAME_TITLE_LEFT_BUTTON_SIZE_INC 131 82
+#define BUTTON_NAVIFRAME_TITLE_LEFT_BUTTON_LEFT_PADDING_WIDTH_INC 24
+#define BUTTON_NAVIFRAME_TITLE_LEFT_BUTTON_RIGHT_PADDING_WIDTH_INC 18
+#define BUTTON_NAVIFRAME_TITLE_RIGHT_BUTTON_LEFT_PADDING_WIDTH_INC 18
+#define BUTTON_NAVIFRAME_TITLE_RIGHT_BUTTON_RIGHT_PADDING_WIDTH_INC 24
+
+#define NAVIFRAME_TITLE_TEXT_FONT_SIZE_INC 36
+#define NAVIFRAME_SUBTITLE_VISIBLE_TEXT_FONT_SIZE_INC 30
+#define NAVIFRAME_VISIBLE_TEXT_FONT_SIZE_INC 21
+
+#define NAVIFRAME_TITLE_TEXT_SHADOW_COLOR_INC "#080808BF"
+#define NAVIFRAME_SUBTITLE_VISIBLE_TEXT_SHADOW_COLOR_INC "#080808BF"
+#define NAVIFRAME_SUBTITLE_TEXT_SHADOW_COLOR_INC "#080808BF"
+
+//****************************************************************************//
+// Label
+//****************************************************************************//
+#define LABEL_FONT_SIZE_INC 24
+
+//****************************************************************************//
+// Layout
+//****************************************************************************//
+#define LAYOUT_INDICATOR_HEIGHT_INC 36
+
+#define SEARCHBAR_CANCEL_BUTTON_W_INC 46
+#define SEARCHBAR_CANCEL_BUTTON_LEFT_PADDING_INC 15
+#define SEARCHBAR_H_INC 96
+#define SEARCHBAR_HEIGHT_INC 96
+#define SEARCHBAR_BASE_HEIGHT_INC 96
+#define SEARCHBAR_WIDTH_INC 480
+#define SEARCHBAR_TOP_PADDING_INC 0
+#define SEARCHBAR_BOTTOM_PADDING_INC 0
+#define SEARCHBAR_LEFT_PADDING_INC 0
+#define SEARCHBAR_RIGHT_PADDING_INC 0
+
+//****************************************************************************//
+// Ctxpopup
+//****************************************************************************//
+#define CTXPOPUP_MOVE_PAD 40
+#define CTXPOPUP_OUTLINE_SIZE 1
+#define CTXPOPUP_WIDTH_INC 540
+#define CTXPOPUP_TEXT_MAX_INC 492
+#define CTXPOPUP_ITEM_TEXT_SIZE_INC 41
+#define CTXPOPUP_ITEM_TEXT_MAX_SIZE_INC (CTXPOPUP_ITEM_TEXT_SIZE_INC*2)
+#define CTXPOPUP_ITEM_HEIGHT_MIN_INC 72
+#define CTXPOPUP_ITEM_HEIGHT_MAX_INC 72
+#define CTXPOPUP_ITEM_TEXT_STYLE_TEXT_LR_PADDING_INC 22
+#define CTXPOPUP_ITEM_TEXT_PADDING_INC 24
+#define CTXPOPUP_ITEM_TEXT_HEIGHT_MIN_INC 37
+#define CTXPOPUP_ITEM_ICON_STYLE_LR_PADDING_INC 20
+#define CTXPOPUP_MORE_ITEM_TEXT_MAX_INC 492
+#define CTXPOPUP_MORE_ITEM_TEXT_SIZE_INC 36
+#define CTXPOPUP_MORE_ITEM_HEIGHT_MIN_INC 90
+#define CTXPOPUP_MORE_ITEM_HEIGHT_MAX_INC 90
+#define CTXPOPUP_MORE_ITEM_TEXT_TB_PADDING_INC 17
+#define CTXPOPUP_MORE_ITEM_TEXT_LR_PADDING_INC 24
+#define CTXPOPUP_MORE_ITEM_TEXT_HEIGHT_MIN_INC 38
+#define CTXPOPUP_DROPDOWN_WIDTH 450
+#define CTXPOPUP_DROPDOWN_TEXT_MAX 418
+#define CTXPOPUP_DROPDOWN_ITEM_TEXT_SIZE 27
+#define CTXPOPUP_DROPDOWN_ITEM_TEXT_MAX_SIZE (CTXPOPUP_DROPDOWN_ITEM_TEXT_SIZE*2)
+#define CTXPOPUP_DROPDOWN_ITEM_HEIGHT_MIN 72
+#define CTXPOPUP_DROPDOWN_ITEM_HEIGHT_MAX 92
+#define CTXPOPUP_DROPDOWN_ITEM_TEXT_LR_PADDING 15
+#define CTXPOPUP_DROPDOWN_CONTENT_LR_PADDING 1
+#define CTXPOPUP_DROPDOWN_CONTENT_TB_PADDING 1
+#define CTXPOPUP_DROPDOWN_SEPARATOR_HEIGHT 1
+#define CTXPOPUP_ITEM_HORIZONTAL_HEIGHT_INC 62
+#define CTXPOPUP_ITEM_TEXT_HORIZONTAL_PADDING_INC 14
+#define CTXPOPUP_CONTENT_PADDING_HEIGHT 1
+#define CTXPOPUP_ITEM_ICON_HORIZONTAL_WIDTH_INC 82
+#define CTXPOPUP_ITEM_ICON_RIGHT_PADDING_INC 10
+#define CTXPOPUP_ITEM_ICON_LEFT_PADDING_INC 20
+#define CTXPOPUP_ITEM_HEIGHT_INC 102
+#define CTXPOPUP_CONTENT_PADDING 1
+#define CTXPOPUP_ITEM_HORIZONTAL_WIDTH_MIN_INC 106
+#define CTXPOPUP_ITEM_HORIZONTAL_WIDTH_MAX_INC 136
+#define CTXPOPUP_ITEM_HORIZONTAL_HEIGHT_MIN_INC 104
+#define CTXPOPUP_ITEM_HORIZONTAL_TEXT_HEIGHT_MIN 32
+#define CTXPOPUP_SEPARATOR_MIN_SIZE_INC 1 CTXPOPUP_ITEM_HORIZONTAL_HEIGHT_INC
+#define CTXPOPUP_SEPARATOR_MAX_SIZE_INC 1 -1
+#define CTXPOPUP_ICON_WIDTH_INC 36
+#define CTXPOPUP_ICON_HEIGHT_INC 36
+#define CTXPOPUP_ITEM_ICON_BOTTOM_PADDING_INC 6
+#define CTXPOPUP_TEXT_SIZE_INC 17
+#define CTXPOPUP_ITEM_TEXT_TOP_PADDING_INC 15
+#define CTXPOPUP_ITEM_TEXT_BOTTOM_PADDING_INC 15
+#define CTXPOPUP_ITEM_ICON_TEXT_STYLE_TB_PADDING_INC 16
+#define CTXPOPUP_ITEM_ICON_TEXT_STYLE_ICON_PADDING_INC 3
+#define CTXPOPUP_ITEM_ICON_TEXT_STYLE_TEXT_SIZE_INC 33
+#define CTXPOPUP_ITEM_ICON_HORIZONTAL_WIDTH_MIN_INC 92
+#define CTXPOPUP_ITEM_ICON_HORIZONTAL_HEIGHT_MIN_INC 72
+#define CTXPOPUP_ITEM_ICON_HORIZONTAL_TB_PADDING_INC 18
+
+//****************************************************************************//
+// Copypaste
+//****************************************************************************//
+#define CTXPOPUP_SHADOW_TOP_PADDING 2
+#define CTXPOPUP_SHADOW_BOTTOM_PADDING 3
+#define CTXPOPUP_SHADOW_LEFT_PADDING 2
+#define CTXPOPUP_SHADOW_RIGHT_PADDING 2
+#define CTXPOPUP_ITEM_DISABLED_COLOR 0 0 0 0
+#define CTXPOPUP_FRAME_CORNER_ARROW_PADDING_WIDTH_INC 18
+#define CTXPOPUP_FRAME_CORNER_ARROW_PADDING_HEIGHT_INC 20
+#define CTXPOPUP_CONTENT_TOP_PADDING 20
+#define CTXPOPUP_CONTENT_BOTTOM_PADDING 20
+#define CTXPOPUP_CONTENT_LEFT_PADDING 18
+#define CTXPOPUP_CONTENT_RIGHT_PADDING 18
+#define CTXPOPUP_ARROW_PADDING_INC 0
+#define CTXPOPUP_ARROW_SIZE_INC 0 0
+#define CTXPOPUP_COPYPASTE_ITEM_HORIZONTAL_WIDTH_MIN_INC 76
+#define CTXPOPUP_COPYPASTE_ITEM_HORIZONTAL_WIDTH_MAX_INC 136
+#define CTXPOPUP_COPYPASTE_TEXT_STYLE_TEXT_SIZE_INC 37
+#define CTXPOPUP_COPYPASTE_TEXT_MAX_SIZE_INC (CTXPOPUP_COPYPASTE_TEXT_SIZE_INC * 2)
+#define CTXPOPUP_COPYPASTE_WIDTH_MAX_INC 516
+#define CTXPOPUP_COPYPASTE_ITEM_TEXT_STYLE_HEIGHT_MIN_INC 64
+#define CTXPOPUP_COPYPASTE_ITEM_TEXT_STYLE_TEXT_TOP_PADDING_INC 14
+#define CTXPOPUP_COPYPASTE_ITEM_TEXT_BOTTOM_PADDING_INC 15
+#define CTXPOPUP_COPYPASTE_SEPARATOR_TEXT_STYLE_MIN_SIZE_INC 1 CTXPOPUP_COPYPASTE_ITEM_HEIGHT_MIN_INC
+
+//****************************************************************************//
+// Tabbar
+//****************************************************************************//
+#define TABBAR_TWO_ITEMS_SIZE_INC 240 50;
+#define TABBAR_THREE_ITEMS_SIZE_INC 160 50;
+#define TABBAR_FOUR_ITEMS_SIZE_INC 120 50;
+#define TABBAR_SCROLLABLE_ITEMS_SIZE_INC 135 50;
+#define TABBAR_LANDSCAPE_TWO_ITEMS_SIZE_INC 400 50;
+#define TABBAR_LANDSCAPE_THREE_ITEMS_SIZE_INC  267 50;
+#define TABBAR_LANDSCAPE_FOUR_ITEMS_SIZE_INC 200 50;
+#define TABBAR_LANDSCAPE_SCROLLABLE_ITEMS_SIZE_INC 175 50;
+#define TABBAR_SELECTED_LINE_SIZE_INC 0 3
+#define TABBAR_TEXT_CENTER_PADDING_SIZE_INC 0 1
+#define TABBAR_TEXT_LEFT_TOP_PADDING_SIZE_INC 8 18
+#define TABBAR_TEXT_RIGHT_BOTTOM_PADDING_SIZE_INC 8 18
+#define TABBAR_ICON_TEXT_LEFT_TOP_PADDING_SIZE_INC 8 14
+#define TABBAR_ICON_TEXT_RIGHT_BOTTOM_PADDING_SIZE_INC 8 14
+#define TABBAR_ICON_TEXT_LAND_LEFT_TOP_PADDING_SIZE_INC 8 20
+#define TABBAR_ICON_TEXT_LAND_RIGHT_BOTTOM_PADDING_SIZE_INC 8 14
+#define TABBAR_ICON_SIZE_INC 46 46
+#define TABBAR_ICON_RECT_SIZE_INC 61 46
+#define TABBAR_TEXT_TEXT_SIZE_INC 0 37
+#define TABBAR_ICON_TEXT_TEXT_SIZE_INC 0 31
+#define TABBAR_ICON_TEXT_LAND_TEXT_SIZE_INC 0 39
+#define TABBAR_TITLE_TEXT_LEFT_TOP_PADDING_SIZE_INC 12 0
+#define TABBAR_TITLE_ICON_TEXT_LAND_LEFT_TOP_PADDING_SIZE_INC 8 0
+#define TABBAR_TITLE_ICON_SIZE_INC 36 36
+#define TABBAR_TITLE_ICON_TEXT_PAD_INC 8 0
+#define TABBAR_BADGE_TOP_RIGHT_PADDING_SIZE_INC 12 3
+#define TABBAR_BADGE_IMAGE_SIZE_INC 36 36
+#define TABBAR_BADGE_TEXT_LEFT_RIGHT_PADDING_SIZE_INC 10 36
+#define TABBAR_BADGE_TEXT_MIN_SIZE_INC 16 36
+
+//Navigation style
+#define TOOLBAR_NAVI_HEIGHT_INC 52
+#define TOOLBAR_NAVI_PADDING_INC 24
+#define TOOLBAR_NAVI_DIVIDER_INC 45
+
+//****************************************************************************//
+// Genlist
+//****************************************************************************//
+// Group index
+#define LIST_INDEX_PADDING_LEFT_SIZE        15
+#define LIST_INDEX_PADDING_RIGHT_SIZE       15
+#define LIST_INDEX_PADDING_TOP_SIZE         7
+#define LIST_INDEX_PADDING_BOTTOM_SIZE      8
+
+#define LIST_INDEX_HEIGHT                   36
+
+#define LIST_INDEX_TEXT_MAIN_SIZE           27
+#define LIST_INDEX_TEXT_SUB_SIZE            27
+#define LIST_INDEX_TEXT_SUB_WIDTH_MAX       160
+#define LIST_INDEX_TEXT_PADDING_SIZE        15
+#define LIST_INDEX_BOTTOMLINE_HEIGHT        1
+
+// Normal style
+#define LIST_ITEM_HEIGHT                    96
+#define LIST_PADDING_TOP_SIZE               29   // FIXME: please check font height
+#define LIST_PADDING_BOTTOM_SIZE            29   // FIXME: please check font height
+#define LIST_2LINE_PADDING_TOP_SIZE         13   // FIXME: please check font height
+#define LIST_2LINE_PADDING_BOTTOM_SIZE      13   // FIXME: please check font height
+#define LIST_PADDING_CENTER_LEFT_SIZE       15
+#define LIST_PADDING_CENTER_RIGHT_SIZE      15
+#define LIST_PADDING_TEXT_SIZE              22
+#define LIST_PADDING_DEFAULT_SIZE           15
+
+#define LIST_TEXT_MAIN_HEIGHT               38
+#define LIST_TEXT_SUB_HEIGHT                32
+
+#define LIST_TEXT_MAIN_SIZE                 30
+#define LIST_TEXT_SUB_SIZE                  24
+#define LIST_TEXT_SUB_WIDTH_MAX             130
+
+// Multiline style
+#define LIST_WRAP_PADDING_LEFT_SIZE         15
+#define LIST_WRAP_PADDING_RIGHT_SIZE        15
+#define LIST_WRAP_PADDING_TOP_SIZE          14
+#define LIST_WRAP_PADDING_BOTTOM_SIZE       14
+#define LIST_MULTILINE_ICON_SIZE            60 60
+#define LIST_MULTILINE_ICON_SIZE1           40 40
+
+// Editfield style
+#define LIST_ENTRY_PADDING_LEFT_SIZE          0
+#define LIST_ENTRY_PADDING_RIGHT_SIZE         0
+#define LIST_ENTRY_PADDING_TOP_SIZE           0
+#define LIST_ENTRY_PADDING_BOTTOM_SIZE        0
+
+#define LIST_ENTRY_PADDING_ICON_RIGHT_SIZE    15
+#define LIST_ENTRY_PADDING_MAIN_TEXT_TOP_SIZE 12
+
+#define LIST_ENTRY_ENTRY_HEIGHT               96
+#define LIST_ENTRY_TEXT_SUB_WIDTH_MAX         160
+#define LIST_ENTRY_ICON_SIZE                  46 46
+
+// Bar style
+#define LIST_BAR_PADDING_TOP_SIZE             14
+#define LIST_BAR_PADDING_BOTTOM_SIZE          14
+#define LIST_SLIDER_PADDING_CENTER_SIZE       10
+#define LIST_PROGRESSBAR_HEIGHT               20
+#define LIST_PROGRESSBAR_PADDING_CENTER_SIZE  10
+
+// List A
+#define LIST_A_LEFTICON_RIGHT_PADDING_WIDTH   10
+#define LIST_A_LEFTICON_SIZE               32 32
+#define LIST_A_RIGHTICON_LEFT_PADDING_WIDTH   10
+#define LIST_A_RIGHTICON_SIZE              32 32
+#define LIST_B_TYPE1_ICON_SIZE             96 96
+#define LIST_B_TYPE2_LEFT_PADDING_WIDTH       15
+#define LIST_B_TYPE2_ICON_SIZE             74 74
+#define LIST_B_TYPE3_LEFT_PADDING_WIDTH       14
+#define LIST_B_TYPE3_ICON_SIZE             46 46
+#define LIST_B_TYPE4_LEFT_PADDING_WIDTH       15
+#define LIST_B_TYPE4_RIGHT_PADDING_WIDTH       5
+#define LIST_B_TYPE4_ICON_SIZE             40 40
+#define LIST_C_TYPE1_RIGHT_PADDING_WIDTH      15
+#define LIST_C_TYPE1_ICON_SIZE             46 46
+#define LIST_C_TYPE2_RIGHT_PADDING_WIDTH      15
+#define LIST_C_TYPE2_ICON_SIZE             40 40
+#define LIST_C_TYPE3_RIGHT_PADDING_WIDTH      15
+#define LIST_C_TYPE3_ICON_SIZE             60 60
+#define LIST_C_TYPE4_TOGGLE_DIVIDER_SIZE    1 40
+#define LIST_C_TYPE4_LEFT_PADDING_WIDTH       15
+#define LIST_C_TYPE4_RIGHT_PADDING_WIDTH      15
+#define LIST_C_TYPE4_ICON_SIZE             60 60
+#define LIST_DESC_TEXT_PART_SIZE              32
+#define LIST_DESC_TEXT_SIZE                   24
+#define LIST_SELECT_ALL_PADDING_LEFT_SIZE     15
+#define LIST_SELECT_ALL_PADDING_RIGHT_SIZE    15
+#define LIST_SELECT_ALL_PADDING_BOTTOM_SIZE    1
+#define LIST_SELECT_ALL_ICON_SIZE          40 40
+#define LIST_SELECT_ALL_PADDING_CENTER_SIZE   15
+#define LIST_SELECT_ALL_HEIGHT                84
+
+//Expand style
+#define GENLIST_TREESIZE_DEFAULT            22
+
+//No use to Combination
+#define LIST_TOP_PADDING_SIZE               29
+#define LIST_BOTTOM_PADDING_SIZE            29
+#define LIST_LEFT_PADDING_SIZE              15
+#define LIST_RIGHT_PADDING_SIZE             15
+#define LIST_TEXT_LEFT_PADDING_SIZE         10
+#define LIST_TEXT_RIGHT_PADDING_SIZE        10
+#define LIST_DEFAULT_PADDING_SIZE           20
+#define LIST_BOTTOMLINE_HEIGHT               2
+
+// Tizen 2.4
+#define LIST_ITEM_FULL_HEIGHT_INC                        140
+#define LIST_ITEM_WITH_1LINE_HEIGHT_INC                  90
+#define LIST_ITEM_WITH_2LINE_HEIGHT_INC                  108
+#define LIST_ITEM_LR_PADDING_INC                         24
+#define LIST_ITEM_TB_PADDING_INC                         17
+#define LIST_ITEM_MAIN_LINE_HEIGHT_INC                   41
+#define LIST_ITEM_SUB_LINE_HEIGHT_INC                    33
+#define LIST_ITEM_MAIN_LINE_ICON_TEXT_PADDING_WIDTH_INC  8
+#define LIST_ITEM_END_TEXT_WIDTH_INC                     91
+#define LIST_ITEM_END_TEXT_BG_WIDTH_INC                  115
+#define LIST_ITEM_END_ICON_BG_WIDTH_INC                  60
+
+//****************************************************************************//
+// SCROLLER
+//****************************************************************************//
+#define SCROLLER_DEFAULT_SCROLLBAR_VBAR_MIN_SIZE_INC 8 16
+#define SCROLLER_DEFAULT_SCROLLBAR_VBAR_MAX_SIZE_INC 8 99999
+#define SCROLLER_DEFAULT_SCROLLBAR_HBAR_MIN_SIZE_INC 16 8
+#define SCROLLER_DEFAULT_SCROLLBAR_HBAR_MAX_SIZE_INC 99999 8
+#define SCROLLER_TABBAR_SCROLLBAR_HBAR_HEIGHT 20
+#define SCROLLER_TABBAR_SCROLLBAR_HBAR_MIN_SIZE_INC 22 SCROLLER_TABBAR_SCROLLBAR_HBAR_HEIGHT
+#define SCROLLER_TABBAR_SCROLLBAR_HBAR_MAX_SIZE_INC 99999 SCROLLER_TABBAR_SCROLLBAR_HBAR_HEIGHT
+
+#define SCROLLER_DEFAULT_SCROLLBAR_VBAR_HEADER_SIZE 46
+#define SCROLLER_DEFAULT_SCROLLBAR_VBAR_PADDING_SIZE 8
+#define SCROLLER_DEFAULT_SCROLLBAR_HBAR_PADDING_SIZE 8
+#define SCROLLER_LIST_EFFECT_SCROLLBAR_HBAR_TB_PADDING_SIZE_INC 3
+#define SCROLLER_LIST_EFFECT_SCROLLBAR_HBAR_LR_PADDING_SIZE_INC 10
+#define SCROLLER_HANDLER_SCROLLBAR_VBAR_MIN_SIZE_INC 26 72
+#define SCROLLER_HANDLER_SCROLLBAR_HBAR_MIN_SIZE_INC 72 26
+#define SCROLLER_HANDLER_SCROLLBAR_VBAR_MIDDLE_MIN_SIZE_INC 24 24
+#define SCROLLER_HANDLER_SCROLLBAR_HBAR_MIDDLE_MIN_SIZE_INC 24 24
+
+#define SCROLLER_HANDLER_SCROLLBAR_VBAR_HEADER_SIZE 46
+#define SCROLLER_HANDLER_SCROLLBAR_VBAR_PADDING_SIZE 8
+#define SCROLLER_HANDLER_SCROLLBAR_HBAR_PADDING_SIZE 8
+
+#define SCROLLER_EFFECT_SHADOW_FIRST_LAYER_MAX_SIZE 45
+#define SCROLLER_EFFECT_SHADOW_FIRST_LAYER_MIN_SIZE 30
+#define SCROLLER_EFFECT_SHADOW_FIRST_LAYER_MOVE_CORRECTION_VALUE 15
+#define SCROLLER_EFFECT_SHADOW_SECOND_LAYER_MAX_SIZE 30
+#define SCROLLER_EFFECT_SHADOW_SECOND_LAYER_MIN_SIZE 20
+#define SCROLLER_EFFECT_SHADOW_SECOND_LAYER_MOVE_CORRECTION_VALUE 10
+#define SCROLLER_EFFECT_SHADOW_THIRD_LAYER_MAX_SIZE 15
+#define SCROLLER_EFFECT_SHADOW_THIRD_LAYER_MIN_SIZE 10
+#define SCROLLER_EFFECT_SHADOW_THIRD_LAYER_MOVE_CORRECTION_VALUE 5
+
+//****************************************************************************//
+// Entry
+//****************************************************************************//
+// Normal Entry
+#define ENTRY_TEXT_SIZE_INC 24
+#define ENTRY_PREEDIT_BACKGROUND_COLOR_INC "#FAFAFA"
+#define ENTRY_PREEDIT_TEXT_COLOR_INC "#000000"
+#define ENTRY_PREEDIT_UNDERLINE_COLOR_INC "#FAFAFA"
+#define ENTRY_PREEDIT_SUB1_COLOR_INC "#2EA8E1"
+#define ENTRY_PREEDIT_SUB2_COLOR_INC "#9962C3"
+#define ENTRY_PREEDIT_SUB3_COLOR_INC "#76DE37"
+#define ENTRY_PREEDIT_SUB4_COLOR_INC "#999999"
+#define ENTRY_SELECTION_BLOCK_HANDLE_MIN_WIDTH_INC 34
+#define ENTRY_SELECTION_BLOCK_HANDLE_MIN_HEIGHT_INC 34
+#define ENTRY_SELECTION_BLOCK_HANDLE_EDGE_WIDTH 2
+#define ENTRY_CURSOR_HANDLE_MIN_WIDTH_INC 44
+#define ENTRY_CURSOR_HANDLE_MIN_HEIGHT_INC 44
+#define ENTRY_CURSOR_SIZE_INC 2 0
+#define MAGNIFIER_WIDTH_FIXED_INC 226
+#define MAGNIFIER_HEIGHT_MIN 78
+#define MAGNIFIER_HEIGHT_MAX 118
+#define MAGNIFIER_ARROW_HEIGHT_INC 0
+#define MAGNIFIER_LEFT_OFFSET_INC 4 4
+#define MAGNIFIER_RIGHT_OFFSET_INC 4 4
+#define ENTRY_EMOTICON_SIZE 52 52
+
+//****************************************************************************//
+// Editfield
+//****************************************************************************//
+
+#define ENTRY_EDITFIELD_TEXT_SIZE_INC 24
+#define ENTRY_EDITFIELD_CLEAR_BUTTON_PADDING_MIN_MAX_INC 51 0
+#define ENTRY_EDITFIELD_FOCUS_UNDERLINE_SIZE_INC 0 2
+#define ENTRY_EDITFIELD_FOCUS_UNDERLINE_BOTTOM_PADDING_SIZE_INC 0 19
+#define ENTRY_EDITFIELD_TOP_PADDING_HEIGHT 0 24
+#define ENTRY_EDITFIELD_BOTTOM_PADDING_HEIGHT 0 24
+#define ENTRY_EDITFIELD_LEFT_PADDING_HEIGHT 15 0
+#define ENTRY_EDITFIELD_RIGHT_PADDING_HEIGHT 15 0
+#define ENTRY_EDITFIELD_SEARCHBAR_TEXT_SIZE_INC 30
+#define ENTRY_EDITFIELD_LEFT_RIGHT_PADDING 5 0
+#define ENTRY_EDITFIELD_LEFT_RIGHT_MARGIN 5
+#define ENTRY_EDITFIELD_TOP_PADDING_HEIGHT_MULTILINE 0 10
+#define ENTRY_EDITFIELD_BOTTOM_PADDING_HEIGHT_MULTILINE 0 16
+#define ENTRY_EDITFIELD_FOCUS_UNDERLINE_BOTTOM_PADDING_SIZE_MULTILINE 0 10
+// Clear Button
+#define BUTTON_EDITFIELD_CLEAR_BUTTON_MIN_MAX_INC 56 56
+#define BUTTON_EDITFIELD_CLEAR_BUTTON_IMAGE_MIN_MAX_INC 56 56
+
+// Editfield Layout
+#define EDITFIELD_BASE_HEIGHT_INC 90
+#define EDITFIELD_TOP_LEFT_PADDING_MIN_INC 32 25
+#define EDITFIELD_MULTILINE_TOP_LEFT_PADDING_MIN_INC 24 25
+#define EDITFIELD_BOTTOM_RIGHT_PADDING_MIN_INC 32 24
+#define EDITFIELD_MULTILINE_BOTTOM_RIGHT_PADDING_MIN_INC 24 24
+#define EDITFIELD_BUTTON_FIELD_MIN_INC 56 56
+#define EDITFIELD_FOCUSED_BOTTOM_RIGHT_PADDING_MIN_INC 56+24 24
+#define EDITFIELD_ENTRY_FIELD_MIN_INC 0 41
+#define EDITFIELD_LINE_LEFT_PADDING_MIN_INC 24 0
+#define EDITFIELD_LINE_RIGHT_PADDING_MIN_INC 24 0
+#define EDITFIELD_LINE_BOTTOM_PADDING_MIN_INC 0 15
+#define EDITFIELD_LINE_RECT_MIN_INC 0 2
+#define EDITFIELD_ENTRY_SWALLOW_ALIGN 0.5 0.5
+#define EDITFIELD_BASE_HEIGHT_MULTILINE_INC 64
+
+#define BUTTON_OPTION_MIN_MAX_INC 46 46
+#define BUTTON_OPTION_IMAGE_MIN_MAX_INC 46 46
+
+
+//****************************************************************************//
+// Slider
+//****************************************************************************//
+#define SLIDER_BASE_HEIGHT_INC  6
+#define SLIDER_INDICATOR_SIZE_INC 42
+#define SLIDER_SWALLOWBAR_HEIGHT_INC  42
+#define SLIDER_LEFT_RIGHT_PADDING_SIZE_INC 21 0
+#define SLIDER_ICON_PADDING_SIZE_INC 5 0
+#define SLIDER_CENTER_POINT_SIZE_INC 10 24
+
+//Slider vertical
+#define SLIDER_VERTICAL_BASE_HEIGHT_INC  6
+#define SLIDER_SWALLOWBAR_WIDTH_INC  42
+#define SLIDER_VERTICAL_CENTER_POINT_SIZE_INC 24 10
+#define SLIDER_VERTICAL_ICON_PADDING_SIZE_INC 42 5
+#define SLIDER_TOP_BOTTOM_PADDING_SIZE_INC 42 21
+
+#define SLIDER_POPUP_WIDTH_INC 80
+#define SLIDER_POPUP_HEIGHT_INC 92
+#define SLIDER_INDICATOR_PADDING_TOP 20
+#define SLIDER_INDICATOR_PADDING_BOTTOM 32
+#define SLIDER_INDICATOR_TEXT_SIZE_HEIGHT 20
+#define SLIDER_INDICATOR_TEXT_SIZE_WIDTH 20
+
+
+//****************************************************************************//
+// Progressbar
+//****************************************************************************//
+#define PROGRESSBAR_BG_DEFAULT_HEIGHT_INC 42
+#define PROGRESSBAR_BG_ONE_TEXT_HEIGHT_INC 48
+#define PROGRESSBAR_BG_TWO_TEXT_HEIGHT_INC 76
+#define PROGRESSBAR_LIST_PROGRESS_HEIGHT_INC 6
+#define PROGRESSBAR_PADDING_HEIGHT_INC 7
+#define PROCESS_LARGE_IMAGE_HEIGHT_INC 66
+#define PROCESS_LARGE_IMAGE_WIDTH_INC 66
+#define PROCESS_MEDIUM_IMAGE_HEIGHT_INC 36
+#define PROCESS_MEDIUM_IMAGE_WIDTH_INC 36
+#define PROCESS_SMALL_IMAGE_HEIGHT_INC 28
+#define PROCESS_SMALL_IMAGE_WIDTH_INC 28
+
+
+//****************************************************************************//
+// Check
+//****************************************************************************//
+#define CHECK_DEFAULT_SIZE 38 38
+#define CHECK_ONOFF_SIZE 60 60
+#define CHECK_ONOFF_ICON_SIZE 30 30
+#define CHECK_FAVORITE_SIZE 60 60
+#define CHECK_PAD_BEFORE_TEXT_INC 15 0
+
+
+//****************************************************************************//
+// Radio
+//****************************************************************************//
+#define RADIO_SIZE 38 38
+
+
+//****************************************************************************//
+// No Content
+//****************************************************************************//
+#define NO_CONTENT_BG_HEIGHT_INC 960
+#define NO_CONTENT_TEXT_BG_MAX_HEIGHT_INC 430
+#define NO_CONTENT_TOP_PADDING_HEIGHT_INC 213
+#define NO_CONTENT_BOTTOM_PADDING_HEIGHT_INC 235
+#define NO_CONTENT_LEFT_RIGHT_PADDING_WIDTH_INC 24
+#define NO_CONTENT_TITLE_TEXT_HEIGHT_INC 41
+#define NO_CONTENT_TEXT_PADDING_HEIGHT_INC 45
+#define NO_CONTENT_HELP_TEXT_MIN_HEIGHT_INC 38
+
+//****************************************************************************//
+// Button
+//****************************************************************************//
+
+#define BUTTON_BOTTOM_MIN_HEIGHT 74
+#define BUTTON_MIN_WIDTH 50
+#define BUTTON_MIN_HEIGHT 60
+#define BUTTON_MAX_WIDTH 450
+#define BUTTON_PADDING_ICON_RIGHT 10
+#define BUTTON_PADDING_LEFT_RIGHT 24
+#define BUTTON_PADDING_TOP_BOTTOM 7
+#define BUTTON_ICON_HEIGHT 46
+#define BUTTON_ICON_WIDTH 46
+
+#define BUTTON_CIRCLE_SIZE  74 74
+#define BUTTON_CIRCLE_BASE_SIZE 100 74
+#define BUTTON_CIRCLE_EXTENDED_SIZE 100 117
+#define BUTTON_CIRCLE_TEXT_MIN_SIZE 100
+#define BUTTON_CIRCLE_ICON_SIZE 46 46
+#define BUTTON_CIRCLE_PADDING_ICON_BOTTOM 10
+
+
+//****************************************************************************//
+// Multibuttonentry
+//****************************************************************************//
+
+#define MULTIBUTTONENTRY_BOX_HORIZONTAL_PAD_INC 12
+#define MULTIBUTTONENTRY_BOX_VERTICAL_PAD_INC 15
+#define MULTIBUTTONENTRY_WIDTH_PAD_INC 24
+#define MULTIBUTTONENTRY_HEIGHT_PAD_INC 13
+#define MULTIBUTTONENTRY_BOTTOM_HEIGHT_PAD_INC 15
+#define MULTIBUTTONENTRY_GUIDE_HEIGHT_INC 60
+#define MULTIBUTTONENTRY_GUIDE_TEXT_SIZE_INC 30
+#define MULTIBUTTONENTRY_BUTTON_TEXT_SIZE_INC 30
+#define MULTIBUTTONENTRY_BUTTON_PAD_INC 24
+#define MULTIBUTTONENTRY_BUTTON_WIDTH_INC 70
+#define MULTIBUTTONENTRY_BUTTON_HEIGHT_INC 60
+#define MULTIBUTTONENTRY_LABEL_TEXT_SIZE_INC 30
+#define MULTIBUTTONENTRY_LABEL_HEIGHT_INC 60 // same as button
+#define MULTIBUTTONENTRY_LABEL_PAD_INC 24
+
+//****************************************************************************//
+// Index
+//****************************************************************************//
+// FastScrol
+#define INDEX_ITEM_WIDTH_INC                        32 // 30 + 2(left line)
+#define INDEX_ITEM_HEIGHT_INC                       31
+#define INDEX_POPUP_TEXT_SIZE_INC                   84
+#define INDEX_DIVIDER_WIDTH_INC                     1
+#define INDEX_SCROLL_BG_LINE_WIDTH_INC              2
+#define INDEX_TEXT_LEFT_PADDING_SIZE_INC            0
+#define INDEX_TEXT_RIGHT_PADDING_SIZE_INC           0
+#define INDEX_PADDING_SIZE_INC                      7
+#define INDEX_ITEM_PADDING_SIZE_INC                 0
+#define INDEX_SCROLL_DRAG_PART_SIZE                 33 28
+#define INDEX_SCROLL_PADDING_COLOR                  34 34 34 255
+#define INDEX_SCROLL_POPUP_SIZE                     126 126
+#define INDEX_SCROLL_POPUP_ACTIVE_SIZE              126 126
+#define INDEX_SCROLL_TEXT1_DEFAULT_SIZE             100 64
+#define INDEX_SCROLL_TEXT1_ACTIVE_SIZE              100 64
+
+// Page Control
+#define INDEX_PAGECONTROL_IND_INC 39 24
+#define INDEX_PAGECONTROL_IND_MIN_INC 24 24
+
+//****************************************************************************//
+// Popup
+//****************************************************************************//
+#define POPUP_BASE_DEFAULT_TEXT_FONT_SIZE_INC 30
+#define POPUP_SUBTITLE_TEXT_FONT_SIZE_INC 21
+#define POPUP_DESCRIPTION_DEFAULT_TEXT_FONT_SIZE_INC 30
+
+#define POPUP_OUTSIDE_PADDING "48"
+#define POPUP_TITLE_AREA_HEIGHT "72"
+#define POPUP_CONTENT_AREA_LANDSCAPE_WIDTH_INC "540"
+#define POPUP_SCROLLER_MAX_HEIGHT "432"
+
+
+#define POPUP_BASE_DEFAULT_BASE_DEFAULT_MIN_INC 540 0
+#define POPUP_BASE_DEFAULT_BASE_DEFAULT_MAX_INC 99999 752
+#define POPUP_BASE_DEFAULT_BASE_LANDSCAPE_MIN_INC 540 0
+#define POPUP_BASE_DEFAULT_BASE_LANDSCAPE_MAX_INC 540 432
+#define POPUP_BASE_DEFAULT_TITLE_DEFAULT_MIN_INC 0 75
+#define POPUP_BASE_DEFAULT_TITLE_SUB_DEFAULT_MIN_INC 0 93
+#define POPUP_BASE_DEFAULT_BUTTON_BG_DEFAULT_MIN_INC 540 108
+#define POPUP_BASE_DEFAULT_TEXT_SHADOW_COLOR_INC "#08080855"
+#define POPUP_SUBTITLE_TEXT_SHADOW_COLOR_INC "#08080855"
+#define POPUP_CONTENT_AREA_DEFAULT_MIN_INC 540 0
+#define POPUP_CONTENT_AREA_LANDSCAPE_MIN_INC 540 0
+
+#define POPUP_TITLE_LEFT_PADDING 24
+#define POPUP_TITLE_RIGHT_PADDING 24
+#define POPUP_TITLE_TOP_PADDING 23
+#define POPUP_TITLE_TOP_SUB_PADDING 20
+#define POPUP_TITLE_BOTTOM_PADDING 0
+#define POPUP_SUBTITLE_HEIGHT 30
+
+#define POPUP_CONTENT_DEFAULT_PADDING_TOP_MIN_INC 17
+#define POPUP_CONTENT_DEFAULT_PADDING_LEFT_MIN_INC 24
+#define POPUP_CONTENT_DEFAULT_PADDING_RIGHT_MIN_INC 24
+#define POPUP_CONTENT_DEFAULT_PADDING_BOTTOM_MIN_INC 17
+
+#define POPUP_BUTTON_DEFAULT_ACTION_AREA_HEIGHT "108"
+#define POPUP_BUTTON1_DEFAULT_HEIGHT_INC 74
+#define POPUP_BUTTON1_DEFAULT_PADDING_LEFT_RIGHT_WIDTH_INC 24
+#define POPUP_BUTTON2_DEFAULT_HEIGHT_INC 74
+#define POPUP_BUTTON2_DEFAULT_PADDING_BUTTON_MIN_MAX_INC 24 74
+#define POPUP_BUTTON2_DEFAULT_PADDING_LEFT_RIGHT_WIDTH_INC 24
+#define POPUP_BUTTON3_DEFAULT_HEIGHT_INC 74
+#define POPUP_BUTTON3_DEFAULT_PADDING_BUTTON_MIN_MAX_INC 24 74
+#define POPUP_BUTTON3_DEFAULT_PADDING_LEFT_RIGHT_WIDTH_INC 24
+
+#define POPUP_TOAST_BG_MAX_WIDTH_INC 472
+#define POPUP_TOAST_BG_MAX_HEIGHT_INC 668
+#define POPUP_TOAST_BOTTOM_PAD_INC 64
+#define POPUP_TOAST_TITLE_TOP_PAD_INC 7
+#define POPUP_TOAST_TITLE_BOTTOM_PAD_INC 10
+#define POPUP_TOAST_TITLE_LEFT_RIGHT_PAD_INC 24
+#define POPUP_TOAST_TEXT_MAX_WIDTH_INC 472
+#define POPUP_TOAST_TEXT_MIN_HEIGHT_INC 37
+#define POPUP_TOAST_TEXT_MAX_HEIGHT_INC 651
+#define POPUP_TOAST_CONTENT_HEIGHT_MIN_INC 74
+
+
+//****************************************************************************//
+// Gengrid
+//****************************************************************************//
+
+#define GRID_PADDING_LEFT_TOP_SIZE               1 1
+#define GRID_PADDING_RIGHT_BOTTOM_SIZE           1 1
+#define GRID_PADDING_END_TOP_RIGHT_SIZE          7 7
+#define GRID_END_SIZE                            38 38
+#define GRID_PADDING_OUT_TEXT_BOTTOM_RIGHT_SIZE  1 30
+#define GRID_PADDING_OUT_TEXT_LEFT_RIGHT_SIZE    8 0
+#define GRID_IN_OUT_TEXT_ONE_LINE_HEIGHT         0 30
+#define GRID_PADDING_IN_TEXT_LEFT_RIGHT_SIZE     8 9
+#define GRID_POPUP_PADDING_LEFT_TOP_SIZE         42 21
+#define GRID_POPUP_PADDING_RIGHT_BOTTOM_SIZE     42 11
+#define GRID_POPUP_ITEM_REAL_BG_SIZE             156 167
+#define GRID_POPUP_SWALLOW_ICON_SIZE             72 72
+#define GRID_POPUP_TEXT_SIZE                     124 60
+#define GENGRID_POPUP_CONTENT_TOP_PADDING        18
+#define GENGRID_POPUP_CONTENT_BOTTOM_PADDING     18
+
+
+//****************************************************************************//
+// DATETIME
+//****************************************************************************//
+
+#define DATETIME_WIDGET_HEIGHT                     49 //FIXME : widget UX not provided
+#define DATETIME_WIDGET_PADDING_SIZE_INC           11 49 //FIXME : widget UX not provided
+
+
+#define DATETIME_LAYOUT_CONTENT_SIZE_INC 540 262
+#define TIME_LAYOUT_CONTENT_TIME_24HR_LEFT_RIGHT_PADDING_WIDTH_INC 124
+#define TIME_LAYOUT_CONTENT_TIME_24HR_CENTER_PADDING_WIDTH_INC 24
+#define TIME_LAYOUT_CONTENT_COLON_WIDTH_INC 24
+
+#define DATETIME_AMPM_BUTTON_SIZE_INC 120 60
+#define DATETIME_AMPM_BUTTON_LEFT_RIGHT_PADDING_INC 24
+#define DATETIME_FIELD_BUTTON_LEFT_RIGHT_PADDING_WIDTH_INC 12
+
+#define TIME_LAYOUT_CONTENT_LEFT_PADDING_WIDTH_INC 40
+#define TIME_LAYOUT_CONTENT_RIGHT_PADDING_WIDTH_INC 46
+#define TIME_LAYOUT_CONTENT_FIELD_WIDTH_INC 110
+#define TIME_LAYOUT_CONTENT_CENTER_PADDING_WIDTH_INC 24
+#define TIME_LAYOUT_MINITE_RIGHT_PADDING_WIDTH_INC 42
+
+#define DATE_LAYOUT_CONTENT_FIELD_WIDTH_INC 158
+#define DATE_LAYOUT_CONTENT_LEFT_PADDING_WIDTH_INC 27
+#define DATE_LAYOUT_CONTENT_RIGHT_PADDING_WIDTH_INC 27
+#define DATE_LAYOUT_CONTENT_CENTER_PADDING_WIDTH_INC 6
+
+#define ENTRY_TIME_LAYOUT_TEXT_SIZE_INC 60
+#define ENTRY_DATE_LAYOUT_TEXT_SIZE_INC 40
+
+
+//****************************************************************************//
+// SPINNER
+//****************************************************************************//
+
+#define SPINNER_LEFT_RIGHT_ARROW_IMAGE_SIZE_INC 42 60
+#define SPINNER_LEFT_RIGHT_BG_IMAGE_SIZE_INC 42 60
+#define SPINNER_UP_DOWN_ARROW_IMAGE_SIZE_INC 110 60
+#define SPINNER_UP_DOWN_BG_IMAGE_SIZE_INC 110 60
+#define SPINNER_TEXT_HEIGHT_INC 110
+#define SPINNER_UP_DOWN_BG_EVENT_AREA_HEIGHT_INC 56
+#define SPINNER_VERTICAL_BG_SIZE_INC 110 262
+#define SPINNER_VERTICAL_DATE_PICKER_BG_SIZE_INC 158 262
+#define SPINNER_VERTICAL_TEXT_BUTTON_BG_SIZE_INC 110 110
+#define SPINNER_VERTICAL_DATE_PICKER_TEXT_BUTTON_SIZE_INC 158 110
+
+
+//****************************************************************************//
+// Floating Button
+//****************************************************************************//
+
+#define FLOATINGBUTTON_HEIGHT_INC 90
+
+//****************************************************************************//
+// Calendar
+//****************************************************************************//
+#define CALENDAR_BG_SIZE_INC 540 508
+#define CALENDAR_SPINNER_BASE_SIZE_INC 540 90
+#define CALENDAR_TABLE_BASE_SIZE_INC 540 418
+#define CALENDAR_HEADER_SIZE_INC 540 38
+#define CALENDAR_HEADER_SEPARATOR_SIZE_INC 0 2
+#define CALENDAR_BASE_TOP_BOTTOM_PADDING_SIZE_INC 0 11
+#define CALENDAR_DATE_PICKER_LEFT_RIGHT_ARROW_IMAGE_SIZE_INC 36 36
+#define CALENDAR_SELECTED_IMAGE_SIZE_INC 56 56
+
+//****************************************************************************//
+// Flipselector
+//****************************************************************************//
+#define FLIPSELECTOR_BASE_SIZE_INC 160 213
+#define FLIPSELECTOR_TOP_SIZE_INC 160 102
+#define FLIPSELECTOR_BOTTOM_SIZE_INC 160 110
+#define FLIPSELECTOR_DIVIDER_SIZE_INC 0 1
+#define FLIPSELECTOR_ARROW_TOP_PADDING_SIZE_INC 0 9
+#define FLIPSELECTOR_ARROW_BOTTOM_PADDING_SIZE_INC 0 17
+#define FLIPSELECTOR_ARROW_TOP_BOTTOM_SIZE_INC 22 11
+
+//****************************************************************************//
+// HOVERSEL
+//****************************************************************************//
+
+#define BUTTON_HOVERSEL_MIN_SIZE_INC 120 54
+#define BUTTON_HOVERSEL_TEXT_LEFT_PADDING_INC 5
+#define BUTTON_HOVERSEL_ARROW_ICON_SIZE_INC 16 16
+
+#define HOVERSEL_ITEM_MIN_HEIGHT_INC 72
+#define HOVERSEL_ITEM_TEXT_LR_PADDING_INC 20
+
+#define HOVER_HOVERSEL_VERTICAL_PADDING_SIZE_DEFAULT 18
+
+#define STYLE_TAGS \
+   tag:  "br" "\n";\
+   tag:  "ps" "ps";\
+   tag:  "tab" "\t";\
+   tag:  "b" "+ font_weight=Bold";
+
+#define STYLE_TAG_MATCH \
+   tag:  "match" "+ color=#0051B5FF";
+
+styles {
+   // ************* list main text ********** //
+   style { name: "list_text_main";
+      base: "color=#070707FF font=Tizen:style=Regular font_size=30 text_class=list_item ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_TEXT_MAIN_SIZE" color=#ffffff color_class=T023 text_class=T023 ellipsis=1.0";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_main_dim";
+      base: "color=#0707077F font=Tizen:style=Regular font_size=30 text_class=list_item ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_TEXT_MAIN_SIZE" color=#ffffff  color_class=T023D text_class=T023D ellipsis=1.0";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_main_press";
+      base: "color=#070707FF font=Tizen:style=Regular font_size=30 text_class=list_item ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_TEXT_MAIN_SIZE" color=#ffffff color_class=T023P text_class=T023P ellipsis=1.0";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   // ************* list sub text ********** //
+   style { name: "list_text_sub_01";
+      base: "color=#4C4C4CFF font=Tizen:style=Regular font_size=24 text_class=tizen ellipsis=1.0";
+      //base: "font=Tizen:style=Regular font_size="LIST_TEXT_SUB_SIZE" color=#ffffff color=#4C4C4CFF color_class=T024 text_class=T024 ellipsis=1.0";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_sub_01_dim";
+      base: "color=#4C4C4C7F font=Tizen:style=Regular font_size=24 text_class=tizen ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_TEXT_SUB_SIZE" color=#ffffff color_class=T024D text_class=T024D ellipsis=1.0";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_sub_01_press";
+      base: "color=#4C4C4CFF font=Tizen:style=Regular font_size=24 text_class=tizen ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_TEXT_SUB_SIZE" color=#ffffff color_class=T024P text_class=T024P ellipsis=1.0";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_sub_02";
+      base: "color=#4C4C4CFF font=Tizen:style=Regular font_size=24 text_class=tizen ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_TEXT_SUB_SIZE" color=#ffffff color_class=T024L1 text_class=T024L1 ellipsis=1.0";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_sub_02_dim";
+      base: "color=#4C4C4C7F font=Tizen:style=Regular font_size=24 text_class=tizen ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_TEXT_SUB_SIZE" color=#ffffff color_class=T024L1D text_class=T024L1D ellipsis=1.0";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_sub_02_press";
+      base: "color=#4C4C4CFF font=Tizen:style=Regular font_size=24 text_class=tizen ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_TEXT_SUB_SIZE" color=#ffffff color_class=T024L1P text_class=T024L1P ellipsis=1.0";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_sub_03";
+      base: "font=Tizen:style=Regular font_size=24  color=#023D84FF text_class=tizen ellipsis=1.0";
+      //base: "font=Tizen:style=Regular font_size="LIST_TEXT_SUB_SIZE" color=#ffffff color_class=T024L2 fotext_class=T024L2 ellipsis=1.0";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_sub_03_dim";
+      base: "color=#023D847F font=Tizen:style=Regular font_size=24 text_class=tizen ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_TEXT_SUB_SIZE" color=#ffffff color_class=T024L2D text_class=T024L2D ellipsis=1.0";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_sub_03_press";
+      base: "color=#023D84FF font=Tizen:style=Regular font_size=24 text_class=tizen ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_TEXT_SUB_SIZE" color=#ffffff color_class=T024L2P text_class=T024L2P ellipsis=1.0";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   // ************* list multiline text ********** //
+   style { name: "list_text_multiline";
+      base: "color=#666666FF font=Tizen:style=Regular font_size=24 text_class=list_item wrap=mixed linesize=33";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_multiline_dim";
+      base: "color=#666666A3 font=Tizen:style=Regular font_size=24 text_class=list_item wrap=mixed linesize=33";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_multiline_press";
+      base: "color=#666666FF font=Tizen:style=Regular font_size=24 text_class=list_item wrap=mixed linesize=33";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   // ************* list index text ********** //
+   style { name: "list_text_index_main";
+      base: "color=#023d84ff font=Tizen:style=Regular font_size=27 text_class=tizen ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_INDEX_TEXT_MAIN_SIZE" color=#ffffff color_class=T027L1 text_class=T027L1 ellipsis=1.0";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_index_main_dim";
+      base: "color=#023d84ff font=Tizen:styleRegular font_size=27 text_class=tizen ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_INDEX_TEXT_MAIN_SIZE" color=#ffffff color_class=T027L1 text_class=T027L1 ellipsis=1.0";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_index_main_press";
+      base: "color=#023d84ff font=Tizen:style=Regular font_size=27 text_class=tizen ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_INDEX_TEXT_MAIN_SIZE" color=#ffffff color_class=T027L1 text_class=T027L1 ellipsis=1.0";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_index_sub";
+      base: "color=#023D84FF font=Tizen:style=Regular font_size=27 text_class=tizen ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_INDEX_TEXT_SUB_SIZE" color=#ffffff color_class=T027L2 text_class=T027L2 ellipsis=1.0";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_index_sub_dim";
+      base: "color=#023D847F font=Tizen:style=Regular font_size=27 text_class=tizen ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_INDEX_TEXT_SUB_SIZE" color=#ffffff color_class=T027L2 text_class=T027L2 ellipsis=1.0";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_index_sub_press";
+      base: " color=#023D84FF font=Tizen:style=Regular font_size=27 text_class=tizen ellipsis=1.0";
+      //base: "font=Tizen:style=Regular font_size="LIST_INDEX_TEXT_SUB_SIZE" color=#ffffff color_class=T027L2 font=Tizen:style=Regular ellipsis=1.0";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   // multiline text
+   style { name: "list_text_multiline_main";
+      base: "color=#070707FF font=Tizen:style=Regular font_size=30 text_class=list_item wrap=mixed";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_TEXT_MAIN_SIZE" color=#ffffff color_class=T023 text_class=T023 wrap=mixed";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_multiline_main_dim";
+      base: "color=#0707077F font=Tizen:style=Regular font_size=30 text_class=list_item wrap=mixed";
+      //base: "font=Tizen:style=Regular font_size="LIST_TEXT_MAIN_SIZE" color=#ffffff color_class=T023D text_class=T023D wrap=mixed";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_multiline_main_press";
+      base: "color=#070707FF font=Tizen:style=Regular font_size=30 text_class=list_item wrap=mixed";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_TEXT_MAIN_SIZE" color=#ffffff color_class=T023P text_class=T023P wrap=mixed";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_multiline_sub";
+      base: "font=Tizen:style=Regular font_size=24 color=#4C4C4CFF text_class=tizen wrap=mixed";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_TEXT_SUB_SIZE" color=#ffffff color_class=T024 text_class=T024 wrap=mixed";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_multiline_sub_dim";
+      base: "color=#4C4C4C7F font=Tizen:style=Regular font_size=24 text_class=tizen wrap=mixed";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_TEXT_SUB_SIZE" color=#ffffff color_class=T024D text_class=T024D wrap=mixed";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_multiline_sub_press";
+      base: "color=#4C4C4CFF font=Tizen:style=Regular font_size=24 text_class=tizen wrap=mixed";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_TEXT_SUB_SIZE" color=#ffffff color_class=T024P text_class=T024P wrap=mixed";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_desc";
+      base: "color=#006FD1FF font=Tizen:style=Regular font_size=24 text_class=tizen wrap=mixed";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_DESC_TEXT_SIZE" color=#ffffff color_class=T129 text_class=T129 wrap=mixed";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   style { name: "list_text_select";
+      base: "color=#006FD1FF font=Tizen:style=Regular font_size=24 text_class=list_item ellipsis=1.0";
+       //(Changeable UI) base: "font=Tizen:style=Regular font_size="LIST_DESC_TEXT_SIZE" color=#ffffff color=#006FD1FF color_class=T129 text_class=T129 ellipsis=1.0";
+      STYLE_TAGS
+      STYLE_TAG_MATCH
+   }
+   // ************* button text ********** //
+   style { name: "button_main";
+      base: "align=center valign=center color=#ffffffff font=Tizen:style=Regular font_size=30 text_class=tizen ellipsis=1.0";
+      STYLE_TAGS
+   }
+   style { name: "button_date";
+      base: "color=#ffffffff font=Tizen:style=Regular font_size=30 text_class=tizen ellipsis=0.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="BUTTON_DATE_TEXT_SIZE" color=#ffffff color_class=T051L1 text_class=T051L1 ellipsis=0.0";
+      STYLE_TAGS
+   }
+   style { name: "button_date_dim";
+      base: "color=#ffffff7f font=Tizen:style=Regular font_size=30 text_class=tizen ellipsis=0.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="BUTTON_DATE_TEXT_SIZE" color=#ffffff color_class=T051L1D text_class=T051L1D ellipsis=0.0";
+      STYLE_TAGS
+   }
+   style { name: "button_date_press";
+      base: "color=#ffffffff font=Tizen:style=Regular font_size=30 text_class=tizen ellipsis=0.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="BUTTON_DATE_TEXT_SIZE" color=#ffffff color_class=T051L1P text_class=T051L1P ellipsis=0.0";
+      STYLE_TAGS
+   }
+   //FIXME: This style font type has to changed to SNum-3L
+   style { name: "button_ampm";
+      base: "align=center color=#FFFFFFFF font=Tizen:style=Regular font_size=34 text_class=tizen ellipsis=0.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="BUTTON_AMPM_TEXT_SIZE" color=#ffffff color_class=T1234 text_class=T1234 ellipsis=0.0";
+      STYLE_TAGS
+   }
+   //FIXME: This style font type has to changed to SNum-3L
+   style { name: "button_ampm_dim";
+      base: "align=center color=#FFFFFFA3 font=Tizen:style=Regular font_size=34 text_class=tizen ellipsis=0.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="BUTTON_AMPM_TEXT_SIZE" color=#ffffff color_class=T1234D text_class=T1234D ellipsis=0.0";
+      STYLE_TAGS
+   }
+   //FIXME: This style font type has to changed to SNum-3L
+   style { name: "button_ampm_press";
+      base: "align=center color=#FFFFFFFF font=Tizen:style=Regular font_size=34 text_class=tizen ellipsis=0.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="BUTTON_AMPM_TEXT_SIZE" color=#ffffff color_class=T1234P text_class=T1234P ellipsis=0.0";
+      STYLE_TAGS
+   }
+   style { name: "button_bottom";
+      base: "align=center color=#ffffffff font=Tizen:style=Regular font_size=30 text_class=tizen ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="BUTTON_BOTTOM_TEXT_SIZE" align=center color=#ffffff color_class=T051L1 text_class=T051L1 ellipsis=1.0";
+      STYLE_TAGS
+   }
+   style { name: "button_bottom_dim";
+      base: "align=center color=#ffffff7f font=Tizen:style=Regular font_size=30 text_class=tizen ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="BUTTON_BOTTOM_TEXT_SIZE" align=center color=#ffffff color_class=T051L1D text_class=T051L1D ellipsis=1.0";
+      STYLE_TAGS
+   }
+   style { name: "button_bottom_press";
+      base: "align=center color=#ffffffff font=Tizen:style=Regular font_size=30 text_class=tizen ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="BUTTON_BOTTOM_TEXT_SIZE" align=center color=#ffffff color_class=T051L1P text_class=T051L1P ellipsis=1.0";
+      STYLE_TAGS
+   }
+   style { name: "button_popup";
+      base: "align=center color=#ffffffff font=Tizen:style=Regular font_size=30 text_class=tizen ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="BUTTON_POPUP_TEXT_SIZE" align=center color=#ffffff color_class=T051L1 text_class=T051L1 ellipsis=1.0";
+      STYLE_TAGS
+   }
+   style { name: "button_popup_dim";
+      base: "align=center color=#ffffff80 font=Tizen:style=Regular font_size=30 text_class=tizen ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="BUTTON_POPUP_TEXT_SIZE" align=center color=#ffffff color_class=T051L1D text_class=T051L1D ellipsis=1.0";
+      STYLE_TAGS
+   }
+   style { name: "button_popup_press";
+      base: "align=center color=#ffffffff font=Tizen:style=Regular font_size=30 text_class=tizen ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="BUTTON_POPUP_TEXT_SIZE" align=center color=#ffffff color_class=T051L1P text_class=T051L1P ellipsis=1.0";
+      STYLE_TAGS
+   }
+   style { name: "button_trans";
+      base: "color=#070707FF font=Tizen:style=Regular font_size=27 text_class=tizen ellipsis=0.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="BUTTON_TEXT_SIZE" color=#ffffff color_class=T1221 text_class=T1221 ellipsis=0.0";
+      STYLE_TAGS
+   }
+   style { name: "button_circle";
+      base: "align=center color=#000000DE font=Tizen:style=Regular font_size=24 text_class=tizen wrap=mixed";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="BUTTON_TEXT_CIRCLE_SIZE" align=center color=#ffffff color_class=T127 text_class=T127 wrap=mixed";
+      STYLE_TAGS
+   }
+   style { name: "button_contacts";
+      base: "color=#ffffffff align=center font=Tizen:style=Regular font_size=30 text_class=tizen  wrap=none ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="BUTTON_TEXT_SIZE" color=#ffffff align=center color_class=T051L2 text_class=T051L2  wrap=none ellipsis=1.0";
+      STYLE_TAGS
+   }
+   style { name: "button_contacts_dim";
+      base: "color=#ffffff7f align=center font=Tizen:style=Regular font_size=30 text_class=tizen wrap=none  ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="BUTTON_TEXT_SIZE" color=#ffffff align=center color_class=T051L2D text_class=T051L2D wrap=none  ellipsis=1.0";
+      STYLE_TAGS
+   }
+   style { name: "button_contacts_press";
+      base: "color=#ffffffff align=center font=Tizen:style=Regular font_size=30 text_class=tizen wrap=none  ellipsis=1.0";
+      // (Changeable UI) base: "font=Tizen:style=Regular font_size="BUTTON_TEXT_SIZE" color=#ffffff align=center color_class=T051L2P text_class=T051L2P wrap=none  ellipsis=1.0";
+      STYLE_TAGS
+   }
+   style { name: "button_title_left";
+      base: "color=#ffffffdd align=center font=Samsung Condensed:style=Regular font_size=24 text_class=tizen wrap=none  ellipsis=1.0";
+      // (Changeable UI) base: "font=Samsung Condensed:style=Regular font_size="BUTTON_TEXT_SIZE" color=#ffffff align=center color_class=T043 text_class=T043 wrap=none  ellipsis=1.0";
+      STYLE_TAGS
+   }
+   style { name: "button_title_left_press";
+      base: "color=#ffffffff align=center font=Samsung Condensed:style=Regular font_size=24 text_class=tizen wrap=none  ellipsis=1.0";
+      // (Changeable UI) base: "font=Samsung Condensed:style=Regular font_size="BUTTON_TEXT_SIZE" color=#ffffff align=center color_class=T043P text_class=T043P wrap=none  ellipsis=1.0";
+      STYLE_TAGS
+   }
+   style { name: "button_title_left_dim";
+      base: "color=#ffffff92 align=center font=Samsung Condensed:style=Regular font_size=24 text_class=tizen wrap=none  ellipsis=1.0";
+      // (Changeable UI) base: "font=Samsung Condensed:style=Regular font_size="BUTTON_TEXT_SIZE" color=#ffffff align=center color_class=T043D text_class=T043D wrap=none  ellipsis=1.0";
+      STYLE_TAGS
+   }
+   style { name: "button_title_right";
+      base: "color=#ffffffdd align=center font=Samsung Condensed:style=Regular font_size=24 text_class=tizen wrap=none  ellipsis=1.0";
+      // (Changeable UI) base: "font=Samsung Condensed:style=Regular font_size="BUTTON_TEXT_SIZE" color=#ffffff align=center color_class=T044 text_class=T044 wrap=none  ellipsis=1.0";
+      STYLE_TAGS
+   }
+   style { name: "button_title_right_press";
+      base: "color=#ffffffff align=center font=Samsung Condensed:style=Regular font_size=24 text_class=tizen wrap=none  ellipsis=1.0";
+      // (Changeable UI) base: "font=Samsung Condensed:style=Regular font_size="BUTTON_TEXT_SIZE" color=#ffffff align=center color_class=T044P text_class=T044P wrap=none  ellipsis=1.0";
+      STYLE_TAGS
+   }
+   style { name: "button_title_right_dim";
+      base: "color=#ffffff92 align=center font=Samsung Condensed:style=Regular font_size=24 text_class=tizen wrap=none  ellipsis=1.0";
+      // (Changeable UI) base: "font=Samsung Condensed:style=Regular font_size="BUTTON_TEXT_SIZE" color=#ffffff align=center color_class=T044D text_class=T044D wrap=none  ellipsis=1.0";
+      STYLE_TAGS
+   }
+   style { name: "check_default";
+      base: "color=#070707FF font=Tizen:style=Regular font_size=30 text_class=label ellipsis=1.0";
+      STYLE_TAGS
+   }
+  // ************* no Content text ********** //
+   style { name: "empty_state_1";
+      base: "font=Tizen:style=Regular font_size=30 align=center color=#ffffffff text_class=tizen ellipsis=1.0";
+      STYLE_TAGS
+   }
+   style { name: "empty_state_2";
+      base: "font=Tizen:style=Regular font_size=28 align=center color=#ffffffff  text_class=tizen wrap=mixed";
+      STYLE_TAGS
+   }
+}

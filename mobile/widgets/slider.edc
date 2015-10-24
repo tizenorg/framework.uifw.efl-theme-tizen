@@ -1,0 +1,3380 @@
+/*
+ * Copyright (c) 2010 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *   1. Redistributions of source code must retain the above copyright notice, this
+ *      list of conditions and the following disclaimer.
+ *   2. Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following disclaimer in the documentation
+ *      and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+   group { name: "elm/slider/horizontal/indicator/default";
+      parts {
+         part { name: "access";
+            type: RECT;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               color: 0 0 0 0;
+            }
+         }
+         part { name: "button_events";
+            type: RECT;
+            mouse_events: 1;
+            scale: 1;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               min: 1.5*SLIDER_INDICATOR_SIZE_INC 1.5*SLIDER_SWALLOWBAR_HEIGHT_INC;
+               aspect: 1.0 1.0;
+               aspect_preference: VERTICAL;
+               color: 0 0 0 0;
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               visible: 0;
+            }
+         }
+         part { name: "elm.swallow.tizen_vg_shape1";
+            type: SWALLOW;
+            mouse_events: 0;
+            scale: 1;
+            clip_to: "button0";
+            description { state: "default" 0.0;
+               rel1.to: "button0";
+               rel2.to: "button0";
+            }
+         }
+         part { name: "button0";
+            type : RECT;
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               min: SLIDER_INDICATOR_NORMAL_SIZE_INC;
+               max: SLIDER_INDICATOR_NORMAL_SIZE_INC;
+               color: 255 255 255 255;
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+            }
+         }
+      }
+      programs {
+         program { name: "slider_disable";
+            signal: "elm,state,disabled";
+            source: "elm";
+            action:  STATE_SET "disabled" 0.0;
+            target: "button0";
+            target: "button_events";
+         }
+         program { name: "slider_enable";
+            signal: "elm,state,enabled";
+            source: "elm";
+            action:  STATE_SET "default" 0.0;
+            target: "button0";
+            target: "button_events";
+         }
+      }
+   }
+
+group { name: "elm/slider/horizontal/default";
+      data.item: "vector_ux" "default";
+      script {
+         public invert_on = 0;
+         public disabled = 0;
+         public popup_show = 1;
+         public show = 0;
+         public set_popup_show() {
+            set_int(popup_show, 1);
+         }
+         public set_popup_hide() {
+            set_int(popup_show, 0);
+         }
+         public set_invert_on() {
+            if (!get_int(disabled)) {
+              set_state(PART:"level", "inverted", 0.0);
+              set_state(PART:"level2", "inverted", 0.0);
+            }
+            else {
+              set_state(PART:"level", "inverted", 0.0);
+              set_state(PART:"level2", "disabled", 0.0);
+            }
+            set_int(invert_on, 1);
+         }
+         public set_invert_off() {
+            if (!get_int(disabled)) {
+              set_state(PART:"level", "default", 0.0);
+              set_state(PART:"level2", "default", 0.0);
+            }
+            else {
+              set_state(PART:"level", "disabled", 0.0);
+              set_state(PART:"level2", "default", 0.0);
+            }
+            set_int(invert_on, 0);
+         }
+         public thumb_down() {
+            if (!get_int(invert_on))
+              set_state(PART:"level", "pressed", 0.0);
+            else
+              set_state(PART:"level2", "pressed", 0.0);
+            set_state(PART:"handle_color", "pressed", 0.0);
+            if (get_int(popup_show))
+               emit("popup,show", "elm");
+            }
+         public thumb_up() {
+            if (!get_int(invert_on))
+              set_state(PART:"level", "default", 0.0);
+            else
+              set_state(PART:"level2", "inverted", 0.0);
+            set_state(PART:"handle_color", "default", 0.0);
+            if (get_int(popup_show))
+               emit("popup,hide", "elm");
+            }
+         public drag_state() {
+            new Float:dx, Float:dy;
+            get_drag(PART:"elm.dragable.slider", dx, dy);
+            if (dx > 0.5) {
+              if (!get_int(disabled)) {
+                set_state(PART:"level", "default", 0.0);
+                set_state(PART:"level2", "default", 0.0);
+              }
+              else {
+                set_state(PART:"level", "disabled", 0.0);
+                set_state(PART:"level2", "default", 0.0);
+              }
+              set_int(invert_on, 0);
+            }
+            else {
+              if (!get_int(disabled)) {
+                set_state(PART:"level", "inverted", 0.0);
+                set_state(PART:"level2", "inverted", 0.0);
+              }
+              else {
+                set_state(PART:"level", "inverted", 0.0);
+                set_state(PART:"level2", "disabled", 0.0);
+              }
+              set_int(invert_on, 1);
+            }
+         }
+      }
+         parts {
+            part { name: "access";
+               type: RECT;
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  color: 0 0 0 0;
+               }
+            }
+            part {
+               name: "bg";
+               type: SPACER;
+               scale: 1;
+               description {
+                  state: "default" 0.0;
+                  min: 0 SLIDER_SWALLOWBAR_HEIGHT_INC;
+               }
+            }
+            part {
+               name: "bar_image_left_padding";
+               type: SPACER;
+               scale: 1;
+               description {
+                  state: "default" 0.0;
+                  min: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
+                  fixed: 1 0;
+                  rel1.to: "bg";
+                  rel2 {
+                     relative: 0.0 1.0;
+                     to: "bg";
+                  }
+                  align: 0.0 0.5;
+               }
+            }
+            part { name: "elm.swallow.icon";
+               type: SWALLOW;
+               clip_to: "icon_clipper";
+               scale: 1;
+               description { state: "default" 0.0;
+                  visible: 0;
+                  align: 0.0 0.5;
+                  max: SLIDER_SWALLOWBAR_HEIGHT_INC SLIDER_SWALLOWBAR_HEIGHT_INC;
+                  rel1 {
+                     relative: 1.0 0.0;
+                     to_x: "bar_image_left_padding";
+                     to_y: "bg";
+                  }
+                  rel2 {
+                     relative: 1.0 1.0;
+                     to_x: "bar_image_left_padding";
+                     to_y: "bg";
+                  }
+                  fixed: 1 1;
+               }
+               description { state: "visible" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+               }
+            }
+            part {
+               name: "bar_icon_right_padding_1";
+               type: SPACER;
+               scale: 1;
+               description {
+                  state: "default" 0.0;
+                  align: 0.0 0.5;
+                  min: 0 0;
+                  rel1 {
+                     relative: 1.0 0.0;
+                     to_x: "elm.swallow.icon";
+                     to_y: "bg";
+                  }
+                  rel2 {
+                     relative: 1.0 1.0;
+                     to_x: "elm.swallow.icon";
+                     to_y: "bg";
+                  }
+                  fixed: 1 0;
+               }
+               description { state: "visible";
+                  inherit: "default" 0.0;
+                  min: SLIDER_ICON_PADDING_SIZE_INC;
+               }
+            }
+            part {
+               name: "bar_icon_right_padding_2";
+               type: SPACER;
+               scale: 1;
+               description {
+                  state: "default" 0.0;
+                  align: 0.0 0.5;
+                  min: 0 0;
+                  rel1 {
+                     relative: 1.0 0.0;
+                     to_x: "bar_icon_right_padding_1";
+                     to_y: "bg";
+                  }
+                  rel2 {
+                     relative: 1.0 1.0;
+                     to_x: "bar_icon_right_padding_1";
+                     to_y: "bg";
+                  }
+                  fixed: 1 0;
+               }
+               description { state: "visible";
+                  inherit: "default" 0.0;
+                  min: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
+               }
+            }
+            part { name: "base";
+               type: "RECT";
+               mouse_events: 0;
+               scale: 1;
+               description { state: "default" 0.0;
+                  min: 0 SLIDER_BASE_HEIGHT_INC;
+                  rel1 {
+                     to_x: "bar_icon_right_padding_2";
+                     to_y: "bg";
+                     relative: 1.0 0.5;
+                  }
+                  rel2 {
+                     to_x: "bar_image_right_padding";
+                     to_y: "bg";
+                     relative: 0.0 0.5;
+                  }
+                  fixed: 1 1;
+                  color: 145 145 145 179;
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "default" 0.0;
+                  color: 145 145 145 77;
+               }
+            }
+            part { name: "drag_base";
+               type: "SPACER";
+               scale: 1;
+               description { state: "default" 0.0;
+                  min: 0 SLIDER_SWALLOWBAR_HEIGHT_INC;
+                  rel1 {
+                     to_x: "bar_image_left_padding";
+                     to_y: "bg";
+                     relative: 1.0 0.5;
+                  }
+                  rel2 {
+                      to_x: "bar_image_right_padding";
+                      to_y: "bg";
+                      relative: 0.0 0.5;
+                  }
+                  fixed: 1 1;
+               }
+               description { state: "visible" 0.0;
+                  inherit: "default" 0.0;
+                  rel1 {
+                     to_x: "bar_icon_right_padding_2";
+                     to_y: "bg";
+                     relative: 1.0 0.5;
+                  }
+                  rel2 {
+                      to_x: "bar_image_right_padding";
+                      to_y: "bg";
+                      relative: 0.0 0.5;
+                  }
+               }
+            }
+            part { name: "level";
+               type: RECT;
+               mouse_events: 0;
+               scale: 1;
+               description { state: "default" 0.0;
+                  rel1 {
+                     to_x: "bar_icon_right_padding_2";
+                     relative: 1.0 0.5;
+                  }
+                  rel2 {
+                     to_x: "elm.dragable.slider";
+                     relative: 0.5 0.5;
+                  }
+                  fixed: 1 1;
+                  min: 0 SLIDER_BASE_HEIGHT_INC;
+                  color: 61 184 204 255;
+               }
+               description { state: "pressed" 0.0;
+                 inherit: "default" 0.0;
+               }
+               description { state: "inverted" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 0;
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "default" 0.0;
+                  color: 61 184 204 77;
+               }
+            }
+            part { name: "level2";
+               type: RECT;
+               mouse_events: 0;
+               scale: 1;
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  visible: 0;
+                  rel1.to: "level";
+                  rel1.relative: 1 0;
+                  rel2.to: "base";
+                  color: 61 184 204 255;
+               }
+               description { state: "inverted" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+               }
+               description { state: "pressed" 0.0;
+                 inherit: "inverted" 0.0;
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "inverted" 0.0;
+                  color: 61 184 204 77;
+               }
+            }
+            part {
+               name: "bar_image_right_padding";
+               type: SPACER;
+               scale: 1;
+               description {
+                  state: "default" 0.0;
+                  min: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
+                  fixed: 1 0;
+                  rel1 {
+                     relative: 1.0 0.0;
+                     to: "bg";
+                  }
+                  rel2 {
+                     relative: 1.0 1.0;
+                     to: "bg";
+                  }
+                  align: 1.0 0.5;
+               }
+            }
+            part { name: "icon_clipper";
+               scale: 1;
+               type: RECT;
+               description { state: "default" 0.0;
+                  color: 61 184 204 255;
+               }
+               description { state: "disabled" 0.0;
+                  color: 61 184 204 76;
+               }
+            }
+            part { name: "elm.swallow.bar";
+               type: SWALLOW;
+               scale: 1;
+               description { state: "default" 0.0;
+                  min: 0  SLIDER_SWALLOWBAR_HEIGHT_INC;
+                  fixed: 1 1;
+                  rel1 {
+                     to_x: "bar_icon_right_padding_2";
+                     to_y: "bg";
+                     relative: 1.0 0.5;
+                  }
+                  rel2 {
+                     to_x: "bar_image_right_padding";
+                     to_y: "bg";
+                     relative: 0.0 0.5;
+                  }
+               }
+            }
+            part { name:"center_point";
+               type: RECT;
+               scale: 1;
+               description { state: "default" 0.0;
+                  min: SLIDER_CENTER_POINT_SIZE_INC;
+                  visible: 0;
+                  rel1 {
+                     to: "base";
+                     relative: 0.5 0.5;
+                  }
+                  rel2 {
+                     to: "base";
+                     relative: 0.5 0.5;
+                  }
+                  fixed: 1 1;
+                  color: 61 184 204 255;
+               }
+               description { state: "visible" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+                  color: 61 184 204 77;
+               }
+            }
+            part { name: "elm.swallow.tizen_vg_shape1";
+               type: SWALLOW;
+               mouse_events: 0;
+               scale: 1;
+               clip_to: "base";
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  rel1.to: "base";
+                  rel2.to: "base";
+               }
+            }
+            part { name: "elm.swallow.tizen_vg_shape2";
+               type: SWALLOW;
+               mouse_events: 0;
+               scale: 1;
+               clip_to: "level";
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  rel1.to: "level";
+                  rel2.to: "level";
+               }
+            }
+            part { name: "elm.swallow.tizen_vg_shape3";
+               type: SWALLOW;
+               mouse_events: 0;
+               scale: 1;
+               clip_to: "level2";
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  rel1.to: "level2";
+                  rel2.to: "level2";
+               }
+            }
+            part { name: "elm.swallow.tizen_vg_shape4";
+               type: SWALLOW;
+               mouse_events: 0;
+               scale: 1;
+               clip_to: "hider";
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  rel1.to: "level";
+                  rel2.to: "level";
+               }
+            }
+            part { name: "elm.swallow.tizen_vg_shape5";
+               type: SWALLOW;
+               mouse_events: 0;
+               scale: 1;
+               clip_to: "center_point";
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  rel1.to: "center_point";
+                  rel2.to: "center_point";
+               }
+            }
+            part { name: "elm.dragable.slider";
+               type: GROUP;
+               source: "elm/slider/horizontal/indicator/default";
+               mouse_events: 1;
+               scale: 1;
+               clip_to : "handle_color";
+               dragable {
+                  x: 1 1 0;
+                  y: 0 0 0;
+                  confine: "drag_base";
+               }
+               description { state: "default" 0.0;
+                  min: SLIDER_INDICATOR_SIZE_INC SLIDER_SWALLOWBAR_HEIGHT_INC;
+                  fixed: 1 1;
+                  align: 0.5 0.5;
+                  rel1.to: "drag_base";
+                  rel1.relative: 0.5 0.5;
+                  rel2.to: "drag_base";
+                  rel2.relative: 0.5 0.5;
+                  color: 0 0 0 0;
+               }
+            }
+            part { name: "elm.track.slider";
+               type: SWALLOW;
+               mouse_events: 0;
+               scale: 1;
+               description { state: "default" 0.0;
+                  min: 0 SLIDER_POPUP_HEIGHT_INC;
+                  max: -1 SLIDER_POPUP_HEIGHT_INC;
+                  fixed: 1 1;
+                  rel1.to: "elm.dragable.slider";
+                  rel2.to: "elm.dragable.slider";
+               }
+            }
+            part { name:"handle_color";
+               type: RECT;
+               scale: 1;
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  rel1.offset: 0 -1000;
+                  rel2.offset: -1 1000;
+                  color: 61 184 204 255;
+               }
+               description { state: "pressed" 0.0;
+                 inherit: "default" 0.0;
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "default" 0.0;
+                  color: 163 198 204 255;
+               }
+            }
+            part { name: "hider";
+               type: RECT;
+               scale: 1;
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  visible: 0;
+                  color: 0 0 0 0;
+               }
+            }
+            part { name: "disabler";
+               type: RECT;
+               mouse_events: 1;
+               repeat_events: 0;
+               scale: 1;
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  visible: 0;
+                  color: 0 0 0 0;
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+               }
+            }
+         }
+      programs {
+          program { name: "load";
+            signal: "load";
+            source: "";
+            script {
+                set_int(popup_show, 1);
+            }
+          }
+         program { name: "invert_on";
+            signal: "elm,state,inverted,on";
+            source: "elm";
+            script {
+               set_invert_on();
+            }
+         }
+         program { name: "invert_off";
+            signal: "elm,state,inverted,off";
+            source: "elm";
+            script {
+               set_invert_off();
+            }
+         }
+         program { name: "val_show";
+            signal: "mouse,down,*";
+            source: "elm.dragable.slider";
+            script {
+               thumb_down();
+            }
+         }
+         program { name: "val_hide";
+            signal: "mouse,up,*";
+            source: "elm.dragable.slider";
+            script {
+               thumb_up();
+            }
+         }
+         /* TIZEN ONLY(20150819) : This program is not necessary.
+         program { name: "popup_show";
+            signal: "elm,state,val,show";
+            source: "elm";
+            script {
+               set_popup_show();
+            }
+         }
+         program { name: "popup_hide";
+            signal: "elm,state,val,hide";
+            source: "elm";
+            script {
+               set_popup_hide();
+            }
+         }*/
+         program { name: "indicator_show";
+            signal: "elm,state,indicator,show";
+            source: "elm";
+            action:  SIGNAL_EMIT "elm,popup,show" "elm";
+         }
+         program { name: "indicator_hide";
+            signal: "elm,state,indicator,hide";
+            source: "elm";
+            action:  SIGNAL_EMIT "elm,popup,hide" "elm";
+         }
+         program { name: "icon_show";
+            signal: "elm,state,icon,visible";
+            source: "elm";
+            action:  STATE_SET "visible" 0.0;
+            target: "elm.swallow.icon";
+            target: "bar_icon_right_padding_1";
+            target: "bar_icon_right_padding_2";
+            target: "drag_base";
+         }
+         program { name: "center_point_enable";
+            signal: "slider,center,point,show";
+            source: "elm";
+            script {
+               set_state(PART:"center_point", "visible", 0.0);
+               set_int(show, 1);
+            }
+         }
+         program { name: "center_point_disable";
+            signal: "slider,center,point,hide";
+            source: "elm";
+            script {
+               set_state(PART:"center_point", "default", 0.0);
+               set_int(show, 0);
+            }
+         }
+         program { name: "slider_disable";
+            signal: "elm,state,disabled";
+            source: "elm";
+            script {
+               if (get_int(show))
+                  set_state(PART:"center_point", "disabled", 0.0);
+               set_state(PART:"disabler", "disabled", 0.0);
+               set_state(PART:"icon_clipper", "disabled", 0.0);
+               set_state(PART:"base", "disabled", 0.0);
+               set_state(PART:"handle_color", "disabled", 0.0);
+               if (!get_int(invert_on)) {
+                 set_state(PART:"level", "disabled", 0.0);
+                 set_state(PART:"level2", "default", 0.0);
+               } else {
+                 set_state(PART:"level", "inverted", 0.0);
+                 set_state(PART:"level2", "disabled", 0.0);
+               }
+               set_int(disabled, 1);
+            }
+         }
+         program { name: "slider_enable";
+            signal: "elm,state,enabled";
+            source: "elm";
+            script {
+               if (get_int(show))
+                  set_state(PART:"center_point", "visible", 0.0);
+               set_state(PART:"disabler", "default", 0.0);
+               set_state(PART:"icon_clipper", "default", 0.0);
+               set_state(PART:"base", "default", 0.0);
+               set_state(PART:"handle_color", "default", 0.0);
+               if (!get_int(invert_on)) {
+                 set_state(PART:"level", "default", 0.0);
+                 set_state(PART:"level2", "default", 0.0);
+               } else {
+                 set_state(PART:"level", "inverted", 0.0);
+                 set_state(PART:"level2", "inverted", 0.0);
+               }
+               set_int(disabled, 0);
+            }
+         }
+      }
+   }
+
+group { name: "elm/slider/horizontal/center_point";
+      inherit: "elm/slider/horizontal/default";
+      data.item: "vector_ux" "center_point";
+         parts {
+            part { name: "level";
+               type: RECT;
+               clip_to: "level_clipper";
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  rel1 {
+                     to: "base";
+                     relative: 0.0 0.0;
+                  }
+                  rel2 {
+                     to_x: "elm.dragable.slider";
+                     to_y: "base";
+                     relative: 0.5 1.0;
+                  }
+                  visible: 1;
+                  color: 61 184 204 255;
+               }
+               description { state: "pressed" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+               }
+               description { state: "inverted" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+                  color: 61 184 204 77;
+               }
+            }
+            part { name: "level2";
+               type: RECT;
+               clip_to: "level2_clipper";
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  rel1 {
+                     to_x: "elm.dragable.slider";
+                     to_y: "base";
+                     relative: 0.5 0.0;
+                  }
+                  rel2 {
+                     to: "base";
+                     relative: 1.0 1.0;
+                  }
+                  color: 61 184 204 255;
+                  visible: 1;
+               }
+               description { state: "inverted" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+               }
+               description { state: "pressed" 0.0;
+                  inherit: "inverted" 0.0;
+                  visible: 1;
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "inverted" 0.0;
+                  visible: 1;
+                  color: 61 184 204 77;
+               }
+            }
+            part { name: "level_clipper";
+               type: RECT;
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  rel1 {
+                     to_x: "center_point";
+                     to_y: "base";
+                     relative: 0.5 0.0;
+                  }
+                  rel2 {
+                     to_x: "bar_image_right_padding";
+                     to_y: "base";
+                     relative: 0.0 1.0;
+                  }
+               }
+            }
+            part { name: "level2_clipper";
+               type: RECT;
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  rel1 {
+                     to_x: "bar_image_left_padding";
+                     to_y: "base";
+                     relative: 1.0 0.0;
+                  }
+                  rel2 {
+                     to_x: "center_point";
+                     to_y: "base";
+                     relative: 0.5 1.0;
+                  }
+               }
+            }
+            part { name:"center_point";
+               type: RECT;
+               scale: 1;
+               description { state: "default" 0.0;
+                  min: SLIDER_CENTER_POINT_SIZE_INC;
+                  rel1 {
+                     to: "base";
+                     relative: 0.5 0.5;
+                  }
+                  rel2 {
+                     to: "base";
+                     relative: 0.5 0.5;
+                  }
+                  fixed: 1 1;
+                  visible: 1;
+                  color: 61 184 204 255;
+               }
+               description { state: "visible" 0.0;
+                  inherit: "default";
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+                  color: 61 184 204 77;
+               }
+            }
+         }
+         programs {
+            program { name: "center_point_calc";
+               signal: "drag";
+               source: "elm.dragable.slider";
+               script {
+                  drag_state();
+               }
+            }
+            program { name: "center_point_calc1";
+               signal: "drag,start";
+               source: "elm.dragable.slider";
+               script {
+                  drag_state();
+               }
+            }
+            program { name: "center_point_calc2";
+               signal: "drag,set";
+               source: "elm.dragable.slider";
+               script {
+                  drag_state();
+               }
+            }
+            program { name: "center_point_calc3";
+               signal: "mouse,up,*";
+               source: "elm.swallow.bar";
+               script {
+                  drag_state();
+               }
+            }
+            program { name: "center_point_calc4";
+               signal: "mouse,move";
+               source: "elm.swallow.bar";
+               script {
+                  drag_state();
+               }
+            }
+            program { name: "slider_disable";
+               signal: "elm,state,disabled";
+               source: "elm";
+               script {
+                  set_state(PART:"center_point", "disabled", 0.0);
+                  set_state(PART:"disabler", "disabled", 0.0);
+                  set_state(PART:"icon_clipper", "disabled", 0.0);
+                  set_state(PART:"base", "disabled", 0.0);
+                  set_state(PART:"handle_color", "disabled", 0.0);
+                  if (!get_int(invert_on)) {
+                    set_state(PART:"level", "disabled", 0.0);
+                    set_state(PART:"level2", "default", 0.0);
+                  } else {
+                    set_state(PART:"level", "inverted", 0.0);
+                    set_state(PART:"level2", "disabled", 0.0);
+                  }
+                  set_int(disabled, 1);
+               }
+            }
+            program { name: "slider_enable";
+               signal: "elm,state,enabled";
+               source: "elm";
+               script {
+                  set_state(PART:"center_point", "visible", 0.0);
+                  set_state(PART:"disabler", "default", 0.0);
+                  set_state(PART:"icon_clipper", "default", 0.0);
+                  set_state(PART:"base", "default", 0.0);
+                  set_state(PART:"handle_color", "default", 0.0);
+                  if (!get_int(invert_on)) {
+                    set_state(PART:"level", "default", 0.0);
+                    set_state(PART:"level2", "default", 0.0);
+                  } else {
+                    set_state(PART:"level", "inverted", 0.0);
+                    set_state(PART:"level2", "inverted", 0.0);
+                  }
+                  set_int(disabled, 0);
+               }
+            }
+         }
+   }
+
+group { name: "elm/slider/horizontal/warning";
+      data.item: "vector_ux" "default";
+      script {
+         public invert_on = 0;
+         public warning = 0;
+         public disabled = 0;
+         public popup_show = 1;
+         public show = 0;
+         public warning_area = 0;
+         public warning_area_set = 0;
+
+         public set_popup_show() {
+            set_int(popup_show, 1);
+         }
+         public set_popup_hide() {
+            set_int(popup_show, 0);
+         }
+         public set_invert_on() {
+            if (!get_int(disabled)) {
+              set_state(PART:"level", "inverted", 0.0);
+              set_state(PART:"level2", "inverted", 0.0);
+            }
+            else {
+              set_state(PART:"level", "inverted", 0.0);
+              set_state(PART:"level2", "disabled", 0.0);
+            }
+            if (!get_int(warning)){
+              set_state(PART:"level_warning_clip", "inverted", 0.0);
+            }
+            else {
+              set_state(PART:"level_warning_clip", "inverted_warning", 0.0);
+            }
+            set_state(PART:"center_point", "inverted", 0.0);
+            set_state(PART:"level_rest_clip", "inverted", 0.0);
+            set_int(invert_on, 1);
+         }
+         public set_invert_off() {
+            if (!get_int(disabled)) {
+              set_state(PART:"level", "default", 0.0);
+              set_state(PART:"level2", "default", 0.0);
+            }
+            else {
+              set_state(PART:"level", "disabled", 0.0);
+              set_state(PART:"level2", "default", 0.0);
+            }
+            if (!get_int(warning)){
+              set_state(PART:"level_warning_clip", "default", 0.0);
+            }
+            else {
+              set_state(PART:"level_warning_clip", "warning", 0.0);
+            }
+            set_state(PART:"center_point", "default", 0.0);
+            set_state(PART:"level_rest_clip", "default", 0.0);
+            set_int(invert_on, 0);
+         }
+         public thumb_down() {
+            if (!get_int(warning))
+              set_state(PART:"handle_color", "pressed", 0.0);
+            else
+              set_state(PART:"handle_color", "pressed_warning", 0.0);
+            if (get_int(popup_show))
+               emit("popup,show", "elm");
+         }
+         public thumb_up() {
+            if (!get_int(warning))
+              set_state(PART:"handle_color", "default", 0.0);
+            else
+              set_state(PART:"handle_color", "warning", 0.0);
+            if (get_int(popup_show))
+               emit("popup,hide", "elm");
+         }
+         public drag_state_warning() {
+            new Float:dx, Float:dy;
+            get_drag(PART:"elm.dragable.slider", dx, dy);
+            if (!get_int(invert_on)) {
+               if (get_int(warning_area_set)) {
+                  if (dx > get_float(warning_area)) {
+                     if (!get_int(disabled)) {
+                        set_state(PART:"handle_color", "warning", 0.0);
+                        if (get_int(popup_show))
+                           emit("popup,warning", "popup,emit");
+                     }
+                     else {
+                        set_state(PART:"handle_color", "disabled_warning", 0.0);
+                     }
+                     set_state(PART:"level_warning_clip", "warning", 0.0);
+                     set_int(warning, 1);
+                  }
+                  else {
+                     if (!get_int(disabled)) {
+                        set_state(PART:"handle_color", "default", 0.0);
+                        if (get_int(popup_show))
+                           emit("popup,default", "popup,emit");
+                     }
+                     else {
+                        set_state(PART:"handle_color", "disabled", 0.0);
+                     }
+                     set_state(PART:"level_warning_clip", "default", 0.0);
+                     set_int(warning, 0);
+                  }
+               }
+               else {
+                  if (dx > SLIDER_WARNING_LEVEL) {
+                     if (!get_int(disabled)) {
+                        set_state(PART:"handle_color", "warning", 0.0);
+                        if (get_int(popup_show))
+                           emit("popup,warning", "popup,emit");
+                     }
+                     else {
+                        set_state(PART:"handle_color", "disabled_warning", 0.0);
+                     }
+                     set_state(PART:"level_warning_clip", "warning", 0.0);
+                     set_int(warning, 1);
+                  }
+                  else {
+                     if (!get_int(disabled)) {
+                        set_state(PART:"handle_color", "default", 0.0);
+                        if (get_int(popup_show))
+                           emit("popup,default", "popup,emit");
+                     }
+                     else {
+                        set_state(PART:"handle_color", "disabled", 0.0);
+                     }
+                     set_state(PART:"level_warning_clip", "default", 0.0);
+                     set_int(warning, 0);
+                  }
+               }
+            }
+            else {
+               if (get_int(warning_area_set)) {
+                  if (dx < (1.0 - get_float(warning_area))) {
+                     if (!get_int(disabled)) {
+                        set_state(PART:"handle_color", "warning", 0.0);
+                        if (get_int(popup_show))
+                           emit("popup,warning", "popup,emit");
+                     }
+                     else {
+                        set_state(PART:"handle_color", "disabled_warning", 0.0);
+                     }
+                     set_state(PART:"level_warning_clip", "inverted_warning", 0.0);
+                     set_int(warning, 1);
+                  }
+                  else {
+                     if (!get_int(disabled)) {
+                        set_state(PART:"handle_color", "default", 0.0);
+                        if (get_int(popup_show))
+                           emit("popup,default", "popup,emit");
+                     }
+                     else {
+                        set_state(PART:"handle_color", "disabled", 0.0);
+                     }
+                     set_state(PART:"level_warning_clip", "inverted", 0.0);
+                     set_int(warning, 0);
+                  }
+               }
+               else {
+                  if (dx < (1.0 - SLIDER_WARNING_LEVEL)) {
+                     if (!get_int(disabled)) {
+                        set_state(PART:"handle_color", "warning", 0.0);
+                        if (get_int(popup_show))
+                           emit("popup,warning", "popup,emit");
+                     }
+                     else {
+                        set_state(PART:"handle_color", "disabled_warning", 0.0);
+                     }
+                     set_state(PART:"level_warning_clip", "inverted_warning", 0.0);
+                     set_int(warning, 1);
+                  }
+                  else {
+                     if (!get_int(disabled)) {
+                        set_state(PART:"handle_color", "default", 0.0);
+                        if (get_int(popup_show))
+                           emit("popup,default", "popup,emit");
+                     }
+                     else {
+                        set_state(PART:"handle_color", "disabled", 0.0);
+                     }
+                     set_state(PART:"level_warning_clip", "inverted", 0.0);
+                     set_int(warning, 0);
+                  }
+               }
+            }
+         }
+         public message(Msg_Type:type, id, ...) {
+            if (type == MSG_FLOAT_SET) {
+               new Float:ratio;
+               ratio = getfarg(2);
+               if (id == 0) {
+                  set_float(warning_area, ratio);
+                  set_int(warning_area_set, 1);
+                  custom_state(PART:"center_point", "default", 0.0);
+                  if (!get_int(invert_on)) {
+                     set_state_val(PART:"center_point", STATE_ALIGNMENT, ratio, 0.5);
+                  }
+                  else {
+                     set_state_val(PART:"center_point", STATE_ALIGNMENT, 1 - ratio, 0.5);
+                  }
+                  set_state(PART:"center_point", "custom", 0.0);
+                  drag_state_warning();
+               }
+            }
+         }
+      }
+         parts {
+            part { name: "access";
+               type: RECT;
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  color: 0 0 0 0;
+               }
+            }
+            part {
+               name: "bg";
+               type: SPACER;
+               scale: 1;
+               description {
+                  state: "default" 0.0;
+                  min: 0 SLIDER_SWALLOWBAR_HEIGHT_INC;
+               }
+            }
+            part {
+               name: "bar_image_left_padding";
+               type: SPACER;
+               scale: 1;
+               description {
+                  state: "default" 0.0;
+                  min: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
+                  fixed: 1 0;
+                  rel1.to: "bg";
+                  rel2 {
+                     relative: 0.0 1.0;
+                     to: "bg";
+                  }
+                  align: 0.0 0.5;
+               }
+            }
+            part { name: "elm.swallow.icon";
+               type: SWALLOW;
+               clip_to: "icon_clipper";
+               scale: 1;
+               description { state: "default" 0.0;
+                  visible: 0;
+                  align: 0.0 0.5;
+                  max: SLIDER_SWALLOWBAR_HEIGHT_INC SLIDER_SWALLOWBAR_HEIGHT_INC;
+                  rel1 {
+                     relative: 1.0 0.0;
+                     to_x: "bar_image_left_padding";
+                     to_y: "bg";
+                  }
+                  rel2 {
+                     relative: 1.0 1.0;
+                     to_x: "bar_image_left_padding";
+                     to_y: "bg";
+                  }
+               }
+               description { state: "visible" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+               }
+            }
+            part {
+               name: "bar_icon_right_padding_1";
+               type: SPACER;
+               scale: 1;
+               description {
+                  state: "default" 0.0;
+                  align: 0.0 0.5;
+                  min: 0 0;
+                  rel1 {
+                     relative: 1.0  0.0;
+                     to: "elm.swallow.icon";
+                  }
+                  rel2 {
+                     relative: 1.0  1.0;
+                     to: "elm.swallow.icon";
+                  }
+                  fixed: 1 0;
+               }
+               description { state: "visible";
+                  inherit: "default" 0.0;
+                  min: SLIDER_ICON_PADDING_SIZE_INC;
+               }
+            }
+            part {
+               name: "bar_icon_right_padding_2";
+               type: SPACER;
+               scale: 1;
+               description {
+                  state: "default" 0.0;
+                  align: 0.0 0.5;
+                  min: 0 0;
+                  rel1 {
+                     relative: 1.0  0.0;
+                     to: "bar_icon_right_padding_1";
+                  }
+                  rel2 {
+                     relative: 1.0  1.0;
+                     to: "bar_icon_right_padding_1";
+                  }
+                  fixed: 1 0;
+               }
+               description { state: "visible";
+                  inherit: "default" 0.0;
+                  min: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
+               }
+            }
+            part { name: "base";
+               type: "RECT";
+               mouse_events: 0;
+               scale: 1;
+               description { state: "default" 0.0;
+                  min: 0 SLIDER_BASE_HEIGHT_INC;
+                  rel1 {
+                     to_x: "bar_icon_right_padding_2";
+                     to_y: "bg";
+                     relative: 1.0 0.5;
+                  }
+                  rel2 {
+                     to_x: "bar_image_right_padding";
+                     to_y: "bg";
+                     relative: 0.0 0.5;
+                  }
+                  fixed: 0 1;
+                  color: 145 145 145 179;
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "default" 0.0;
+                  color: 145 145 145 77;
+               }
+            }
+            part { name: "drag_base";
+               type: "SPACER";
+               scale: 1;
+               description { state: "default" 0.0;
+                  min: 0 SLIDER_SWALLOWBAR_HEIGHT_INC;
+                  rel1 {
+                     to_x: "bar_image_left_padding";
+                     to_y: "bg";
+                     relative: 1.0 0.0;
+                  }
+                  rel2 {
+                      to_x: "bar_image_right_padding";
+                      to_y: "bg";
+                      relative: 0.0 1.0;
+                  }
+                  fixed: 1 1;
+               }
+               description { state: "visible" 0.0;
+                  inherit: "default" 0.0;
+                  rel1 {
+                     to_x: "bar_icon_right_padding_2";
+                     to_y: "bg";
+                     relative: 1.0 0.0;
+                  }
+                  rel2 {
+                      to_x: "bar_image_right_padding";
+                      to_y: "bg";
+                      relative: 0.0 1.0;
+                  }
+               }
+            }
+            part { name: "level";
+               type: RECT;
+               mouse_events: 0;
+               scale: 1;
+               description { state: "default" 0.0;
+                  rel1 {
+                     to_x: "bar_icon_right_padding_2";
+                     relative: 1.0 0.0;
+                  }
+                  rel2 {
+                     to_x: "elm.dragable.slider";
+                     relative: 0.5 1.0;
+                  }
+                  fixed: 1 1;
+                  min: 0 SLIDER_BASE_HEIGHT_INC;
+                  max: -1 SLIDER_BASE_HEIGHT_INC;
+                  color: 255 25 25 255;
+               }
+               description { state: "inverted" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 0;
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "default" 0.0;
+                  color: 216 162 162 255;
+               }
+            }
+            part { name: "level2";
+               type: RECT;
+               mouse_events: 0;
+               scale: 1;
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  visible: 0;
+                  rel1.to: "level";
+                  rel1.relative: 1 0;
+                  rel2.to: "base";
+                  color: 255 25 25 255;
+               }
+               description { state: "inverted" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "inverted" 0.0;
+                  color: 216 162 162 255;
+               }
+            }
+            part { name: "level_rest_clip";
+               type: RECT;
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  color: 201 132 132 255;
+                  rel1.to_x: "center_point";
+                  rel1.to_y: "base";
+                  rel1.relative: 0.5 0.0;
+                  rel2.to: "base";
+               }
+               description { state: "inverted" 0.0;
+                 inherit: "default" 0.0;
+                 rel1.to: "base";
+                 rel1.relative: 0.0 0.0;
+                 rel2.to_x: "center_point";
+                 rel2.to_y: "base";
+                 rel2.relative: 0.5 1.0;
+               }
+            }
+            part { name: "level_warning_clip";
+               type: RECT;
+               scale: 1;
+               clip_to: "disabled_clipper";
+               description { state: "default" 0.0;
+                  rel1.to: "level";
+                  rel2.to: "level";
+               }
+               description { state: "warning" 0.0;
+                  inherit: "default";
+                  rel1.to: "level";
+                  rel2.to_x: "level_rest_clip";
+                  rel2.to_y: "level";
+                  rel2.relative: 0.0 1.0;
+               }
+               description { state: "inverted" 0.0;
+                  inherit: "default";
+                  rel1.to: "level2";
+                  rel2.to: "level2";
+               }
+               description { state: "inverted_warning" 0.0;
+                 inherit: "inverted" 0.0;
+                 rel1.to_x: "level_rest_clip";
+                 rel1.to_y: "level2";
+                 rel1.relative: 1.0 0.0;
+                 rel2.to: "level2";
+               }
+            }
+            part { name: "disabled_clipper";
+              type: RECT;
+              scale: 1;
+               description { state: "default" 0.0;
+                  rel1.to: "level_warning_clip";
+                  rel2.to: "level_warning_clip";
+                  color: 61 184 204 255;
+               }
+               description { state: "disabled";
+                  inherit: "default" 0.0;
+                  color: 163 198 204 255;
+               }
+            }
+            part {
+               name: "bar_image_right_padding";
+               type: SPACER;
+               scale: 1;
+               description {
+                  state: "default" 0.0;
+                  min: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
+                  fixed: 1 0;
+                  rel1 {
+                     relative: 1.0 0.0;
+                     to: "bg";
+                  }
+                  rel2 {
+                     relative: 1.0 1.0;
+                     to: "bg";
+                  }
+                  align: 1.0 0.5;
+               }
+            }
+            part { name: "icon_clipper";
+               scale: 1;
+               type: RECT;
+               description { state: "default" 0.0;
+                  color: 61 184 204 255;
+               }
+               description { state: "disabled" 0.0;
+                  color: 61 184 204 76;
+               }
+            }
+            part { name: "elm.swallow.bar";
+               type: SWALLOW;
+               scale: 1;
+               description { state: "default" 0.0;
+                  min: 0  SLIDER_SWALLOWBAR_HEIGHT_INC;
+                  max: -1 SLIDER_SWALLOWBAR_HEIGHT_INC;
+                  fixed: 0 1;
+                  rel1 {
+                     to: "bar_icon_right_padding_2";
+                     relative: 1.0 0.0;
+                  }
+                  rel2 {
+                     to: "bar_image_right_padding";
+                     relative: 0.0 1.0;
+                  }
+               }
+            }
+            part { name:"center_point";
+               type: RECT;
+               scale: 1;
+               description { state: "default" 0.0;
+                  min: 0 0;
+                  max: 0 0;
+                  align: SLIDER_WARNING_LEVEL 0.5;
+                  rel1.to: "base";
+                  rel2.to: "base";
+                  fixed: 0 1;
+                  color: 0 0 0 0;
+               }
+               description { state: "inverted" 0.0;
+                  inherit: "default" 0.0;
+                  align: (1.0 - SLIDER_WARNING_LEVEL) 0.5;
+               }
+            }
+            part { name: "elm.swallow.tizen_vg_shape1";
+               type: SWALLOW;
+               mouse_events: 0;
+               scale: 1;
+               clip_to: "base";
+               description { state: "default" 0.0;
+                  rel1.to: "base";
+                  rel2.to: "base";
+               }
+            }
+            part { name: "elm.swallow.tizen_vg_shape4";
+               type: SWALLOW;
+               mouse_events: 0;
+               scale: 1;
+               clip_to: "level_rest_clip";
+               description { state: "default" 0.0;
+                  rel1.to: "level_rest_clip";
+                  rel2.to: "level_rest_clip";
+               }
+            }
+            part { name: "elm.swallow.tizen_vg_shape2";
+               type: SWALLOW;
+               mouse_events: 0;
+               scale: 1;
+               clip_to: "level";
+               description { state: "default" 0.0;
+                  rel1.to: "level";
+                  rel2.to: "level";
+               }
+            }
+            part { name: "elm.swallow.tizen_vg_shape3";
+               type: SWALLOW;
+               mouse_events: 0;
+               scale: 1;
+               clip_to: "level2";
+               description { state: "default" 0.0;
+                  rel1.to: "level2";
+                  rel2.to: "level2";
+               }
+            }
+            part { name: "elm.swallow.tizen_vg_shape5";
+               type: SWALLOW;
+               mouse_events: 0;
+               scale: 1;
+               clip_to: "level_warning_clip";
+               description { state: "default" 0.0;
+                  rel1.to: "level_warning_clip";
+                  rel2.to: "level_warning_clip";
+               }
+            }
+            part { name: "elm.dragable.slider";
+               type: GROUP;
+               source: "elm/slider/horizontal/indicator/default";
+               mouse_events: 1;
+               scale: 1;
+               clip_to : "handle_color";
+               dragable {
+                  x: 1 1 0;
+                  y: 0 0 0;
+                  confine: "drag_base";
+               }
+               description { state: "default" 0.0;
+                  min: SLIDER_INDICATOR_SIZE_INC SLIDER_SWALLOWBAR_HEIGHT_INC;
+                  fixed: 1 1;
+                  align: 0.5 0.5;
+                  rel1.to: "drag_base";
+                  rel1.relative: 0.5 0.5;
+                  rel2.to: "drag_base";
+                  rel2.relative: 0.5 0.5;
+                  color: 0 0 0 0;
+               }
+            }
+            part { name: "elm.track.slider";
+               type: SWALLOW;
+               mouse_events: 0;
+               scale: 1;
+               description { state: "default" 0.0;
+                  min: 0 SLIDER_POPUP_HEIGHT_INC;
+                  max: -1 SLIDER_POPUP_HEIGHT_INC;
+                  fixed: 0 1;
+                  rel1.to: "elm.dragable.slider";
+                  rel2.to: "elm.dragable.slider";
+               }
+            }
+            part { name:"handle_color";
+               type: RECT;
+               scale: 1;
+               description { state: "default" 0.0;
+                  rel1.offset: 0 -1000;
+                  rel2.offset: -1 1000;
+                  color: 61 184 204 255;
+               }
+               description { state: "warning" 0.0;
+                  inherit: "default" 0.0;
+                  color: 255 25 25 255;
+               }
+               description { state: "pressed" 0.0;
+                  inherit: "default";
+               }
+               description { state: "pressed_warning" 0.0;
+                  inherit: "warning";
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "default" 0.0;
+                  color: 163 198 204 255;
+               }
+               description { state: "disabled_warning" 0.0;
+                  inherit: "default" 0.0;
+                  color: 216 162 162 255;
+               }
+            }
+            part { name: "disabler";
+               type: RECT;
+               mouse_events: 1;
+               repeat_events: 0;
+               scale: 1;
+               description { state: "default" 0.0;
+                  visible: 0;
+                  color: 0 0 0 0;
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+               }
+            }
+         }
+      programs {
+         program { name: "load";
+           signal: "load";
+           source: "";
+           script {
+               set_int(popup_show, 1);
+           }
+         }
+         program { name: "invert_on";
+            signal: "elm,state,inverted,on";
+            source: "elm";
+            script {
+               set_invert_on();
+            }
+         }
+         program { name: "invert_off";
+            signal: "elm,state,inverted,off";
+            source: "elm";
+            script {
+               set_invert_off();
+            }
+         }
+         program { name: "val_show";
+            signal: "mouse,down,*";
+            source: "elm.dragable.slider";
+            script {
+               thumb_down();
+            }
+         }
+         program { name: "val_hide";
+            signal: "mouse,up,*";
+            source: "elm.dragable.slider";
+            script {
+               thumb_up();
+            }
+         }
+         /* TIZEN ONLY(20150819) : This program is not necessary.
+         program { name: "popup_show";
+            signal: "elm,state,val,show";
+            source: "elm";
+            script {
+               set_popup_show();
+            }
+         }
+         program { name: "popup_hide";
+            signal: "elm,state,val,hide";
+            source: "elm";
+            script {
+               set_popup_hide();
+            }
+         }*/
+         program { name: "indicator_show";
+            signal: "elm,state,indicator,show";
+            source: "elm";
+            action:  SIGNAL_EMIT "elm,popup,show" "elm";
+         }
+         program { name: "indicator_hide";
+            signal: "elm,state,indicator,hide";
+            source: "elm";
+            action:  SIGNAL_EMIT "elm,popup,hide" "elm";
+         }
+         program { name: "icon_show";
+            signal: "elm,state,icon,visible";
+            source: "elm";
+            action:  STATE_SET "visible" 0.0;
+            target: "elm.swallow.icon";
+            target: "bar_icon_right_padding_1";
+            target: "bar_icon_right_padding_2";
+            target: "drag_base";
+         }
+         program { name: "center_point_enable";
+            signal: "slider,center,point,show";
+            source: "elm";
+            script {
+               set_state(PART:"center_point", "visible", 0.0);
+               set_int(show, 1);
+            }
+         }
+         program { name: "center_point_disable";
+            signal: "slider,center,point,hide";
+            source: "elm";
+            script {
+               set_state(PART:"center_point", "default", 0.0);
+               set_int(show, 0);
+            }
+         }
+         program { name: "slider_disable";
+            signal: "elm,state,disabled";
+            source: "elm";
+            script {
+               set_state(PART:"disabler", "disabled", 0.0);
+               set_state(PART:"icon_clipper", "disabled", 0.0);
+               set_state(PART:"base", "disabled", 0.0);
+               set_state(PART:"disabled_clipper", "disabled", 0.0);
+               if (!get_int(warning))
+                 set_state(PART:"handle_color", "disabled", 0.0);
+               else
+                 set_state(PART:"handle_color", "disabled_warning", 0.0);
+               if (!get_int(invert_on)) {
+                 set_state(PART:"level", "disabled", 0.0);
+                 set_state(PART:"level2", "default", 0.0);
+               } else {
+                 set_state(PART:"level", "inverted", 0.0);
+                 set_state(PART:"level2", "disabled", 0.0);
+               }
+               set_int(disabled, 1);
+            }
+         }
+         program { name: "slider_enable";
+            signal: "elm,state,enabled";
+            source: "elm";
+            script {
+               set_state(PART:"disabler", "default", 0.0);
+               set_state(PART:"icon_clipper", "default", 0.0);
+               set_state(PART:"base", "default", 0.0);
+               set_state(PART:"disabled_clipper", "default", 0.0);
+               if (!get_int(warning))
+                 set_state(PART:"handle_color", "default", 0.0);
+               else
+                 set_state(PART:"handle_color", "warning", 0.0);
+               if (!get_int(invert_on)) {
+                 set_state(PART:"level", "default", 0.0);
+                 set_state(PART:"level2", "default", 0.0);
+               } else {
+                 set_state(PART:"level", "inverted", 0.0);
+                 set_state(PART:"level2", "inverted", 0.0);
+               }
+               set_int(disabled, 0);
+            }
+         }
+         program { name: "center_point_calc";
+            signal: "drag";
+            source: "elm.dragable.slider";
+            script {
+               drag_state_warning();
+            }
+         }
+         program { name: "center_point_calc1";
+            signal: "drag,start";
+            source: "elm.dragable.slider";
+            script {
+               drag_state_warning();
+            }
+         }
+         program { name: "center_point_calc2";
+            signal: "drag,set";
+            source: "elm.dragable.slider";
+            script {
+               drag_state_warning();
+            }
+         }
+         program { name: "center_point_calc3";
+            signal: "mouse,up,*";
+            source: "elm.swallow.bar";
+            script {
+               drag_state_warning();
+            }
+         }
+         program { name: "center_point_calc4";
+            signal: "mouse,move";
+            source: "elm.swallow.bar";
+            script {
+               drag_state_warning();
+            }
+         }
+      }
+   }
+
+group { name: "elm/slider/vertical/default";
+  data.item: "vector_ux" "default";
+  script {
+     public invert_on = 0;
+     public disabled = 0;
+     public show = 0;
+     public popup_show = 1;
+     public set_popup_show() {
+        set_int(popup_show, 1);
+     }
+     public set_popup_hide() {
+        set_int(popup_show, 0);
+     }
+     public set_invert_on() {
+        if (!get_int(disabled)) {
+          set_state(PART:"level", "inverted", 0.0);
+          set_state(PART:"level2", "inverted", 0.0);
+        }
+        else {
+          set_state(PART:"level", "disabled", 0.0);
+          set_state(PART:"level2", "inverted", 0.0);
+        }
+        set_int(invert_on, 1);
+     }
+     public set_invert_off() {
+        if (!get_int(disabled)) {
+          set_state(PART:"level", "default", 0.0);
+          set_state(PART:"level2", "default", 0.0);
+        }
+        else {
+          set_state(PART:"level", "default", 0.0);
+          set_state(PART:"level2", "disabled", 0.0);
+        }
+        set_int(invert_on, 0);
+     }
+     public thumb_down() {
+        if (!get_int(invert_on))
+          set_state(PART:"level2", "pressed", 0.0);
+        else
+          set_state(PART:"level", "pressed", 0.0);
+         set_state(PART:"handle_color", "pressed", 0.0);
+        if (get_int(popup_show))
+           emit("popup,show", "elm");
+        }
+     public thumb_up() {
+        if (!get_int(invert_on))
+          set_state(PART:"level2", "default", 0.0);
+        else
+         set_state(PART:"level", "inverted", 0.0);
+        set_state(PART:"handle_color", "default", 0.0);
+        if (get_int(popup_show))
+           emit("popup,hide", "elm");
+        }
+     public drag_state() {
+        new Float:dx, Float:dy;
+        get_drag(PART:"elm.dragable.slider", dx, dy);
+        if (dy < 0.5) {
+          if (!get_int(disabled)) {
+            set_state(PART:"level", "pressed", 0.0);
+            set_state(PART:"level2", "default", 0.0);
+          }
+          else {
+            set_state(PART:"level", "disabled", 0.0);
+            set_state(PART:"level2", "default", 0.0);
+          }
+          set_int(invert_on, 0);
+        }
+        else {
+          if (!get_int(disabled)) {
+            set_state(PART:"level", "inverted", 0.0);
+            set_state(PART:"level2", "pressed", 0.0);
+          }
+          else {
+            set_state(PART:"level", "inverted", 0.0);
+            set_state(PART:"level2", "disabled", 0.0);
+          }
+          set_int(invert_on, 1);
+        }
+     }
+  }
+  parts {
+     part { name: "access";
+        type: RECT;
+           description { state: "default" 0.0;
+           fixed: 1 1;
+           color: 0 0 0 0;
+           }
+      }
+        part {
+           name: "bg";
+           type: SPACER;
+           scale: 1;
+           description {
+              state: "default" 0.0;
+              min: SLIDER_SWALLOWBAR_WIDTH_INC 0;
+              max: SLIDER_SWALLOWBAR_WIDTH_INC -1;
+           }
+        }
+        part {
+           name: "bar_image_top_padding";
+           type: SPACER;
+           scale: 1;
+           description {
+              state: "default" 0.0;
+              min: SLIDER_TOP_PADDING_SIZE_INC;
+              max: SLIDER_TOP_PADDING_SIZE_INC;
+              fixed: 1 1;
+              rel1 {
+                 relative: 0.0  0.0;
+                 to: "bg";
+              }
+              rel2 {
+                 relative: 1.0  0.0;
+                 to: "bg";
+              }
+              align: 0.5 0.0;
+           }
+        }
+        part { name: "base";
+           type: "RECT";
+           mouse_events: 0;
+           scale: 1;
+           description { state: "default" 0.0;
+              min: SLIDER_VERTICAL_BASE_HEIGHT_INC 0;
+              max: SLIDER_VERTICAL_BASE_HEIGHT_INC -1;
+              fixed: 1 1;
+              rel1 {
+                 to: "bar_image_top_padding";
+                 relative: 0.0 1.0;
+              }
+              rel2 {
+                 to: "bar_image_bottom_padding";
+                 relative: 1.0 0.0;
+              }
+              fixed: 1 1;
+              color: 145 145 145 179;
+           }
+           description { state: "disabled" 0.0;
+              inherit: "default" 0.0;
+              color: 145 145 145 77;
+           }
+        }
+        part { name: "drag_base";
+           type: "SPACER";
+           scale: 1;
+           description { state: "default" 0.0;
+              min: SLIDER_SWALLOWBAR_HEIGHT_INC 0;
+              rel1 {
+                 to: "bar_image_top_padding";
+                 relative: 0.0 1.0;
+              }
+              rel2 {
+                 to: "bar_image_bottom_padding";
+                 relative: 1.0 0.0;
+              }
+              fixed: 1 1;
+           }
+           description { state: "visible" 0.0;
+              inherit: "default" 0.0;
+              rel1 {
+                 to: "bar_image_top_padding";
+                 relative: 0.0 1.0;
+              }
+              rel2 {
+                 to: "bar_image_bottom_padding";
+                 relative: 1.0 0.0;
+              }
+           }
+        }
+        part { name: "level";
+           type: RECT;
+           mouse_events: 0;
+           scale: 1;
+           description { state: "default" 0.0;
+              visible: 0;
+              rel1 {
+                 to_y: "elm.dragable.slider";
+                 to_x: "base";
+                 relative: 0.0 0.5;
+              }
+              rel2 {
+                 to_y: "bar_image_bottom_padding";
+                 to_x: "base";
+                 relative: 1.0 0.0;
+              }
+              fixed: 1 1;
+              min: SLIDER_BASE_HEIGHT_INC 0;
+              max: SLIDER_BASE_HEIGHT_INC -1;
+              color: 61 184 204 255;
+           }
+           description { state: "inverted" 0.0;
+              inherit: "default" 0.0;
+              visible: 1;
+           }
+           description { state: "pressed" 0.0;
+             inherit: "inverted" 0.0;
+           }
+           description { state: "disabled" 0.0;
+              inherit: "inverted" 0.0;
+              color: 61 184 204 77;
+           }
+        }
+        part { name: "level2";
+           type: RECT;
+           mouse_events: 0;
+           scale: 1;
+           description { state: "default" 0.0;
+              fixed: 1 1;
+              rel1 {
+                 to: "base";
+                 relative: 0.5 0.0;
+              }
+              rel2 {
+                 to_y: "elm.dragable.slider";
+                 to_x: "bar_image_top_padding";
+                 relative: 0.5 0.5;
+              }
+              fixed: 1 1;
+              min: SLIDER_BASE_HEIGHT_INC 0;
+              max: SLIDER_BASE_HEIGHT_INC -1;
+              color: 61 184 204 255;
+           }
+           description { state: "pressed" 0.0;
+              inherit: "default" 0.0;
+           }
+           description { state: "inverted" 0.0;
+              inherit: "default" 0.0;
+              visible: 0;
+           }
+           description { state: "disabled" 0.0;
+              inherit: "default" 0.0;
+              color: 61 184 204 77;
+           }
+        }
+        part {
+           name: "bar_image_bottom_padding";
+           type: SPACER;
+           scale: 1;
+           description {
+              state: "default" 0.0;
+              min: SLIDER_BOTTOM_PADDING_SIZE_INC;
+              max: SLIDER_BOTTOM_PADDING_SIZE_INC;
+              fixed: 1 1;
+              rel1 {
+                 relative: 0.0  1.0;
+                 to: "bg";
+              }
+              rel2 {
+                 relative: 1.0  1.0;
+                 to: "bg";
+              }
+              align: 0.5 1.0;
+           }
+        }
+        part { name: "elm.swallow.bar";
+           type: SWALLOW;
+           scale: 1;
+           description { state: "default" 0.0;
+              min: SLIDER_SWALLOWBAR_HEIGHT_INC 0;
+              max: SLIDER_SWALLOWBAR_HEIGHT_INC -1;
+              fixed: 1 0;
+              rel1 {
+                 to: "bar_image_top_padding";
+                 relative: 0.0 1.0;
+              }
+              rel2 {
+                 to: "bar_image_bottom_padding";
+                 relative: 1.0 0.0;
+              }
+           }
+        }
+        part { name:"center_point";
+           type: RECT;
+           scale: 1;
+           description { state: "default" 0.0;
+              min: SLIDER_VERTICAL_CENTER_POINT_SIZE_INC;
+              max: SLIDER_VERTICAL_CENTER_POINT_SIZE_INC;
+              visible: 0;
+              rel1.to: "base";
+              rel2.to: "base";
+              fixed: 1 0;
+              color: 61 184 204 255;
+           }
+           description { state: "visible" 0.0;
+              inherit: "default" 0.0;
+              visible: 1;
+           }
+           description { state: "disabled" 0.0;
+              inherit: "default" 0.0;
+              visible: 1;
+              color: 61 184 204 77;
+           }
+        }
+         part { name: "elm.swallow.tizen_vg_shape1";
+            type: SWALLOW;
+            mouse_events: 0;
+            scale: 1;
+            clip_to: "base";
+            description { state: "default" 0.0;
+               rel1.to: "base";
+               rel2.to: "base";
+            }
+         }
+         part { name: "elm.swallow.tizen_vg_shape2";
+            type: SWALLOW;
+            mouse_events: 0;
+            scale: 1;
+            clip_to: "level";
+            description { state: "default" 0.0;
+               rel1.to: "level";
+               rel2.to: "level";
+            }
+         }
+         part { name: "elm.swallow.tizen_vg_shape3";
+            type: SWALLOW;
+            mouse_events: 0;
+            scale: 1;
+            clip_to: "level2";
+            description { state: "default" 0.0;
+               rel1.to: "level2";
+               rel2.to: "level2";
+            }
+         }
+         part { name: "elm.swallow.tizen_vg_shape4";
+            type: SWALLOW;
+            mouse_events: 0;
+            scale: 1;
+            clip_to: "hider";
+            description { state: "default" 0.0;
+               rel1.to: "level";
+               rel2.to: "level";
+            }
+         }
+         part { name: "elm.swallow.tizen_vg_shape5";
+            type: SWALLOW;
+            mouse_events: 0;
+            scale: 1;
+            clip_to: "center_point";
+            description { state: "default" 0.0;
+               rel1.to: "center_point";
+               rel2.to: "center_point";
+            }
+         }
+        part { name: "elm.dragable.slider";
+           type: GROUP;
+           source: "elm/slider/horizontal/indicator/default";
+           mouse_events: 1;
+           scale: 1;
+           clip_to : "handle_color";
+           dragable {
+              x: 0 0 0;
+              y: 1 1 0;
+              confine: "drag_base";
+           }
+           description { state: "default" 0.0;
+              min: SLIDER_LEFT_VERTICAL_INDICATOR_SIZE_INC SLIDER_VERTICAL_INDICATOR_SIZE_INC;
+              fixed: 1 1;
+              align: 0.5 0.5;
+              rel1.to: "drag_base";
+              rel1.relative: 0.5 0.5;
+              rel2.to: "drag_base";
+              rel2.relative: 0.5 0.5;
+              color: 0 0 0 0;
+           }
+        }
+        part { name: "elm.track.slider";
+           type: SWALLOW;
+           mouse_events: 0;
+           scale: 1;
+           description { state: "default" 0.0;
+              min: 0 SLIDER_POPUP_HEIGHT_INC;
+              max: -1 SLIDER_POPUP_HEIGHT_INC;
+              fixed: 0 1;
+              rel1.to: "elm.dragable.slider";
+              rel2.to: "elm.dragable.slider";
+           }
+        }
+         part { name:"handle_color";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1.offset: 0 -1000;
+               rel2.offset: -1 1000;
+               color: 61 184 204 255;
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               color: 163 198 204 255;
+            }
+            description { state: "pressed" 0.0;
+               inherit: "default" 0.0;
+            }
+         }
+        part { name: "hider";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+               visible: 0;
+               color: 0 0 0 0;
+            }
+        }
+        part { name: "disabler";
+           type: RECT;
+           mouse_events: 1;
+           repeat_events: 0;
+           scale: 1;
+           description { state: "default" 0.0;
+              visible: 0;
+              color: 0 0 0 0;
+           }
+           description { state: "disabled" 0.0;
+              inherit: "default" 0.0;
+              visible: 1;
+           }
+        }
+     }
+     programs {
+        program { name: "load";
+          signal: "load";
+          source: "";
+          script {
+              set_int(popup_show, 1);
+          }
+        }
+        program { name: "invert_on";
+           signal: "elm,state,inverted,on";
+           source: "elm";
+           script {
+              set_invert_on();
+           }
+        }
+        program { name: "invert_off";
+           signal: "elm,state,inverted,off";
+           source: "elm";
+           script {
+              set_invert_off();
+           }
+        }
+        program { name: "val_show";
+           signal: "mouse,down,*";
+           source: "elm.dragable.slider";
+           script {
+              thumb_down();
+           }
+        }
+        program { name: "val_hide";
+           signal: "mouse,up,*";
+           source: "elm.dragable.slider";
+           script {
+              thumb_up();
+           }
+        }
+        /* TIZEN ONLY(20150819) : This program is not necessary.
+        program { name: "popup_show";
+           signal: "elm,state,val,show";
+           source: "elm";
+           script {
+              set_popup_show();
+           }
+        }
+        program { name: "popup_hide";
+           signal: "elm,state,val,hide";
+           source: "elm";
+           script {
+              set_popup_hide();
+           }
+        }*/
+         program { name: "indicator_show";
+            signal: "elm,state,indicator,show";
+            source: "elm";
+            action:  SIGNAL_EMIT "elm,popup,show" "elm";
+         }
+         program { name: "indicator_hide";
+            signal: "elm,state,indicator,hide";
+            source: "elm";
+            action:  SIGNAL_EMIT "elm,popup,hide" "elm";
+         }
+        program { name: "icon_show";
+           signal: "elm,state,icon,visible";
+           source: "elm";
+           action:  STATE_SET "visible" 0.0;
+           target: "drag_base";
+        }
+        program { name: "center_point_enable";
+           signal: "slider,center,point,show";
+           source: "elm";
+           action:  STATE_SET "visible" 0.0;
+           target: "center_point";
+        }
+        program { name: "center_point_disable";
+           signal: "slider,center,point,hide";
+           source: "elm";
+           action:  STATE_SET "default" 0.0;
+           target: "center_point";
+        }
+         program { name: "slider_disable";
+            signal: "elm,state,disabled";
+            source: "elm";
+            script {
+               if (get_int(show))
+                  set_state(PART:"center_point", "disabled", 0.0);
+               set_state(PART:"disabler", "disabled", 0.0);
+               set_state(PART:"base", "disabled", 0.0);
+               set_state(PART:"handle_color", "disabled", 0.0);
+               if (!get_int(invert_on)) {
+                 set_state(PART:"level2", "disabled", 0.0);
+                 set_state(PART:"level", "default", 0.0);
+               } else {
+                 set_state(PART:"level2", "inverted", 0.0);
+                 set_state(PART:"level", "disabled", 0.0);
+               }
+               set_int(disabled, 1);
+            }
+         }
+         program { name: "slider_enable";
+            signal: "elm,state,enabled";
+            source: "elm";
+            script {
+               if (get_int(show))
+                  set_state(PART:"center_point", "visible", 0.0);
+               set_state(PART:"disabler", "default", 0.0);
+               set_state(PART:"base", "default", 0.0);
+               set_state(PART:"handle_color", "default", 0.0);
+               if (!get_int(invert_on)) {
+                 set_state(PART:"level2", "default", 0.0);
+                 set_state(PART:"level", "default", 0.0);
+               } else {
+                 set_state(PART:"level2", "inverted", 0.0);
+                 set_state(PART:"level", "inverted", 0.0);
+               }
+               set_int(disabled, 0);
+            }
+         }
+      }
+   }
+   group { name: "elm/slider/horizontal/popup/default";
+      alias: "elm/slider/vertical/popup/default";
+      alias: "elm/slider/horizontal/popup/warning";
+      alias: "elm/slider/vertical/popup/warning";
+      script {
+         public warning = 0;
+         public show = 0;
+      }
+      parts {
+         part { name: "elm.swallow.tizen_vg_shape2";
+            type: SWALLOW;
+            mouse_events: 0;
+            scale: 1;
+            clip_to: "button0_press";
+            description { state: "default" 0.0;
+               rel1.to: "button0_press";
+               rel2.to: "button0_press";
+            }
+         }
+         part { name: "button0_press";
+            type: RECT;
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               min: SLIDER_INDICATOR_BUBBLE_SIZE_INC;
+               max: SLIDER_INDICATOR_BUBBLE_SIZE_INC;
+               visible: 0;
+               color: 61 184 204 255;
+               rel1.relative: 0.0 0.5;
+               rel2.relative: 1.0 0.5;
+            }
+            description { state: "warning" 0.0;
+               inherit: "default";
+               visible: 0;
+               color: 255 25 25 255;
+               rel1.relative: 0.0 0.5;
+               rel2.relative: 1.0 0.5;
+            }
+            description { state: "pressed" 0.0;
+               inherit: "default" 0.0;
+               min: SLIDER_INDICATOR_BUBBLE_PRESSED_SIZE_INC;
+               max: SLIDER_INDICATOR_BUBBLE_PRESSED_SIZE_INC;
+               visible: 1;
+               align: 0.5 0.72;
+            }
+            description { state: "pressed_warning" 0.0;
+               inherit: "warning" 0.0;
+               min: SLIDER_INDICATOR_BUBBLE_PRESSED_SIZE_INC;
+               max: SLIDER_INDICATOR_BUBBLE_PRESSED_SIZE_INC;
+               visible: 1;
+               align: 0.5 0.72;
+            }
+         }
+         part { name: "elm.indicator";
+            type: TEXT;
+            scale: 1;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               visible: 0;
+               min: SLIDER_INDICATOR_TEXT_SIZE_WIDTH SLIDER_INDICATOR_TEXT_SIZE_HEIGHT;
+               max: -1 SLIDER_INDICATOR_TEXT_SIZE_HEIGHT;
+               color: 249 249 249 255;
+               align: 0.5 0.0;
+               rel1.to: "button0_press";
+               rel2.to: "button0_press";
+               rel1.offset: 0 12;
+               text {
+                  min: 0 1;
+                  font: "Tizen:style=Light"; size: "36";
+                  text_class: "tizen";
+               }
+            }
+            description { state: "pressed" 0.0;
+               inherit: "default" 0.0;
+               visible: 1;
+               text {
+                  min: 0 1;
+                  font: "Tizen:style=Light"; size: "36";
+                  text_class: "tizen";
+               }
+            }
+         }
+      }
+      programs {
+         program { name: "popup,val,show";
+            signal: "elm,state,val,show";
+            source: "elm";
+            script {
+               if (!get_int(show))
+                 {
+                   set_int(show, 1);
+                   if (!get_int(warning))
+                     run_program(PROGRAM:"pressed_effect1");
+                   else
+                     run_program(PROGRAM:"pressed_warning_effect1");
+                   run_program(PROGRAM:"pressed_effect2");
+                 }
+            }
+         }
+         program { name: "popup,val,hide";
+            signal: "elm,state,val,hide";
+            source: "elm";
+            script {
+               if (get_int(show))
+                 {
+                   set_int(show, 0);
+                   if (!get_int(warning))
+                     run_program(PROGRAM:"release_effect1");
+                   else
+                     run_program(PROGRAM:"release_warning_effect1");
+                   run_program(PROGRAM:"release_effect2");
+                 }
+            }
+         }
+         program { name: "popup,show";
+            signal: "popup,show";
+            source: "elm";
+            script {
+               if (!get_int(show))
+                 {
+                   set_int(show, 1);
+                   if (!get_int(warning))
+                     run_program(PROGRAM:"pressed_effect1");
+                   else
+                     run_program(PROGRAM:"pressed_warning_effect1");
+                   run_program(PROGRAM:"pressed_effect2");
+                 }
+            }
+         }
+         program { name: "popup,hide";
+            signal: "popup,hide";
+            source: "elm";
+            script {
+               if (get_int(show))
+                 {
+                   set_int(show, 0);
+                   if (!get_int(warning))
+                     run_program(PROGRAM:"release_effect1");
+                   else
+                     run_program(PROGRAM:"release_warning_effect1");
+                   run_program(PROGRAM:"release_effect2");
+                 }
+            }
+         }
+         program { name: "popup,handle,default";
+           signal: "popup,default";
+           source: "popup,emit";
+           script {
+              if (get_int(warning))
+                {
+                  set_int(warning, 0);
+                  if (get_int(show))
+                    run_program(PROGRAM:"pressed_effect1");
+                }
+           }
+         }
+         program { name: "popup,handle,warning";
+           signal: "popup,warning";
+           source: "popup,emit";
+           script {
+              if (!get_int(warning))
+                {
+                  set_int(warning, 1);
+                  if (get_int(show))
+                    run_program(PROGRAM:"pressed_warning_effect1");
+                }
+           }
+         }
+         program { name: "popup,hide,done";
+            action: SIGNAL_EMIT "popup,hide,done" "elm";
+         }
+         program { name: "pressed_effect1";
+            action:  STATE_SET "pressed" 0.0;
+            transition: DECELERATE 0.3;
+            target: "button0_press";
+         }
+         program { name: "pressed_effect2";
+            action:  STATE_SET "default" 0.0;
+            transition: DECELERATE 0.21;
+            target: "elm.indicator";
+            after: "pressed_effect3";
+         }
+         program { name: "pressed_effect3";
+            action:  STATE_SET "pressed" 0.0;
+            transition: DECELERATE 0.09;
+            target: "elm.indicator";
+         }
+         program { name: "release_effect1";
+            action:  STATE_SET "default" 0.0;
+            transition: DECELERATE 0.3;
+            target: "button0_press";
+         }
+         program { name: "release_effect2";
+            action:  STATE_SET "default" 0.0;
+            transition: DECELERATE 0.09;
+            target: "elm.indicator";
+         }
+         program { name: "pressed_warning_effect1";
+            action:  STATE_SET "pressed_warning" 0.0;
+            transition: DECELERATE 0.3;
+            target: "button0_press";
+         }
+         program { name: "release_warning_effect1";
+            action:  STATE_SET "warning" 0.0;
+            transition: DECELERATE 0.3;
+            target: "button0_press";
+         }
+      }
+   }
+   group { name: "elm/slider/vertical/center_point";
+      inherit: "elm/slider/vertical/default";
+      data.item: "vector_ux" "center_point";
+      parts {
+         part { name: "level2";
+            type: RECT;
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               rel1 {
+                  to_y: "center_point";
+                  to_x: "base";
+                  relative: 0.0 0.5;
+               }
+               rel2 {
+                  to_y: "elm.dragable.slider";
+                  to_x: "base";
+                  relative: 1.0 0.5;
+               }
+               color: 61 184 204 255;
+            }
+            description { state: "pressed" 0.0;
+               inherit: "default" 0.0;
+            }
+            description { state: "inverted" 0.0;
+               inherit: "default" 0.0;
+               visible: 0;
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               color: 61 184 204 77;
+            }
+         }
+         part { name: "level";
+            type: RECT;
+            mouse_events: 0;
+            scale: 1;
+            description { state: "default" 0.0;
+               fixed: 1 1;
+               visible: 0;
+               rel1 {
+                  to_y: "elm.dragable.slider";
+                  to_x: "base";
+                  relative: 0.0 0.5;
+               }
+               rel2 {
+                  to_y: "center_point";
+                  to_x: "base";
+                  relative: 1.0 0.5;
+               }
+               color: 61 184 204 255;
+            }
+            description { state: "inverted" 0.0;
+               inherit: "default" 0.0;
+               visible: 1;
+            }
+            description { state: "pressed" 0.0;
+               inherit: "inverted" 0.0;
+            }
+            description { state: "disabled" 0.0;
+               inherit: "inverted" 0.0;
+               color: 61 184 204 77;
+            }
+         }
+         part { name:"center_point";
+            type: RECT;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: SLIDER_VERTICAL_CENTER_POINT_SIZE_INC;
+               max: SLIDER_VERTICAL_CENTER_POINT_SIZE_INC;
+               rel1.to: "base";
+               rel2.to: "base";
+               fixed: 1 0;
+               visible: 1;
+               color: 61 184 204 255;
+            }
+            description { state: "visible" 0.0;
+               inherit: "default";
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               visible: 1;
+               color: 61 184 204 77;
+            }
+         }
+      }
+     programs {
+        program { name: "center_point_calc";
+           signal: "drag";
+           source: "elm.dragable.slider";
+           script {
+              drag_state();
+           }
+         }
+         program { name: "center_point_calc1";
+            signal: "drag,start";
+             source: "elm.dragable.slider";
+             script {
+                drag_state();
+             }
+          }
+          program { name: "center_point_calc2";
+             signal: "drag,set";
+              source: "elm.dragable.slider";
+              script {
+                  drag_state();
+              }
+          }
+          program { name: "center_point_calc3";
+             signal: "mouse,up,*";
+             source: "elm.swallow.bar";
+              script {
+                 drag_state();
+              }
+          }
+          program { name: "center_point_calc4";
+             signal: "mouse,move";
+              source: "elm.swallow.bar";
+              script {
+                 drag_state();
+              }
+          }
+          program { name: "slider_disable";
+             signal: "elm,state,disabled";
+             source: "elm";
+             script {
+                set_state(PART:"center_point", "disabled", 0.0);
+                set_state(PART:"disabler", "disabled", 0.0);
+                set_state(PART:"base", "disabled", 0.0);
+                set_state(PART:"handle_color", "disabled", 0.0);
+                if (!get_int(invert_on)) {
+                  set_state(PART:"level2", "disabled", 0.0);
+                  set_state(PART:"level", "default", 0.0);
+                } else {
+                  set_state(PART:"level2", "inverted", 0.0);
+                  set_state(PART:"level", "disabled", 0.0);
+                }
+                set_int(disabled, 1);
+             }
+          }
+          program { name: "slider_enable";
+             signal: "elm,state,enabled";
+             source: "elm";
+             script {
+                set_state(PART:"center_point", "visible", 0.0);
+                set_state(PART:"disabler", "default", 0.0);
+                set_state(PART:"base", "default", 0.0);
+                set_state(PART:"handle_color", "default", 0.0);
+                if (!get_int(invert_on)) {
+                  set_state(PART:"level2", "default", 0.0);
+                  set_state(PART:"level", "default", 0.0);
+                } else {
+                  set_state(PART:"level2", "inverted", 0.0);
+                  set_state(PART:"level", "inverted", 0.0);
+                }
+                set_int(disabled, 0);
+             }
+          }
+       }
+   }
+
+   group { name: "elm/slider/vertical/warning";
+      data.item: "vector_ux" "default";
+      script {
+         public invert_on = 0;
+         public warning = 0;
+         public disabled = 0;
+         public popup_show = 1;
+         public show = 0;
+         public warning_area = 0;
+         public warning_area_set = 0;
+
+         public set_popup_show() {
+            set_int(popup_show, 0);
+         }
+         public set_popup_hide() {
+            set_int(popup_show, 0);
+         }
+         public set_invert_on() {
+            if (!get_int(disabled)) {
+              set_state(PART:"level", "inverted", 0.0);
+              set_state(PART:"level2", "inverted", 0.0);
+            }
+            else {
+              set_state(PART:"level", "inverted", 0.0);
+              set_state(PART:"level2", "disabled", 0.0);
+            }
+            if (!get_int(warning)){
+              set_state(PART:"level_warning_clip", "inverted", 0.0);
+            }
+            else {
+               set_state(PART:"level_warning_clip", "inverted_warning", 0.0);
+            }
+            set_state(PART:"center_point", "inverted", 0.0);
+            set_state(PART:"level_rest_clip", "inverted", 0.0);
+            set_int(invert_on, 1);
+         }
+         public set_invert_off() {
+            if (!get_int(disabled)) {
+              set_state(PART:"level", "default", 0.0);
+              set_state(PART:"level2", "default", 0.0);
+            }
+            else {
+              set_state(PART:"level", "default", 0.0);
+              set_state(PART:"level2", "disabled", 0.0);
+            }
+            if (!get_int(warning)){
+               set_state(PART:"level_warning_clip", "default", 0.0);
+            }
+            else {
+               set_state(PART:"level_warning_clip", "warning", 0.0);
+            }
+            set_state(PART:"center_point", "default", 0.0);
+            set_state(PART:"level_rest_clip", "default", 0.0);
+            set_int(invert_on, 0);
+         }
+         public thumb_down() {
+            if (!get_int(warning))
+               set_state(PART:"handle_color", "pressed", 0.0);
+            else
+               set_state(PART:"handle_color", "pressed_warning", 0.0);
+            if (get_int(popup_show) == 1)
+               emit("popup,show", "elm");
+         }
+         public thumb_up() {
+            if (!get_int(warning))
+               set_state(PART:"handle_color", "default", 0.0);
+            else
+               set_state(PART:"handle_color", "warning", 0.0);
+            if (get_int(popup_show) == 1)
+               emit("popup,hide", "elm");
+         }
+         public drag_state_warning() {
+            new Float:dx, Float:dy;
+            get_drag(PART:"elm.dragable.slider", dx, dy);
+            if (!get_int(invert_on)) {
+               if (get_int(warning_area_set)) {
+                  if (dy > get_float(warning_area)) {
+                     if (!get_int(disabled)) {
+                        set_state(PART:"handle_color", "warning", 0.0);
+                        if (get_int(popup_show))
+                           emit("popup,warning", "popup,emit");
+                     }
+                     else {
+                        set_state(PART:"handle_color", "disabled_warning", 0.0);
+                     }
+                     set_state(PART:"level_warning_clip", "warning", 0.0);
+                     set_int(warning, 1);
+                  }
+                  else {
+                     if (!get_int(disabled)) {
+                        set_state(PART:"handle_color", "default", 0.0);
+                        if (get_int(popup_show))
+                           emit("popup,default", "popup,emit");
+                     }
+                     else {
+                        set_state(PART:"handle_color", "disabled", 0.0);
+                     }
+                     set_state(PART:"level_warning_clip", "default", 0.0);
+                     set_int(warning, 0);
+                  }
+               }
+               else {
+                  if (dy > SLIDER_WARNING_LEVEL) {
+                     if (!get_int(disabled)) {
+                        set_state(PART:"handle_color", "warning", 0.0);
+                        if (get_int(popup_show))
+                           emit("popup,warning", "popup,emit");
+                     }
+                     else {
+                        set_state(PART:"handle_color", "disabled_warning", 0.0);
+                     }
+                     set_state(PART:"level_warning_clip", "warning", 0.0);
+                     set_int(warning, 1);
+                  }
+                  else {
+                     if (!get_int(disabled)) {
+                        set_state(PART:"handle_color", "default", 0.0);
+                        if (get_int(popup_show))
+                           emit("popup,default", "popup,emit");
+                     }
+                     else {
+                        set_state(PART:"handle_color", "disabled", 0.0);
+                     }
+                     set_state(PART:"level_warning_clip", "default", 0.0);
+                     set_int(warning, 0);
+                  }
+               }
+            }
+            else {
+               if (get_int(warning_area_set)) {
+                  if (dy < (1.0 - get_float(warning_area))) {
+                     if (!get_int(disabled)) {
+                        set_state(PART:"handle_color", "warning", 0.0);
+                        if (get_int(popup_show))
+                           emit("popup,warning", "popup,emit");
+                     }
+                     else {
+                        set_state(PART:"handle_color", "disabled_warning", 0.0);
+                     }
+                     set_state(PART:"level_warning_clip", "inverted_warning", 0.0);
+                     set_int(warning, 1);
+                  }
+                  else {
+                     if (!get_int(disabled)) {
+                        set_state(PART:"handle_color", "default", 0.0);
+                        if (get_int(popup_show))
+                           emit("popup,default", "popup,emit");
+                     }
+                     else {
+                        set_state(PART:"handle_color", "disabled", 0.0);
+                     }
+                     set_state(PART:"level_warning_clip", "inverted", 0.0);
+                     set_int(warning, 0);
+                  }
+               }
+               else {
+                  if (dy < (1.0 - SLIDER_WARNING_LEVEL)) {
+                     if (!get_int(disabled)) {
+                        set_state(PART:"handle_color", "warning", 0.0);
+                        if (get_int(popup_show))
+                           emit("popup,warning", "popup,emit");
+                     }
+                     else {
+                        set_state(PART:"handle_color", "disabled_warning", 0.0);
+                     }
+                     set_state(PART:"level_warning_clip", "inverted_warning", 0.0);
+                     set_int(warning, 1);
+                  }
+                  else {
+                     if (!get_int(disabled)) {
+                        set_state(PART:"handle_color", "default", 0.0);
+                        if (get_int(popup_show))
+                           emit("popup,default", "popup,emit");
+                     }
+                     else {
+                        set_state(PART:"handle_color", "disabled", 0.0);
+                     }
+                     set_state(PART:"level_warning_clip", "inverted", 0.0);
+                     set_int(warning, 0);
+                  }
+               }
+            }
+         }
+         public message(Msg_Type:type, id, ...) {
+            if (type == MSG_FLOAT_SET) {
+               new Float:ratio;
+               ratio = getfarg(2);
+               if (id == 0) {
+                  set_float(warning_area, ratio);
+                  set_int(warning_area_set, 1);
+                  custom_state(PART:"center_point", "default", 0.0);
+                  if (!get_int(invert_on)) {
+                     set_state_val(PART:"center_point", STATE_ALIGNMENT, 0.5, ratio);
+                  }
+                  else {
+                     set_state_val(PART:"center_point", STATE_ALIGNMENT, 0.5, 1 - ratio);
+                  }
+                  set_state(PART:"center_point", "custom", 0.0);
+                  drag_state_warning();
+               }
+            }
+         }
+      }
+      parts {
+         part { name: "access";
+            type: RECT;
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  color: 0 0 0 0;
+               }
+            }
+            part {
+               name: "bg";
+               type: SPACER;
+               scale: 1;
+               description {
+                  state: "default" 0.0;
+                  min: SLIDER_SWALLOWBAR_WIDTH_INC 0;
+                  max: SLIDER_SWALLOWBAR_WIDTH_INC -1;
+               }
+            }
+            part {
+               name: "bar_image_top_padding";
+               type: SPACER;
+               scale: 1;
+               description {
+                  state: "default" 0.0;
+                  min: SLIDER_TOP_PADDING_SIZE_INC;
+                  max: SLIDER_TOP_PADDING_SIZE_INC;
+                  fixed: 1 1;
+                  rel1 {
+                     relative: 0.0 0.0;
+                     to: "bg";
+                  }
+                  rel2 {
+                     relative: 1.0  0.0;
+                     to: "bg";
+                  }
+                  align: 0.5 0.0;
+               }
+            }
+            part { name: "base";
+               type: "RECT";
+               mouse_events: 0;
+               scale: 1;
+               description { state: "default" 0.0;
+                  min: SLIDER_VERTICAL_BASE_HEIGHT_INC 0;
+                  max: SLIDER_VERTICAL_BASE_HEIGHT_INC -1;
+                  fixed: 1 1;
+                  rel1 {
+                     to: "bar_image_top_padding";
+                     relative: 0.0 1.0;
+                  }
+                  rel2 {
+                     to: "bar_image_bottom_padding";
+                     relative: 1.0 0.0;
+                  }
+                  fixed: 1 1;
+                  color: 145 145 145 179;
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "default" 0.0;
+                  color: 145 145 145 77;
+               }
+            }
+            part { name: "drag_base";
+               type: "SPACER";
+               scale: 1;
+               description { state: "default" 0.0;
+                  min: SLIDER_SWALLOWBAR_HEIGHT_INC 0;
+                  rel1 {
+                     to: "bar_image_top_padding";
+                     relative: 0.0 1.0;
+                  }
+                  rel2 {
+                     to: "bar_image_bottom_padding";
+                     relative: 1.0 0.0;
+                  }
+                  fixed: 1 1;
+               }
+               description { state: "visible" 0.0;
+                  inherit: "default" 0.0;
+                  rel1 {
+                     to: "bar_image_top_padding";
+                     relative: 0.0 1.0;
+                  }
+                  rel2 {
+                     to: "bar_image_bottom_padding";
+                     relative: 1.0 0.0;
+                  }
+               }
+            }
+            part { name: "level";
+               type: RECT;
+               mouse_events: 0;
+               scale: 1;
+               description { state: "default" 0.0;
+                  rel1 {
+                     to_y: "bar_image_top_padding";
+                     relative: 0.0 1.0;
+                  }
+                  rel2 {
+                     to_y: "elm.dragable.slider";
+                     relative: 1.0 0.0;
+                  }
+                  fixed: 1 1;
+                  min: SLIDER_BASE_HEIGHT_INC 0;
+                  max: SLIDER_BASE_HEIGHT_INC -1;
+                  color: 255 25 25 255;
+               }
+               description { state: "inverted" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 0;
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "default" 0.0;
+                  color: 216 162 162 255;
+               }
+            }
+            part { name: "level2";
+               type: RECT;
+               mouse_events: 0;
+               scale: 1;
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  visible: 0;
+                  rel1.to: "level";
+                  rel1.relative: 0.0 1.0;
+                  rel2.to: "base";
+                  color: 255 25 25 255;
+               }
+               description { state: "inverted" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "inverted" 0.0;
+                  color: 216 162 162 255;
+               }
+            }
+            part { name: "level_rest_clip";
+               type: RECT;
+               description { state: "default" 0.0;
+                  fixed: 1 1;
+                  color: 201 132 132 255;
+                  rel1.to_x: "base";
+                  rel1.to_y: "center_point";
+                  rel1.relative: 0.0 0.5;
+                  rel2.to: "base";
+               }
+               description { state: "inverted" 0.0;
+                 inherit: "default" 0.0;
+                 rel1.to: "base";
+                 rel1.relative: 0.0 0.0;
+                 rel2.to_x: "base";
+                 rel2.to_y: "center_point";
+                 rel2.relative: 1.0 0.5;
+               }
+            }
+            part { name: "level_warning_clip";
+               type: RECT;
+               scale: 1;
+               clip_to: "disabled_clipper";
+               description { state: "default" 0.0;
+                  rel1.to: "level";
+                  rel2.to: "level";
+               }
+               description { state: "warning" 0.0;
+                  inherit: "default";
+                  rel1.to: "level";
+                  rel2.to_x: "level";
+                  rel2.to_y: "level_rest_clip";
+                  rel2.relative: 1.0 0.0;
+               }
+               description { state: "inverted" 0.0;
+                  inherit: "default";
+                  rel1.to: "level2";
+                  rel2.to: "level2";
+               }
+               description { state: "inverted_warning" 0.0;
+                 inherit: "inverted" 0.0;
+                 rel1.to_x: "level2";
+                 rel1.to_y: "level_rest_clip";
+                 rel1.relative: 0.0 1.0;
+                 rel2.to: "level2";
+               }
+            }
+            part { name: "disabled_clipper";
+              type: RECT;
+              scale: 1;
+               description { state: "default" 0.0;
+                  rel1.to: "level_warning_clip";
+                  rel2.to: "level_warning_clip";
+                  color: 61 184 204 255;
+               }
+               description { state: "disabled";
+                  inherit: "default" 0.0;
+                  color: 163 198 204 255;
+               }
+            }
+            part {
+               name: "bar_image_bottom_padding";
+               type: SPACER;
+               scale: 1;
+               description {
+                  state: "default" 0.0;
+                  min: SLIDER_BOTTOM_PADDING_SIZE_INC;
+                  max: SLIDER_BOTTOM_PADDING_SIZE_INC;
+                  fixed: 1 1;
+                  rel1 {
+                     relative: 0.0  1.0;
+                     to: "bg";
+                  }
+                  rel2 {
+                     relative: 1.0  1.0;
+                     to: "bg";
+                  }
+                  align: 0.5 1.0;
+               }
+            }
+            part { name: "elm.swallow.bar";
+               type: SWALLOW;
+               scale: 1;
+               description { state: "default" 0.0;
+                  min: SLIDER_SWALLOWBAR_HEIGHT_INC 0;
+                  max: SLIDER_SWALLOWBAR_HEIGHT_INC -1;
+                  fixed: 1 0;
+                  rel1 {
+                     to: "bar_image_top_padding";
+                     relative: 0.0 1.0;
+                  }
+                  rel2 {
+                     to: "bar_image_bottom_padding";
+                     relative: 1.0 0.0;
+                  }
+               }
+            }
+            part { name:"center_point";
+               type: RECT;
+               scale: 1;
+               description { state: "default" 0.0;
+                  min: 0 0;
+                  max: 0 0;
+                  align: 0.5 SLIDER_WARNING_LEVEL;
+                  rel1.to: "base";
+                  rel2.to: "base";
+                  fixed: 1 0;
+                  color: 0 0 0 0;
+               }
+               description { state: "inverted" 0.0;
+                  inherit: "default" 0.0;
+                  align: 0.5 (1.0 - SLIDER_WARNING_LEVEL);
+               }
+            }
+            part { name: "elm.track.slider";
+               type: SWALLOW;
+               mouse_events: 0;
+               scale: 1;
+               description { state: "default" 0.0;
+                  min: 0 SLIDER_POPUP_HEIGHT_INC;
+                  max: -1 SLIDER_POPUP_HEIGHT_INC;
+                  fixed: 0 1;
+                  rel1.to: "elm.dragable.slider";
+                  rel2.to: "elm.dragable.slider";
+               }
+            }
+             part { name: "elm.swallow.tizen_vg_shape1";
+                type: SWALLOW;
+                mouse_events: 0;
+                scale: 1;
+                clip_to: "base";
+                description { state: "default" 0.0;
+                   rel1.to: "base";
+                   rel2.to: "base";
+                }
+             }
+             part { name: "elm.swallow.tizen_vg_shape4";
+                type: SWALLOW;
+                mouse_events: 0;
+                scale: 1;
+                clip_to: "level_rest_clip";
+                description { state: "default" 0.0;
+                   rel1.to: "level_rest_clip";
+                   rel2.to: "level_rest_clip";
+                }
+             }
+             part { name: "elm.swallow.tizen_vg_shape2";
+                type: SWALLOW;
+                mouse_events: 0;
+                scale: 1;
+                clip_to: "level";
+                description { state: "default" 0.0;
+                   rel1.to: "level";
+                   rel2.to: "level";
+                }
+             }
+             part { name: "elm.swallow.tizen_vg_shape3";
+                type: SWALLOW;
+                mouse_events: 0;
+                scale: 1;
+                clip_to: "level2";
+                description { state: "default" 0.0;
+                   rel1.to: "level2";
+                   rel2.to: "level2";
+                }
+             }
+             part { name: "elm.swallow.tizen_vg_shape5";
+                type: SWALLOW;
+                mouse_events: 0;
+                scale: 1;
+                clip_to: "level_warning_clip";
+                description { state: "default" 0.0;
+                   rel1.to: "level_warning_clip";
+                   rel2.to: "level_warning_clip";
+                }
+             }
+            part { name: "elm.dragable.slider";
+               type: GROUP;
+               source: "elm/slider/horizontal/indicator/default";
+               mouse_events: 1;
+               scale: 1;
+               clip_to : "handle_color";
+               dragable {
+                  x: 0 0 0;
+                  y: 1 1 0;
+                  confine: "drag_base";
+               }
+               description { state: "default" 0.0;
+                  min: SLIDER_LEFT_VERTICAL_INDICATOR_SIZE_INC SLIDER_VERTICAL_INDICATOR_SIZE_INC;
+                  fixed: 1 1;
+                  align: 0.5 0.5;
+                  rel1.to: "drag_base";
+                  rel1.relative: 0.5 0.5;
+                  rel2.to: "drag_base";
+                  rel2.relative: 0.5 0.5;
+                  color: 0 0 0 0;
+               }
+            }
+            part { name:"handle_color";
+               type: RECT;
+               scale: 1;
+               description { state: "default" 0.0;
+                  rel1.offset: 0 -1000;
+                  rel2.offset: -1 1000;
+                  color: 61 184 204 255;
+               }
+               description { state: "warning" 0.0;
+                  inherit: "default" 0.0;
+                  color: 255 25 25 255;
+               }
+               description { state: "pressed" 0.0;
+                  inherit: "default" 0.0;
+               }
+               description { state: "pressed_warning" 0.0;
+                  inherit: "warning";
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "default" 0.0;
+                  color: 163 198 204 255;
+               }
+               description { state: "disabled_warning" 0.0;
+                  inherit: "default" 0.0;
+                  color: 216 162 162 255;
+               }
+            }
+            part { name: "disabler";
+               type: RECT;
+               mouse_events: 1;
+               repeat_events: 0;
+               scale: 1;
+               description { state: "default" 0.0;
+                  visible: 0;
+                  color: 0 0 0 0;
+               }
+               description { state: "disabled" 0.0;
+                  inherit: "default" 0.0;
+                  visible: 1;
+               }
+            }
+         }
+         programs {
+            program { name: "invert_on";
+               signal: "elm,state,inverted,on";
+               source: "elm";
+               script {
+                  set_invert_on();
+               }
+            }
+            program { name: "invert_off";
+               signal: "elm,state,inverted,off";
+               source: "elm";
+               script {
+                  set_invert_off();
+               }
+            }
+            program { name: "val_show";
+               signal: "mouse,down,*";
+               source: "elm.dragable.slider";
+               script {
+                  thumb_down();
+               }
+            }
+            program { name: "val_hide";
+               signal: "mouse,up,*";
+               source: "elm.dragable.slider";
+               script {
+                  thumb_up();
+               }
+            }
+            /* TIZEN ONLY(20150819) : This program is not necessary.
+            program { name: "popup_show";
+               signal: "elm,state,val,show";
+               source: "elm";
+               script {
+                  set_popup_show();
+               }
+            }
+            program { name: "popup_hide";
+               signal: "elm,state,val,hide";
+               source: "elm";
+               script {
+                  set_popup_hide();
+               }
+            }*/
+            program { name: "icon_show";
+               signal: "elm,state,icon,visible";
+               source: "elm";
+               action:  STATE_SET "visible" 0.0;
+               target: "drag_base";
+            }
+            program { name: "center_point_enable";
+               signal: "slider,center,point,show";
+               source: "elm";
+               action:  STATE_SET "visible" 0.0;
+               target: "center_point";
+            }
+            program { name: "center_point_disable";
+               signal: "slider,center,point,hide";
+               source: "elm";
+               action:  STATE_SET "default" 0.0;
+               target: "center_point";
+            }
+             program { name: "slider_disable";
+                signal: "elm,state,disabled";
+                source: "elm";
+                script {
+                   set_state(PART:"disabler", "disabled", 0.0);
+                   set_state(PART:"base", "disabled", 0.0);
+                   set_state(PART:"disabled_clipper", "disabled", 0.0);
+                   if (!get_int(warning))
+                     set_state(PART:"handle_color", "disabled", 0.0);
+                   else
+                     set_state(PART:"handle_color", "disabled_warning", 0.0);
+                   if (!get_int(invert_on)) {
+                     set_state(PART:"level", "disabled", 0.0);
+                     set_state(PART:"level2", "default", 0.0);
+                   } else {
+                     set_state(PART:"level", "inverted", 0.0);
+                     set_state(PART:"level2", "disabled", 0.0);
+                   }
+                   set_int(disabled, 1);
+                }
+             }
+             program { name: "slider_enable";
+                signal: "elm,state,enabled";
+                source: "elm";
+                script {
+                   set_state(PART:"disabler", "default", 0.0);
+                   set_state(PART:"base", "default", 0.0);
+                   set_state(PART:"disabled_clipper", "default", 0.0);
+                   if (!get_int(warning))
+                     set_state(PART:"handle_color", "default", 0.0);
+                   else
+                     set_state(PART:"handle_color", "warning", 0.0);
+                   if (!get_int(invert_on)) {
+                     set_state(PART:"level2", "default", 0.0);
+                     set_state(PART:"level", "default", 0.0);
+                   } else {
+                     set_state(PART:"level2", "inverted", 0.0);
+                     set_state(PART:"level", "inverted", 0.0);
+                   }
+                   set_int(disabled, 0);
+                }
+             }
+             program { name: "center_point_calc";
+                signal: "drag";
+                source: "elm.dragable.slider";
+                script {
+                   drag_state_warning();
+                }
+             }
+             program { name: "center_point_calc1";
+                signal: "drag,start";
+                source: "elm.dragable.slider";
+                script {
+                   drag_state_warning();
+                }
+             }
+             program { name: "center_point_calc2";
+                signal: "drag,set";
+                source: "elm.dragable.slider";
+                script {
+                   drag_state_warning();
+                }
+             }
+             program { name: "center_point_calc3";
+                signal: "mouse,up,*";
+                source: "elm.swallow.bar";
+                script {
+                   drag_state_warning();
+                }
+             }
+             program { name: "center_point_calc4";
+                signal: "mouse,move";
+                source: "elm.swallow.bar";
+                script {
+                   drag_state_warning();
+                }
+             }
+          }
+       }
