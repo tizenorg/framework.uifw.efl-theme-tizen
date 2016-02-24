@@ -340,23 +340,8 @@ group { name: "elm/toolbar/item/tabbar";
          scale: 1;
          mouse_events: 0;
          description { state: "default" 0.0;
-            rel1 {
-               to: "selected_line_top_padding";
-               relative: 0.25 1.0;
-            }
-            rel2 {
-               to: "selected_line_top_padding";
-               relative: 0.75 1.0;
-            }
-            image.normal: "core_tab_selectbar.#.png";
-            fixed: 0 1;
-            align: 0.5 0.0;
             min: 0 TABBAR_COMMON_SELECTED_LINE_HEIGHT_INC;
-            max: -1 TABBAR_COMMON_SELECTED_LINE_HEIGHT_INC;
-            color: 249 249 249 0;
-         }
-         description { state: "selected" 0.0;
-            inherit: "default" 0.0;
+            max: 0 TABBAR_COMMON_SELECTED_LINE_HEIGHT_INC;
             rel1 {
                to: "selected_line_top_padding";
                relative: 0.0 1.0;
@@ -365,7 +350,14 @@ group { name: "elm/toolbar/item/tabbar";
                to: "selected_line_top_padding";
                relative: 1.0 1.0;
             }
+            image.normal: "core_tab_selectbar.#.png";
+            fixed: 0 1;
             color: 249 249 249 255;
+            align: 0.5 0.0;
+         }
+         description { state: "selected" 0.0;
+            inherit: "default" 0.0;
+            max: -1 TABBAR_COMMON_SELECTED_LINE_HEIGHT_INC;
          }
       }
       part { name: "padding_left_top";

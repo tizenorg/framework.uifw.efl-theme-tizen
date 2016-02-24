@@ -117,6 +117,22 @@
          }\
       }\
       programs {\
+         program {\
+            signal: "mouse,down,1"; source: "left_bt"#_sufix;\
+            action: SIGNAL_EMIT "elm,action,decrement,start"#_signal_sufix "elm";\
+         }\
+         program {\
+            signal: "mouse,up,1"; source: "left_bt"#_sufix;\
+            action: SIGNAL_EMIT "elm,action,stop"#_signal_sufix "elm"; \
+         }\
+         program {\
+            signal: "mouse,down,1"; source: "right_bt"#_sufix;\
+            action: SIGNAL_EMIT "elm,action,increment,start"#_signal_sufix "elm";\
+         }\
+         program {\
+            signal: "mouse,up,1"; source: "right_bt"#_sufix;\
+            action: SIGNAL_EMIT "elm,action,stop"#_signal_sufix "elm";     \
+         }\
          program { name:   "rtl"#_sufix;\
             signal: "edje,state,rtl"; source: "edje";\
             script {\
@@ -133,6 +149,20 @@
                set_state(PART:"right_bt"#_sufix"_swallow", "default", 0.0);\
             }\
          }\
+         program {\
+            signal: "mouse,clicked,1"; \
+            source: "left_bt"#_sufix; \
+            script { \
+               run_program(PROGRAM:"touch_sound"); \
+            } \
+         } \
+         program {\
+            signal: "mouse,clicked,1"; \
+            source: "right_bt"#_sufix; \
+            script { \
+               run_program(PROGRAM:"touch_sound"); \
+            } \
+         } \
          program { \
             name: "touch_sound"; \
             action: RUN_PLUGIN "touch_sound"; \
@@ -270,6 +300,32 @@
          text.style: "calendar_date_holiday_disabled_style"; \
       } \
    } \
+   part { name: "cit_"#_pos".check"; \
+      type: RECT; \
+      mouse_events: 0; \
+      scale: 1; \
+      description { state: "default" 0.0; \
+         fixed: 1 1; \
+         rel1 { \
+            to: "cit_"#_pos".rect"; \
+            relative: 0.6 0.5; \
+         } \
+         rel2 { \
+            to: "cit_"#_pos".rect"; \
+            relative: 0.6 0.5; \
+         } \
+         min: 16 16; \
+         max: 16 16; \
+         aspect: 1 1; \
+         align: 0.0 1.0;\
+         color: 0 0 0 0; \
+         visible: 0; \
+      } \
+      description { state: "visible" 0.0; \
+         inherit: "default" 0.0; \
+         visible: 1; \
+      } \
+   } \
    part { name: "cit_"#_pos".access"; type: RECT; repeat_events: 1; \
       description { state: "default" 0.0; \
          fixed: 1 1; \
@@ -392,6 +448,8 @@
          name:    "cit_"#_pos".clear"; \
          signal:  "cit_"#_pos",clear"; \
          source:  "elm"; \
+         action:  STATE_SET "default" 0.0; \
+         target:  "cit_"#_pos".check"; \
          after:   "cit_"#_pos".holiday_clear"; \
       } \
       program { \
@@ -407,6 +465,13 @@
             else if (!strcmp(st, "holiday_selected")) \
               set_state(PART:"cit_"#_pos".text", "selected", 0.0); \
          } \
+      } \
+      program { \
+         name:    "cit_"#_pos".checked"; \
+         signal:  "cit_"#_pos",checked"; \
+         source:  "elm"; \
+         action:  STATE_SET "visible" 0.0; \
+         target:  "cit_"#_pos".check"; \
       } \
       program { \
          name:    "cit_"#_pos".holiday"; \

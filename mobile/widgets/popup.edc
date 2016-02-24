@@ -89,7 +89,7 @@ group { name: "elm/notify/bottom/popup";
       }
       program { name: "end2";
          action: STATE_SET "end" 0.0;
-         transition: GLIDE_EASE_OUT(0.35);
+         transition: SIN_FAC 0.33 1.7;
          target: "elm.swallow.content";
          target: "block";
          after: "showfinished";
@@ -106,7 +106,7 @@ group { name: "elm/notify/bottom/popup";
       program { name: "hide_effect";
          signal: "elm,state,hide";
          source: "elm";
-         transition: GLIDE_EASE_OUT(0.35);
+         transition: SIN_FAC 0.33 1.7;
          action: STATE_SET "default" 0.0;
          target: "elm.swallow.content";
          after: "hide_effect_done";

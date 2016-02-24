@@ -45,34 +45,31 @@ group { name: "elm/conformant/base/default";
          description { state: "default" 0.0;
          }
       }
-      part { name: "indicator_base";
-         type: SPACER;
+      part { name: "elm.swallow.indicator_base";
+         type: SWALLOW;
          scale: 1;
          description { state: "default" 0.0;
             fixed: 0 1;
             align: 0.5 0.0;
-            min: 0 LAYOUT_INDICATOR_HEIGHT_INC;
             rel2.relative: 1.0 0.0;
          }
          description { state: "hide" 0.0;
             inherit: "default" 0.0;
-            min: 0 0;
+            align: 0.5 1.0;
          }
       }
-      part { name: "indicator_adapter";
-         type: SPACER;
+      part { name: "elm.swallow.indicator_adapter";
+         type: SWALLOW;
          scale: 1;
          description { state: "default" 0.0;
             fixed: 0 1;
             align: 0.5 0.0;
-            min: 0 LAYOUT_INDICATOR_HEIGHT_INC;
             rel2.relative: 1.0 0.0;
          }
          //just in case: hide
         description { state: "hide" 0.0;
             inherit: "default" 0.0;
             align: 0.5 1.0;
-            min: 0 LAYOUT_INDICATOR_HEIGHT_INC;
          }
       }
       part { name: "elm.swallow.content";
@@ -80,7 +77,7 @@ group { name: "elm/conformant/base/default";
          scale: 1;
          description { state: "default" 0.0;
             rel1.relative: 0.0 1.0;
-            rel1.to: "indicator_base";
+            rel1.to: "elm.swallow.indicator_base";
             rel2.relative: 1.0 0.0;
             rel2.to: "sip_area";
          }
@@ -106,8 +103,8 @@ group { name: "elm/conformant/base/default";
          type: RECT;
          clip_to: "overlap_clipper";
          description { state: "default" 0.0;
-            rel1 { to: "indicator_adapter"; }
-            rel2 { to: "indicator_adapter"; }
+            rel1 { to: "elm.swallow.indicator_adapter"; }
+            rel2 { to: "elm.swallow.indicator_adapter"; }
             color: 61 184 204 255;
          }
          description { state: "transparent" 0.0;
@@ -142,8 +139,8 @@ group { name: "elm/conformant/base/default";
          type: SWALLOW;
          scale: 1;
          description { state: "default" 0.0;
-            rel1.to: "indicator_adapter";
-            rel2.to: "indicator_adapter";
+            rel1.to: "elm.swallow.indicator_adapter";
+            rel2.to: "elm.swallow.indicator_adapter";
          }
       }
       part { name: "elm.swallow.attach_panel_base";
@@ -225,14 +222,14 @@ group { name: "elm/conformant/base/default";
           signal: "indicator,show,effect";
           source: "elm";
           action: STATE_SET "default" 0.0;
-          target: "indicator_adapter";
+          target: "elm.swallow.indicator_adapter";
           transition: DECELERATE 0.2;
       }
       program { name: "hide_indicator_effect"; //hide indicator using effect
           signal: "indicator,hide,effect";
           source: "elm";
           action: STATE_SET "hide" 0.0;
-          target: "indicator_adapter";
+          target: "elm.swallow.indicator_adapter";
           transition: DECELERATE 0.2;
       }
       program { name: "opaque_indicator";
@@ -313,7 +310,6 @@ group { name: "elm/conformant/base/default";
             set_int(clipboard_disable, 0);
             //set content state
             set_state(PART:"elm.swallow.content", "default", 0.0);
-            set_state(PART:"sip_area", "default", 0.0);
          }
       }
       program { name: "disable_clipboard";
@@ -339,7 +335,6 @@ group { name: "elm/conformant/base/default";
          script {
             set_int(keypad_disable, 0);
             set_state(PART:"elm.swallow.content", "default", 0.0);
-            set_state(PART:"sip_area", "default", 0.0);
          }
       }
       program { name: "disable_virtualkeypad";
@@ -402,17 +397,17 @@ group { name: "elm/conformant/base/default";
                 (get_int(indicator_visible) == 0) ||
                 (get_int(overlap_mode) == 1) ||
                 (get_int(landscape_mode) == 1)) {
-               set_state(PART:"indicator_base", "hide", 0.0);
+               set_state(PART:"elm.swallow.indicator_base", "hide", 0.0);
             } else {
-               set_state(PART:"indicator_base", "default", 0.0);
+               set_state(PART:"elm.swallow.indicator_base", "default", 0.0);
             }
             //update indicator adapter
             if ((get_int(transparent_mode) == 1) ||
                 (get_int(indicator_visible) == 0) ||
                 (get_int(landscape_mode)))
-              set_state(PART:"indicator_adapter", "hide", 0.0);
+              set_state(PART:"elm.swallow.indicator_adapter", "hide", 0.0);
             else
-              set_state(PART:"indicator_adapter", "default", 0.0);
+              set_state(PART:"elm.swallow.indicator_adapter", "default", 0.0);
          }
       }
       program { name: "landscape_mode";

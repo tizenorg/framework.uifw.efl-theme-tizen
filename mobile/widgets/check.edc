@@ -58,7 +58,7 @@ group { name: "elm/check/base/default";
       part { name: "tizen_vg_shape_bg_clipper";
          type: RECT;
          description { state: "default" 0.0;
-            color: 249 249 249 77;
+            color: 249 249 249 255;
          }
          description { state: "off" 0.0;
             color: 249 249 249 52;

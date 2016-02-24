@@ -196,10 +196,11 @@ group { name: "elm/slider/horizontal/default";
                description {
                   state: "default" 0.0;
                   min: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
+                  max: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
                   fixed: 1 0;
                   rel1.to: "bg";
                   rel2 {
-                     relative: 0.0 1.0;
+                     relative: 0.0  1.0;
                      to: "bg";
                   }
                   align: 0.0 0.5;
@@ -223,7 +224,6 @@ group { name: "elm/slider/horizontal/default";
                      to_x: "bar_image_left_padding";
                      to_y: "bg";
                   }
-                  fixed: 1 1;
                }
                description { state: "visible" 0.0;
                   inherit: "default" 0.0;
@@ -238,21 +238,21 @@ group { name: "elm/slider/horizontal/default";
                   state: "default" 0.0;
                   align: 0.0 0.5;
                   min: 0 0;
+                  max: 0 0;
                   rel1 {
-                     relative: 1.0 0.0;
-                     to_x: "elm.swallow.icon";
-                     to_y: "bg";
+                     relative: 1.0  0.0;
+                     to: "elm.swallow.icon";
                   }
                   rel2 {
-                     relative: 1.0 1.0;
-                     to_x: "elm.swallow.icon";
-                     to_y: "bg";
+                     relative: 1.0  1.0;
+                     to: "elm.swallow.icon";
                   }
-                  fixed: 1 0;
+                  fixed: 1 1;
                }
                description { state: "visible";
                   inherit: "default" 0.0;
                   min: SLIDER_ICON_PADDING_SIZE_INC;
+                  max: SLIDER_ICON_PADDING_SIZE_INC;
                }
             }
             part {
@@ -263,21 +263,21 @@ group { name: "elm/slider/horizontal/default";
                   state: "default" 0.0;
                   align: 0.0 0.5;
                   min: 0 0;
+                  max: 0 0;
                   rel1 {
-                     relative: 1.0 0.0;
-                     to_x: "bar_icon_right_padding_1";
-                     to_y: "bg";
+                     relative: 1.0  0.0;
+                     to: "bar_icon_right_padding_1";
                   }
                   rel2 {
-                     relative: 1.0 1.0;
-                     to_x: "bar_icon_right_padding_1";
-                     to_y: "bg";
+                     relative: 1.0  1.0;
+                     to: "bar_icon_right_padding_1";
                   }
-                  fixed: 1 0;
+                  fixed: 1 1;
                }
                description { state: "visible";
                   inherit: "default" 0.0;
                   min: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
+                  max: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
                }
             }
             part { name: "base";
@@ -286,17 +286,16 @@ group { name: "elm/slider/horizontal/default";
                scale: 1;
                description { state: "default" 0.0;
                   min: 0 SLIDER_BASE_HEIGHT_INC;
+                  max: -1 SLIDER_BASE_HEIGHT_INC;
                   rel1 {
-                     to_x: "bar_icon_right_padding_2";
-                     to_y: "bg";
-                     relative: 1.0 0.5;
+                     to: "bar_icon_right_padding_2";
+                     relative: 1.0 0.0;
                   }
                   rel2 {
-                     to_x: "bar_image_right_padding";
-                     to_y: "bg";
-                     relative: 0.0 0.5;
+                     to: "bar_image_right_padding";
+                     relative: 0.0 1.0;
                   }
-                  fixed: 1 1;
+                  fixed: 0 1;
                   color: 145 145 145 179;
                }
                description { state: "disabled" 0.0;
@@ -312,12 +311,12 @@ group { name: "elm/slider/horizontal/default";
                   rel1 {
                      to_x: "bar_image_left_padding";
                      to_y: "bg";
-                     relative: 1.0 0.5;
+                     relative: 1.0 0.0;
                   }
                   rel2 {
                       to_x: "bar_image_right_padding";
                       to_y: "bg";
-                      relative: 0.0 0.5;
+                      relative: 0.0 1.0;
                   }
                   fixed: 1 1;
                }
@@ -326,12 +325,12 @@ group { name: "elm/slider/horizontal/default";
                   rel1 {
                      to_x: "bar_icon_right_padding_2";
                      to_y: "bg";
-                     relative: 1.0 0.5;
+                     relative: 1.0 0.0;
                   }
                   rel2 {
                       to_x: "bar_image_right_padding";
                       to_y: "bg";
-                      relative: 0.0 0.5;
+                      relative: 0.0 1.0;
                   }
                }
             }
@@ -342,14 +341,15 @@ group { name: "elm/slider/horizontal/default";
                description { state: "default" 0.0;
                   rel1 {
                      to_x: "bar_icon_right_padding_2";
-                     relative: 1.0 0.5;
+                     relative: 1.0 0.0;
                   }
                   rel2 {
                      to_x: "elm.dragable.slider";
-                     relative: 0.5 0.5;
+                     relative: 0.5 1.0;
                   }
                   fixed: 1 1;
                   min: 0 SLIDER_BASE_HEIGHT_INC;
+                  max: -1 SLIDER_BASE_HEIGHT_INC;
                   color: 61 184 204 255;
                }
                description { state: "pressed" 0.0;
@@ -395,13 +395,14 @@ group { name: "elm/slider/horizontal/default";
                description {
                   state: "default" 0.0;
                   min: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
+                  max: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
                   fixed: 1 0;
                   rel1 {
-                     relative: 1.0 0.0;
+                     relative: 1.0  0.0;
                      to: "bg";
                   }
                   rel2 {
-                     relative: 1.0 1.0;
+                     relative: 1.0  1.0;
                      to: "bg";
                   }
                   align: 1.0 0.5;
@@ -422,16 +423,15 @@ group { name: "elm/slider/horizontal/default";
                scale: 1;
                description { state: "default" 0.0;
                   min: 0  SLIDER_SWALLOWBAR_HEIGHT_INC;
-                  fixed: 1 1;
+                  max: -1 SLIDER_SWALLOWBAR_HEIGHT_INC;
+                  fixed: 0 1;
                   rel1 {
-                     to_x: "bar_icon_right_padding_2";
-                     to_y: "bg";
-                     relative: 1.0 0.5;
+                     to: "bar_icon_right_padding_2";
+                     relative: 1.0 0.0;
                   }
                   rel2 {
-                     to_x: "bar_image_right_padding";
-                     to_y: "bg";
-                     relative: 0.0 0.5;
+                     to: "bar_image_right_padding";
+                     relative: 0.0 1.0;
                   }
                }
             }
@@ -440,16 +440,11 @@ group { name: "elm/slider/horizontal/default";
                scale: 1;
                description { state: "default" 0.0;
                   min: SLIDER_CENTER_POINT_SIZE_INC;
+                  max: SLIDER_CENTER_POINT_SIZE_INC;
                   visible: 0;
-                  rel1 {
-                     to: "base";
-                     relative: 0.5 0.5;
-                  }
-                  rel2 {
-                     to: "base";
-                     relative: 0.5 0.5;
-                  }
-                  fixed: 1 1;
+                  rel1.to: "base";
+                  rel2.to: "base";
+                  fixed: 0 1;
                   color: 61 184 204 255;
                }
                description { state: "visible" 0.0;
@@ -468,7 +463,6 @@ group { name: "elm/slider/horizontal/default";
                scale: 1;
                clip_to: "base";
                description { state: "default" 0.0;
-                  fixed: 1 1;
                   rel1.to: "base";
                   rel2.to: "base";
                }
@@ -479,7 +473,6 @@ group { name: "elm/slider/horizontal/default";
                scale: 1;
                clip_to: "level";
                description { state: "default" 0.0;
-                  fixed: 1 1;
                   rel1.to: "level";
                   rel2.to: "level";
                }
@@ -490,7 +483,6 @@ group { name: "elm/slider/horizontal/default";
                scale: 1;
                clip_to: "level2";
                description { state: "default" 0.0;
-                  fixed: 1 1;
                   rel1.to: "level2";
                   rel2.to: "level2";
                }
@@ -501,7 +493,6 @@ group { name: "elm/slider/horizontal/default";
                scale: 1;
                clip_to: "hider";
                description { state: "default" 0.0;
-                  fixed: 1 1;
                   rel1.to: "level";
                   rel2.to: "level";
                }
@@ -512,7 +503,6 @@ group { name: "elm/slider/horizontal/default";
                scale: 1;
                clip_to: "center_point";
                description { state: "default" 0.0;
-                  fixed: 1 1;
                   rel1.to: "center_point";
                   rel2.to: "center_point";
                }
@@ -546,7 +536,7 @@ group { name: "elm/slider/horizontal/default";
                description { state: "default" 0.0;
                   min: 0 SLIDER_POPUP_HEIGHT_INC;
                   max: -1 SLIDER_POPUP_HEIGHT_INC;
-                  fixed: 1 1;
+                  fixed: 0 1;
                   rel1.to: "elm.dragable.slider";
                   rel2.to: "elm.dragable.slider";
                }
@@ -555,7 +545,6 @@ group { name: "elm/slider/horizontal/default";
                type: RECT;
                scale: 1;
                description { state: "default" 0.0;
-                  fixed: 1 1;
                   rel1.offset: 0 -1000;
                   rel2.offset: -1 1000;
                   color: 61 184 204 255;
@@ -572,7 +561,6 @@ group { name: "elm/slider/horizontal/default";
                type: RECT;
                scale: 1;
                description { state: "default" 0.0;
-                  fixed: 1 1;
                   visible: 0;
                   color: 0 0 0 0;
                }
@@ -583,7 +571,6 @@ group { name: "elm/slider/horizontal/default";
                repeat_events: 0;
                scale: 1;
                description { state: "default" 0.0;
-                  fixed: 1 1;
                   visible: 0;
                   color: 0 0 0 0;
                }
@@ -728,96 +715,63 @@ group { name: "elm/slider/horizontal/center_point";
          parts {
             part { name: "level";
                type: RECT;
-               clip_to: "level_clipper";
+               mouse_events: 0;
+               scale: 1;
                description { state: "default" 0.0;
                   fixed: 1 1;
                   rel1 {
-                     to: "base";
-                     relative: 0.0 0.0;
+                     to_x: "center_point";
+                     to_y: "base";
+                     relative: 0.5 0.0;
                   }
                   rel2 {
                      to_x: "elm.dragable.slider";
                      to_y: "base";
                      relative: 0.5 1.0;
                   }
-                  visible: 1;
                   color: 61 184 204 255;
                }
                description { state: "pressed" 0.0;
-                  inherit: "default" 0.0;
-                  visible: 1;
+                 inherit: "default" 0.0;
                }
                description { state: "inverted" 0.0;
                   inherit: "default" 0.0;
-                  visible: 1;
+                  visible: 0;
                }
                description { state: "disabled" 0.0;
                   inherit: "default" 0.0;
-                  visible: 1;
                   color: 61 184 204 77;
                }
             }
             part { name: "level2";
                type: RECT;
-               clip_to: "level2_clipper";
+               mouse_events: 0;
+               scale: 1;
                description { state: "default" 0.0;
                   fixed: 1 1;
+                  visible: 0;
                   rel1 {
                      to_x: "elm.dragable.slider";
                      to_y: "base";
                      relative: 0.5 0.0;
                   }
                   rel2 {
-                     to: "base";
-                     relative: 1.0 1.0;
+                     to_x: "center_point";
+                     to_y: "base";
+                     relative: 0.5 1.0;
                   }
                   color: 61 184 204 255;
-                  visible: 1;
                }
                description { state: "inverted" 0.0;
                   inherit: "default" 0.0;
                   visible: 1;
                }
                description { state: "pressed" 0.0;
-                  inherit: "inverted" 0.0;
-                  visible: 1;
+                 inherit: "inverted" 0.0;
                }
                description { state: "disabled" 0.0;
                   inherit: "inverted" 0.0;
-                  visible: 1;
                   color: 61 184 204 77;
-               }
-            }
-            part { name: "level_clipper";
-               type: RECT;
-               description { state: "default" 0.0;
-                  fixed: 1 1;
-                  rel1 {
-                     to_x: "center_point";
-                     to_y: "base";
-                     relative: 0.5 0.0;
-                  }
-                  rel2 {
-                     to_x: "bar_image_right_padding";
-                     to_y: "base";
-                     relative: 0.0 1.0;
-                  }
-               }
-            }
-            part { name: "level2_clipper";
-               type: RECT;
-               description { state: "default" 0.0;
-                  fixed: 1 1;
-                  rel1 {
-                     to_x: "bar_image_left_padding";
-                     to_y: "base";
-                     relative: 1.0 0.0;
-                  }
-                  rel2 {
-                     to_x: "center_point";
-                     to_y: "base";
-                     relative: 0.5 1.0;
-                  }
                }
             }
             part { name:"center_point";
@@ -825,15 +779,10 @@ group { name: "elm/slider/horizontal/center_point";
                scale: 1;
                description { state: "default" 0.0;
                   min: SLIDER_CENTER_POINT_SIZE_INC;
-                  rel1 {
-                     to: "base";
-                     relative: 0.5 0.5;
-                  }
-                  rel2 {
-                     to: "base";
-                     relative: 0.5 0.5;
-                  }
-                  fixed: 1 1;
+                  max: SLIDER_CENTER_POINT_SIZE_INC;
+                  rel1.to: "base";
+                  rel2.to: "base";
+                  fixed: 0 1;
                   visible: 1;
                   color: 61 184 204 255;
                }
@@ -932,9 +881,6 @@ group { name: "elm/slider/horizontal/warning";
          public disabled = 0;
          public popup_show = 1;
          public show = 0;
-         public warning_area = 0;
-         public warning_area_set = 0;
-
          public set_popup_show() {
             set_int(popup_show, 1);
          }
@@ -999,130 +945,55 @@ group { name: "elm/slider/horizontal/warning";
             new Float:dx, Float:dy;
             get_drag(PART:"elm.dragable.slider", dx, dy);
             if (!get_int(invert_on)) {
-               if (get_int(warning_area_set)) {
-                  if (dx > get_float(warning_area)) {
-                     if (!get_int(disabled)) {
-                        set_state(PART:"handle_color", "warning", 0.0);
-                        if (get_int(popup_show))
-                           emit("popup,warning", "popup,emit");
-                     }
-                     else {
-                        set_state(PART:"handle_color", "disabled_warning", 0.0);
-                     }
-                     set_state(PART:"level_warning_clip", "warning", 0.0);
-                     set_int(warning, 1);
-                  }
-                  else {
-                     if (!get_int(disabled)) {
-                        set_state(PART:"handle_color", "default", 0.0);
-                        if (get_int(popup_show))
-                           emit("popup,default", "popup,emit");
-                     }
-                     else {
-                        set_state(PART:"handle_color", "disabled", 0.0);
-                     }
-                     set_state(PART:"level_warning_clip", "default", 0.0);
-                     set_int(warning, 0);
-                  }
+               if (dx > SLIDER_WARNING_LEVEL) {
+                 if (!get_int(disabled)) {
+                   set_state(PART:"handle_color", "warning", 0.0);
+                   if (get_int(popup_show))
+                     emit("popup,warning", "popup,emit");
+                 }
+                 else {
+                   set_state(PART:"handle_color", "disabled_warning", 0.0);
+                 }
+                 set_state(PART:"level_warning_clip", "warning", 0.0);
+                 set_int(warning, 1);
                }
                else {
-                  if (dx > SLIDER_WARNING_LEVEL) {
-                     if (!get_int(disabled)) {
-                        set_state(PART:"handle_color", "warning", 0.0);
-                        if (get_int(popup_show))
-                           emit("popup,warning", "popup,emit");
-                     }
-                     else {
-                        set_state(PART:"handle_color", "disabled_warning", 0.0);
-                     }
-                     set_state(PART:"level_warning_clip", "warning", 0.0);
-                     set_int(warning, 1);
-                  }
-                  else {
-                     if (!get_int(disabled)) {
-                        set_state(PART:"handle_color", "default", 0.0);
-                        if (get_int(popup_show))
-                           emit("popup,default", "popup,emit");
-                     }
-                     else {
-                        set_state(PART:"handle_color", "disabled", 0.0);
-                     }
-                     set_state(PART:"level_warning_clip", "default", 0.0);
-                     set_int(warning, 0);
-                  }
+                 if (!get_int(disabled)) {
+                   set_state(PART:"handle_color", "default", 0.0);
+                   if (get_int(popup_show))
+                     emit("popup,default", "popup,emit");
+                 }
+                 else {
+                   set_state(PART:"handle_color", "disabled", 0.0);
+                 }
+                 set_state(PART:"level_warning_clip", "default", 0.0);
+                 set_int(warning, 0);
                }
             }
             else {
-               if (get_int(warning_area_set)) {
-                  if (dx < (1.0 - get_float(warning_area))) {
-                     if (!get_int(disabled)) {
-                        set_state(PART:"handle_color", "warning", 0.0);
-                        if (get_int(popup_show))
-                           emit("popup,warning", "popup,emit");
-                     }
-                     else {
-                        set_state(PART:"handle_color", "disabled_warning", 0.0);
-                     }
-                     set_state(PART:"level_warning_clip", "inverted_warning", 0.0);
-                     set_int(warning, 1);
-                  }
-                  else {
-                     if (!get_int(disabled)) {
-                        set_state(PART:"handle_color", "default", 0.0);
-                        if (get_int(popup_show))
-                           emit("popup,default", "popup,emit");
-                     }
-                     else {
-                        set_state(PART:"handle_color", "disabled", 0.0);
-                     }
-                     set_state(PART:"level_warning_clip", "inverted", 0.0);
-                     set_int(warning, 0);
-                  }
+               if (dx < (1.0 - SLIDER_WARNING_LEVEL)) {
+                 if (!get_int(disabled)) {
+                   set_state(PART:"handle_color", "warning", 0.0);
+                   if (get_int(popup_show))
+                     emit("popup,warning", "popup,emit");
+                 }
+                 else {
+                   set_state(PART:"handle_color", "disabled_warning", 0.0);
+                 }
+                 set_state(PART:"level_warning_clip", "inverted_warning", 0.0);
+                 set_int(warning, 1);
                }
                else {
-                  if (dx < (1.0 - SLIDER_WARNING_LEVEL)) {
-                     if (!get_int(disabled)) {
-                        set_state(PART:"handle_color", "warning", 0.0);
-                        if (get_int(popup_show))
-                           emit("popup,warning", "popup,emit");
-                     }
-                     else {
-                        set_state(PART:"handle_color", "disabled_warning", 0.0);
-                     }
-                     set_state(PART:"level_warning_clip", "inverted_warning", 0.0);
-                     set_int(warning, 1);
-                  }
-                  else {
-                     if (!get_int(disabled)) {
-                        set_state(PART:"handle_color", "default", 0.0);
-                        if (get_int(popup_show))
-                           emit("popup,default", "popup,emit");
-                     }
-                     else {
-                        set_state(PART:"handle_color", "disabled", 0.0);
-                     }
-                     set_state(PART:"level_warning_clip", "inverted", 0.0);
-                     set_int(warning, 0);
-                  }
-               }
-            }
-         }
-         public message(Msg_Type:type, id, ...) {
-            if (type == MSG_FLOAT_SET) {
-               new Float:ratio;
-               ratio = getfarg(2);
-               if (id == 0) {
-                  set_float(warning_area, ratio);
-                  set_int(warning_area_set, 1);
-                  custom_state(PART:"center_point", "default", 0.0);
-                  if (!get_int(invert_on)) {
-                     set_state_val(PART:"center_point", STATE_ALIGNMENT, ratio, 0.5);
-                  }
-                  else {
-                     set_state_val(PART:"center_point", STATE_ALIGNMENT, 1 - ratio, 0.5);
-                  }
-                  set_state(PART:"center_point", "custom", 0.0);
-                  drag_state_warning();
+                 if (!get_int(disabled)) {
+                   set_state(PART:"handle_color", "default", 0.0);
+                   if (get_int(popup_show))
+                     emit("popup,default", "popup,emit");
+                 }
+                 else {
+                   set_state(PART:"handle_color", "disabled", 0.0);
+                 }
+                 set_state(PART:"level_warning_clip", "inverted", 0.0);
+                 set_int(warning, 0);
                }
             }
          }
@@ -1151,10 +1022,11 @@ group { name: "elm/slider/horizontal/warning";
                description {
                   state: "default" 0.0;
                   min: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
+                  max: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
                   fixed: 1 0;
                   rel1.to: "bg";
                   rel2 {
-                     relative: 0.0 1.0;
+                     relative: 0.0  1.0;
                      to: "bg";
                   }
                   align: 0.0 0.5;
@@ -1192,6 +1064,7 @@ group { name: "elm/slider/horizontal/warning";
                   state: "default" 0.0;
                   align: 0.0 0.5;
                   min: 0 0;
+                  max: 0 0;
                   rel1 {
                      relative: 1.0  0.0;
                      to: "elm.swallow.icon";
@@ -1200,11 +1073,12 @@ group { name: "elm/slider/horizontal/warning";
                      relative: 1.0  1.0;
                      to: "elm.swallow.icon";
                   }
-                  fixed: 1 0;
+                  fixed: 1 1;
                }
                description { state: "visible";
                   inherit: "default" 0.0;
                   min: SLIDER_ICON_PADDING_SIZE_INC;
+                  max: SLIDER_ICON_PADDING_SIZE_INC;
                }
             }
             part {
@@ -1215,6 +1089,7 @@ group { name: "elm/slider/horizontal/warning";
                   state: "default" 0.0;
                   align: 0.0 0.5;
                   min: 0 0;
+                  max: 0 0;
                   rel1 {
                      relative: 1.0  0.0;
                      to: "bar_icon_right_padding_1";
@@ -1223,11 +1098,12 @@ group { name: "elm/slider/horizontal/warning";
                      relative: 1.0  1.0;
                      to: "bar_icon_right_padding_1";
                   }
-                  fixed: 1 0;
+                  fixed: 1 1;
                }
                description { state: "visible";
                   inherit: "default" 0.0;
                   min: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
+                  max: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
                }
             }
             part { name: "base";
@@ -1236,15 +1112,14 @@ group { name: "elm/slider/horizontal/warning";
                scale: 1;
                description { state: "default" 0.0;
                   min: 0 SLIDER_BASE_HEIGHT_INC;
+                  max: -1 SLIDER_BASE_HEIGHT_INC;
                   rel1 {
-                     to_x: "bar_icon_right_padding_2";
-                     to_y: "bg";
-                     relative: 1.0 0.5;
+                     to: "bar_icon_right_padding_2";
+                     relative: 1.0 0.0;
                   }
                   rel2 {
-                     to_x: "bar_image_right_padding";
-                     to_y: "bg";
-                     relative: 0.0 0.5;
+                     to: "bar_image_right_padding";
+                     relative: 0.0 1.0;
                   }
                   fixed: 0 1;
                   color: 145 145 145 179;
@@ -1400,13 +1275,14 @@ group { name: "elm/slider/horizontal/warning";
                description {
                   state: "default" 0.0;
                   min: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
+                  max: SLIDER_LEFT_RIGHT_PADDING_SIZE_INC;
                   fixed: 1 0;
                   rel1 {
-                     relative: 1.0 0.0;
+                     relative: 1.0  0.0;
                      to: "bg";
                   }
                   rel2 {
-                     relative: 1.0 1.0;
+                     relative: 1.0  1.0;
                      to: "bg";
                   }
                   align: 1.0 0.5;
@@ -2663,11 +2539,8 @@ group { name: "elm/slider/vertical/default";
          public invert_on = 0;
          public warning = 0;
          public disabled = 0;
-         public popup_show = 1;
          public show = 0;
-         public warning_area = 0;
-         public warning_area_set = 0;
-
+         public popup_show = 1;
          public set_popup_show() {
             set_int(popup_show, 0);
          }
@@ -2732,130 +2605,47 @@ group { name: "elm/slider/vertical/default";
             new Float:dx, Float:dy;
             get_drag(PART:"elm.dragable.slider", dx, dy);
             if (!get_int(invert_on)) {
-               if (get_int(warning_area_set)) {
-                  if (dy > get_float(warning_area)) {
-                     if (!get_int(disabled)) {
-                        set_state(PART:"handle_color", "warning", 0.0);
-                        if (get_int(popup_show))
-                           emit("popup,warning", "popup,emit");
-                     }
-                     else {
-                        set_state(PART:"handle_color", "disabled_warning", 0.0);
-                     }
-                     set_state(PART:"level_warning_clip", "warning", 0.0);
-                     set_int(warning, 1);
+               if (dy > SLIDER_WARNING_LEVEL) {
+                  if (!get_int(disabled)) {
+                     set_state(PART:"handle_color", "warning", 0.0);
                   }
                   else {
-                     if (!get_int(disabled)) {
-                        set_state(PART:"handle_color", "default", 0.0);
-                        if (get_int(popup_show))
-                           emit("popup,default", "popup,emit");
-                     }
-                     else {
-                        set_state(PART:"handle_color", "disabled", 0.0);
-                     }
-                     set_state(PART:"level_warning_clip", "default", 0.0);
-                     set_int(warning, 0);
+                     set_state(PART:"handle_color", "disabled_warning", 0.0);
                   }
+                  set_state(PART:"level_warning_clip", "warning", 0.0);
+                  set_int(warning, 1);
                }
                else {
-                  if (dy > SLIDER_WARNING_LEVEL) {
-                     if (!get_int(disabled)) {
-                        set_state(PART:"handle_color", "warning", 0.0);
-                        if (get_int(popup_show))
-                           emit("popup,warning", "popup,emit");
-                     }
-                     else {
-                        set_state(PART:"handle_color", "disabled_warning", 0.0);
-                     }
-                     set_state(PART:"level_warning_clip", "warning", 0.0);
-                     set_int(warning, 1);
+                  if (!get_int(disabled)) {
+                     set_state(PART:"handle_color", "default", 0.0);
                   }
                   else {
-                     if (!get_int(disabled)) {
-                        set_state(PART:"handle_color", "default", 0.0);
-                        if (get_int(popup_show))
-                           emit("popup,default", "popup,emit");
-                     }
-                     else {
-                        set_state(PART:"handle_color", "disabled", 0.0);
-                     }
-                     set_state(PART:"level_warning_clip", "default", 0.0);
-                     set_int(warning, 0);
+                     set_state(PART:"handle_color", "disabled", 0.0);
                   }
+                  set_state(PART:"level_warning_clip", "default", 0.0);
+                  set_int(warning, 0);
                }
             }
             else {
-               if (get_int(warning_area_set)) {
-                  if (dy < (1.0 - get_float(warning_area))) {
-                     if (!get_int(disabled)) {
-                        set_state(PART:"handle_color", "warning", 0.0);
-                        if (get_int(popup_show))
-                           emit("popup,warning", "popup,emit");
-                     }
-                     else {
-                        set_state(PART:"handle_color", "disabled_warning", 0.0);
-                     }
-                     set_state(PART:"level_warning_clip", "inverted_warning", 0.0);
-                     set_int(warning, 1);
+               if (dy < (1.0 - SLIDER_WARNING_LEVEL)) {
+                  if (!get_int(disabled)) {
+                     set_state(PART:"handle_color", "warning", 0.0);
                   }
                   else {
-                     if (!get_int(disabled)) {
-                        set_state(PART:"handle_color", "default", 0.0);
-                        if (get_int(popup_show))
-                           emit("popup,default", "popup,emit");
-                     }
-                     else {
-                        set_state(PART:"handle_color", "disabled", 0.0);
-                     }
-                     set_state(PART:"level_warning_clip", "inverted", 0.0);
-                     set_int(warning, 0);
+                     set_state(PART:"handle_color", "disabled_warning", 0.0);
                   }
+                  set_state(PART:"level_warning_clip", "inverted_warning", 0.0);
+                  set_int(warning, 1);
                }
                else {
-                  if (dy < (1.0 - SLIDER_WARNING_LEVEL)) {
-                     if (!get_int(disabled)) {
-                        set_state(PART:"handle_color", "warning", 0.0);
-                        if (get_int(popup_show))
-                           emit("popup,warning", "popup,emit");
-                     }
-                     else {
-                        set_state(PART:"handle_color", "disabled_warning", 0.0);
-                     }
-                     set_state(PART:"level_warning_clip", "inverted_warning", 0.0);
-                     set_int(warning, 1);
+                  if (!get_int(disabled)) {
+                     set_state(PART:"handle_color", "default", 0.0);
                   }
                   else {
-                     if (!get_int(disabled)) {
-                        set_state(PART:"handle_color", "default", 0.0);
-                        if (get_int(popup_show))
-                           emit("popup,default", "popup,emit");
-                     }
-                     else {
-                        set_state(PART:"handle_color", "disabled", 0.0);
-                     }
-                     set_state(PART:"level_warning_clip", "inverted", 0.0);
-                     set_int(warning, 0);
+                     set_state(PART:"handle_color", "disabled", 0.0);
                   }
-               }
-            }
-         }
-         public message(Msg_Type:type, id, ...) {
-            if (type == MSG_FLOAT_SET) {
-               new Float:ratio;
-               ratio = getfarg(2);
-               if (id == 0) {
-                  set_float(warning_area, ratio);
-                  set_int(warning_area_set, 1);
-                  custom_state(PART:"center_point", "default", 0.0);
-                  if (!get_int(invert_on)) {
-                     set_state_val(PART:"center_point", STATE_ALIGNMENT, 0.5, ratio);
-                  }
-                  else {
-                     set_state_val(PART:"center_point", STATE_ALIGNMENT, 0.5, 1 - ratio);
-                  }
-                  set_state(PART:"center_point", "custom", 0.0);
-                  drag_state_warning();
+                  set_state(PART:"level_warning_clip", "inverted", 0.0);
+                  set_int(warning, 0);
                }
             }
          }
@@ -2864,10 +2654,10 @@ group { name: "elm/slider/vertical/default";
          part { name: "access";
             type: RECT;
                description { state: "default" 0.0;
-                  fixed: 1 1;
-                  color: 0 0 0 0;
+               fixed: 1 1;
+               color: 0 0 0 0;
                }
-            }
+          }
             part {
                name: "bg";
                type: SPACER;
@@ -2888,7 +2678,7 @@ group { name: "elm/slider/vertical/default";
                   max: SLIDER_TOP_PADDING_SIZE_INC;
                   fixed: 1 1;
                   rel1 {
-                     relative: 0.0 0.0;
+                     relative: 0.0  0.0;
                      to: "bg";
                   }
                   rel2 {

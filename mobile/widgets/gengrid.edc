@@ -430,7 +430,10 @@ styles {
             type: SPACER;
             scale: 1;
             description { state: "default" 0.0;
+               align: 0.5 0.0;
                min: GRID_POPUP_ITEM_REAL_BG_SIZE;
+               max: GRID_POPUP_ITEM_REAL_BG_SIZE;
+               rel2.relative: 1.0 0.0;
             }
          }
          part { name: "left_top_padding";
@@ -439,6 +442,7 @@ styles {
             description { state: "default" 0.0;
                min: GRID_POPUP_PADDING_LEFT_TOP_SIZE;
                align: 0.0 0.0;
+               fixed: 1 1;
                rel1.to: "item_bg";
                rel2 {
                   relative: 0.0 0.0;
@@ -452,6 +456,7 @@ styles {
             description { state: "default" 0.0;
                min: GRID_POPUP_PADDING_RIGHT_BOTTOM_SIZE;
                align: 1.0 1.0;
+               fixed: 1 1;
                rel1 {
                   relative: 1.0 0.0;
                   to_x: "item_bg";
@@ -469,7 +474,9 @@ styles {
             scale: 1;
             description { state: "default" 0.0;
                min: GRID_POPUP_PADDING_BOTTOM_SIZE;
+               min: GRID_POPUP_PADDING_BOTTOM_SIZE;
                align: 1.0 1.0;
+               fixed: 1 1;
                rel1 {
                   relative: 1.0 1.0;
                   to: "item_bg";
@@ -485,7 +492,9 @@ styles {
             scale: 1;
             description { state: "default" 0.0;
                min: GRID_POPUP_PADDING_BOTTOM_SIZE;
+               min: GRID_POPUP_PADDING_BOTTOM_SIZE;
                align: 0.0 1.0;
+               fixed: 1 1;
                rel1 {
                   relative: 0.0 1.0;
                   to: "item_bg";
@@ -501,6 +510,8 @@ styles {
             scale: 1;
             description { state: "default" 0.0;
                min: GRID_POPUP_SWALLOW_ICON_SIZE;
+               max: GRID_POPUP_SWALLOW_ICON_SIZE;
+               align: 0.5 0.5;
                rel1 {
                   relative: 1.0 1.0;
                   to: "left_top_padding";
@@ -524,8 +535,9 @@ styles {
             mouse_events: 0;
             scale: 1;
             description { state: "default" 0.0;
-               min: GRID_POPUP_TEXT_MIN_SIZE GRID_POPUP_TEXT_HEIGHT;
-               fixed: 0 1;
+               min: 164 GRID_POPUP_TEXT_HEIGHT;
+               max: 164 GRID_POPUP_TEXT_HEIGHT;
+               fixed: 1 1;
                align: 0.5 1.0;
                rel1 {
                   relative: 1.0 0.0;

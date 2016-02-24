@@ -701,10 +701,10 @@ group { name: "elm/genlist/item/multiline/default";
             text.min: 0 1;
          }
          desc { "pressed"; inherit: "default";
-            text.style: "list_text_main_press";
+            text.style: "list.text_main_press";
          }
          desc { "disabled"; inherit: "default";
-            text.style: "list_text_main_dim";
+            text.style: "list.text_main_dim";
          }
       }
       spacer { "base_line";
